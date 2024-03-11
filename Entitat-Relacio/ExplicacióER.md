@@ -10,12 +10,12 @@ https://docs.google.com/spreadsheets/d/1ST2jlkX7VeX9rtoDMKkPlCIU2kHJgjxhdRIavzgW
 
 ### Autoescola
 
-Representa una autoescola que ofrece cursos de conducción.
+Representa una autoescola.
 
 - **Atributs:**
-    - Nom: Nombre completo de la autoescola.
-    - Adreça: Dirección de la autoescola.
-    - Telèfon: Número de teléfono de contacto de la autoescola.
+    - Nom: Nom complet de l'autoescola.
+    - Adreça: Direccio de l'autoescola.
+    - Telèfon: Numero de telefono de contacte de l'autoescola.
 
 ### Alumne
 
@@ -115,3 +115,4 @@ Relació entre treballador, matrícula, cotxe i anotació, que descriu una sessi
 Relació entre pràctica i anotació, on una pràctica pot tenir diverses anotacions i una anotació pot estar associada a diverses pràctiques.
 
 ### Te
+Relación 1:N entre autoescola i treballador, indica que una autoescola pot tenir diversos treballadors.
