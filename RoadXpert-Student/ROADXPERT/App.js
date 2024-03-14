@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from './Components/SplashScreen.js';
 import LoginScreen from './Components/LoginScreen.js';
+import Dashboard from './Components/Dashboard.js';
+import AppointmentScreen from './Components/AppointmentScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,8 @@ export default function App() {
       >
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="AppointmentScreen" component={AppointmentScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
