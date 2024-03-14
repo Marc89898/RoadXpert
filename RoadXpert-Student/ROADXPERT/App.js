@@ -1,23 +1,20 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SplashScreen from './Components/SplashScreen.js'; // Cambio aquí
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="DashboardPage"
+        initialRouteName="SplashScreen"
         screenOptions={{
-          // headerShown: false,
-          headerStyle: {
-            backgroundColor: '#1F41BB',
-          },
-          headerTintColor: '#fff',
+          headerShown: false,
         }}
       >
-        <Stack.Screen name="EntrancePage" component={EntrancePage} />
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
