@@ -25,7 +25,13 @@ export default function NavBar() {
                         if (event.defaultPrevented) {
                             preventDefault();
                         } else {
-                            navigation.navigate(route.name);
+                            if (route.name === 'Calender') {
+                                navigation.navigate('AppointmentScreen');
+                            } else if (route.name === 'Home') {
+                                navigation.navigate('Dashboard');
+                            } else {
+                                navigation.navigate(route.name);
+                            }
                         }
                     }}
                     renderIcon={({ route, focused, color }) => {

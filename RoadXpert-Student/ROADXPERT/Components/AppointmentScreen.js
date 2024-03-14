@@ -1,10 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import NavBar from './BottomNavigation/NavBar';
 
 const AppointmentScreen = () => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>¡Hola! Este es un texto centrado en la pantalla.</Text>
+        <View style={{ flex: 1 }}>
+            <View style={styles.container}>
+                <Text style={styles.text}>¡I'm, Appointment Page!</Text>
+            </View>
+            <NavBar /> 
         </View>
     );
 };
