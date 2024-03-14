@@ -5,6 +5,7 @@
   import EntrancePage from './Components/EntrancePage';
   import LoginPage from './Components/LoginPage';
   import DashboardPage from './Components/DashboardPage';
+  import AppointmentRequest from './Components/AppointmentRequest';
 
   const Stack = createStackNavigator();
 
@@ -12,7 +13,7 @@
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="EntrancePager"
+          initialRouteName="DashboardPage"
           screenOptions={{
             headerShown: false,
             // headerStyle: {
@@ -24,6 +25,7 @@
           <Stack.Screen name="EntrancePage" component={EntrancePage} />
           <Stack.Screen name="LoginPage" component={LoginPage} />
           <Stack.Screen name="DashboardPage" component={DashboardPage} />
+          <Stack.Screen name="AppointmentRequest" component={AppointmentRequest} />
         </Stack.Navigator>
       </NavigationContainer>
     );
