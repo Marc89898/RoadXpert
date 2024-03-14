@@ -4,13 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Audio } from 'expo-av';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
 
 const EntrancePage = () => {
     const [fontLoaded] = useFonts({
         'Poppins_Bold': require('../assets/fonts/Poppins-Bold.ttf'),
     });
+
     const navigation = useNavigation();
     const handleEmpezarPress = async () => {
         const soundObject = new Audio.Sound();

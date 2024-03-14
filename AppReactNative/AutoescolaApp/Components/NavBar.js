@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { useFonts } from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
 
 const BottomNavBar = () => {
-    const [fontLoaded] = useFonts({
-        'Poppins_Regular': require('../assets/fonts/Poppins-Regular.ttf'),
-    });
+    const navigation = useNavigation();
     const [selectedOption, setSelectedOption] = useState('home');
-    const handleOptionPress = (option) => setSelectedOption(option);
+
+    const handleOptionPress = (option) => {
+        setSelectedOption(option);
+        const selectedNavItem = navItems.find(item => item.key === option);
+        if (selectedNavItem) {
+            navigation.navigate(selectedNavItem.destination);
+        }
+    };
+
+    const navItems = [
+        { key: 'home', label: 'Casa', icon: require('../assets/images/Navigation/home.png'), destination: 'DashboardPage' },
+        { key: 'calendar', label: 'Calendario', icon: require('../assets/images/Navigation/calender.png'), destination: 'AppointmentRequest' },
+        { key: 'route', label: 'Ruta', icon: require('../assets/images/Navigation/route.png'), destination: 'DashboardPage' }
+    ];
 
     return (
         <View style={styles.container}>
@@ -17,7 +28,7 @@ const BottomNavBar = () => {
                         key={item.key}
                         style={[styles.navItem, selectedOption === item.key && styles.selectedNavItem]}
                         onPress={() => handleOptionPress(item.key)}>
-                        <Image source={selectedOption === item.key ? item.selectedIcon : item.icon} style={styles.icon} />
+                        <Image source={item.icon} style={styles.icon} />
                         <Text style={[styles.navItemText, selectedOption === item.key && styles.selectedNavItemText]}>
                             {item.label}
                         </Text>
@@ -28,19 +39,13 @@ const BottomNavBar = () => {
     );
 };
 
-const navItems = [
-    { key: 'home', label: 'Casa', icon: require('../assets/images/Navigation/home.png'), selectedIcon: require('../assets/images/Navigation/home_selected.png') },
-    { key: 'calendar', label: 'Calendario', icon: require('../assets/images/Navigation/calender.png'), selectedIcon: require('../assets/images/Navigation/calender_selected.png') },
-    { key: 'route', label: 'Ruta', icon: require('../assets/images/Navigation/route.png'), selectedIcon: require('../assets/images/Navigation/route_selected.png') }
-];
-
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         bottom: 0,
         width: '100%',
         backgroundColor: 'transparent',
-        justifyContent: 'center', 
+        justifyContent: 'center',
     },
     navContainer: {
         width: '100%',
@@ -51,33 +56,25 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: '#fff',
-        borderTopLeftRadius: 22,
-        borderTopRightRadius: 22,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
     navItem: {
         alignItems: 'center',
-        width: '33%',
     },
     selectedNavItem: {
-        backgroundColor: 'blue',
-        height: 110,
-        width: 90,
-        borderRadius: 24,
-        marginBottom: 45,
-        justifyContent: 'center',
+        borderBottomWidth: 3,
+        borderColor: 'red',
     },
     icon: {
         width: 30,
         height: 30,
-        marginBottom: 5,
     },
     navItemText: {
-        fontFamily: 'Poppins_Regular',
-        fontSize: 10,
-        color: '#333',
+        fontSize: 12,
     },
     selectedNavItemText: {
-        color: 'blue',
+        color: 'red',
     },
 });
 
