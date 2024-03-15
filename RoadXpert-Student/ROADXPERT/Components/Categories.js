@@ -1,12 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import BackNavigation from './BottomNavigation/BackNavigation';
 import { Card } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 const Categories = () => {
+    const navigation = useNavigation();
+
+    const handleSelected = (text, subText) => {
+        navigation.navigate('SelectedCategory', { categoryText: text, subText: subText });
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-
             <View style={{ flex: 1 }}>
                 <BackNavigation />
                 <View style={styles.container}>
@@ -17,52 +23,58 @@ const Categories = () => {
                         <View style={styles.row}>
                             <Card style={styles.card}>
                                 <Card.Content>
-                                    <Image
-                                        source={require('../assets/images/Categories/StopSign.png')}
-                                        style={styles.image}
-                                    />
-                                    <Text style={styles.text}>
-                                        Señales de
-                                        <Text style={styles.boldRed}> STOP</Text>
-                                    </Text>
-                                    <Text style={styles.subText}>Presta especial atención con las señales de STOP</Text>
-                                    <View style={styles.subTextInfoContainer}>
-                                        <Text style={styles.subTextInfo}>7 Señales</Text>
-                                    </View>
+                                    <TouchableOpacity onPress={() => handleSelected("Señales de STOP")}>
+                                        <Image
+                                            source={require('../assets/images/Categories/StopSign.png')}
+                                            style={styles.image}
+                                        />
+                                        <Text style={styles.text}>
+                                            Señales de
+                                            <Text style={styles.boldRed}> STOP</Text>
+                                        </Text>
+                                        <Text style={styles.subText}>Presta especial atención con las señales de STOP</Text>
+                                        <View style={styles.subTextInfoContainer}>
+                                            <Text style={styles.subTextInfo}>7 Señales</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </Card.Content>
                             </Card>
                             <Card style={styles.card}>
                                 <Card.Content>
-                                    <Image
-                                        source={require('../assets/images/Categories/StopSign.png')}
-                                        style={styles.image}
-                                    />
-                                    <Text style={styles.text}>
-                                        Señales de
-                                        <Text style={styles.boldRed}> STOP</Text>
-                                    </Text>
-                                    <Text style={styles.subText}>Presta especial atención con las señales de STOP</Text>
-                                    <View style={styles.subTextInfoContainer}>
-                                        <Text style={styles.subTextInfo}>7 Señales</Text>
-                                    </View>
+                                    <TouchableOpacity onPress={() => handleSelected("Señales de STOP")}>
+                                        <Image
+                                            source={require('../assets/images/Categories/StopSign.png')}
+                                            style={styles.image}
+                                        />
+                                        <Text style={styles.text}>
+                                            Señales de
+                                            <Text style={styles.boldRed}> STOP</Text>
+                                        </Text>
+                                        <Text style={styles.subText}>Presta especial atención con las señales de STOP</Text>
+                                        <View style={styles.subTextInfoContainer}>
+                                            <Text style={styles.subTextInfo}>7 Señales</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </Card.Content>
                             </Card>
                         </View>
                         <View style={styles.row}>
                             <Card style={styles.card}>
                                 <Card.Content>
-                                    <Image
-                                        source={require('../assets/images/Categories/StopSign.png')}
-                                        style={styles.image}
-                                    />
-                                    <Text style={styles.text}>
-                                        Señales de
-                                        <Text style={styles.boldRed}> STOP</Text>
-                                    </Text>
-                                    <Text style={styles.subText}>Presta especial atención con las señales de STOP</Text>
-                                    <View style={styles.subTextInfoContainer}>
-                                        <Text style={styles.subTextInfo}>7 Señales</Text>
-                                    </View>
+                                    <TouchableOpacity onPress={() => handleSelected("Señales de STOP")}>
+                                        <Image
+                                            source={require('../assets/images/Categories/StopSign.png')}
+                                            style={styles.image}
+                                        />
+                                        <Text style={styles.text}>
+                                            Señales de
+                                            <Text style={styles.boldRed}> STOP</Text>
+                                        </Text>
+                                        <Text style={styles.subText}>Presta especial atención con las señales de STOP</Text>
+                                        <View style={styles.subTextInfoContainer}>
+                                            <Text style={styles.subTextInfo}>7 Señales</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </Card.Content>
                             </Card>
                         </View>
@@ -75,22 +87,24 @@ const Categories = () => {
                     <View style={styles.line}></View>
                     <View style={styles.cardsContainer}>
                         <View style={styles.row}>
-                            <Card style={styles.card}>
-                                <Card.Content>
-                                    <Image
-                                        source={require('../assets/images/Categories/30Speed.png')}
-                                        style={styles.image}
-                                    />
-                                    <Text style={styles.text}>
-                                        Señales de
-                                        <Text style={styles.boldRed}> VELOCIDAD</Text>
-                                    </Text>
-                                    <Text style={styles.subText}>Tienes que fijar-te mas en el velocimetro</Text>
-                                    <View style={styles.subTextInfoContainer}>
-                                        <Text style={styles.subTextInfo}>7 Señales</Text>
-                                    </View>
-                                </Card.Content>
-                            </Card>
+                            <TouchableOpacity onPress={() => handleSelected("Señales de VELOCIDAD")}>
+                                <Card style={styles.card}>
+                                    <Card.Content>
+                                        <Image
+                                            source={require('../assets/images/Categories/30Speed.png')}
+                                            style={styles.image}
+                                        />
+                                        <Text style={styles.text}>
+                                            Señales de
+                                            <Text style={styles.boldRed}> VELOCIDAD</Text>
+                                        </Text>
+                                        <Text style={styles.subText}>Tienes que fijar-te mas en el velocimetro</Text>
+                                        <View style={styles.subTextInfoContainer}>
+                                            <Text style={styles.subTextInfo}>7 Señales</Text>
+                                        </View>
+                                    </Card.Content>
+                                </Card>
+                            </TouchableOpacity>
                             <Card style={styles.card}>
                                 <Card.Content>
                                     <Image

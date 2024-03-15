@@ -10,6 +10,7 @@ import RouteInformation from './Components/RouteInformartion.js';
 import ViewRoutesMap from './Components/ViewRoutesMap.js';
 import BackNavigation from './Components/BottomNavigation/BackNavigation.js'
 import Categories from './Components/Categories.js';
+import SelectedCategory from './Components/SelectedCategory.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ export default function App() {
         <Stack.Screen name="ViewRoutesMap" component={ViewRoutesMap} />
         <Stack.Screen name="BackNavigation" component={BackNavigation} />
         <Stack.Screen name="Categories" component={Categories} />
+        <Stack.Screen name="SelectedCategory" component={SelectedCategory} />
       </Stack.Navigator>
     </NavigationContainer>
   );
