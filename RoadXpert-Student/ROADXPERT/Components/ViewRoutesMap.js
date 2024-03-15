@@ -18,7 +18,6 @@ const ViewRoutesMap = () => {
                     <Icon name="filter" size={25} style={styles.icon} />
                 </TouchableOpacity>
             </View>
-
             <Modal
                 animationType="slide"
                 transparent={true}
