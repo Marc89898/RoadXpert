@@ -1,29 +1,37 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Avatar, Card, IconButton } from 'react-native-paper';
+import { Card } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native'; // Importa esto si estás utilizando React Navigation
 
 const RouteInformation = () => {
+    const navigation = useNavigation();
+
+    const handleViewRoutesMap = () => {
+        navigation.navigate('ViewRoutesMap');
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Que informacion desea ver</Text>
             </View>
-            <Card style={[styles.card, { backgroundColor:'#00041A' }]}>
-                <Card.Content style={styles.cardContent}>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}>View Routes</Text>
-                        <Text style={styles.subText}>Ver todas las calles recorridas</Text>
-                        <Text style={[styles.infoText, { alignSelf: 'flex-start' }]}>130 km en total</Text>
-                    </View>
-                    <TouchableOpacity>
+            <TouchableOpacity onPress={handleViewRoutesMap}>
+                <Card style={[styles.card, { backgroundColor: '#00041A' }]}>
+                    <Card.Content style={styles.cardContent}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}>View Routes</Text>
+                            <Text style={styles.subText}>Ver todas las calles recorridas</Text>
+                            <Text style={[styles.infoText, { alignSelf: 'flex-start' }]}>130 km en total</Text>
+                        </View>
                         <Image
                             source={require('../assets/images/RouteInformation/Map.png')} // Reemplaza './path/to/your/image.png' con la ruta de tu imagen
                             style={styles.image}
                         />
-                    </TouchableOpacity>
-                </Card.Content>
-            </Card>
-            <Card style={[styles.card, { backgroundColor:'#081A00' }]}>
+                    </Card.Content>
+                </Card>
+            </TouchableOpacity>
+
+            <Card style={[styles.card, { backgroundColor: '#081A00' }]}>
                 <Card.Content style={styles.cardContent}>
                     <View style={styles.textContainer}>
                         <Text style={styles.text}>Categories</Text>
@@ -38,7 +46,8 @@ const RouteInformation = () => {
                     </TouchableOpacity>
                 </Card.Content>
             </Card>
-            <Card style={[styles.card, { backgroundColor:'#1A0000' }]}>
+
+            <Card style={[styles.card, { backgroundColor: '#1A0000' }]}>
                 <Card.Content style={styles.cardContent}>
                     <View style={styles.textContainer}>
                         <Text style={styles.text}>Statics</Text>
@@ -53,7 +62,8 @@ const RouteInformation = () => {
                     </TouchableOpacity>
                 </Card.Content>
             </Card>
-            <Card style={[styles.card, { backgroundColor:'#00171A' }]}>
+
+            <Card style={[styles.card, { backgroundColor: '#00171A' }]}>
                 <Card.Content style={styles.cardContent}>
                     <View style={styles.textContainer}>
                         <Text style={styles.text}>Practice</Text>

@@ -7,6 +7,7 @@ import Dashboard from './Components/Dashboard.js';
 import NavBar from './Components/BottomNavigation/NavBar.js';
 import AppointmentScreen from './Components/AppointmentScreen.js';
 import RouteInformation from './Components/RouteInformartion.js';
+import ViewRoutesMap from './Components/ViewRoutesMap.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="NavBar" component={NavBar} />
         <Stack.Screen name="AppointmentScreen" component={AppointmentScreen} />
         <Stack.Screen name="RouteInformation" component={RouteInformation} />
+        <Stack.Screen name="ViewRoutesMap" component={ViewRoutesMap} />
       </Stack.Navigator>
     </NavigationContainer>
   );
