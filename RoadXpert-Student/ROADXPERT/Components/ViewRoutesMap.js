@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import BackNavigation from './BottomNavigation/BackNavigation';
 import { Button } from 'react-native-paper';
 
 const ViewRoutesMap = () => {
@@ -9,6 +10,7 @@ const ViewRoutesMap = () => {
 
     return (
         <View style={styles.container}>
+            <BackNavigation />
             <MapView style={styles.map} />
             <View style={styles.header}>
                 <Text style={styles.headerText}>Maps</Text>

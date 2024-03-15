@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Card } from 'react-native-paper';
+import NavBar from './BottomNavigation/NavBar';
 import { useNavigation } from '@react-navigation/native'; // Importa esto si estás utilizando React Navigation
 
 const RouteInformation = () => {
@@ -78,6 +79,7 @@ const RouteInformation = () => {
                     </TouchableOpacity>
                 </Card.Content>
             </Card>
+            <NavBar />
         </View>
     );
 };
