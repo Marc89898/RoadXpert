@@ -1,17 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import NavBar from './BottomNavigation/NavBar';
-// import DatePicker from 'react-native-modern-datepicker';
 
-const AppointmentScreen = () => {
-    const [selectedDate, setSelectedDate] = useState('');
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    };
+const RouteInformation = () => {
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Schedule Appointment</Text>
+                <Text style={styles.headerText}>Que informacion desea ver</Text>
             </View>
             <NavBar />
         </View>
@@ -32,4 +27,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AppointmentScreen;
+export default RouteInformation;
