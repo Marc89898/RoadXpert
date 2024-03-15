@@ -4,7 +4,7 @@ import NavBar from './BottomNavigation/NavBar';
 // import DatePicker from 'react-native-modern-datepicker';
 
 const AppointmentScreen = () => {
-    const [selectedDate, setSelectedDate] = useState('');
+    // const [selectedDate, setSelectedDate] = useState('');
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
