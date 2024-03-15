@@ -10,8 +10,8 @@ const ViewRoutesMap = () => {
 
     return (
         <View style={styles.container}>
-            <BackNavigation />
-            <MapView style={styles.map} />
+            <BackNavigation style={styles.backNavigation} />
+            <MapView style={[styles.map, { zIndex: -1 }]} />
             <View style={styles.header}>
                 <Text style={styles.headerText}>Maps</Text>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -50,6 +50,14 @@ const styles = StyleSheet.create({
     },
     map: {
         flex: 1,
+        ...StyleSheet.absoluteFillObject,
+    },
+    backNavigation: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10, 
     },
     header: {
         position: 'absolute',

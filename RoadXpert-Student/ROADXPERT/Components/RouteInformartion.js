@@ -11,6 +11,10 @@ const RouteInformation = () => {
         navigation.navigate('ViewRoutesMap');
     };
 
+    const handleViewCategories = () => {
+        navigation.navigate('Categories');
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.header}>
@@ -32,21 +36,21 @@ const RouteInformation = () => {
                 </Card>
             </TouchableOpacity>
 
-            <Card style={[styles.card, { backgroundColor: '#081A00' }]}>
-                <Card.Content style={styles.cardContent}>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}>Categories</Text>
-                        <Text style={styles.subText}>Consulta donde es que mas te equivocas</Text>
-                        <Text style={[styles.infoText, { alignSelf: 'flex-start' }]}>Revisar Señales</Text>
-                    </View>
-                    <TouchableOpacity>
+            <TouchableOpacity onPress={handleViewCategories}> 
+                <Card style={[styles.card, { backgroundColor: '#081A00' }]}>
+                    <Card.Content style={styles.cardContent}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}>Categorías</Text>
+                            <Text style={styles.subText}>Consulta dónde es que más te equivocas</Text>
+                            <Text style={[styles.infoText, { alignSelf: 'flex-start' }]}>Revisar Señales</Text>
+                        </View>
                         <Image
-                            source={require('../assets/images/RouteInformation/Sign.png')} // Reemplaza './path/to/your/image.png' con la ruta de tu imagen
+                            source={require('../assets/images/RouteInformation/Sign.png')}
                             style={[styles.image, styles.centeredImage]}
                         />
-                    </TouchableOpacity>
-                </Card.Content>
-            </Card>
+                    </Card.Content>
+                </Card>
+            </TouchableOpacity>
 
             <Card style={[styles.card, { backgroundColor: '#1A0000' }]}>
                 <Card.Content style={styles.cardContent}>
