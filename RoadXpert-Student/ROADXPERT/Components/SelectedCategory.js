@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { useRoute } from '@react-navigation/native';
 import BackNavigation from './BottomNavigation/BackNavigation';
+import MapView from 'react-native-maps';
 
 const SelectedCategory = () => {
     const route = useRoute();
-    const { categoryText, subText } = route.params || {};
+    const { categoryText, subText, subTextInfo, imageSource } = route.params || {};
 
     return (
         <View style={{ flex: 1 }}>
@@ -16,13 +17,25 @@ const SelectedCategory = () => {
             </View>
             <Card style={styles.card}>
                 <Card.Content style={styles.cardContent}>
-                    <View>
-                        <Title style={styles.title}>{categoryText}</Title>
+                    <View style={styles.textContainer}>
+                        <Title style={styles.title}>{"Señales de " + categoryText}</Title>
                         <Paragraph style={styles.paragraph}>{subText}</Paragraph>
+                        <Paragraph style={styles.paragraphsubText}>{subTextInfo}</Paragraph>
                     </View>
-                    {/* <Card.Cover source={require('../assets/images/imagen.jpg')} style={styles.image} /> */}
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={require('../assets/images/Categories/StopSign.png')}
+                            style={[styles.image, { resizeMode: 'contain' }]}
+                        />
+                    </View>
                 </Card.Content>
             </Card>
+            <View style={styles.mapTitleContainer}>
+                <Text style={styles.mapTitle}>Mapa</Text>
+            </View>
+            <View style={styles.mapContainer}>
+                <MapView style={styles.map} />
+            </View>
         </View>
     );
 };
@@ -45,7 +58,12 @@ const styles = StyleSheet.create({
     },
     cardContent: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    textContainer: {
+        flex: 1,
+        marginRight: 10,
     },
     title: {
         fontSize: 12,
@@ -55,10 +73,34 @@ const styles = StyleSheet.create({
         fontSize: 10,
         color: 'gray',
     },
+    paragraphsubText: {
+        marginTop: 5,
+        backgroundColor: '#5D5D5D',
+        paddingHorizontal: 10,
+        color: 'white',
+        paddingVertical: 3,
+        borderRadius: 50,
+        textAlign: 'center',
+    },
     image: {
         width: 100,
         height: 100,
         borderRadius: 10,
+    },
+    mapTitleContainer: {
+        marginTop: 20,
+        alignItems: 'left',
+    },
+    mapTitle: {
+        paddingLeft: 24,
+        fontSize: 25,
+    },
+    mapContainer: {
+        flex: 1,
+        marginTop: 10,
+    },
+    map: {
+        flex: 1,
     },
 });
 
