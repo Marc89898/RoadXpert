@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import NavBar from './BottomNavigation/NavBar.js';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -17,10 +17,12 @@ const Dashboard = () => {
     const handleRoutes = () => {
         navigation.navigate('RouteInformation');
     };
+    const handleNotifications = () => {
+        navigation.navigate('notificationsScreen');
+    };
 
     return (
         <View style={{ flex: 1 }}>
-            {/* Contenedor para la imagen de fondo */}
             <View style={styles.imageContainer}>
                 <ImageBackground source={TuImagen} style={styles.imageBackground}>
                     <View style={styles.overlay}>
@@ -30,9 +32,11 @@ const Dashboard = () => {
                 </ImageBackground>
             </View>
             <View style={styles.circleContainer}>
-                <View style={styles.circle}>
-                    <Image source={CircleImage1} style={styles.circleImage} />
-                </View>
+                <TouchableOpacity onPress={handleNotifications}>
+                    <View style={styles.circle}>
+                        <Image source={CircleImage1} style={styles.circleImage} />
+                    </View>
+                </TouchableOpacity>
                 <View style={styles.circle}>
                     <Image source={CircleImage2} style={styles.circleImage} />
                 </View>
