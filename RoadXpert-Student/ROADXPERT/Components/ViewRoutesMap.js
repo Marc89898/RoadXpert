@@ -18,27 +18,12 @@ const ViewRoutesMap = () => {
                     <Icon name="filter" size={25} style={styles.icon} />
                 </TouchableOpacity>
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.title}>Practicas</Text>
-                        <View style={styles.viewModel}></View>
-                        <Button
-                            style={styles.continueButton}
-                            mode="contained"
-                            onPress={() => setModalVisible(false)}>
-                            Continuar
-                        </Button>
+            <Modal visible={showPopup} animationType="slide" onRequestClose={() => setShowPopup(false)}>
+                    <View style={styles.popupContainer}>
+                        <Text style={styles.popupTitle}>Muy Bien</Text>
+                        <Button title="Cerrar" onPress={() => setShowPopup(false)} />
                     </View>
-                </View>
-            </Modal>
+                </Modal>
         </View>
     );
 };
@@ -74,23 +59,19 @@ const styles = StyleSheet.create({
     icon: {
         color: 'black',
     },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
+    popupContainer: {
+        height: 242,
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'white', 
+        position: 'absolute', 
+        bottom: 0, 
+        left: 0,
+        right: 0,
     },
-    modalContent: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        width: '100%',
-    },
-    viewModel: {
-        borderRadius: 15,
-        height: 200,
-        backgroundColor: 'grey',
+    popupTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
         marginBottom: 20,
     },
     title: {
