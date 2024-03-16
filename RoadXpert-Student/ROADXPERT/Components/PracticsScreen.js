@@ -2,30 +2,38 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'; // Importa useNavigation
 import BackNavigation from './BottomNavigation/BackNavigation';
 
 const PracticsScreen = () => {
-    // Contenido del Card
+    const navigation = useNavigation();
+
+    const handleSelected = () => {
+        navigation.navigate('SelectedPractics');
+    };
+
     const PracticeCard = ({ title, subtitle, subsubtitle, errorCount }) => {
         return (
-            <Card style={styles.card}>
-                <Card.Content style={styles.cardContent}>
-                    <View style={styles.leftContent}>
-                        <Text style={styles.title}>{title}</Text>
-                        <Text style={styles.subtitle}>{subtitle}</Text>
-                        <Text style={styles.subsubtitle}>{subsubtitle}</Text>
-                    </View>
-                    <View style={styles.rightContent}>
-                        <View style={styles.redTextContainer}>
-                            <Text style={styles.redText}>{errorCount} Errores</Text>
+            <TouchableOpacity onPress={handleSelected}>
+                <Card style={styles.card}>
+                    <Card.Content style={styles.cardContent}>
+                        <View style={styles.leftContent}>
+                            <Text style={styles.title}>{title}</Text>
+                            <Text style={styles.subtitle}>{subtitle}</Text>
+                            <Text style={styles.subsubtitle}>{subsubtitle}</Text>
                         </View>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText}>Empezar</Text>
-                            <MaterialCommunityIcons name="play" size={24} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                </Card.Content>
-            </Card>
+                        <View style={styles.rightContent}>
+                            <View style={styles.redTextContainer}>
+                                <Text style={styles.redText}>{errorCount} Errores</Text>
+                            </View>
+                            <TouchableOpacity style={styles.button}>
+                                <Text style={styles.buttonText}>Empezar</Text>
+                                <MaterialCommunityIcons name="play" size={24} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                    </Card.Content>
+                </Card>
+            </TouchableOpacity>
         );
     };
 
