@@ -11,6 +11,7 @@ import ViewRoutesMap from './Components/ViewRoutesMap.js';
 import BackNavigation from './Components/BottomNavigation/BackNavigation.js'
 import Categories from './Components/Categories.js';
 import SelectedCategory from './Components/SelectedCategory.js';
+import PracticsScreen from './Components/PracticsScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +19,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Dashboard"
+        initialRouteName="RouteInformation"
         screenOptions={{
           headerShown: false,
         }}
@@ -33,6 +34,7 @@ export default function App() {
         <Stack.Screen name="BackNavigation" component={BackNavigation} />
         <Stack.Screen name="Categories" component={Categories} />
         <Stack.Screen name="SelectedCategory" component={SelectedCategory} />
+        <Stack.Screen name="PracticsScreen" component={PracticsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

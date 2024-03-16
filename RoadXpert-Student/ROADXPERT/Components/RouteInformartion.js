@@ -15,6 +15,10 @@ const RouteInformation = () => {
         navigation.navigate('Categories');
     };
 
+    const handleViewPractics = () => {
+        navigation.navigate('PracticsScreen');
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.header}>
@@ -36,7 +40,7 @@ const RouteInformation = () => {
                 </Card>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleViewCategories}> 
+            <TouchableOpacity onPress={handleViewCategories}>
                 <Card style={[styles.card, { backgroundColor: '#081A00' }]}>
                     <Card.Content style={styles.cardContent}>
                         <View style={styles.textContainer}>
@@ -68,21 +72,23 @@ const RouteInformation = () => {
                 </Card.Content>
             </Card>
 
-            <Card style={[styles.card, { backgroundColor: '#00171A' }]}>
-                <Card.Content style={styles.cardContent}>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}>Practice</Text>
-                        <Text style={styles.subText}>Consulta tus practicas</Text>
-                        <Text style={[styles.infoText, { alignSelf: 'flex-start' }]}>3 Practicas</Text>
-                    </View>
-                    <TouchableOpacity>
-                        <Image
-                            source={require('../assets/images/RouteInformation/Car.png')} // Reemplaza './path/to/your/image.png' con la ruta de tu imagen
-                            style={[styles.image, styles.centeredImage]}
-                        />
-                    </TouchableOpacity>
-                </Card.Content>
-            </Card>
+            <TouchableOpacity onPress={handleViewPractics}>
+                <Card style={[styles.card, { backgroundColor: '#00171A' }]}>
+                    <Card.Content style={styles.cardContent}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}>Practice</Text>
+                            <Text style={styles.subText}>Consulta tus practicas</Text>
+                            <Text style={[styles.infoText, { alignSelf: 'flex-start' }]}>3 Practicas</Text>
+                        </View>
+                            <Image
+                                source={require('../assets/images/RouteInformation/Car.png')} // Reemplaza './path/to/your/image.png' con la ruta de tu imagen
+                                style={[styles.image, styles.centeredImage]}
+                            />
+                    </Card.Content>
+
+                </Card>
+            </TouchableOpacity>
+
             <NavBar />
         </View>
     );

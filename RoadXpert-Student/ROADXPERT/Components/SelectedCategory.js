@@ -13,7 +13,7 @@ const SelectedCategory = () => {
         <View style={{ flex: 1 }}>
             <BackNavigation />
             <View style={styles.container}>
-                <Text style={styles.headerText}>{categoryText}</Text>
+                <Text style={styles.headerText}>Señales de {categoryText}</Text>
             </View>
             <Card style={styles.card}>
                 <Card.Content style={styles.cardContent}>
