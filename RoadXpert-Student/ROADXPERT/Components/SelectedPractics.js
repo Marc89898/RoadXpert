@@ -3,12 +3,24 @@ import { View, Text, StyleSheet, Modal, Button } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BackNavigation from './BottomNavigation/BackNavigation';
 import MapView from 'react-native-maps';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+// import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 const SelectedPractics = () => {
     const [modalVisible, setModalVisible] = useState(true);
+    // const [modalHeight, setModalHeight] = useState(240); // Altura inicial del modal
     const route = useRoute();
     const { title } = route.params;
+
+    // const handleGesture = ({ nativeEvent }) => {
+    //     if (nativeEvent.state === State.END) {
+    //         const newY = nativeEvent.translationY;
+    //         if (newY < -360) {
+    //             setModalHeight(600);
+    //         } else {
+    //             setModalHeight(240);
+    //         }
+    //     }
+    // };
 
     return (
         <View style={styles.container}>
@@ -26,13 +38,15 @@ const SelectedPractics = () => {
                         setModalVisible(!modalVisible);
                     }}
                 >
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalContent}>
-                            <Text style={styles.title}>Muy Bien!! 🎉</Text>
-                            <Text style={styles.subTitle}>Lorem Ipsum is simply dummy text of the printing</Text>
-                            <View style={styles.square}></View>
+                    {/* <PanGestureHandler onGestureEvent={handleGesture}> */}
+                        <View style={[styles.modalContainer]}>
+                            <View style={styles.modalContent}>
+                                <Text style={styles.title}>Muy Bien!! 🎉</Text>
+                                <Text style={styles.subTitle}>Lorem Ipsum is simply dummy text of the printing</Text>
+                                <View style={styles.square}></View>
+                            </View>
                         </View>
-                    </View>
+                    {/* </PanGestureHandler> */}
                 </Modal>
             </View>
         </View>
@@ -68,7 +82,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderTopRightRadius: 30,
         width: '100%',
-        height: 240,
     },
     title: {
         fontSize: 20,
