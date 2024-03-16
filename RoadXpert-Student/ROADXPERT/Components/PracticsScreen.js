@@ -2,19 +2,19 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // Importa useNavigation
+import { useNavigation } from '@react-navigation/native';
 import BackNavigation from './BottomNavigation/BackNavigation';
 
 const PracticsScreen = () => {
     const navigation = useNavigation();
 
-    const handleSelected = () => {
-        navigation.navigate('SelectedPractics');
+    const handleSelected = (title) => {
+        navigation.navigate('SelectedPractics', { title });
     };
 
     const PracticeCard = ({ title, subtitle, subsubtitle, errorCount }) => {
         return (
-            <TouchableOpacity onPress={handleSelected}>
+            <TouchableOpacity onPress={() => handleSelected(title)}>
                 <Card style={styles.card}>
                     <Card.Content style={styles.cardContent}>
                         <View style={styles.leftContent}>

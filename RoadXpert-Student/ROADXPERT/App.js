@@ -12,6 +12,7 @@ import BackNavigation from './Components/BottomNavigation/BackNavigation.js'
 import Categories from './Components/Categories.js';
 import SelectedCategory from './Components/SelectedCategory.js';
 import PracticsScreen from './Components/PracticsScreen.js';
+import SelectedPractics from './Components/SelectedPractics.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ export default function App() {
         <Stack.Screen name="Categories" component={Categories} />
         <Stack.Screen name="SelectedCategory" component={SelectedCategory} />
         <Stack.Screen name="PracticsScreen" component={PracticsScreen} />
+        <Stack.Screen name="SelectedPractics" component={SelectedPractics} />
       </Stack.Navigator>
     </NavigationContainer>
   );

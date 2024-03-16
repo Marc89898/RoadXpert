@@ -27,7 +27,5 @@ Modificación en App.js:
 Después de crear un nuevo diseño, asegúrate de importarlo en el archivo App.js. 
 Utiliza el componente StackNavigation para definir qué diseño se mostrará al iniciar la aplicación. Por ejemplo, puedes establecer el diseño inicial con initialRouteName="SplashScreen".
 
-
-
-
-
+IMPORTANTE⚠️:
+Cuando se importa un diseño (layout) en el archivo App.js, es necesario guardar los cambios presionando Ctrl+S. Si no se hace esto, pueden surgir errores.
