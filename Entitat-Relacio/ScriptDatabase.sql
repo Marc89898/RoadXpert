@@ -252,7 +252,7 @@ CREATE TABLE RoadXpertDatabase.dbo.Treballador (
 	HorariID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	CONSTRAINT PK__Treballa__3214EC277B081D2F PRIMARY KEY (ID),
 	CONSTRAINT UQ__Treballa__C035B8DD3BE6E9AC UNIQUE (DNI),
-	CONSTRAINT FK__Treballad__Horar__03BB8E22 FOREIGN KEY (HorariID) REFERENCES RoadXpertDatabase.dbo.Horari(ID)
+	CONSTRAINT FK__Treballad__Horar__03BB8E22 FOREIGN KEY (HorariID) REFERENCES RoadXpertDatabase.dbo.Horari(ID),
 );
 ALTER TABLE RoadXpertDatabase.dbo.Treballador WITH NOCHECK ADD CONSTRAINT CK__Treballado__Sexe__5F7E2DAC CHECK ([Sexe]='Otro' OR [Sexe]='F' OR [Sexe]='M');
 
