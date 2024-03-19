@@ -117,65 +117,31 @@ INSERT INTO RoadXpertDatabase.dbo.Hora (ID, DiaSemana, HoraInici, HoraFi, Horari
         (NEWID(), 'Viernes', '19:00:00', '20:00:00', '2');
 
 
+INSERT INTO RoadXpertDatabase.dbo.Practica (AlumneID, Ruta, Km, HoraInici, HoraFi, ID, HoraID, VehicleID, EstatHoraID, [Data])
+    VALUES ('14C83297-9F2D-4693-A1A1-667717F4847F', 'Ruta 1', 30.50, '08:01:20', '09:03:00', NEWID(), '003EDA14-4B4C-4BA8-B527-06F25D2C8799', '9012GHI', '3D7CC2F7-1B4B-48BD-9E69-1EA25510E4A7', '2023-01-15'),
+        ('4151D12A-0FF3-42DC-A6A0-32F211F93597', 'Ruta 2', 25.75, '10:00:10', '11:00:05', NEWID(), '00D404D4-DC0D-4739-943A-97518472D05C', '9012GHI', '3D7CC2F7-1B4B-48BD-9E69-1EA25510E4A7', '2022-11-10'),
+        ('77844111-E0AD-41A1-BC63-51A5EE79DDDF', 'Ruta 3', 20.25, '12:02:12', '13:02:02', NEWID(), '1F7486BF-0531-4C5C-ACD4-2EACCB531769', '9012GHI', '8007090B-0223-4AEF-8B07-A39EE567FB90', '2024-03-20'),
+        ('ACD9AC7A-B52A-4A39-A77B-BD99034D460E', 'Ruta 4', 22.00, '08:03:51', '9:01:00', NEWID(), '8510FF56-7477-4771-9207-59688CDC9143', '9012GHI', '3D7CC2F7-1B4B-48BD-9E69-1EA25510E4A7', '2022-08-05');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-INSERT INTO RoadXpertDatabase.dbo.Practica (TreballadorID, AlumneID, CotxeID, Ruta, Km, DataInici, DataFi, Pagat, ID, HoraID)
-    VALUES ('TreballadorID', 'AlumneID', '1234ABC', 'NEWID()', 50.75, '2024-01-01 08:00:00', '2024-01-01 10:00:00', 1, NEWID(), 'HoraID'),
-        ('TreballadorID', 'AlumneID', '5678DEF', 'NEWID()', 45.20, '2024-01-02 09:00:00', '2024-01-02 11:00:00', 1, NEWID(), 'HoraID'),
-        ('TreballadorID', 'AlumneID', '9012GHI', 'NEWID()', 60.30, '2024-01-03 10:00:00', '2024-01-03 12:00:00', 0, NEWID(), 'HoraID');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- Inserts para la tabla Treballador (Autoescola)
+INSERT INTO RoadXpertDatabase.dbo.Treballador (ID, Nom, Cognom, DNI, Adreca, Sexe, CarnetConduirFront, CarnetConduirDarrera, HorariID)
+    VALUES 
+        (NEWID(), 'Juan', 'Martínez', '12345678A', 'Calle Mayor, 123', 'M', 'Frontal', 'Darrera', '1C0D394D-32B7-420E-BF52-88E8CBB298A6'),
+        (NEWID(), 'María', 'Gómez', '87654321B', 'Avenida Libertad, 45', 'F', 'Frontal', 'Darrera', '6A7DD292-4C29-441D-A06A-93D09B04AECA'),
+        (NEWID(), 'Carlos', 'López', '98765432C', 'Plaza España, 8', 'M', 'Frontal', 'Darrera', '6A7DD292-4C29-441D-A06A-93D09B04AECA'),
+        (NEWID(), 'Laura', 'Sánchez', '23456789D', 'Calle Alcalá, 67', 'F', 'Frontal', 'Darrera', '7CE68D96-5FFE-426D-A4EB-E744441AA8DA'),
+        (NEWID(), 'David', 'Fernández', '34567890E', 'Paseo del Prado, 12', 'M', 'Frontal', 'Darrera', 'C1E535CB-5533-4CC7-B3BA-5AE4C040D95B'),
+        (NEWID(), 'Ana', 'Pérez', '45678901F', 'Calle Gran Vía, 34', 'F', 'Frontal', 'Darrera', 'C1E535CB-5533-4CC7-B3BA-5AE4C040D95B');
 
 
 -- Inserts para la tabla Matricula (Autoescola)
 INSERT INTO RoadXpertDatabase.dbo.Matricula (AlumneID, CarnetID, DataInici, DataFi) 
-    VALUES ('ID_Alumne_1', 'ID_Carnet_1', '2023-01-15', '2023-12-15'),
-        ('ID_Alumne_2', 'ID_Carnet_2', '2022-11-10', '2023-11-10'),
-        ('ID_Alumne_3', 'ID_Carnet_3', '2024-03-20', '2024-09-20'),
-        ('ID_Alumne_4', 'ID_Carnet_4', '2022-08-05', '2023-08-05');
+    VALUES ('14C83297-9F2D-4693-A1A1-667717F4847F', 'B4A8E028-71C2-4B4A-B947-8F801CEFD112', '2023-01-15', '2023-12-15'),
+        ('4151D12A-0FF3-42DC-A6A0-32F211F93597', '2690B51A-3B82-43B9-9108-82E5A1B73BE1', '2022-11-10', '2023-11-10'),
+        ('77844111-E0AD-41A1-BC63-51A5EE79DDDF', '85F16BA9-4486-4523-9DF8-E33EA55FCDC6', '2024-03-20', '2024-09-20'),
+        ('ACD9AC7A-B52A-4A39-A77B-BD99034D460E', '7628C3DA-EC4F-40BB-85CA-2A2EF0C0012A', '2022-08-05', '2023-08-05');
 
--- Inserts para la tabla Treballador (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Treballador (ID, Nom, Cognom, DNI, Adreca, Sexe, CarnetConduirFront, CarnetConduirDarrera, Rol, HorariID)
-    VALUES 
-        (NEWID(), 'Juan', 'Martínez', '12345678A', 'Calle Mayor, 123', 'M', 'Frontal', 'Darrera', 'ID_ROL', 'ID_Horari'),
-        (NEWID(), 'María', 'Gómez', '87654321B', 'Avenida Libertad, 45', 'F', 'Frontal', 'Darrera', 'ID_ROL', 'ID_Horari'),
-        (NEWID(), 'Carlos', 'López', '98765432C', 'Plaza España, 8', 'M', 'Frontal', 'Darrera', 'ID_ROL', 'ID_Horari'),
-        (NEWID(), 'Laura', 'Sánchez', '23456789D', 'Calle Alcalá, 67', 'F', 'Frontal', 'Darrera', 'ID_ROL', 'ID_Horari'),
-        (NEWID(), 'David', 'Fernández', '34567890E', 'Paseo del Prado, 12', 'M', 'Frontal', 'Darrera', 'ID_ROL', 'ID_Horari'),
-        (NEWID(), 'Ana', 'Pérez', '45678901F', 'Calle Gran Vía, 34', 'F', 'Frontal', 'Darrera', 'ID_ROL', 'ID_Horari');
+
+
+
