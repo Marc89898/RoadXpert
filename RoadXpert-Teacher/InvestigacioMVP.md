@@ -16,6 +16,7 @@ El projecte es desenvoluparà seguint els següents passos:
      ```
    - Crear un nou projecte React Native utilitzant Expo CLI amb la plantilla "blank" o "minimal".
 
+
 2. **Desenvolupament del MVP:**
 
    **Enregistrament d'àudio:**
