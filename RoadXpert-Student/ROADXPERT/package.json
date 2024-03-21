@@ -13,6 +13,7 @@
     "@react-navigation/bottom-tabs": "^6.5.19",
     "@react-navigation/native-stack": "^6.9.25",
     "expo": "~50.0.13",
+    "expo-cli": "^6.3.10",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-native": "0.73.5",

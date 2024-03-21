@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff', // Afegeixo un color de fons perquè es pugui veure el contingut
+        backgroundColor: '#fff',
     },
     imageContainer: {
         position: 'absolute',
