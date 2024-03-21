@@ -34,7 +34,9 @@ export default function NavBar() {
                                 navigation.navigate('RouteInformation');
                             } else if (route.name === 'Home') {
                                 navigation.navigate('Dashboard');
-                            }else {
+                            } else if (route.name === 'Cars') { // Afegit per a la pestanya Cars
+                                navigation.navigate('CarsScreen');
+                            } else {
                                 navigation.navigate(route.name);
                             }
                         }
@@ -91,6 +93,16 @@ export default function NavBar() {
                     ),
                 }}
             />
+            <Tab.Screen
+                name="Cars" 
+                component={CarsScreen}
+                options={{
+                    tabBarLabel: 'Cars',
+                    tabBarIcon: ({ color, size }) => (
+                        <Icon name="car" size={size} color={color} /> 
+                    ),
+                }}
+            />
         </Tab.Navigator>
     );
 }
@@ -105,4 +117,8 @@ function CalenderScreen() {
 
 function RouteScreen() {
     return null;
+}
+
+function CarsScreen() {
+    return null; // Pàgina de cotxes
 }

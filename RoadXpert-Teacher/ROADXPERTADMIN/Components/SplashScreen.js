@@ -12,10 +12,10 @@ const SplashScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/SplashScreen/LogoRoadXpert.svg')} style={styles.image} />
+                <Image source={require('../assets/images/SplashScreen/RoadLogo.png')} style={styles.image} />
             </View>
             <View style={styles.overlay}>
-                {/* <Button style={styles.button} mode="contained" onPress={handleStartPress}>Empezar</Button> */}
+                <Button style={styles.button} mode="contained" onPress={handleStartPress}>Start</Button>
             </View>
         </View>
     );
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     button: {
-        marginTop: 20,
+        marginTop: 350,
         width: 200,
         height: 50,
     }
