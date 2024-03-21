@@ -4,13 +4,12 @@ import NavBar from './BottomNavigation/NavBar.js';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-// Importa tus imágenes aquí
 import CircleImage1 from '../assets/images/Dashboard/notification.png';
 import CircleImage2 from '../assets/images/Dashboard/settings.png';
 import TuImagen from '../assets/images/Dashboard/ProvaFoto.jpeg';
 
 const Dashboard = () => {
-    const navigation = useNavigation(); 
+    const navigation = useNavigation();
     const handleCalender = () => {
         navigation.navigate('AppointmentScreen');
     };
@@ -20,6 +19,9 @@ const Dashboard = () => {
     const handleNotifications = () => {
         navigation.navigate('notificationsScreen');
     };
+    const handleCars = () => {
+        navigation.navigate('Cars');
+    };
 
     return (
         <View style={{ flex: 1 }}>
@@ -27,7 +29,7 @@ const Dashboard = () => {
                 <ImageBackground source={TuImagen} style={styles.imageBackground}>
                     <View style={styles.overlay}>
                         <Text style={styles.welcomeText}>Welcome Back,</Text>
-                        <Text style={styles.nameText}>Josep Maria Boix</Text>
+                        <Text style={styles.nameText}>Manuel Coromines</Text>
                     </View>
                 </ImageBackground>
             </View>
@@ -45,6 +47,7 @@ const Dashboard = () => {
                 <Text style={styles.text}>¡I'm, Dashboard Page!</Text>
                 <Button style={styles.button} onPress={handleCalender} mode="contained">Calendario</Button>
                 <Button style={styles.button} onPress={handleRoutes} mode="contained">Rutas</Button>
+                <Button style={styles.button} onPress={handleCars} mode="contained">Coches</Button>
             </View>
             <NavBar />
         </View>

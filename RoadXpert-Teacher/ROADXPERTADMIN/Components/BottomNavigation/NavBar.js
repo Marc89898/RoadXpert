@@ -34,8 +34,8 @@ export default function NavBar() {
                                 navigation.navigate('RouteInformation');
                             } else if (route.name === 'Home') {
                                 navigation.navigate('Dashboard');
-                            } else if (route.name === 'Cars') { // Afegit per a la pestanya Cars
-                                navigation.navigate('CarsScreen');
+                            } else if (route.name === 'Cars') { 
+                                navigation.navigate('Cars');
                             } else {
                                 navigation.navigate(route.name);
                             }
@@ -46,7 +46,6 @@ export default function NavBar() {
                         if (options.tabBarIcon) {
                             return options.tabBarIcon({ focused, color, size: 24 });
                         }
-
                         return null;
                     }}
                     getLabelText={({ route }) => {
@@ -57,7 +56,6 @@ export default function NavBar() {
                                 : options.title !== undefined
                                     ? options.title
                                     : route.title;
-
                         return label;
                     }}
                 />
@@ -120,5 +118,5 @@ function RouteScreen() {
 }
 
 function CarsScreen() {
-    return null; // Pàgina de cotxes
+    return null;
 }
