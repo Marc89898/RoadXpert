@@ -8,14 +8,16 @@ import Icon from "react-native-vector-icons/Feather";
 const Cars = () => {
   const navigation = useNavigation();
 
-  const CarCard = () => (
+  const CarCard = ({ cardTitle, cardSubtitle, circleColor }) => (
     <Card style={styles.card}>
       <Card.Content style={styles.cardContent}>
-        <View style={styles.leftContent}>
-          <Text style={styles.cardTitle}>Volkswagen Tiguan</Text>
-          <View style={styles.subtitleContainer}>
-            <View style={styles.circle}></View>
-            <Text style={styles.cardSubtitle}>Disponible</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.cardTitle}>{cardTitle}</Text>
+          <View
+            style={styles.subtitleContainer}
+          >
+            <View style={[styles.circle, { backgroundColor: circleColor }]}></View>
+            <Text style={styles.cardSubtitle}>{cardSubtitle}</Text>
           </View>
           <Icon
             name="arrow-right"
@@ -24,14 +26,7 @@ const Cars = () => {
             color="black"
           />
         </View>
-        <View style={styles.rightContent}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
-              style={styles.image}
-            />
-          </View>
-        </View>
+        {/* <Image style={styles.image} source={require("../assets/images/CarsScreen/VolkswagenGolf.png")} /> */}
       </Card.Content>
     </Card>
   );
@@ -42,7 +37,8 @@ const Cars = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Coches</Text>
       </View>
-      <CarCard />
+      <CarCard cardTitle="Volkswagen Golf" cardSubtitle="Disponible" circleColor="red" />
+      <CarCard cardTitle="Volkswagen Golf" cardSubtitle="No Disponible" circleColor="green" />
     </View>
   );
 };
@@ -66,9 +62,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cardContent: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center",
+  },
+  textContainer: {
+    width: 140,
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   subtitleContainer: {
     flexDirection: "row",
@@ -83,20 +83,15 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 15,
   },
+  image: {
+    width: 201.53,
+    height: 120,
+    marginLeft: 10,
+  },
   cardSubtitle: {
     marginLeft: 5,
     fontSize: 10,
     color: "gray",
-  },
-  imageContainer: {
-    overflow: "hidden",
-    borderRadius: 20,
-  },
-  image: {
-    position: 'relative',
-    width: 201.53,
-    left: 20,
-    height: 120,
   },
   icon: {
     marginTop: 20,
