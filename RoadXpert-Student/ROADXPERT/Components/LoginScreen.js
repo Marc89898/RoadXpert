@@ -2,22 +2,17 @@ import React, { useState } from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native-rapi-ui";
 
 const LoginScreen = () => {
-  const [fontLoaded] = useFonts({
-    Poppins_Regular: require("../assets/fonts/Poppins-Regular.ttf"),
-  });
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
+  const [showPassword, setShowPassword] = useState(false); 
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    if (username === "Sa" && password === "1234") {
+    if (username === " " && password === " ") {
       navigation.navigate("Dashboard");
     } else {
       console.log("Incorrect credentials. Please try again.");
@@ -25,7 +20,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
       <View style={styles.imageContainer}>
         <Image
           source={require("../assets/images/SplashScreen/LogoRoadXpert.png")}
@@ -41,7 +36,7 @@ const LoginScreen = () => {
           <TextInput
             placeholder="Enter your username"
             value={username}
-            onChangeText={(val) => setText(val)}
+            onChangeText={(val) => setUsername(val)}
             rightContent={
                 <Ionicons
                   name="person"
@@ -109,7 +104,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   greetingText: {
-    fontFamily: "Poppins_Regular",
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 5,
