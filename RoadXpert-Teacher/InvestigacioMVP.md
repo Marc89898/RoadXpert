@@ -8,13 +8,32 @@ L'objectiu principal de RoadXpert és proporcionar als usuaris una eina mòbil q
 
 El projecte es desenvoluparà seguint els següents passos:
 
-1. **Configuració de l'Entorn:**
-   - Instal·lar Node.js si no està instal·lat.
-   - Instal·lar Expo CLI globalment mitjançant la següent comanda a la terminal:
-     ```
-     npm install -g expo-cli
-     ```
-   - Crear un nou projecte React Native utilitzant Expo CLI amb la plantilla "blank" o "minimal".
+   1. **Configuració de l'Entorn:**
+      - Instala Node.js si aún no lo tienes instalado. Puedes descargarlo e instalarlo desde el [sitio web oficial de Node.js](https://nodejs.org/).
+      
+      - Instala Expo CLI globalmente ejecutando el siguiente comando en la terminal:
+      ```
+      npm install -g expo-cli
+      ```
+
+      - Para crear un nuevo proyecto de React Native con Expo, ejecuta el siguiente comando en la terminal y sigue las instrucciones que aparecen:
+      ```
+      npx expo-cli init NOMBRE_DEL_PROYECTO
+      ```
+      Esto te guiará a través de un asistente que te permitirá elegir una plantilla para tu proyecto, como "blank", "minimal", "tabs", etc.
+
+      - Navega a la carpeta de tu proyecto en la terminal:
+      ```
+      cd NOMBRE_DEL_PROYECTO
+      ```
+      
+      - Inicia el servidor de desarrollo de Expo ejecutando:
+      ```
+      npm start
+      ```
+      Esto iniciará el servidor de desarrollo de Expo y abrirá una ventana del navegador con un panel de control.
+      
+      - Escanea el código QR con la aplicación Expo Go en tu dispositivo móvil para abrir tu proyecto en Expo.
 
 
 2. **Desenvolupament del MVP:**
