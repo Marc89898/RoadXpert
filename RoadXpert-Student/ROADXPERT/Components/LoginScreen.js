@@ -1,77 +1,134 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
+import { Button } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
+import { TextInput } from "react-native-rapi-ui";
 
 const LoginScreen = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const navigation = useNavigation(); 
-    const handleLogin = () => {
-        if (username === 'Sa' && password === '1234') {
-            navigation.navigate('Dashboard');
-        } else {
-            console.log('Incorrect credentials. Please try again.');
-        }
-    };
-    
-    return (
-        <View style={styles.container}>
-            <Image
-                source={require('../assets/images/LoginPage/LoginPageImg.jpg')}
-                style={styles.image}
-            />
-            <TextInput
-                mode="outlined"
-                label="User"
-                value={username}
-                placeholder='Type here'
-                onChangeText={setUsername}
-                style={styles.input}
-            />
-            <TextInput
-                mode="outlined"
-                label="Password"
-                value={password}
-                placeholder='Type here'
-                onChangeText={setPassword}
-                secureTextEntry={true}
-                style={styles.input}
-            />
-            <Button
-                style={styles.button}
-                mode="contained"
-                onPress={handleLogin}>
-                Iniciar Sesión
-            </Button>
+  const [fontLoaded] = useFonts({
+    Poppins_Regular: require("../assets/fonts/Poppins-Regular.ttf"),
+  });
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
+  const navigation = useNavigation();
+
+  const handleLogin = () => {
+    if (username === "Sa" && password === "1234") {
+      navigation.navigate("Dashboard");
+    } else {
+      console.log("Incorrect credentials. Please try again.");
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        <Image
+          source={require("../assets/images/SplashScreen/LogoRoadXpert.png")}
+          style={styles.image}
+        />
+      </View>
+      <View style={styles.contentContainer}>
+        <View style={styles.textContainer}>
+          <Text style={styles.greetingText}>Hello.</Text>
+          <Text style={styles.welcomeText}>Welcome Back</Text>
         </View>
-    );
+        <View style={styles.inputsContainer}>
+          <TextInput
+            placeholder="Enter your username"
+            value={username}
+            onChangeText={(val) => setText(val)}
+            rightContent={
+                <Ionicons
+                  name="person"
+                  size={20}
+                  color="#ccc"
+                  style={styles.eyeIcon}
+                />
+              }
+          />
+          <TextInput
+            placeholder="Enter your password"
+            value={password}
+            secureTextEntry={!showPassword}
+            onChangeText={(val) => setPassword(val)}
+            rightContent={
+              <Ionicons
+                name={showPassword ? "eye" : "eye-off"}
+                size={20}
+                color="#ccc"
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              />
+            }
+          />
+        </View>
+        <Button style={styles.button} mode="contained" onPress={handleLogin}>
+          Iniciar Sesión
+        </Button>
+      </View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 16,
-    },
-    image: {
-        width: 400,
-        height: 300,
-        resizeMode: 'contain',
-    },
-    input: {
-        width: '100%',
-        marginBottom: 12,
-        backgroundColor: '#F1F4FF'
-    },
-    button: {
-        width: '100%',
-        marginTop: 16,
-        minHeight: 50,
-        justifyContent: 'center',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+  },
+  imageContainer: {
+    marginTop: 30,
+    alignSelf: "flex-end",
+  },
+  image: {
+    width: 70,
+    height: 70,
+    resizeMode: "contain",
+  },
+  contentContainer: {
+    flex: 1,
+    marginTop: 150,
+    alignItems: "center",
+    alignSelf: "stretch",
+  },
+  textContainer: {
+    alignSelf: "flex-start",
+    marginLeft: 20,
+  },
+  inputsContainer: {
+    gap: 20,
+    width: "100%",
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  greetingText: {
+    fontFamily: "Poppins_Regular",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  welcomeText: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  input: {
+    width: "100%",
+    marginBottom: 12,
+    backgroundColor: "#F1F4FF",
+  },
+  button: {
+    backgroundColor: "#1F41BB",
+    width: "90%",
+    justifyContent: "center",
+  },
 });
 
 export default LoginScreen;
