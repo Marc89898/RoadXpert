@@ -30,8 +30,8 @@ export default function NavBar() {
                         } else {
                             if (route.name === 'Calender') {
                                 navigation.navigate('AppointmentScreen');
-                            } else if (route.name === 'Route') {
-                                navigation.navigate('RouteInformation');
+                            } else if (route.name === 'Students') {
+                                navigation.navigate('MyStudents');
                             } else if (route.name === 'Home') {
                                 navigation.navigate('Dashboard');
                             } else if (route.name === 'Cars') { 
@@ -82,12 +82,12 @@ export default function NavBar() {
                 }}
             />
             <Tab.Screen
-                name="Route"
-                component={RouteScreen}
+                name="Students"
+                component={MyStudents}
                 options={{
-                    tabBarLabel: 'Route',
+                    tabBarLabel: 'Students',
                     tabBarIcon: ({ color, size }) => (
-                        <Icon name="map-marker-path" size={size} color={color} />
+                        <Icon name="account" size={size} color={color} />
                     ),
                 }}
             />
@@ -113,7 +113,7 @@ function CalenderScreen() {
     return null;
 }
 
-function RouteScreen() {
+function MyStudents() {
     return null;
 }
 

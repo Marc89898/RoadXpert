@@ -13,11 +13,11 @@ const Dashboard = () => {
     const handleCalender = () => {
         navigation.navigate('AppointmentScreen');
     };
-    const handleRoutes = () => {
-        navigation.navigate('RouteInformation');
+    const handleStudents = () => {
+        navigation.navigate('MyStudents');
     };
     const handleNotifications = () => {
-        navigation.navigate('notificationsScreen');
+        navigation.navigate('NotificationsScreen');
     };
     const handleCars = () => {
         navigation.navigate('Cars');
@@ -46,7 +46,7 @@ const Dashboard = () => {
             <View style={styles.container}>
                 <Text style={styles.text}>¡I'm, Dashboard Page!</Text>
                 <Button style={styles.button} onPress={handleCalender} mode="contained">Calendario</Button>
-                <Button style={styles.button} onPress={handleRoutes} mode="contained">Rutas</Button>
+                <Button style={styles.button} onPress={handleStudents} mode="contained">Students</Button>
                 <Button style={styles.button} onPress={handleCars} mode="contained">Coches</Button>
             </View>
             <NavBar />

@@ -7,6 +7,9 @@ import Dashboard from './Components/Dashboard.js';
 import NavBar from './Components/BottomNavigation/NavBar.js';
 import BackNavigation from './Components/BottomNavigation/BackNavigation.js';
 import Cars from './Components/Cars.js';
+import NotificationsScreen from './Components/notificationsScreen.js';
+import MyStudents from './Components/MyStudents.js';
+import StudentInfo from './Components/StudentInfo.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +28,9 @@ export default function App() {
         <Stack.Screen name="NavBar" component={NavBar} />
         <Stack.Screen name="BackNavigation" component={BackNavigation} />
         <Stack.Screen name="Cars" component={Cars} />
+        <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
+        <Stack.Screen name="MyStudents" component={MyStudents} />
+        <Stack.Screen name="StudentInfo" component={StudentInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );
