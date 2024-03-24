@@ -1,0 +1,5 @@
+# Seguiment
+## 22/03/2024
+Durant els últims 3 dies, he estat investigant diverses maneres de transcriure àudio a text utilitzant React Native. Tot i seguir diversos tutorials, no he aconseguit que cap d'ells funcioni, llibreries com @react-native-tts i @react-native-community/voice. Sembla que alguns d'aquests tutorials estan desactualitzats i no proporcionen resultats satisfactoris. Després d'investigar, he identificat tres opcions principals: OpenAI, Azure i Google API. Totes tres opcions estan basades en tecnologies similars i ofereixen serveis de transcripció de pagament pero amb una prova gratiuita.
+
+Com que ja disposava d'un compte a Microsoft Azure, he decidit provar aquesta opció. Actualment, estic experimentant amb un àudio d'una URL externa i realitzant proves per avaluar l'eficàcia de la transcripció utilitzant Azure Speech to Text API.
