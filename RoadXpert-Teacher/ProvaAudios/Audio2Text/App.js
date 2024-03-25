@@ -22,10 +22,11 @@ const transcribeAudioFiles = async () => {
       body: JSON.stringify({
         displayName: 'My Transcription',
         description: 'Speech Studio Batch speech to text',
-        locale: 'es-es',
+        // audio en ingles
+        locale: 'en-us',
         contentUrls: [
-          'https://crbn.us/hello.wav',
-        //  'https://crbn.us/whatstheweatherlike.wav'
+        //  'https://crbn.us/hello.wav',
+        'https://crbn.us/whatstheweatherlike.wav'
         ],
         model: {
           self: 'https://eastus.api.cognitive.microsoft.com/speechtotext/v3.2-preview.1/models/base/e418c4a9-9937-4db7-b2c9-8afbff72d950'
@@ -56,38 +57,48 @@ const transcribeAudioFiles = async () => {
 const App = () => {
   const [isLoading, setLoading] = useState(false);
 
-  const getTranscriptionText = async (transcriptionUrl) => {
+  const getContentUrlFromTranscription = async (transcriptionFilesUrl) => {
     try {
-      const response = await fetch(transcriptionUrl);
-      if (!response.ok) {
-        throw new Error('Error al obtener el archivo de transcripción');
-      }
-      const data = await response.json();
-      // Suponiendo que el archivo de transcripción está en formato JSON y tiene un campo "combinedRecognizedPhrases"
-      const recognizedPhrases = data.combinedRecognizedPhrases;
-      // Unir todas las frases reconocidas en un solo texto
-      const transcriptionText = recognizedPhrases.map(phrase => phrase.display).join(' ');
-      
-      return transcriptionText;
+      const response = await fetch(transcriptionFilesUrl, {
+        method: 'GET',
+        headers: {
+          'Ocp-Apim-Subscription-Key': azureApiKey,
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error('Error al obtener el contenido desde la URL');
+      } else 
+        console.log('Response: ', response);
+      
+      const data = await response.text();
+      console.log('Data: ', data);
+
+      return data.values[0].links.contentUrl;
     } catch (error) {
-      console.error('Error al obtener el texto de la transcripción:', error);
+      console.error('Error al obtener el contenido desde la URL:', error);
       throw error;
     }
   };
   
-
   const transcribeAudio = async () => {
     setLoading(true);
     try {
       const transcriptionResult = await transcribeAudioFiles();
       console.log('Transcripción exitosa:', transcriptionResult);
   
-      console.log('Enlace de la transcripción:', transcriptionResult.links.files);
-      // Obtener el texto de la transcripción usando el enlace proporcionado
-      const transcriptionText = await getTranscriptionText(transcriptionResult.links.files);
-  
-      console.log('Texto de la transcripción:', transcriptionText);
+      // Obtener la URL del contenido de la transcripción
+      const contentUrl = await getContentUrlFromTranscription(transcriptionResult.links.files);
+      console.log('Content URL:', contentUrl);
+      
+      // Realizar la solicitud a la URL de contenido
+      const response = await fetch(contentUrl);
+      if (!response.ok) {
+        throw new Error('Error al obtener el contenido de la transcripción');
+      }
+      console.log('Transcripción:', await response.json().text);
+      
+      
       // Aquí puedes manejar el texto de la transcripción como lo necesites
     } catch (error) {
       console.error('Error en la transcripción del audio:', error);
@@ -96,8 +107,6 @@ const App = () => {
     }
   };
   
-  
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
