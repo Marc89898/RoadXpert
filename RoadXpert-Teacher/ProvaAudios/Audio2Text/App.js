@@ -1,115 +1,128 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import Voice from '@react-native-community/voice';
-import requestAudioPermission from './permission';
+
+const azureApiKey = '7190332d56704eb68d71e03de633cead'; // Reemplaza con tu clave de API de Azure
+const azureEndpoint = 'https://eastus.api.cognitive.microsoft.com/speechtotext/v3.1/transcriptions';
+
+const transcribeAudioFiles = async () => {
+  try {
+    const response = await fetch(azureEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': azureApiKey,
+      },
+      body: JSON.stringify({
+        displayName: 'My Transcription',
+        description: 'Speech Studio Batch speech to text',
+        // audio en ingles
+        locale: 'en-us',
+        contentUrls: [
+        //  'https://crbn.us/hello.wav',
+        'https://crbn.us/whatstheweatherlike.wav'
+        ],
+        model: {
+          self: 'https://eastus.api.cognitive.microsoft.com/speechtotext/v3.2-preview.1/models/base/e418c4a9-9937-4db7-b2c9-8afbff72d950'
+        },
+        properties: {
+          wordLevelTimestampsEnabled: false,
+          displayFormWordLevelTimestampsEnabled: true,
+          diarizationEnabled: false,
+          punctuationMode: 'DictatedAndAutomatic',
+          profanityFilterMode: 'Masked'
+        },
+        customProperties: {}
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al realizar la solicitud a la API de Azure');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en la solicitud a la API de Azure:', error);
+    throw error;
+  }
+};
 
 const App = () => {
-  const [result, setResult] = useState('');
   const [isLoading, setLoading] = useState(false);
 
-  var voiceObj = new Voice();
+  const getContentUrlFromTranscription = async (transcriptionFilesUrl) => {
+    console.log('Transcription Files URL:', transcriptionFilesUrl);
+    try {
+      const response = await fetch(transcriptionFilesUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Ocp-Apim-Subscription-Key': azureApiKey,
+        },
+      });
 
-  const speechStartHandler = e => {
-    console.log('speechStart successful', e);
-  };
-  const speechEndHandler = e => {
-    setLoading(false);
-    console.log('stop handler', e);
-  };
+      if (!response.ok) {
+        throw new Error('Error al obtener el contenido desde la URL');
+      } else 
+        console.log('Response: ', response);
+        console.log('Response Code: ', response.status);
 
-  const speechResultsHandler = e => {
-    const text = e.value[0];
-    setResult(text);
-  };
+        const data = await response.json();
+        console.log('Data: ', data);
 
-  const startRecording = async () => {
+      return data.values[0].links.contentUrl;
+    } catch (error) {
+      console.error('Error al obtener el contenido desde la URL:', error);
+      throw error;
+    }
+  };
+  
+  const transcribeAudio = async () => {
     setLoading(true);
     try {
-      await voiceObj.start('en-Us');
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
-  const stopRecording = async () => {
-    try {
-      await voiceObj.stop();
-      setLoading(false);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
-  const clear = () => {
-    setResult('');
-  };
-
-  useEffect(() => {
-    const initializeVoice = async () => {
-      try {
-        await requestAudioPermission();
-        
-        voiceObj = new Voice();
-        voiceObj.onSpeechStart = speechStartHandler;
-        voiceObj.onSpeechEnd = speechEndHandler;
-        voiceObj.onSpeechResults = speechResultsHandler;
-        console.log('Voice initialized' + (await voiceObj.isAvailable()));
-      } catch (error) {
-        console.error('Error initializing Voice:', error);
+      const transcriptionResult = await transcribeAudioFiles();
+      console.log('Transcripción exitosa:', transcriptionResult);
+  
+      // Obtener la URL del contenido de la transcripción
+      const contentUrl = await getContentUrlFromTranscription(transcriptionResult.links.files);
+      console.log('Content URL:', contentUrl);
+      
+      // Realizar la solicitud a la URL de contenido
+      const response = await fetch(contentUrl);
+      if (!response.ok) {
+        throw new Error('Error al obtener el contenido de la transcripción');
       }
-    };
-
-    initializeVoice();
-
-    return () => {
-      voiceObj.destroy().then(voiceObj.removeAllListeners);
-    };
-  }, []);
-
-  console.log('speech recognition');
+      console.log('Transcripción:', await response.json().text);
+      
+      
+      // Aquí puedes manejar el texto de la transcripción como lo necesites
+    } catch (error) {
+      console.error('Error en la transcripción del audio:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <Text style={styles.headingText}>Voice to Text Recognition</Text>
-        <View style={styles.textInputStyle}>
-          <TextInput
-            value={result}
-            multiline={true}
-            placeholder="say something!"
-            style={{
-              flex: 1,
-              height: '100%',
-            }}
-            onChangeText={text => setResult(text)}
-          />
-        </View>
-
+        <Text style={styles.headingText}>Azure Speech to Text Transcription</Text>
         <View style={styles.btnContainer}>
           {isLoading ? (
             <ActivityIndicator size="large" color="black" />
           ) : (
-            <TouchableOpacity onPress={startRecording} style={styles.speak}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>Speak</Text>
+            <TouchableOpacity onPress={transcribeAudio} style={styles.transcribe}>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>Transcribe Audio</Text>
             </TouchableOpacity>
           )}
-
-          <TouchableOpacity style={styles.stop} onPress={stopRecording}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>Stop</Text>
-          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.clear} onPress={clear}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>Clear</Text>
-        </TouchableOpacity>
       </SafeAreaView>
     </View>
   );
@@ -127,52 +140,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 26,
   },
-  textInputStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    height: 300,
-    borderRadius: 20,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    shadowOffset: {width: 0, height: 1},
-    shadowRadius: 2,
-    elevation: 2,
-    shadowOpacity: 0.4,
-    color: '#000',
-  },
-  speak: {
-    backgroundColor: 'black',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-    borderRadius: 8,
-  },
-  stop: {
-    backgroundColor: 'red',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-    borderRadius: 8,
-  },
-  clear: {
-    backgroundColor: 'black',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 15,
-  },
   btnContainer: {
+    alignItems: 'center',
+  },
+  transcribe: {
+    backgroundColor: 'black',
     display: 'flex',
-    flexDirection: 'row',
-    with: '50%',
-    justifyContent: 'space-evenly',
-    marginTop: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    borderRadius: 8,
   },
 });
 
