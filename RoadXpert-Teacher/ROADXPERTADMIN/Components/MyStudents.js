@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Card } from "react-native-paper";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
+import NavBar from "./BottomNavigation/NavBar";
 
 const CustomCard = ({ title, subtitle, backgroundImage }) => {
   const navigation = useNavigation();
@@ -29,7 +30,7 @@ const CustomCard = ({ title, subtitle, backgroundImage }) => {
   );
 };
 
-const MyStudents = () => {
+export default function MyStudents({navigation}) {
   return (
     <View style={styles.container}>
       <BackNavigation />
@@ -45,15 +46,15 @@ const MyStudents = () => {
         <CustomCard
           title={"Peter Parker"}
           subtitle={"20 years old"}
-          backgroundImage={require("../assets/images/Students/imgProbaToni.jpg")}
+          backgroundImage={require("../assets/images/Students/imgProbaTom.jpg")}
         />
         <CustomCard
           title={"Bruce Wayne"}
           subtitle={"35 years old"}
-          backgroundImage={require("../assets/images/Students/imgProbaToni.jpg")}
+          backgroundImage={require("../assets/images/Students/imgProbaBruce.jpg")}
         />
-        {/* Agrega más CustomCards según sea necesario */}
       </View>
+      <NavBar />
     </View>
   );
 };
@@ -110,5 +111,3 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 });
-
-export default MyStudents;

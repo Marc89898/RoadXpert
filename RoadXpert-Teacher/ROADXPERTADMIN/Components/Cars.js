@@ -8,26 +8,30 @@ import Icon from "react-native-vector-icons/Feather";
 const Cars = () => {
   const navigation = useNavigation();
 
-  const CarCard = ({ cardTitle, cardSubtitle, circleColor }) => (
+  const CarCard = ({ cardTitle, cardSubtitle, circleColor, children }) => (
     <Card style={styles.card}>
-      <Card.Content style={styles.cardContent}>
-        <View style={styles.textContainer}>
-          <Text style={styles.cardTitle}>{cardTitle}</Text>
-          <View
-            style={styles.subtitleContainer}
-          >
-            <View style={[styles.circle, { backgroundColor: circleColor }]}></View>
-            <Text style={styles.cardSubtitle}>{cardSubtitle}</Text>
+      <View style={styles.cardContainer}>
+        <Card.Content style={styles.cardContent}>
+          <View style={styles.contentContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.cardTitle}>{cardTitle}</Text>
+              <View style={styles.subtitleContainer}>
+                <View
+                  style={[styles.circle, { backgroundColor: circleColor }]}
+                ></View>
+                <Text style={styles.cardSubtitle}>{cardSubtitle}</Text>
+              </View>
+              <Icon
+                name="arrow-right"
+                style={styles.icon}
+                size={20}
+                color="black"
+              />
+            </View>
+            {children}
           </View>
-          <Icon
-            name="arrow-right"
-            style={styles.icon}
-            size={20}
-            color="black"
-          />
-        </View>
-        {/* <Image style={styles.image} source={require("../assets/images/CarsScreen/VolkswagenGolf.png")} /> */}
-      </Card.Content>
+        </Card.Content>
+      </View>
     </Card>
   );
 
@@ -37,8 +41,26 @@ const Cars = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Coches</Text>
       </View>
-      <CarCard cardTitle="Volkswagen Golf" cardSubtitle="Disponible" circleColor="red" />
-      <CarCard cardTitle="Volkswagen Golf" cardSubtitle="No Disponible" circleColor="green" />
+      <CarCard
+        cardTitle="Volkswagen Golf"
+        cardSubtitle="Disponible"
+        circleColor="red"
+      >
+        <Image
+          style={styles.image}
+          source={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
+        />
+      </CarCard>
+      <CarCard
+        cardTitle="Volkswagen Arteon"
+        cardSubtitle="No Disponible"
+        circleColor="green"
+      >
+        <Image
+          style={styles.image}
+          source={require("../assets/images/CarsScreen/VolkswagenArteon.webp")}
+        />
+      </CarCard>
     </View>
   );
 };
@@ -66,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   textContainer: {
-    width: 140,
+    width: 160,
     flexDirection: "column",
     justifyContent: "space-between",
   },
@@ -83,8 +105,16 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 15,
   },
+  cardContainer: {
+    overflow: "hidden",
+    borderRadius: 20,
+  },
+  contentContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   image: {
-    width: 201.53,
+    width: 201,
     height: 120,
     marginLeft: 10,
   },

@@ -43,10 +43,32 @@ export default function NavBar() {
                     }}
                     renderIcon={({ route, focused, color }) => {
                         const { options } = descriptors[route.key];
-                        if (options.tabBarIcon) {
-                            return options.tabBarIcon({ focused, color, size: 24 });
+                        let iconName;
+
+                        switch (route.name) {
+                            case 'Home':
+                                iconName = 'home';
+                                break;
+                            case 'Calendar':
+                                iconName = 'calendar';
+                                break;
+                            case 'Students':
+                                iconName = 'account';
+                                break;
+                            case 'Cars':
+                                iconName = 'car';
+                                break;
+                            default:
+                                iconName = 'home';
                         }
-                        return null;
+
+                        return (
+                            <Icon
+                                name={iconName}
+                                size={24}
+                                color={focused ? 'blue' : color}
+                            />
+                        );
                     }}
                     getLabelText={({ route }) => {
                         const { options } = descriptors[route.key];
@@ -66,29 +88,20 @@ export default function NavBar() {
                 component={HomeScreen}
                 options={{
                     tabBarLabel: 'Home',
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="home" size={size} color={color} />
-                    ),
                 }}
             />
             <Tab.Screen
-                name="Calender"
-                component={CalenderScreen}
+                name="Calendar"
+                component={CalendarScreen}
                 options={{
-                    tabBarLabel: 'Calender',
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="calendar" size={size} color={color} />
-                    ),
+                    tabBarLabel: 'Calendar',
                 }}
             />
             <Tab.Screen
                 name="Students"
-                component={MyStudents}
+                component={StudentsScreen}
                 options={{
                     tabBarLabel: 'Students',
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="account" size={size} color={color} />
-                    ),
                 }}
             />
             <Tab.Screen
@@ -96,9 +109,6 @@ export default function NavBar() {
                 component={CarsScreen}
                 options={{
                     tabBarLabel: 'Cars',
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="car" size={size} color={color} /> 
-                    ),
                 }}
             />
         </Tab.Navigator>
@@ -109,11 +119,11 @@ function HomeScreen() {
     return null;
 }
 
-function CalenderScreen() {
+function CalendarScreen() {
     return null;
 }
 
-function MyStudents() {
+function StudentsScreen() {
     return null;
 }
 
