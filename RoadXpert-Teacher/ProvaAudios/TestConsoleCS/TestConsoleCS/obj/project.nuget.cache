@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "v1wLennRIYLTwcnNG6COtlgLeXJl3N5Qms+SZxfcA0XK1slCC/RaQWdv6sCfX5LMBGgBsmo0kfQUAsy/pCRl1A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\yosse\\Dropbox\\PC\\Desktop\\RoadXpert\\RoadXpert-Teacher\\ProvaAudios\\TestConsoleCS\\TestConsoleCS\\TestConsoleCS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\yosse\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

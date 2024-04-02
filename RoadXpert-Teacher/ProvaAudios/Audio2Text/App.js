@@ -58,10 +58,12 @@ const App = () => {
   const [isLoading, setLoading] = useState(false);
 
   const getContentUrlFromTranscription = async (transcriptionFilesUrl) => {
+    console.log('Transcription Files URL:', transcriptionFilesUrl);
     try {
       const response = await fetch(transcriptionFilesUrl, {
         method: 'GET',
         headers: {
+          'Content-Type': 'application/json',
           'Ocp-Apim-Subscription-Key': azureApiKey,
         },
       });
@@ -70,9 +72,10 @@ const App = () => {
         throw new Error('Error al obtener el contenido desde la URL');
       } else 
         console.log('Response: ', response);
-      
-      const data = await response.text();
-      console.log('Data: ', data);
+        console.log('Response Code: ', response.status);
+
+        const data = await response.json();
+        console.log('Data: ', data);
 
       return data.values[0].links.contentUrl;
     } catch (error) {
