@@ -1,38 +1,49 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton, Card } from "react-native-paper";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import Icon from "react-native-vector-icons/Feather";
 
-const Cars = () => {
+export default function MyCars({navigation}) {
   const navigation = useNavigation();
 
-  const CarCard = ({ cardTitle, cardSubtitle, circleColor, children }) => (
-    <Card style={styles.card}>
-      <View style={styles.cardContainer}>
-        <Card.Content style={styles.cardContent}>
-          <View style={styles.contentContainer}>
-            <View style={styles.textContainer}>
-              <Text style={styles.cardTitle}>{cardTitle}</Text>
-              <View style={styles.subtitleContainer}>
-                <View
-                  style={[styles.circle, { backgroundColor: circleColor }]}
-                ></View>
-                <Text style={styles.cardSubtitle}>{cardSubtitle}</Text>
+  const handleCardPress = (cardData) => {
+    navigation.navigate("CarInfo", { cardData });
+  };
+
+  const CarCard = ({ cardTitle, cardSubtitle, circleColor, imagePath }) => (
+    <TouchableOpacity
+      onPress={() => handleCardPress({ cardTitle, cardSubtitle, circleColor, imagePath })}
+    >
+      <Card style={styles.card}>
+        <View style={styles.cardContainer}>
+          <Card.Content style={styles.cardContent}>
+            <View style={styles.contentContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.cardTitle}>{cardTitle}</Text>
+                <View style={styles.subtitleContainer}>
+                  <View
+                    style={[styles.circle, { backgroundColor: circleColor }]}
+                  ></View>
+                  <Text style={styles.cardSubtitle}>{cardSubtitle}</Text>
+                </View>
+                <Icon
+                  name="arrow-right"
+                  style={styles.icon}
+                  size={20}
+                  color="black"
+                />
               </View>
-              <Icon
-                name="arrow-right"
-                style={styles.icon}
-                size={20}
-                color="black"
+              <Image
+                style={styles.image}
+                source={imagePath}
               />
             </View>
-            {children}
-          </View>
-        </Card.Content>
-      </View>
-    </Card>
+          </Card.Content>
+        </View>
+      </Card>
+    </TouchableOpacity>
   );
 
   return (
@@ -45,22 +56,14 @@ const Cars = () => {
         cardTitle="Volkswagen Golf"
         cardSubtitle="Disponible"
         circleColor="red"
-      >
-        <Image
-          style={styles.image}
-          source={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
-        />
-      </CarCard>
+        imagePath={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
+      />
       <CarCard
         cardTitle="Volkswagen Arteon"
         cardSubtitle="No Disponible"
         circleColor="green"
-      >
-        <Image
-          style={styles.image}
-          source={require("../assets/images/CarsScreen/VolkswagenArteon.webp")}
-        />
-      </CarCard>
+        imagePath={require("../assets/images/CarsScreen/VolkswagenArteon.webp")}
+      />
     </View>
   );
 };
@@ -128,5 +131,3 @@ const styles = StyleSheet.create({
     color: "blue",
   },
 });
-
-export default Cars;

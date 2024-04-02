@@ -34,8 +34,8 @@ export default function NavBar() {
                                 navigation.navigate('MyStudents');
                             } else if (route.name === 'Home') {
                                 navigation.navigate('Dashboard');
-                            } else if (route.name === 'Cars') { 
-                                navigation.navigate('Cars');
+                            } else if (route.name === 'MyCars') { 
+                                navigation.navigate('MyCars');
                             } else {
                                 navigation.navigate(route.name);
                             }
@@ -55,7 +55,7 @@ export default function NavBar() {
                             case 'Students':
                                 iconName = 'account';
                                 break;
-                            case 'Cars':
+                            case 'MyCars':
                                 iconName = 'car';
                                 break;
                             default:
@@ -105,10 +105,10 @@ export default function NavBar() {
                 }}
             />
             <Tab.Screen
-                name="Cars" 
+                name="MyCars" 
                 component={CarsScreen}
                 options={{
-                    tabBarLabel: 'Cars',
+                    tabBarLabel: 'MyCars',
                 }}
             />
         </Tab.Navigator>
