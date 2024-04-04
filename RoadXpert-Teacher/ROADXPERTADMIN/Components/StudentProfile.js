@@ -43,8 +43,6 @@ const StudentProfile = ({ route }) => {
     }
 
     if (!result.cancelled) {
-      // Aquí puedes manejar la imagen seleccionada o capturada, por ejemplo, guardándola en el estado
-      // o subiéndola a tu servidor.
       console.log(result.uri);
     }
   };

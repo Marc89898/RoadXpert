@@ -3,9 +3,16 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { Card } from "react-native-paper";
 import Icon from "react-native-vector-icons/Feather";
+import { useNavigation } from '@react-navigation/native';
 
 const CarInfo = ({ route }) => {
   const { cardData } = route.params;
+
+  const navigation = useNavigation();
+
+  const handleConsultarMapa = () => {
+    navigation.navigate("MapScreen");
+  }
 
   return (
     <View style={styles.container}>
@@ -57,7 +64,7 @@ const CarInfo = ({ route }) => {
         </View>
         <View style={styles.infoItem}>
           <Text style={styles.infoLabel}>Ver Recorrido</Text>
-          <Text style={styles.infoLink}>Consultar Mapa</Text>
+          <Text style={styles.infoLink} onPress={handleConsultarMapa}>Consultar Mapa</Text>
         </View>
         <View style={styles.infoItem}>
           <Text style={styles.infoLabel}>Transmisión</Text>

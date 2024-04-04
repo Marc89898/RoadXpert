@@ -5,7 +5,7 @@ import { IconButton, Card } from "react-native-paper";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import Icon from "react-native-vector-icons/Feather";
 
-export default function MyCars({navigation}) {
+export default function MyCars({}) {
   const navigation = useNavigation();
 
   const handleCardPress = (cardData) => {
@@ -14,7 +14,9 @@ export default function MyCars({navigation}) {
 
   const CarCard = ({ cardTitle, cardSubtitle, circleColor, imagePath }) => (
     <TouchableOpacity
-      onPress={() => handleCardPress({ cardTitle, cardSubtitle, circleColor, imagePath })}
+      onPress={() =>
+        handleCardPress({ cardTitle, cardSubtitle, circleColor, imagePath })
+      }
     >
       <Card style={styles.card}>
         <View style={styles.cardContainer}>
@@ -35,10 +37,7 @@ export default function MyCars({navigation}) {
                   color="black"
                 />
               </View>
-              <Image
-                style={styles.image}
-                source={imagePath}
-              />
+              <Image style={styles.image} source={imagePath} />
             </View>
           </Card.Content>
         </View>
@@ -66,7 +65,7 @@ export default function MyCars({navigation}) {
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
