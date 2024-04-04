@@ -6,7 +6,7 @@ import LoginScreen from './Components/LoginScreen.js';
 import Dashboard from './Components/Dashboard.js';
 import NavBar from './Components/BottomNavigation/NavBar.js';
 import AppointmentScreen from './Components/AppointmentScreen.js';
-import RouteInformation from './Components/RouteInformartion.js';
+import RouteInformation from './Components/RouteInformation.js';
 import ViewRoutesMap from './Components/ViewRoutesMap.js';
 import BackNavigation from './Components/BottomNavigation/BackNavigation.js'
 import Categories from './Components/Categories.js';

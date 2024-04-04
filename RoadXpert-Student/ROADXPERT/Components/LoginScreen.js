@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { Button } from "react-native-paper";
@@ -12,11 +13,7 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    if (username === " " && password === " ") {
-      navigation.navigate("Dashboard");
-    } else {
-      console.log("Incorrect credentials. Please try again.");
-    }
+    navigation.navigate("Dashboard");
   };
 
   return (
