@@ -9,20 +9,23 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/ubuntu-condensed": "^0.2.3",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.5.19",
     "@react-navigation/native-stack": "^6.9.25",
     "expo": "~50.0.13",
+    "expo-app-loading": "^2.1.1",
     "expo-font": "~11.10.3",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
-    "react-native": "0.73.5",
-    "react-native-gesture-handler": "^2.15.0",
+    "react-native": "0.73.6",
+    "react-native-gesture-handler": "~2.14.0",
     "react-native-ionicons": "^4.6.5",
-    "react-native-maps": "^1.11.3",
+    "react-native-maps": "1.10.0",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
     "react-native-paper": "^5.12.3",
-    "react-native-reanimated": "^3.8.1"
+    "react-native-rapi-ui": "^0.2.1",
+    "react-native-reanimated": "~3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

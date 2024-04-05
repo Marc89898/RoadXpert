@@ -51,6 +51,30 @@ def get_Practica_by_id(Practica_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@Practica_bp.route("/Practica/Alumn/<string:alumne_id>", methods=['GET'])
+def get_practicas_by_alumn_id(alumne_id):
+    """GET all the driving practices for a specific student"""
+    try:
+        with engine.connect() as conn:
+            query = text("SELECT * FROM Practica WHERE AlumneID = :AlumneID")
+            result = conn.execute(query, {"AlumneID": alumne_id})
+            practicas = []
+            for row in result.fetchall():
+                practica_dict = {}
+                for idx, column in enumerate(result.keys()):
+                    if isinstance(row[idx], time):
+                        practica_dict[column] = str(row[idx])
+                    else:
+                        practica_dict[column] = row[idx]
+                practicas.append(practica_dict)
+            if practicas:
+                return jsonify(practicas), 200
+            else:
+                return jsonify({"message": f"No Practiques found for student with ID {alumne_id}"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 @Practica_bp.route("/Practica", methods=['POST'])
 def post_new_Practica():

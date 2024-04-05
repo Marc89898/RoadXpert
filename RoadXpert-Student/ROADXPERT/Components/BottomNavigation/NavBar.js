@@ -1,51 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
-
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
-
 export default function NavBar() {
-    const navigation = useNavigation();
-
     return (
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
             }}
-            tabBar={({ navigation, state, descriptors, insets }) => (
+            tabBar={({ state, descriptors, navigation, insets }) => (
                 <BottomNavigation.Bar
                     navigationState={state}
                     safeAreaInsets={insets}
-                    onTabPress={({ route, preventDefault }) => {
-                        const event = navigation.emit({
-                            type: 'tabPress',
-                            target: route.key,
-                            canPreventDefault: true,
-                        });
-
-                        if (event.defaultPrevented) {
-                            preventDefault();
-                        } else {
-                            if (route.name === 'Calender') {
-                                navigation.navigate('AppointmentScreen');
-                            } else if (route.name === 'Route') {
-                                navigation.navigate('RouteInformation');
-                            } else if (route.name === 'Home') {
-                                navigation.navigate('Dashboard');
-                            }else {
-                                navigation.navigate(route.name);
-                            }
-                        }
-                    }}
-                    renderIcon={({ route, focused, color }) => {
+                    renderIcon={({ route }) => {
                         const { options } = descriptors[route.key];
-                        if (options.tabBarIcon) {
-                            return options.tabBarIcon({ focused, color, size: 24 });
-                        }
-
-                        return null;
+                        const iconName = options.tabBarIconName || route.name;
+                        return <Icon name={iconName} size={24} />;
                     }}
                     getLabelText={({ route }) => {
                         const { options } = descriptors[route.key];
@@ -54,9 +26,23 @@ export default function NavBar() {
                                 ? options.tabBarLabel
                                 : options.title !== undefined
                                     ? options.title
-                                    : route.title;
+                                    : route.name;
 
                         return label;
+                    }}
+                    onTabPress = {({ route }) => {
+                        switch (route.name) {
+                            case "Home":
+                                navigation.navigate('Dashboard')
+                            break;
+                            case "Calendar":
+                                navigation.navigate('AppointmentScreen')
+                            break;
+                            case "Route":
+                                navigation.navigate('RouteInformation')
+                            break;
+                        }
+                        
                     }}
                 />
             )}
@@ -65,30 +51,21 @@ export default function NavBar() {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    tabBarLabel: 'Home',
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="home" size={size} color={color} />
-                    ),
+                    tabBarIconName: 'home',
                 }}
             />
             <Tab.Screen
-                name="Calender"
+                name="Calendar"
                 component={CalenderScreen}
                 options={{
-                    tabBarLabel: 'Calender',
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="calendar" size={size} color={color} />
-                    ),
+                    tabBarIconName: 'calendar',
                 }}
             />
             <Tab.Screen
                 name="Route"
                 component={RouteScreen}
                 options={{
-                    tabBarLabel: 'Route',
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="map-marker-path" size={size} color={color} />
-                    ),
+                    tabBarIconName: 'map-marker-path',
                 }}
             />
         </Tab.Navigator>

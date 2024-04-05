@@ -9,7 +9,6 @@ const CustomCard = ({ title, subtitle, backgroundImage }) => {
   const navigation = useNavigation();
 
   const handleCardPress = () => {
-    // Navegar a la pantalla StudentsInfo y enviar los datos
     navigation.navigate("StudentInfo", {
       name: title,
       image: backgroundImage,
