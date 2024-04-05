@@ -16,5 +16,5 @@ Per abordar aquest problema, he realitzat una revisió exhaustiva del flux de tr
 En conclusió, aquests dies he après la importància de la depuració minuciosa i la revisió del flux de treball del codi per solucionar problemes inesperats. Aquesta experiència m'ha proporcionat una comprensió més profunda de la gestió de les variables i la importància de mantenir la consistència en el flux de treball del codi.
 
 
-## 02/04/2024
-Degut al problema amb la Api d'azure que no ha sigut posible solucionar, he estat provant divereses llibreries y apis, entre elles la api de assembly AI, la de google, y la de openIA, actualment estic amb de OpenIA, tambe he provat les eguents llibreries; @react-native-community/voice,
+## 05/04/2024
+A causa del problema amb l'API d'Azure que no s'ha pogut resoldre, els darrers dies he estat provant diverses llibreries i APIs, entre elles l'API de Assembly AI, la de Google i la d'OpenAI, entre altres llibreries de codi obert. Finalment, he aconseguit que funcioni amb Assembly AI. Ja he realitzat una transcripció d'un àudio en castellà. Haig de mirar que es pugui fer en catala.
