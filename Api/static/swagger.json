@@ -1,0 +1,2360 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Documentation",
+    "description": "API Documentation for multiple blueprints",
+    "version": "1.0",
+    "termsOfService": "Terms of services",
+    "license": {
+      "name": "License of API",
+      "url": "API license URL"
+    }
+  },
+  "host": "localhost:8888",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Alumne",
+      "description": "Endpoints related to students"
+    },
+    {
+      "name": "Carnet",
+      "description": "Endpoints related to driving licenses"
+    },
+    {
+      "name": "Autoescola",
+      "description": "Endpoints related to driving schools"
+    },
+    {
+      "name": "Anotacio",
+      "description": "Endpoints related to annotations"
+    },
+    {
+      "name": "Comet",
+      "description": "Endpoints related to comets"
+    },
+    {
+      "name": "EstatHora",
+      "description": "Endpoints related to time status"
+    },
+    {
+      "name": "Exercir",
+      "description": "Endpoints related to exercises"
+    },
+    {
+      "name": "HistorialPractica",
+      "description": "Endpoints related to practice history"
+    },
+    {
+      "name": "Hora",
+      "description": "Endpoints related to hours"
+    },
+    {
+      "name": "Horari",
+      "description": "Endpoints related to schedules"
+    },
+    {
+      "name": "Incidencia",
+      "description": "Endpoints related to incidents"
+    },
+    {
+      "name": "Matricula",
+      "description": "Endpoints related to enrollment"
+    },
+    {
+      "name": "Practica",
+      "description": "Endpoints related to practices"
+    },
+    {
+      "name": "Treballador",
+      "description": "Endpoints related to workers"
+    },
+    {
+      "name": "TreballadorTeIncidencia",
+      "description": "Endpoints related to workers having incidents"
+    },
+    {
+      "name": "Vehicle",
+      "description": "Endpoints related to vehicles"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/Alumne": {
+      "get": {
+        "tags": [
+          "Alumne"
+        ],
+        "summary": "Get all students",
+        "description": "Retrieves a list of all students",
+        "responses": {
+          "200": {
+            "description": "A list of students",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Alumne"
+        ],
+        "summary": "Create a new student",
+        "description": "Creates a new student",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the details of the student to be created",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "age": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Student created successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Alumne"
+        ],
+        "summary": "Update a student",
+        "description": "Updates an existing student",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated details of the student",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "age": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student updated successfully"
+          },
+          "404": {
+            "description": "Student not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Alumne"
+        ],
+        "summary": "Delete a student",
+        "description": "Deletes an existing student",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the student to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student deleted successfully"
+          },
+          "404": {
+            "description": "Student not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Carnet": {
+      "get": {
+        "tags": [
+          "Carnet"
+        ],
+        "summary": "Get all driving licenses",
+        "description": "Retrieves a list of all driving licenses",
+        "responses": {
+          "200": {
+            "description": "A list of driving licenses",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "validity": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Carnet"
+        ],
+        "summary": "Create a new driving license",
+        "description": "Creates a new driving license",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the details of the driving license to be created",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "validity": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Driving license created successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Carnet"
+        ],
+        "summary": "Update a driving license",
+        "description": "Updates an existing driving license",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated details of the driving license",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "validity": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Driving license updated successfully"
+          },
+          "404": {
+            "description": "Driving license not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Carnet"
+        ],
+        "summary": "Delete a driving license",
+        "description": "Deletes an existing driving license",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the driving license to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Driving license deleted successfully"
+          },
+          "404": {
+            "description": "Driving license not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Autoescola": {
+      "get": {
+        "tags": [
+          "Autoescola"
+        ],
+        "summary": "Get all driving schools",
+        "description": "Retrieves a list of all driving schools",
+        "responses": {
+          "200": {
+            "description": "A list of driving schools",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "nom": {
+                    "type": "string"
+                  },
+                  "direccio": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Autoescola"
+        ],
+        "summary": "Add a new driving school",
+        "description": "Creates a new driving school",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the name and address of the driving school",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nom": {
+                  "type": "string"
+                },
+                "direccio": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Autoescola added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Autoescola"
+        ],
+        "summary": "Update a driving school",
+        "description": "Updates an existing driving school",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated details of the driving school",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "nom": {
+                  "type": "string"
+                },
+                "direccio": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Driving school updated successfully"
+          },
+          "404": {
+            "description": "Driving school not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Autoescola"
+        ],
+        "summary": "Delete a driving school",
+        "description": "Deletes an existing driving school",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the driving school to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Driving school deleted successfully"
+          },
+          "404": {
+            "description": "Driving school not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Anotacio": {
+      "get": {
+        "tags": [
+          "Anotacio"
+        ],
+        "summary": "Get all annotations",
+        "description": "Retrieves a list of all annotations",
+        "responses": {
+          "200": {
+            "description": "A list of annotations",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Anotacio"
+        ],
+        "summary": "Add a new annotation",
+        "description": "Creates a new annotation",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the content of the annotation",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Annotation added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Anotacio"
+        ],
+        "summary": "Update an annotation",
+        "description": "Updates an existing annotation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the annotation to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated content of the annotation",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Annotation updated successfully"
+          },
+          "404": {
+            "description": "Annotation not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Anotacio"
+        ],
+        "summary": "Delete an annotation",
+        "description": "Deletes an existing annotation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the annotation to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Annotation deleted successfully"
+          },
+          "404": {
+            "description": "Annotation not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Comet": {
+      "get": {
+        "tags": [
+          "Comet"
+        ],
+        "summary": "Get all comets",
+        "description": "Retrieves a list of all comets",
+        "responses": {
+          "200": {
+            "description": "A list of comets",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "speed": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Comet"
+        ],
+        "summary": "Add a new comet",
+        "description": "Creates a new comet",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the name and speed of the comet",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "speed": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Comet added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Comet"
+        ],
+        "summary": "Update a comet",
+        "description": "Updates an existing comet",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the comet to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated name and speed of the comet",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "speed": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comet updated successfully"
+          },
+          "404": {
+            "description": "Comet not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Comet"
+        ],
+        "summary": "Delete a comet",
+        "description": "Deletes an existing comet",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the comet to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comet deleted successfully"
+          },
+          "404": {
+            "description": "Comet not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/EstatHora": {
+      "get": {
+        "tags": [
+          "EstatHora"
+        ],
+        "summary": "Get all time statuses",
+        "description": "Retrieves a list of all time statuses",
+        "responses": {
+          "200": {
+            "description": "A list of time statuses",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "EstatHora"
+        ],
+        "summary": "Add a new time status",
+        "description": "Creates a new time status",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the status",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Time status added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EstatHora"
+        ],
+        "summary": "Update a time status",
+        "description": "Updates an existing time status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the time status to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated status",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Time status updated successfully"
+          },
+          "404": {
+            "description": "Time status not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EstatHora"
+        ],
+        "summary": "Delete a time status",
+        "description": "Deletes an existing time status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the time status to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Time status deleted successfully"
+          },
+          "404": {
+            "description": "Time status not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Exercir": {
+      "get": {
+        "tags": [
+          "Exercir"
+        ],
+        "summary": "Get all exercises",
+        "description": "Retrieves a list of all exercises",
+        "responses": {
+          "200": {
+            "description": "A list of exercises",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Exercir"
+        ],
+        "summary": "Add a new exercise",
+        "description": "Creates a new exercise",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the name and category of the exercise",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Exercise added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Exercir"
+        ],
+        "summary": "Update an exercise",
+        "description": "Updates an existing exercise",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the exercise to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated name and category of the exercise",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exercise updated successfully"
+          },
+          "404": {
+            "description": "Exercise not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Exercir"
+        ],
+        "summary": "Delete an exercise",
+        "description": "Deletes an existing exercise",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the exercise to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exercise deleted successfully"
+          },
+          "404": {
+            "description": "Exercise not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/HistorialPractica": {
+      "get": {
+        "tags": [
+          "HistorialPractica"
+        ],
+        "summary": "Get all practice history",
+        "description": "Retrieves a list of all practice history",
+        "responses": {
+          "200": {
+            "description": "A list of practice history",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "student_id": {
+                    "type": "integer"
+                  },
+                  "practice_date": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "HistorialPractica"
+        ],
+        "summary": "Add new practice history entry",
+        "description": "Creates a new practice history entry",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the student ID and practice date",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "student_id": {
+                  "type": "integer"
+                },
+                "practice_date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Practice history entry added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "HistorialPractica"
+        ],
+        "summary": "Update a practice history entry",
+        "description": "Updates an existing practice history entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the practice history entry to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated student ID and practice date",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "student_id": {
+                  "type": "integer"
+                },
+                "practice_date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Practice history entry updated successfully"
+          },
+          "404": {
+            "description": "Practice history entry not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "HistorialPractica"
+        ],
+        "summary": "Delete a practice history entry",
+        "description": "Deletes an existing practice history entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the practice history entry to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Practice history entry deleted successfully"
+          },
+          "404": {
+            "description": "Practice history entry not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Hora": {
+      "get": {
+        "tags": [
+          "Hora"
+        ],
+        "summary": "Get all hours",
+        "description": "Retrieves a list of all hours",
+        "responses": {
+          "200": {
+            "description": "A list of hours",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "time": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Hora"
+        ],
+        "summary": "Add a new hour",
+        "description": "Creates a new hour",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the time",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Hour added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Hora"
+        ],
+        "summary": "Update an hour",
+        "description": "Updates an existing hour",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the hour to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated time",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hour updated successfully"
+          },
+          "404": {
+            "description": "Hour not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Hora"
+        ],
+        "summary": "Delete an hour",
+        "description": "Deletes an existing hour",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the hour to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hour deleted successfully"
+          },
+          "404": {
+            "description": "Hour not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Horari": {
+      "get": {
+        "tags": [
+          "Horari"
+        ],
+        "summary": "Get all schedules",
+        "description": "Retrieves a list of all schedules",
+        "responses": {
+          "200": {
+            "description": "A list of schedules",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "schedule": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Horari"
+        ],
+        "summary": "Add a new schedule",
+        "description": "Creates a new schedule",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the schedule",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "schedule": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Schedule added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Horari"
+        ],
+        "summary": "Update a schedule",
+        "description": "Updates an existing schedule",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the schedule to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated schedule",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "schedule": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedule updated successfully"
+          },
+          "404": {
+            "description": "Schedule not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Horari"
+        ],
+        "summary": "Delete a schedule",
+        "description": "Deletes an existing schedule",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the schedule to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedule deleted successfully"
+          },
+          "404": {
+            "description": "Schedule not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Incidencia": {
+      "get": {
+        "tags": [
+          "Incidencia"
+        ],
+        "summary": "Get all incidents",
+        "description": "Retrieves a list of all incidents",
+        "responses": {
+          "200": {
+            "description": "A list of incidents",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Incidencia"
+        ],
+        "summary": "Create a new incident",
+        "description": "Creates a new incident",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the description of the incident",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Incident created successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Incidencia"
+        ],
+        "summary": "Update an existing incident",
+        "description": "Updates an existing incident",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the incident to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated description of the incident",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Incident updated successfully"
+          },
+          "404": {
+            "description": "Incident not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Incidencia"
+        ],
+        "summary": "Delete an incident",
+        "description": "Deletes an incident",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the incident to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Incident deleted successfully"
+          },
+          "404": {
+            "description": "Incident not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Matricula": {
+      "get": {
+        "tags": [
+          "Matricula"
+        ],
+        "summary": "Get all enrollments",
+        "description": "Retrieves a list of all enrollments",
+        "responses": {
+          "200": {
+            "description": "A list of enrollments",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "student_id": {
+                    "type": "integer"
+                  },
+                  "course_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Matricula"
+        ],
+        "summary": "Enroll a student in a course",
+        "description": "Enrolls a student in a course",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the student ID and course ID",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "student_id": {
+                  "type": "integer"
+                },
+                "course_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Enrollment created successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Matricula"
+        ],
+        "summary": "Update an existing enrollment",
+        "description": "Updates an existing enrollment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the enrollment to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated student ID and course ID",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "student_id": {
+                  "type": "integer"
+                },
+                "course_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Enrollment updated successfully"
+          },
+          "404": {
+            "description": "Enrollment not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Matricula"
+        ],
+        "summary": "Delete an enrollment",
+        "description": "Deletes an enrollment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the enrollment to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Enrollment deleted successfully"
+          },
+          "404": {
+            "description": "Enrollment not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Practica": {
+      "get": {
+        "tags": [
+          "Practica"
+        ],
+        "summary": "Get all practices",
+        "description": "Retrieves a list of all practices",
+        "responses": {
+          "200": {
+            "description": "A list of practices",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "student_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Practica"
+        ],
+        "summary": "Schedule a practice",
+        "description": "Schedules a practice for a student",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the practice date and student ID",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "student_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Practice scheduled successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Practica"
+        ],
+        "summary": "Update a practice",
+        "description": "Updates a practice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the practice to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated practice date and student ID",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "student_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Practice updated successfully"
+          },
+          "404": {
+            "description": "Practice not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Practica"
+        ],
+        "summary": "Delete a practice",
+        "description": "Deletes a practice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the practice to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Practice deleted successfully"
+          },
+          "404": {
+            "description": "Practice not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Treballador": {
+      "get": {
+        "tags": [
+          "Treballador"
+        ],
+        "summary": "Get all workers",
+        "description": "Retrieves a list of all workers",
+        "responses": {
+          "200": {
+            "description": "A list of workers",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "position": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Treballador"
+        ],
+        "summary": "Create a new worker",
+        "description": "Creates a new worker",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the name and position of the worker",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Worker created successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Treballador"
+        ],
+        "summary": "Update a worker",
+        "description": "Updates an existing worker",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the worker to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "JSON object containing the updated name and position of the worker",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Worker updated successfully"
+          },
+          "404": {
+            "description": "Worker not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Treballador"
+        ],
+        "summary": "Delete a worker",
+        "description": "Deletes an existing worker",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the worker to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Worker deleted successfully"
+          },
+          "404": {
+            "description": "Worker not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/TreballadorTeIncidencia": {
+      "get": {
+        "tags": [
+          "TreballadorTeIncidencia"
+        ],
+        "summary": "Get all workers with incidents",
+        "description": "Retrieves a list of all workers with incidents",
+        "responses": {
+          "200": {
+            "description": "A list of workers with incidents",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "worker_id": {
+                    "type": "integer"
+                  },
+                  "incident_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TreballadorTeIncidencia"
+        ],
+        "summary": "Create worker's incident association",
+        "description": "Creates an association between a worker and an incident",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Worker's ID and Incident's ID",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "worker_id": {
+                  "type": "integer"
+                },
+                "incident_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Association created successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/TreballadorTeIncidencia/{worker_id}/{incident_id}": {
+      "get": {
+        "tags": [
+          "TreballadorTeIncidencia"
+        ],
+        "summary": "Get worker's incident association by IDs",
+        "description": "Retrieves the association between a worker and an incident by their IDs",
+        "parameters": [
+          {
+            "name": "worker_id",
+            "in": "path",
+            "description": "ID of the worker",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "incident_id",
+            "in": "path",
+            "description": "ID of the incident",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Worker's incident association",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "worker_id": {
+                  "type": "integer"
+                },
+                "incident_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Association not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TreballadorTeIncidencia"
+        ],
+        "summary": "Update worker's incident association",
+        "description": "Updates the association between a worker and an incident",
+        "parameters": [
+          {
+            "name": "worker_id",
+            "in": "path",
+            "description": "ID of the worker",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "incident_id",
+            "in": "path",
+            "description": "ID of the incident",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated association data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "worker_id": {
+                  "type": "integer"
+                },
+                "incident_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Association updated successfully"
+          },
+          "404": {
+            "description": "Association not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "TreballadorTeIncidencia"
+        ],
+        "summary": "Delete worker's incident association by IDs",
+        "description": "Deletes the association between a worker and an incident by their IDs",
+        "parameters": [
+          {
+            "name": "worker_id",
+            "in": "path",
+            "description": "ID of the worker",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "incident_id",
+            "in": "path",
+            "description": "ID of the incident",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Association deleted successfully"
+          },
+          "404": {
+            "description": "Association not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Vehicle": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicles",
+        "description": "Retrieves a list of all vehicles",
+        "responses": {
+          "200": {
+            "description": "A list of vehicles",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "brand": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Add a new vehicle",
+        "description": "Creates a new vehicle",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "New vehicle object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "type": "string"
+                },
+                "model": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Vehicle added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/Vehicle/{id}": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get vehicle by ID",
+        "description": "Retrieves a vehicle by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the vehicle to retrieve",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "model": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Update vehicle by ID",
+        "description": "Updates a vehicle by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the vehicle to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated vehicle object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "type": "string"
+                },
+                "model": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle updated successfully"
+          },
+          "404": {
+            "description": "Vehicle not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Delete vehicle by ID",
+        "description": "Deletes a vehicle by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the vehicle to delete",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle deleted successfully"
+          },
+          "404": {
+            "description": "Vehicle not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

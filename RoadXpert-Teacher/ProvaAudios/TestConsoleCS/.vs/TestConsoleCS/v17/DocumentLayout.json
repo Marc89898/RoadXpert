@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\yosse\\Dropbox\\PC\\Desktop\\RoadXpert\\RoadXpert-Teacher\\ProvaAudios\\TestConsoleCS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5546507C-EBEC-4891-82BE-95FB346F583A}|TestConsoleCS\\TestConsoleCS.csproj|c:\\users\\yosse\\dropbox\\pc\\desktop\\roadxpert\\roadxpert-teacher\\provaaudios\\testconsolecs\\testconsolecs\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5546507C-EBEC-4891-82BE-95FB346F583A}|TestConsoleCS\\TestConsoleCS.csproj|solutionrelative:testconsolecs\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\yosse\\Dropbox\\PC\\Desktop\\RoadXpert\\RoadXpert-Teacher\\ProvaAudios\\TestConsoleCS\\TestConsoleCS\\Program.cs",
+              "RelativeDocumentMoniker": "TestConsoleCS\\Program.cs",
+              "ToolTip": "C:\\Users\\yosse\\Dropbox\\PC\\Desktop\\RoadXpert\\RoadXpert-Teacher\\ProvaAudios\\TestConsoleCS\\TestConsoleCS\\Program.cs",
+              "RelativeToolTip": "TestConsoleCS\\Program.cs",
+              "ViewState": "AQIAAG4AAAAAAAAAAAAUwHQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-02T14:49:41.077Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

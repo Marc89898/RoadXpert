@@ -1,0 +1,75 @@
+# Dependencias de Node.js
+AppInstructor/node_modules
+AppStudents/node_modules
+ProvesApart/provaCalendari/node_modules
+ProvesApart/provaCalendari/.expo
+# Archivos de construcción generados
+AppStudent/build
+AppStudent/dist
+AppInstructor/build
+AppInstructor/dist
+
+# Archivos de registro y caché
+AppStudent/npm-debug.log*
+AppInstructor/npm-debug.log*
+AppStudent/yarn-debug.log*
+AppInstructor/yarn-debug-log*
+AppStudent/yarn-error.log*
+AppInstructor/yarn-error.log*
+
+# Archivos locales de configuración
+AppStudent/.env.local
+AppInstructor/.env.local
+AppStudent/.env.development.local
+AppInstructor/.env.development.local
+AppStudent/.env.test.local
+AppInstructor/.env.test.local
+AppStudent/.env.production.local
+AppInstructor/.env.production.local
+# Archivos temporales
+AppStudent/.vscode/
+AppInstructor/.vscode/
+Api/.vscode/
+Ia/.vscode/
+AppStudent/.DS_Store
+# Byte-compiled / optimized / DLL files
+Api/__pycache__/
+Ia/__pycache__/
+Api/*.py[cod]
+Ia/*.py[cod]
+Api/*$py.class
+Ia/*$py.class
+
+# CPython
+Api/*.pyc
+Ia/*.pyc
+# PyInstaller
+Api/dist/
+Ia/dist/
+Api/build/
+Ia/build/
+
+# Jupyter Notebook
+Api/.ipynb_checkpoints
+Ia/.ipynb_checkpoints
+# pipenv
+Api/.venv
+Ia/.venv
+# env file
+Api/.env
+Ia/.env
+
+# Django stuff:
+Api/*.log
+Ia/*.log
+Ia/*.pot
+Api/*.pot
+Api/*.pyc
+Ia/*.pyc
+Api/__pycache__/
+Ia/__pycache__/
+Api/local_settings.py
+Ia/local_settings.py
+# Sphinx documentation
+Api/docs/_build/
+Ia/docs/_build/
