@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -134,28 +135,28 @@ namespace SpeechToTextApp
             }
         }
 
-        static async Task<string> GetContentUrlFromTranscription(string apiKey, string transcriptionFilesUrla)
+        static async Task<string> GetContentUrlFromTranscription(string apiKey, string transcriptionFilesUrl)
         {
-            Console.WriteLine("Obteniendo contenido desde la URL:-" + transcriptionFilesUrla+ "-");
-            String transcriptionFilesUrl = "https://eastus.api.cognitive.microsoft.com/speechtotext/v3.1/transcriptions/ee28fdc8-024c-438a-a3fc-8e0dc1a6f65c/files";
-            //String transcriptionFilesUrl = transcriptionFilesUrla;
+            Console.WriteLine("Obteniendo contenido desde la URL: " + transcriptionFilesUrl);
 
             try
             {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
 
-                var response = await client.GetAsync(transcriptionFilesUrl);
+                var response = await client.GetAsync(transcriptionFilesUrl, HttpCompletionOption.ResponseContentRead);
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception("Error al obtener el contenido desde la URL");
-                }
+
+
 
                 var responseData = await response.Content.ReadAsStringAsync();
+
+                
+
                 Console.WriteLine("Respuesta de la URL: " + responseData);
-                var data = Newtonsoft.Json.JsonConvert.DeserializeObject(responseData);
-                return data.ToString();
+
+                // Deserializar los datos de la respuesta si es necesario
+                return responseData;
             }
             catch (Exception ex)
             {
@@ -163,5 +164,6 @@ namespace SpeechToTextApp
                 throw;
             }
         }
+
     }
 }

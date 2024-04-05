@@ -70,12 +70,10 @@ const App = () => {
 
       if (!response.ok) {
         throw new Error('Error al obtener el contenido desde la URL');
-      } else 
-        console.log('Response: ', response);
-        console.log('Response Code: ', response.status);
-
+      } else {
         const data = await response.json();
         console.log('Data: ', data);
+      }
 
       return data.values[0].links.contentUrl;
     } catch (error) {

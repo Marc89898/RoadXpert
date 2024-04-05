@@ -10,4 +10,11 @@ Mentre treballava en el desenvolupament de la meva aplicació, he trobat un prob
 Aquest comportament inesperat m'ha portat a sospitar que alguna part del codi o un procés previ està alterant el valor de la variable transcriptionFilesUrl de manera inesperada. Tot i realitzar diverses proves i revisions, encara no he trobat una solució clara al problema.
 
 Continuaré investigant per identificar l'origen exacte del problema i trobar una solució adequada.
-Probare de fer servir la API de OpenIA ja que la de l'Azure m'esta donant problemes.
+
+Per abordar aquest problema, he realitzat una revisió exhaustiva del flux de treball de la meva aplicació per identificar qualsevol modificació o ús inesperat de la variable transcriptionFilesUrl. A més, he millorat els missatges de depuració i he implementat un maneig d'errors més eficaç per comprendre millor el comportament de les sol·licituds HTTP.
+
+En conclusió, aquests dies he après la importància de la depuració minuciosa i la revisió del flux de treball del codi per solucionar problemes inesperats. Aquesta experiència m'ha proporcionat una comprensió més profunda de la gestió de les variables i la importància de mantenir la consistència en el flux de treball del codi.
+
+
+## 02/04/2024
+Degut al problema amb la Api d'azure que no ha sigut posible solucionar, he estat provant divereses llibreries y apis, entre elles la api de assembly AI, la de google, y la de openIA, actualment estic amb de OpenIA, tambe he provat les eguents llibreries; @react-native-community/voice,
