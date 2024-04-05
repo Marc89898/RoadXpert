@@ -18,7 +18,7 @@ import { Speech } from 'expo';
 
 
 
-const openIAApiKey = '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'; // Reemplaza con tu clave de API de OpenAI
+const openIAApiKey = ''; // Reemplaza con tu clave de API de OpenAI
 const openai = new OpenAI({ apiKey: openIAApiKey });
 
 const App = () => {
