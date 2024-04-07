@@ -206,7 +206,7 @@ CREATE TABLE RoadXpertDatabase.dbo.sysdiagrams (
 
 CREATE TABLE RoadXpertDatabase.dbo.Hora (
 	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	DiaSemana varchar(15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	DiaSetmana varchar(15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	HoraInici time NOT NULL,
 	HoraFi time NOT NULL,
 	HorariID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
