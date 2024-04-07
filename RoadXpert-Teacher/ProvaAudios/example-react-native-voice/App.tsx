@@ -1,94 +1,80 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
+
+import { ActivityIndicator, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import { AssemblyAI } from 'assemblyai';
 import axios from 'axios';
-import OpenAI from 'openai';
+import { Audio } from 'expo-av';
+import env from './env';
 
-const ApiKey = "";
-const openai = new OpenAI({ apiKey: ApiKey });
+
+
+
 
 const App: React.FC = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [recording, setRecording] = useState();
   const [transcriptionText, setTranscriptionText] = useState<string>('');
+  const [respondeGPT, setRespondeGPT] = useState<string>('');
+  const [permissionResponse, requestPermission] = Audio.usePermissions();
 
-  useEffect(() => {
-    async function transcribeAudio() {
-      try {
-
-        const client = new AssemblyAI({
-          apiKey: '',
-        });
-
-        // const FILE_URL = 'https://storage.googleapis.com/aai-web-samples/5_common_sports_injuries.mp3';
-        const FILE_URL = await uploadMediaGetUrl();
-        console.log('FILE_URL:', FILE_URL);
-
-        const data = {
-          audio_url: FILE_URL
-        };
-
-        try {
-          const response = await client.transcripts.create(data);
-          console.log('Transcription:', response.text);
-        } catch (error) {
-          console.error('Error transcribing audio:', error);
-
-        }
-/** 
-        const transcription = await openai.audio.transcriptions.create({
-          file: await getAudioFileUploadable(),
-          model: "whisper-1",
-        });
-        
-        setTranscriptionText(transcription.text);
-**/
-      } catch (error) {
-        console.error("Error transcribing audio:", error);
-        setTranscriptionText('Error occurred during transcription.');
-      }
-    }
-
-    transcribeAudio();
-  }, []);
-
-  const getAudioFileUploadable = async () => {
-    
+  async function startRecording() {
     try {
-      // Cargar el archivo de audio desde la carpeta assets
-      const asset = Asset.fromModule(require('./data/whatstheweatherlike.mp3'));
-
-      // Descargar el archivo si aún no está descargado
-      if (!asset.localUri) {
-        await asset.downloadAsync();
+      if (permissionResponse.status !== 'granted') {
+        console.log('Requesting permission..');
+        await requestPermission();
       }
-      
-      // Obtener el URI del archivo local
-      const localUri = asset.localUri || asset.uri;
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
 
-      // Obtener la URI de contenido del archivo local
-      const contentUri = await FileSystem.getContentUriAsync(localUri);
-
-      // Crear un flujo de lectura del archivo de audio
-      const response = await fetch(contentUri);
-      const audioStream = response.body;
-
-      return audioStream;
-      
-    } catch (error: any) {
-      throw new Error(`Error al leer el archivo de audio: ${error.message} `);
+      console.log('Starting recording..');
+      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
+      setRecording(recording);
+      console.log('Recording started');
+    } catch (err) {
+      console.error('Failed to start recording', err);
     }
-  };
+  }
+
+  async function stopRecording() {
+    console.log('Stopping recording..');
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
+    await Audio.setAudioModeAsync(
+      {
+        allowsRecordingIOS: false,
+      }
+    );
+    const uri = recording.getURI();
+    console.log('Recording stopped and stored at', uri);
+    try {
+      await uploadMediaGetUrl(uri);    
+    } catch (error) {
+      console.error("Error transcribing audio:", error);
+      setTranscriptionText('Error occurred during transcription.');
+    }
+  }
 
 
-  const uploadMediaGetUrl = async () => {
+
+  const uploadMediaGetUrl = async (audioURL : string) => {
+    // const assemblyAI = new AssemblyAI({
+    //   apiKey: 'd0a17141be774bb4a538c7990af110d5',
+    // });
+    setLoading(true);
     const baseUrl = 'https://api.assemblyai.com/v2'
     const headers = {
-      authorization: '' 
+      authorization: env.ASSEMBLY_API_KEY
     }
 
     try {
       // Cargar el archivo de audio desde la carpeta assets
+      // const asset = Asset.fromModule(require('./data/whatstheweatherlike.mp3'));
       const asset = Asset.fromModule(require('./data/whatstheweatherlike.mp3'));
 
       // Descargar el archivo si aún no está descargado
@@ -100,7 +86,7 @@ const App: React.FC = () => {
       const localUri = asset.localUri || asset.uri;
 
       // const audioData = await fs.readFile(path) en reac native
-      const audioData = await fetch(localUri);
+      const audioData = await fetch(audioURL);
       const audioBlob = await audioData.arrayBuffer();
 
 
@@ -112,7 +98,8 @@ const App: React.FC = () => {
 
 
       const data = {
-        audio_url: uploadUrl // You can also use a URL to an audio or video file on the web
+        audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
+        language_code: 'es'
       }
 
       const url = `${baseUrl}/transcript`
@@ -129,6 +116,8 @@ const App: React.FC = () => {
 
         if (transcriptionResult.status === 'completed') {
           console.log(transcriptionResult.text)
+          setTranscriptionText(transcriptionResult.text);
+          interpretGPT(transcriptionResult.text)
           break
         } else if (transcriptionResult.status === 'error') {
           throw new Error(`Transcription failed: ${transcriptionResult.error}`)
@@ -136,13 +125,7 @@ const App: React.FC = () => {
           await new Promise((resolve) => setTimeout(resolve, 3000))
         }
       }
-
-
-
-
-
-
-
+      setLoading(false);
 
       return uploadUrl;
     } catch (error: any) {
@@ -150,19 +133,84 @@ const App: React.FC = () => {
     }
   };
 
-
+  const interpretGPT = async (text: string) => {
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "system", content: "You are a helpful assistant." }, { role: "user", content: text }]
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${env.GPT3_API_KEY}`,
+          },
+        }
+      );
+      const completions = response.data.choices;
+      if (completions.length > 0) {
+        const completionText = completions[0].message.content;
+        console.log("GPT3 Completions:", completionText);
+        setRespondeGPT(completionText);
+      }
+    } catch (error) {
+      console.error("Error al interpretar texto con GPT-3:", error);
+    }
+  };
+  
 
   return (
-    <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 20 }}>OpenAI Audio Transcription</Text>
-      <View style={{ marginTop: 20, padding: 10, borderRadius: 5 }}>
-        <Text style={{ fontSize: 16 }}>Transcription Text:</Text>
-        <Text>{transcriptionText || 'Transcription in progress...'}</Text>
-      </View>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <Text style={styles.headingText}>Speech to Text with AssemblyAI</Text>
+        <View style={styles.btnContainer}>
+          {isLoading ? (
+            <ActivityIndicator size="large" color="black" />
+          ) : (
+            <TouchableOpacity onPress={startRecording} style={styles.transcribe}>
+              <Button
+              title={recording ? 'Stop Recording' : 'Start Recording'}
+              onPress={recording ? stopRecording : startRecording}
+            />
+            </TouchableOpacity>
+          )}
+        </View>
+        <Text style={{ marginTop: 16, textAlign: 'center' }}>Transcripcion: </Text>
+        <Text style={{ marginTop: 16, textAlign: 'center' }}>{transcriptionText}</Text>
+
+        <Text style={{ marginTop: 16, textAlign: 'center' }}>Interpretacion ChatGPT </Text>
+        <Text style={{ marginTop: 16, textAlign: 'center' }}>{respondeGPT}</Text>
+      </SafeAreaView>
     </View>
   );
 };
 
+
+const styles = StyleSheet.create({
+  // Your style definitions here
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 24,
+  },
+  headingText: {
+    alignSelf: 'center',
+    marginVertical: 26,
+    fontWeight: 'bold',
+    fontSize: 26,
+  },
+  btnContainer: {
+    alignItems: 'center',
+  },
+  transcribe: {
+    backgroundColor: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    borderRadius: 8,
+  },
+});
+
 export default App;
-
-
