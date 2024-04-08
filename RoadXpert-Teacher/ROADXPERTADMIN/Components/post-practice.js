@@ -14,12 +14,12 @@ import CustomTextInput from "../assets/Inputs/CustomTextInput.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 
-const PrePractice = () => {
+const PostPractice = () => {
   const signatureRef = useRef();
   const navigation = useNavigation();
 
   const handleStartButtonPress = () => {
-    navigation.navigate("StartRouteMap"); 
+    navigation.navigate("StartRouteMap");
   };
 
   const handleClearSignature = () => {
@@ -31,26 +31,23 @@ const PrePractice = () => {
       <View style={styles.container}>
         <BackNavigation />
         <View style={styles.contentContainer}>
-          <Text style={styles.headerText}>Pre-Practice</Text>
+          <Text style={styles.headerText}>Resultados de la practica</Text>
+          <CustomTextInput label="Duracion total:" placeholder="58 mins" />
+          <CustomTextInput label="Errores:" placeholder="3 errores" />
+          <CustomTextInput label="Distancia recorrida:" placeholder="7km" />
+          <CustomTextInput label="Maxima Velocidad:" placeholder="43km/h" />
+          <Text style={styles.alumnoDataText}>Datos del alumno</Text>
           <CustomTextInput
             label="Nombre del alumno:"
-            placeholder="Youssef Joubayr Mejd El Aarab"
+            placeholder="Josep Maria"
           />
           <CustomTextInput
-            label="Num. Práctica:"
-            placeholder="Escriba aquí ..."
+            label="Num. Practica"
+            placeholder="Practica 8"
           />
           <CustomTextInput
-            label="Tipo de carnet:"
-            placeholder="Escriba aquí ..."
-          />
-          <CustomTextInput
-            label="Nombre de la práctica:"
-            placeholder="Escriba aquí ..."
-          />
-          <CustomTextInput
-            label="Duración de la práctica:"
-            placeholder="Escriba aquí ..."
+            label="Nombre de la practica:"
+            placeholder="Subidas i aparcamientos"
           />
           <View style={styles.signatureContainer}>
             <Text>Firma del alumno:</Text>
@@ -71,7 +68,7 @@ const PrePractice = () => {
           <View>
             <MainButton
               onPress={handleStartButtonPress}
-              title="Arranquemos!!"
+              title="Finalizar Practica"
             />
           </View>
         </View>
@@ -90,6 +87,7 @@ const styles = StyleSheet.create({
     paddingTop: 24,
   },
   headerText: {
+    width: "75%",
     fontSize: 25,
     marginBottom: 20,
   },
@@ -99,6 +97,11 @@ const styles = StyleSheet.create({
   signatureContainer: {
     position: "relative",
     marginTop: 30,
+  },
+  alumnoDataText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 15,
   },
   signatureCanvas: {
     height: 200,
@@ -115,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PrePractice;
+export default PostPractice;

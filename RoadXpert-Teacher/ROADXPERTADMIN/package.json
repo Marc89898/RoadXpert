@@ -23,7 +23,8 @@
     "react-native-paper": "^5.12.3",
     "react-native-rapi-ui": "^0.2.1",
     "react-native-signature-canvas": "^4.7.2",
-    "react-native-vector-icons": "^10.0.3"
+    "react-native-vector-icons": "^10.0.3",
+    "expo-location": "~16.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
