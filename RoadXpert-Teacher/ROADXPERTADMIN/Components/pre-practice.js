@@ -1,14 +1,26 @@
-// PrePractice.js
-
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, ScrollView, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import SignatureCanvas from "react-native-signature-canvas";
 import MainButton from "../assets/Buttons/mainButton.js";
 import CustomTextInput from "../assets/Inputs/CustomTextInput.js";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 
 const PrePractice = () => {
   const signatureRef = useRef();
+  const navigation = useNavigation();
+
+  const handleStartButtonPress = () => {
+    navigation.navigate("StartRoute"); 
+  };
 
   const handleClearSignature = () => {
     signatureRef.current.clearSignature();
@@ -48,12 +60,19 @@ const PrePractice = () => {
               penColor="#000"
               style={styles.signatureCanvas}
             />
-            <View style={styles.clearButtonContainer}>
-              <Button title="Limpiar Firma" onPress={handleClearSignature} />
-            </View>
+            <TouchableOpacity
+              style={styles.clearButtonContainer}
+              onPress={handleClearSignature}
+            >
+              <Icon name="trash" size={30} color="red" />
+            </TouchableOpacity>
           </View>
+
           <View>
-            <MainButton title="Arranquemos!!" />
+            <MainButton
+              onPress={handleStartButtonPress}
+              title="Arranquemos!!"
+            />
           </View>
         </View>
       </View>
@@ -78,6 +97,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   signatureContainer: {
+    position: "relative",
     marginTop: 30,
   },
   signatureCanvas: {
@@ -86,7 +106,12 @@ const styles = StyleSheet.create({
     borderColor: "#000",
   },
   clearButtonContainer: {
-    marginTop: 10,
+    position: "absolute",
+    top: 30,
+    right: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.7)", // Fondo transparente para que sea visible
+    padding: 5,
+    borderRadius: 5,
   },
 });
 

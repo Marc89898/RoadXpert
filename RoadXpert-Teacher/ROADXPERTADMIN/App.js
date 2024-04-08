@@ -14,6 +14,7 @@ import StudentProfile from './Components/StudentProfile.js';
 import CarInfo from './Components/CarInfo.js';
 import MapScreen from './Components/MapScreen.js';
 import prePractice from './Components/pre-practice.js';
+import StartRoute from './Components/StartRoute.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,7 @@ export default function App() {
         <Stack.Screen name="CarInfo" component={CarInfo} />
         <Stack.Screen name="MapScreen" component={MapScreen} />
         <Stack.Screen name="prePractice" component={prePractice} />
+        <Stack.Screen name="StartRoute" component={StartRoute} />
       </Stack.Navigator>
     </NavigationContainer>
   );
