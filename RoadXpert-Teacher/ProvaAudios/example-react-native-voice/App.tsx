@@ -8,6 +8,7 @@ import { AssemblyAI } from 'assemblyai';
 import axios from 'axios';
 import { Audio } from 'expo-av';
 import env from './env';
+import ms from './data/messagesGPT.json';
 
 
 
@@ -96,7 +97,6 @@ const App: React.FC = () => {
 
       const uploadUrl = uploadResponse.data.upload_url;
 
-
       const data = {
         audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
         language_code: 'es'
@@ -139,7 +139,7 @@ const App: React.FC = () => {
         "https://api.openai.com/v1/chat/completions",
         {
           model: "gpt-3.5-turbo",
-          messages: [{ role: "system", content: "You are a helpful assistant." }, { role: "user", content: text }]
+          messages: [ ...ms , { role: "user", content: text }] // aqui debe ir todo el jsonjunto al 'text'
         },
         {
           headers: {
@@ -151,8 +151,11 @@ const App: React.FC = () => {
       const completions = response.data.choices;
       if (completions.length > 0) {
         const completionText = completions[0].message.content;
+
+        const respondeGPT = new ResponseGPT(completionText);
+
         console.log("GPT3 Completions:", completionText);
-        setRespondeGPT(completionText);
+        setRespondeGPT(respondeGPT.tipo +", "+ respondeGPT.CategoriaEscrita +", "+ respondeGPT.categoriaNumerica +", "+ respondeGPT.gravedad);
       }
     } catch (error) {
       console.error("Error al interpretar texto con GPT-3:", error);
@@ -185,6 +188,24 @@ const App: React.FC = () => {
     </View>
   );
 };
+
+
+class ResponseGPT {
+  constructor(jsonString : string) {
+    const jsonObject = JSON.parse(jsonString);
+    this.tipo = jsonObject.tipo;
+    this.CategoriaEscrita = jsonObject.CategoriaEscrita;
+    this.categoriaNumerica = jsonObject.categoriaNumerica;
+    this.gravedad = jsonObject.gravedad;
+  }
+  tipo: string;
+  CategoriaEscrita: string;
+  categoriaNumerica: number;
+  gravedad: string;
+
+}
+
+
 
 
 const styles = StyleSheet.create({
