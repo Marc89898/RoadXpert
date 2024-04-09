@@ -26,6 +26,9 @@ const Dashboard = () => {
   const handleStartPractical = () => {
     navigation.navigate("prePractice");
   };
+  const hadleAllStudents = () => {
+    navigation.navigate("AllStudents");
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -60,6 +63,9 @@ const Dashboard = () => {
       <View style={styles.container}>
         <Button style={styles.button} onPress={handleCars} mode="contained">
           Coches
+        </Button>
+        <Button style={styles.button} onPress={hadleAllStudents} mode="contained">
+          All Students
         </Button>
       </View>
       <NavBar />

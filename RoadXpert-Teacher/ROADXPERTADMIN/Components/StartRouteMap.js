@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Image,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
 import * as Location from "expo-location";
@@ -11,6 +18,13 @@ const StartRouteMap = () => {
   const [location, setLocation] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const toggleConfirmationModal = () => {
+    setShowConfirmation(!showConfirmation);
+  };
+  const confirmFinishPractice = () => {
+
+  };
 
   useEffect(() => {
     (async () => {
@@ -52,8 +66,8 @@ const StartRouteMap = () => {
         >
           <Polyline
             coordinates={routeCoordinates}
-            strokeColor="#FF0000" // color de la línea de la ruta
-            strokeWidth={6} // ancho de la línea
+            strokeColor="#FF0000"
+            strokeWidth={6}
           />
           <Marker
             coordinate={{
@@ -83,12 +97,44 @@ const StartRouteMap = () => {
           </View>
           <TouchableOpacity
             style={styles.flagIconContainer}
-            onPress={goToPostPractice}
+            onPress={toggleConfirmationModal}
           >
             <View style={styles.flagCircle}>
               <Icon name="flag-checkered" size={24} color="black" />
             </View>
           </TouchableOpacity>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={showConfirmation}
+            onRequestClose={toggleConfirmationModal}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Image
+                  source={require("../assets/images/StartRouteMap/FinishLineIcon.png")}
+                  style={styles.modalImage}
+                />
+                <Text style={styles.modalText}>
+                  ¿Está seguro que desea finalizar la sesión de práctica?
+                </Text>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={styles.confirmButton}
+                    onPress={confirmFinishPractice}
+                  >
+                    <Text style={styles.buttonText}>CONFIRMAR</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={toggleConfirmationModal}
+                  >
+                    <Text style={styles.buttonText}>CANCELAR</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
         </View>
       </View>
     </View>
@@ -106,6 +152,56 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
     paddingTop: 24,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+  },
+  modalView: {
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+  },
+  modalText: {
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  confirmButton: {
+    backgroundColor: "lightblue",
+    padding: 10,
+    borderRadius: 5,
+  },
+  cancelButton: {
+    backgroundColor: "#D9D9D9",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   titleContainer: {
     flexDirection: "row",
