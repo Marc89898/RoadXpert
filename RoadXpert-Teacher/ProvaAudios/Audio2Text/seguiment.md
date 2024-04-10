@@ -18,3 +18,12 @@ En conclusió, aquests dies he après la importància de la depuració minuciosa
 
 ## 05/04/2024
 A causa del problema amb l'API d'Azure que no s'ha pogut resoldre, els darrers dies he estat provant diverses llibreries i APIs, entre elles l'API de Assembly AI, la de Google i la d'OpenAI, entre altres llibreries de codi obert. Finalment, he aconseguit que funcioni amb Assembly AI. Ja he realitzat una transcripció d'un àudio en castellà. Haig de mirar que es pugui fer en catala.
+
+
+## 09/04/2024
+Avui hem avançat amb èxit en el processament dels teus fitxers d'àudio i el seu postprocessament mitjançant ChatGPT, incloent el context de les faltes. Després d'un treball diligent, hem aconseguit obtenir un objecte d'anotació complet que ens proporciona informació valuosa sobre les transcripcions i la seva interpretació.
+
+Aquesta tasca ens ha permès millorar significativament el nostre flux de treball i obtenir una comprensió més profunda del contingut dels teus àudios. Continuarem treballant en aquesta línia per assegurar-nos que tot estigui en ordre i que el resultat final compleixi les expectatives establertes.
+
+## 10/04/2024
+Avui fare la integracio del speech to text de proves fet amb .tsx amb la app de produccio feta amb .js

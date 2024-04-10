@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet } from 'react-native';
 
 import { ActivityIndicator, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
-import { AssemblyAI } from 'assemblyai';
 import axios from 'axios';
 import { Audio } from 'expo-av';
 import env from './env';
@@ -54,7 +51,16 @@ const App: React.FC = () => {
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
     try {
-      await uploadMediaGetUrl(uri);    
+      const text = await speechToText(uri);
+      setTranscriptionText(text);
+
+      const respondeGPT = await interpretGPT(text);
+      if (respondeGPT === undefined) {
+        setRespondeGPT('No se pudo interpretar el texto');
+        return;
+      }
+
+      setRespondeGPT(respondeGPT.tipo +", "+ respondeGPT.CategoriaEscrita +", "+ respondeGPT.categoriaNumerica +", "+ respondeGPT.gravedad);
     } catch (error) {
       console.error("Error transcribing audio:", error);
       setTranscriptionText('Error occurred during transcription.');
@@ -63,75 +69,56 @@ const App: React.FC = () => {
 
 
 
-  const uploadMediaGetUrl = async (audioURL : string) => {
-    // const assemblyAI = new AssemblyAI({
-    //   apiKey: 'd0a17141be774bb4a538c7990af110d5',
-    // });
+  const speechToText = async (audioURL: string) => {
     setLoading(true);
-    const baseUrl = 'https://api.assemblyai.com/v2'
-    const headers = {
-      authorization: env.ASSEMBLY_API_KEY
-    }
-
     try {
-      // Cargar el archivo de audio desde la carpeta assets
-      // const asset = Asset.fromModule(require('./data/whatstheweatherlike.mp3'));
-      const asset = Asset.fromModule(require('./data/whatstheweatherlike.mp3'));
-
-      // Descargar el archivo si aún no está descargado
-      if (!asset.localUri) {
-        await asset.downloadAsync();
-      }
-      
-      // Obtener el URI del archivo local
-      const localUri = asset.localUri || asset.uri;
-
-      // const audioData = await fs.readFile(path) en reac native
-      const audioData = await fetch(audioURL);
-      const audioBlob = await audioData.arrayBuffer();
-
-
-      const uploadResponse = await axios.post(`${baseUrl}/upload`, audioBlob, {
-        headers
-      });
-
-      const uploadUrl = uploadResponse.data.upload_url;
-
-      const data = {
-        audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
-        language_code: 'es'
-      }
-
-      const url = `${baseUrl}/transcript`
-      const response = await axios.post(url, data, { headers: headers });
-
-      const transcriptId = response.data.id
-      const pollingEndpoint = `${baseUrl}/transcript/${transcriptId}`
-
-      while (true) {
-        const pollingResponse = await axios.get(pollingEndpoint, {
-          headers: headers
-        })
-        const transcriptionResult = pollingResponse.data
-
-        if (transcriptionResult.status === 'completed') {
-          console.log(transcriptionResult.text)
-          setTranscriptionText(transcriptionResult.text);
-          interpretGPT(transcriptionResult.text)
-          break
-        } else if (transcriptionResult.status === 'error') {
-          throw new Error(`Transcription failed: ${transcriptionResult.error}`)
-        } else {
-          await new Promise((resolve) => setTimeout(resolve, 3000))
-        }
-      }
+      const uploadUrl = await uploadAudio(audioURL);
+      const transcriptText = await transcribeAudio(uploadUrl);
       setLoading(false);
-
-      return uploadUrl;
+      return transcriptText;
     } catch (error: any) {
-      throw new Error(`Error al leer el archivo de audio: ${error.message} `);
+      console.error("Error al transcribir el audio:", error);
+      setLoading(false);
+      throw new Error(`Error al transcribir el audio: ${error.message}`);
     }
   };
+  
+  const uploadAudio = async (audioURL: string) => {
+    const baseUrl = 'https://api.assemblyai.com/v2';
+    const headers = { authorization: env.ASSEMBLY_API_KEY };
+  
+    const audioData = await fetch(audioURL);
+    const audioBlob = await audioData.arrayBuffer();
+  
+    const uploadResponse = await axios.post(`${baseUrl}/upload`, audioBlob, { headers });
+    return uploadResponse.data.upload_url;
+  };
+  
+  const transcribeAudio = async (uploadUrl: string) => {
+    const baseUrl = 'https://api.assemblyai.com/v2';
+    const headers = { authorization: env.ASSEMBLY_API_KEY };
+  
+    const data = { audio_url: uploadUrl, language_code: 'es' };
+    const response = await axios.post(`${baseUrl}/transcript`, data, { headers });
+  
+    const transcriptId = response.data.id;
+    const pollingEndpoint = `${baseUrl}/transcript/${transcriptId}`;
+  
+    while (true) {
+      const pollingResponse = await axios.get(pollingEndpoint, { headers });
+      const transcriptionResult = pollingResponse.data;
+  
+      if (transcriptionResult.status === 'completed') {
+        return transcriptionResult.text;
+      } else if (transcriptionResult.status === 'error') {
+        throw new Error(`Transcription failed: ${transcriptionResult.error}`);
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      }
+    }
+  };
+  
+  
 
   const interpretGPT = async (text: string) => {
     try {
@@ -151,11 +138,10 @@ const App: React.FC = () => {
       const completions = response.data.choices;
       if (completions.length > 0) {
         const completionText = completions[0].message.content;
-
-        const respondeGPT = new ResponseGPT(completionText);
-
         console.log("GPT3 Completions:", completionText);
-        setRespondeGPT(respondeGPT.tipo +", "+ respondeGPT.CategoriaEscrita +", "+ respondeGPT.categoriaNumerica +", "+ respondeGPT.gravedad);
+
+        return new anotacio(completionText);
+
       }
     } catch (error) {
       console.error("Error al interpretar texto con GPT-3:", error);
@@ -190,7 +176,7 @@ const App: React.FC = () => {
 };
 
 
-class ResponseGPT {
+class anotacio {
   constructor(jsonString : string) {
     const jsonObject = JSON.parse(jsonString);
     this.tipo = jsonObject.tipo;
@@ -202,7 +188,6 @@ class ResponseGPT {
   CategoriaEscrita: string;
   categoriaNumerica: number;
   gravedad: string;
-
 }
 
 
