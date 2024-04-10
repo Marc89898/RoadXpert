@@ -12,6 +12,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "./BottomNavigation/BackNavigation";
+import { getTrafficData } from "./api/trafficService";
 
 const StartRouteMap = () => {
   const navigation = useNavigation();
@@ -19,11 +20,14 @@ const StartRouteMap = () => {
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [trafficData, setTrafficData] = useState([]); 
+
   const toggleConfirmationModal = () => {
     setShowConfirmation(!showConfirmation);
   };
-  const confirmFinishPractice = () => {
 
+  const confirmFinishPractice = () => {
+    navigation.navigate("PostPractice");
   };
 
   useEffect(() => {
@@ -43,13 +47,22 @@ const StartRouteMap = () => {
             longitude: newLocation.coords.longitude,
           },
         ]);
+
+        const fetchTrafficData = async () => {
+          try {
+            const data = await getTrafficData(
+              newLocation.coords.latitude,
+              newLocation.coords.longitude
+            );
+            setTrafficData(data); 
+          } catch (error) {
+            console.error("Error al obtener datos de tráfico:", error);
+          }
+        };
+        fetchTrafficData();
       });
     })();
   }, []);
-
-  const goToPostPractice = () => {
-    navigation.navigate("PostPractice");
-  };
 
   return (
     <View style={styles.container}>
@@ -76,6 +89,18 @@ const StartRouteMap = () => {
             }}
             title="Mi Ubicación"
           />
+          {trafficData.map((trafficPoint, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: trafficPoint.latitude,
+                longitude: trafficPoint.longitude,
+              }}
+              title="Tráfico"
+              description={`Intensidad: ${trafficPoint.intensity}`}
+              pinColor="red"
+            />
+          ))}
         </MapView>
       )}
 

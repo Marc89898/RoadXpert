@@ -15,8 +15,10 @@ import {
 } from "react-native-paper";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import NavBar from "./BottomNavigation/NavBar";
+import { useNavigation } from '@react-navigation/native';
 
-const StudentCard = ({ name, age, imageUrl, onDelete }) => {
+const StudentCard = ({ name, age, image, onDelete }) => {
+  const navigation = useNavigation();
   const [showOptions, setShowOptions] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
@@ -29,9 +31,17 @@ const StudentCard = ({ name, age, imageUrl, onDelete }) => {
     setShowOptions(false);
   };
 
+  const handleOpen = () => {
+    navigation.navigate('StudentInfo', { name, image })  
+  };
+
   const handleDelete = () => {
     onDelete(selectedStudent);
     setShowOptions(false);
+  };
+
+  const handleEdit = () => {
+    navigation.navigate('StudentProfile', { name, image })
   };
 
   return (
@@ -39,7 +49,7 @@ const StudentCard = ({ name, age, imageUrl, onDelete }) => {
       <Card style={styles.card}>
         <Card.Content style={styles.cardContent}>
           <View style={styles.leftContent}>
-            <Image source={imageUrl} style={styles.profileImage} />
+            <Image source={image} style={styles.profileImage} />
             <View style={styles.textContainer}>
               <Text style={styles.nameText}>{name}</Text>
               <Text style={styles.ageText}>{age}</Text>
@@ -69,9 +79,8 @@ const StudentCard = ({ name, age, imageUrl, onDelete }) => {
                 {selectedStudent ? selectedStudent : ""}
               </Text>
             </View>
-            <TouchableOpacity
+            <TouchableOpacity onPress={handleOpen}
               style={styles.optionItem}
-              onPress={() => console.log("Abrir")}
             >
               <Text>Abrir</Text>
             </TouchableOpacity>
@@ -80,9 +89,8 @@ const StudentCard = ({ name, age, imageUrl, onDelete }) => {
               <Text>Eliminar</Text>
             </TouchableOpacity>
             <View style={styles.separator} />
-            <TouchableOpacity
+            <TouchableOpacity onPress={handleEdit}
               style={styles.optionItem}
-              onPress={() => console.log("Editar")}
             >
               <Text>Editar</Text>
             </TouchableOpacity>
@@ -99,12 +107,12 @@ const AllStudents = ({ navigation }) => {
     {
       name: "Mariano Gomez",
       age: "18 años",
-      imageUrl: require("../assets/images/Students/imgProbaToni.jpg"),
+      image: require("../assets/images/Students/imgProbaToni.jpg"),
     },
     {
       name: "Pere Naus",
       age: "25 años",
-      imageUrl: require("../assets/images/Students/imgProbaTom.jpg"),
+      image: require("../assets/images/Students/imgProbaTom.jpg"),
     },
   ]);
 
@@ -140,7 +148,7 @@ const AllStudents = ({ navigation }) => {
             key={index}
             name={student.name}
             age={student.age}
-            imageUrl={student.imageUrl}
+            image={student.image}
             onDelete={handleDeleteStudent}
           />
         ))}

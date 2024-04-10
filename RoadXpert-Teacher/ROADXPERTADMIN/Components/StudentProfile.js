@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import BackNavigation from "./BottomNavigation/BackNavigation";
-import { MaterialIcons } from "@expo/vector-icons"; // Importa el ícono de cámara
-import * as ImagePicker from 'expo-image-picker'; // Importa 
+import { MaterialIcons } from "@expo/vector-icons"; 
+import * as ImagePicker from 'expo-image-picker';  
 
 const StudentProfile = ({ route }) => {
   const name = route.params?.name;
