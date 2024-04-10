@@ -50,7 +50,7 @@ namespace SpeechToTextApp
 
         static async Task App()
         {
-            string azureApiKey = "7190332d56704eb68d71e03de633cead"; // Reemplaza con tu clave de API de Azure
+            string azureApiKey = ""; // Reemplaza con tu clave de API de Azure
             string azureEndpoint = "https://eastus.api.cognitive.microsoft.com/speechtotext/v3.1/transcriptions";
 
             try
