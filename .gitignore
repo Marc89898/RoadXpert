@@ -1,7 +1,9 @@
 # Dependencias de Node.js
 AppInstructor/node_modules
 AppStudents/node_modules
-
+ProvesApart/provaCalendari/node_modules
+ProvesApart/provaCalendari/.expo
+ProvesApart/provaCalendari/.vscode
 # Archivos de construcción generados
 AppStudent/build
 AppStudent/dist
