@@ -1,5 +1,5 @@
 -- Inserts para la tabla Rol (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Rol (ID, Nom, Descripcio) 
+INSERT INTO Rol (ID, Nom, Descripcio) 
     VALUES (NEWID(), 'Professor', 'Persona encarregada de donar les classes pràctiques i teòriques als alumnes.'),
         (NEWID(), 'Recepcionista', 'Persona encarregada de gestionar la recepció i atendre els clients.'),
         (NEWID(), 'Secretari/a', 'Persona encarregada de tasques administratives i de gestió de la documentació.'),
@@ -8,7 +8,7 @@ INSERT INTO RoadXpertDatabase.dbo.Rol (ID, Nom, Descripcio)
         (NEWID(), 'Formador/a', 'Persona encarregada de la formació teòrica dels alumnes.');
 
 -- Inserts para la tabla Carnet (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Carnet (ID, Categoria, DataExpedicio, DataCaducitat, AutoritatExpedidora, Restriccions, NumCarnet, PaisExpedicio, NumExpedicio, ValidaPerCategories) 
+INSERT INTO Carnet (ID, Categoria, DataExpedicio, DataCaducitat, AutoritatExpedidora, Restriccions, NumCarnet, PaisExpedicio, NumExpedicio, ValidaPerCategories) 
     VALUES (NEWID(), 'B', '2023-01-01', '2028-01-01', 'Direcció General de Trànsit (DGT)', NULL, '123456', 'Espanya', '789', 'B'),
         (NEWID(), 'A', '2022-05-15', '2027-05-15', 'Direcció General de Trànsit (DGT)', NULL, '987654', 'Espanya', '321', 'A'),
         (NEWID(), 'AM', '2024-03-20', '2029-03-20', 'Direcció General de Trànsit (DGT)', 'Limitat a ciclomotors', '654321', 'Espanya', '987', 'A, AM'),
@@ -18,7 +18,7 @@ INSERT INTO RoadXpertDatabase.dbo.Carnet (ID, Categoria, DataExpedicio, DataCadu
 
 
 -- Inserts para la tabla Alumne (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Alumne (ID, Nom, DNI, Adreca, Telefon) 
+INSERT INTO Alumne (ID, Nom, DNI, Adreca, Telefon) 
     VALUES (NEWID(), 'Jordi Sánchez', '12345678A', 'Carrer Major, 123', '612345678'),
         (NEWID(), 'Laura Martínez', '98765432B', 'Plaça del Sol, 45', '655432189'),
         (NEWID(), 'Marc Gómez', '45678901C', 'Avinguda Diagonal, 789', '698745632'),
@@ -27,7 +27,7 @@ INSERT INTO RoadXpertDatabase.dbo.Alumne (ID, Nom, DNI, Adreca, Telefon)
 
 
 -- Inserts para la tabla Anotacio (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Anotacio (Tipus, Descripcio, Posicio, ID) 
+INSERT INTO Anotacio (Tipus, Descripcio, Posicio, ID) 
     VALUES ('Positiva', 'L`alumne ha mostrat un bon domini del vehicle durant la pràctica.', 'Interior', NEWID()),
         ('Neutra', 'Es fa necessari millorar l`observació dels senyals de trànsit.', 'Exterior', NEWID()),
         ('Negativa', 'S`han observat errors repetits en el control del volant.', 'Interior', NEWID()),
@@ -35,7 +35,7 @@ INSERT INTO RoadXpertDatabase.dbo.Anotacio (Tipus, Descripcio, Posicio, ID)
 
 
 -- Inserts para la tabla Vehicle (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Vehicle (Matricula, Marca, Model, AnyFabricacio, Tipus, Color) 
+INSERT INTO Vehicle (Matricula, Marca, Model, AnyFabricacio, Tipus, Color) 
     VALUES 
         -- Ciclomotor
         ('1234ABC', 'Yamaha', 'Neo`s', 2020, 'Ciclomotor', 'Blanc'),
@@ -50,7 +50,7 @@ INSERT INTO RoadXpertDatabase.dbo.Vehicle (Matricula, Marca, Model, AnyFabricaci
 
 
 -- Inserts para la tabla Horari (Autoescola) con UID generado automáticamente
-INSERT INTO RoadXpertDatabase.dbo.Horari (UID, Nom, Descripcio) 
+INSERT INTO Horari (UID, Nom, Descripcio) 
     VALUES (NEWID(), 'Intensiu', 'Horari intensiu amb classes concentrades en un període curt de temps.'),
         (NEWID(), 'Estiu', 'Horari especial durant els mesos d`estiu amb modificacions en els horaris habituals.'),
         (NEWID(), 'Matins', 'Horari concentrat en les hores del matí.'),
@@ -59,7 +59,7 @@ INSERT INTO RoadXpertDatabase.dbo.Horari (UID, Nom, Descripcio)
 
 
 -- Inserts para la tabla EstatHora (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.EstatHora (ID, Nom, Descripcio) 
+INSERT INTO EstatHora (ID, Nom, Descripcio) 
     VALUES (NEWID(), 'Solicitada', 'Hora sol·licitada per l`alumne.'),
         (NEWID(), 'Confirmada', 'Hora confirmada pel professor o l`autoescola.'),
         (NEWID(), 'Realitzada', 'Hora realitzada, l`alumne va assistir.'),
@@ -70,7 +70,7 @@ INSERT INTO RoadXpertDatabase.dbo.EstatHora (ID, Nom, Descripcio)
 
 -- Inserts para la tabla Hora (Horarios)
 -- Horario de Mañana
-    INSERT INTO RoadXpertDatabase.dbo.Hora (ID, DiaSemana, HoraInici, HoraFi, HorariID)
+    INSERT INTO Hora (ID, DiaSemana, HoraInici, HoraFi, HorariID)
     VALUES (NEWID(), 'Lunes', '09:00:00', '10:00:00', '1'),
         (NEWID(), 'Lunes', '10:00:00', '10:00:00', '1'),
         (NEWID(), 'Lunes', '11:00:00', '12:00:00', '1'),
@@ -94,7 +94,7 @@ INSERT INTO RoadXpertDatabase.dbo.EstatHora (ID, Nom, Descripcio)
 
 
 -- Horario de Tarde
-INSERT INTO RoadXpertDatabase.dbo.Hora (ID, DiaSemana, HoraInici, HoraFi, HorariID)
+INSERT INTO Hora (ID, DiaSemana, HoraInici, HoraFi, HorariID)
     VALUES (NEWID(), 'Lunes', '16:00:00', '17:00:00', '2'),
         (NEWID(), 'Lunes', '17:00:00', '18:00:00', '2'),
         (NEWID(), 'Lunes', '18:00:00', '19:00:00', '2'),
@@ -117,7 +117,7 @@ INSERT INTO RoadXpertDatabase.dbo.Hora (ID, DiaSemana, HoraInici, HoraFi, Horari
         (NEWID(), 'Viernes', '19:00:00', '20:00:00', '2');
 
 
-INSERT INTO RoadXpertDatabase.dbo.Practica (AlumneID, Ruta, Km, HoraInici, HoraFi, ID, HoraID, VehicleID, EstatHoraID, [Data])
+INSERT INTO Practica (AlumneID, Ruta, Km, HoraInici, HoraFi, ID, HoraID, VehicleID, EstatHoraID, [Data])
     VALUES ('14C83297-9F2D-4693-A1A1-667717F4847F', 'Ruta 1', 30.50, '08:01:20', '09:03:00', NEWID(), '003EDA14-4B4C-4BA8-B527-06F25D2C8799', '9012GHI', '3D7CC2F7-1B4B-48BD-9E69-1EA25510E4A7', '2023-01-15'),
         ('4151D12A-0FF3-42DC-A6A0-32F211F93597', 'Ruta 2', 25.75, '10:00:10', '11:00:05', NEWID(), '00D404D4-DC0D-4739-943A-97518472D05C', '9012GHI', '3D7CC2F7-1B4B-48BD-9E69-1EA25510E4A7', '2022-11-10'),
         ('77844111-E0AD-41A1-BC63-51A5EE79DDDF', 'Ruta 3', 20.25, '12:02:12', '13:02:02', NEWID(), '1F7486BF-0531-4C5C-ACD4-2EACCB531769', '9012GHI', '8007090B-0223-4AEF-8B07-A39EE567FB90', '2024-03-20'),
@@ -125,7 +125,7 @@ INSERT INTO RoadXpertDatabase.dbo.Practica (AlumneID, Ruta, Km, HoraInici, HoraF
 
 
 -- Inserts para la tabla Treballador (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Treballador (ID, Nom, Cognom, DNI, Adreca, Sexe, CarnetConduirFront, CarnetConduirDarrera, HorariID)
+INSERT INTO Treballador (ID, Nom, Cognom, DNI, Adreca, Sexe, CarnetConduirFront, CarnetConduirDarrera, HorariID)
     VALUES 
         (NEWID(), 'Juan', 'Martínez', '12345678A', 'Calle Mayor, 123', 'M', 'Frontal', 'Darrera', '1C0D394D-32B7-420E-BF52-88E8CBB298A6'),
         (NEWID(), 'María', 'Gómez', '87654321B', 'Avenida Libertad, 45', 'F', 'Frontal', 'Darrera', '6A7DD292-4C29-441D-A06A-93D09B04AECA'),
@@ -136,7 +136,7 @@ INSERT INTO RoadXpertDatabase.dbo.Treballador (ID, Nom, Cognom, DNI, Adreca, Sex
 
 
 -- Inserts para la tabla Matricula (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Matricula (AlumneID, CarnetID, DataInici, DataFi) 
+INSERT INTO Matricula (AlumneID, CarnetID, DataInici, DataFi) 
     VALUES ('14C83297-9F2D-4693-A1A1-667717F4847F', 'B4A8E028-71C2-4B4A-B947-8F801CEFD112', '2023-01-15', '2023-12-15'),
         ('4151D12A-0FF3-42DC-A6A0-32F211F93597', '2690B51A-3B82-43B9-9108-82E5A1B73BE1', '2022-11-10', '2023-11-10'),
         ('77844111-E0AD-41A1-BC63-51A5EE79DDDF', '85F16BA9-4486-4523-9DF8-E33EA55FCDC6', '2024-03-20', '2024-09-20'),

@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { APIService } from './ApiService';
+import { DataAdapter } from './Adapter';
 
 export default function App() {
+  const IDALUMNE = '77844111-E0AD-41A1-BC63-51A5EE79DDDF';
+  const [data, setData] = useState(null);
+  const [events, setEvents] = useState({});
+
+  // Effect to fill the events
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await APIService.fetchEvents(IDALUMNE);
+        const adaptedData = DataAdapter.adaptData(result);
+        setData(adaptedData);
+        setEvents(adaptedData);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log("Datos finales:", data);
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
   const availableHours = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'];
-
-  const [events, setEvents] = useState({
-    '2024-04-01': [{ id: uuidv4(), descripcion: 'Cycling', hora: '10:00' }, { id: uuidv4(), descripcion: 'Walking', hora: '10:00' }, { id: uuidv4(), descripcion: 'Running', hora: '10:00' }],
-    '2024-04-02': [{ id: uuidv4(), descripcion: 'Writing', hora: '10:00' }]
-  });
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(formattedDate);
@@ -21,8 +38,6 @@ export default function App() {
   const [eventName, setEventName] = useState('');
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [eventToDelete, setEventToDelete] = useState(null);
-
-  
 
   const handleDeleteConfirmation = (item) => {
     setEventToDelete(item);
@@ -47,7 +62,6 @@ export default function App() {
     });
     setDeleteConfirmationVisible(false);
   };
-  
 
   const handleAddEvent = () => {
     const eventId = uuidv4();
@@ -62,8 +76,7 @@ export default function App() {
       return updatedEvents;
     });
   };
-  
-  
+
   const addPractica = () => {
     setModalVisible(true);
   };
@@ -115,7 +128,6 @@ export default function App() {
           </TouchableOpacity>
         )}
       />
-
       <TouchableOpacity style={styles.addButton}>
         <Ionicons onPress={addPractica} name="add-circle" size={70} color="black" />
       </TouchableOpacity>
