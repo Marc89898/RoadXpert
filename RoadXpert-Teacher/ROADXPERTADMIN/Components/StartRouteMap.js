@@ -17,6 +17,7 @@ import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { getTrafficData } from "./api/trafficService";
+// import * as AsyncStorage from '@react-native-community/async-storage';
 
 // audio amanagment
 import axios from 'axios';
@@ -49,6 +50,17 @@ const StartRouteMap = () => {
 
   const confirmFinishPractice = () => {
     navigation.navigate("PostPractice");
+    saveRoute();
+  };
+
+  const saveRoute = async () => {
+    try {
+      const routeData = JSON.stringify(routeCoordinates);
+      await AsyncStorage.setItem("savedRoute", routeData);
+      console.log("Route data saved successfully!");
+    } catch (error) {
+      console.error("Error saving route data:", error);
+    }
   };
 
   useEffect(() => {
@@ -98,10 +110,6 @@ const StartRouteMap = () => {
       });
     })();
   }, []);
-
-
-
-
 
 
   // Audio managment start
