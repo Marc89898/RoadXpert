@@ -6,8 +6,11 @@ class DataAdapter {
         const date = new Date(item.Data).toISOString().split('T')[0];
         const event = {
           id: item.ID,
-          descripcion: item.Ruta,
-          hora: item.HoraInici,
+          name: "Practica",
+          horaInicial: item.HoraInici,
+          Ruta: item.Ruta,
+          Coche: item.VehicleID,
+          Estat: "En Process de confirmacio"
         };
   
         if (adaptedData[date]) {
@@ -20,5 +23,6 @@ class DataAdapter {
       return adaptedData;
     }
   }
-
-export { DataAdapter }
+  
+  export { DataAdapter };
+  
