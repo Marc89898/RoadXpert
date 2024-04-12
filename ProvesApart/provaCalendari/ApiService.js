@@ -9,7 +9,6 @@ class APIService {
       } else {
         console.error("Error en la petición: Status", response.status, response.statusText);
       }
-
       return data;
     } catch (error) {
       console.error('Error fetching events:', error.message);

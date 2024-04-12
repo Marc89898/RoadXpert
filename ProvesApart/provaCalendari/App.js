@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
-import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { APIService } from './ApiService';
 import { DataAdapter } from './Adapter';
@@ -21,12 +20,13 @@ export default function App() {
         setData(adaptedData);
         setEvents(adaptedData);
       } catch (error) {
-        console.error('Error fetching data:', error.message);
+        console.error('ERROR IN THE DATABASE');
       }
     };
 
     fetchData();
   }, []);
+
   console.log("Datos finales:", data);
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
@@ -35,7 +35,10 @@ export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(formattedDate);
   const [selectedHour, setSelectedHour] = useState(availableHours[0]);
+  const [selectedRoute, setSelectedRoute] = useState('');
+  const [selectedCar, setSelectedCar] = useState('');
   const [eventName, setEventName] = useState('');
+  const [eventEstat, setEventEstat] = useState('');
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [eventToDelete, setEventToDelete] = useState(null);
 
@@ -65,7 +68,7 @@ export default function App() {
 
   const handleAddEvent = () => {
     const eventId = uuidv4();
-    const event = { id: eventId, descripcion: eventName, hora: selectedHour };
+    const event = { id: eventId, Nom: eventName, horaInicial: selectedHour, Ruta: selectedRoute, Coche: selectedCar, Estat: eventEstat};
     setEvents((prevEvents) => {
       const updatedEvents = { ...prevEvents };
       if (updatedEvents[selectedDate]) {
@@ -85,6 +88,8 @@ export default function App() {
     handleAddEvent();
     setModalVisible(false);
     setEventName('');
+    setSelectedRoute('');
+    setSelectedCar('');
     setSelectedDate(formattedDate);
     setSelectedHour(availableHours[0]);
   };
@@ -92,6 +97,8 @@ export default function App() {
   const handleModalCancel = () => {
     setModalVisible(false);
     setEventName('');
+    setSelectedRoute('');
+    setSelectedCar('');
     setSelectedDate(formattedDate);
     setSelectedHour(availableHours[0]);
   };
@@ -122,8 +129,11 @@ export default function App() {
             style={styles.item}
             onPress={() => handleDeleteConfirmation(item)}>
             <View style={styles.itemTextContainer}>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Event: </Text>{item.descripcion}</Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Time: </Text>{item.hora}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Name: </Text>{item.name}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Time: </Text>{item.horaInicial}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Coche}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -156,6 +166,12 @@ export default function App() {
               value={eventName}
               onChangeText={setEventName}
               placeholder="Nombre de la práctica"
+            />
+            <TextInput
+              style={styles.input}
+              value={selectedRoute}
+              onChangeText={setSelectedRoute}
+              placeholder="Ruta"
             />
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
