@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Card } from "react-native-paper";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
-import NavBar from "./BottomNavigation/NavBar";
 
 const CustomCard = ({ title, subtitle, backgroundImage }) => {
   const navigation = useNavigation();
@@ -29,7 +28,7 @@ const CustomCard = ({ title, subtitle, backgroundImage }) => {
   );
 };
 
-export default function MyStudents({navigation}) {
+const MyStudents = () => {
   return (
     <View style={styles.container}>
       <BackNavigation />
@@ -53,7 +52,6 @@ export default function MyStudents({navigation}) {
           backgroundImage={require("../assets/images/Students/imgProbaBruce.jpg")}
         />
       </View>
-      <NavBar />
     </View>
   );
 };
@@ -110,3 +108,5 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 });
+
+export default MyStudents;

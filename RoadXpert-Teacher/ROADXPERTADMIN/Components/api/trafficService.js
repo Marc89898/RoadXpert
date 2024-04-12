@@ -3,7 +3,7 @@ export const getTrafficData = async (latitude, longitude) => {
     try {
       // Aquí podrías hacer una solicitud a la API de un proveedor de servicios de mapas para obtener los datos de tráfico
       // Por ejemplo, usando fetch para hacer una solicitud HTTP
-      const response = await fetch(`https://ejemplo.com/api/traffic?lat=${latitude}&lng=${longitude}`);
+      const response = await fetch(`https://maps.com/api/traffic?lat=${latitude}&lng=${longitude}`);
       const data = await response.json();
       return data;
     } catch (error) {
