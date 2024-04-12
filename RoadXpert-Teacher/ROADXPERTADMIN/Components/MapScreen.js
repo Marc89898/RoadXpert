@@ -12,13 +12,13 @@ const MapScreen = () => {
   const [initialPosition, setInitialPosition] = useState(null);
 
   const handleMapTouch = async (latitude, longitude) => {
-    const API_KEY = "YOUR_API_KEY"; // Replace with your Google Maps API key
+    const API_KEY = "AIzaSyCNcRVPxV96NruUez95JitKhfMTB_9avcA";
 
     const url = `https://maps.googleapis.com/maps/api/directions/json?`;
     const params = new URLSearchParams({
-      origin: `${initialPosition.latitude},${initialPosition.longitude}`, 
-      destination: `${latitude},${longitude}`, 
-      mode: "driving", 
+      origin: `${initialPosition.latitude},${initialPosition.longitude}`,
+      destination: `${latitude},${longitude}`,
+      mode: "driving",
       key: API_KEY,
     });
 
@@ -27,18 +27,17 @@ const MapScreen = () => {
       const data = await response.json();
 
       if (data.status === "OK") {
-        console.log("Directions:", data.routes[0].legs[0]); 
+        console.log("Directions:", data.routes[0].legs[0]);
       } else {
         console.error("Directions error:", data.status);
       }
     } catch (error) {
       console.error("Directions request error:", error);
     }
-    
   };
 
   useEffect(() => {
-    (async () => {
+    const intervalId = setInterval(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
@@ -52,7 +51,9 @@ const MapScreen = () => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
-    })();
+    }, 5000); 
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
