@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import NavBar from "./BottomNavigation/NavBar.js";
+// import NavBar from "./BottomNavigation/NavBar.js";
 import { Card, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
           All Students
         </Button>
       </View>
-      <NavBar />
+      {/* <NavBar /> */}
     </View>
   );
 };

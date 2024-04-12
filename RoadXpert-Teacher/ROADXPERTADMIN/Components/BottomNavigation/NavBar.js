@@ -1,12 +1,16 @@
 import React from "react";
+import { View, StyleSheet } from "react-native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BottomNavigation } from "react-native-paper";
+import { Text, BottomNavigation } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useNavigation } from "@react-navigation/native";
+import Dashboard from "../Dashboard";
+import MyStudents from "../MyStudents";
+import Cars from "../Cars";
 
 const Tab = createBottomTabNavigator();
 
-export default function NavBar() {
+export default function MyComponent() {
   const navigation = useNavigation();
 
   return (
@@ -28,47 +32,19 @@ export default function NavBar() {
             if (event.defaultPrevented) {
               preventDefault();
             } else {
-              if (route.name === "Calender") {
-                navigation.navigate("AppointmentScreen");
-              } else if (route.name === "Students") {
-                navigation.navigate("MyStudents");
-              } else if (route.name === "Home") {
-                navigation.navigate("Dashboard");
-              } else if (route.name === "MyCars") {
-                navigation.navigate("MyCars");
-              } else {
-                navigation.navigate(route.name);
-              }
+              navigation.dispatch({
+                ...CommonActions.navigate(route.name, route.params),
+                target: state.key,
+              });
             }
           }}
           renderIcon={({ route, focused, color }) => {
             const { options } = descriptors[route.key];
-            let iconName;
-
-            switch (route.name) {
-              case "Home":
-                iconName = focused ? "home" : "home-outline";
-                break;
-              case "Calendar":
-                iconName = focused ? "calendar" : "calendar-outline";
-                break;
-              case "Students":
-                iconName = focused ? "account" : "account-outline";
-                break;
-              case "MyCars":
-                iconName = focused ? "car" : "car-outline";
-                break;
-              default:
-                iconName = focused ? "home" : "home-outline";
+            if (options.tabBarIcon) {
+              return options.tabBarIcon({ focused, color, size: 24 });
             }
 
-            return (
-              <Icon
-                name={iconName}
-                size={24}
-                color={focused ? "blue" : color}
-              />
-            );
+            return null;
           }}
           getLabelText={({ route }) => {
             const { options } = descriptors[route.key];
@@ -78,55 +54,60 @@ export default function NavBar() {
                 : options.title !== undefined
                 ? options.title
                 : route.title;
+
             return label;
           }}
         />
       )}
     >
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Dashboard"
+        component={Dashboard}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: "Dashboard",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="home-outline" size={size} color={color} />;
+          },
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Calendar"
-        component={CalendarScreen}
+        component={Calendar}
         options={{
-          tabBarLabel: "Calendar",
+          tabBarLabel: "Dashboard",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="calendar-outline" size={size} color={color} />;
+          },
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Students"
-        component={StudentsScreen}
+        component={MyStudents}
         options={{
           tabBarLabel: "Students",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="account-outline" size={size} color={color} />;
+          },
         }}
       />
       <Tab.Screen
-        name="MyCars"
-        component={CarsScreen}
+        name="Cars"
+        component={Cars}
         options={{
           tabBarLabel: "Cars",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="car-outline" size={size} color={color} />;
+          },
         }}
       />
     </Tab.Navigator>
   );
 }
 
-function HomeScreen() {
-  return null;
-}
-
-function CalendarScreen() {
-  return null;
-}
-
-function StudentsScreen() {
-  return null;
-}
-
-function CarsScreen() {
-  return null;
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

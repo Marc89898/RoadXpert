@@ -17,6 +17,7 @@ import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { getTrafficData } from "./api/trafficService";
+// import * as AsyncStorage from '@react-native-community/async-storage';
 
 // audio amanagment
 import axios from 'axios';
@@ -28,6 +29,9 @@ const StartRouteMap = () => {
   const navigation = useNavigation();
   const [location, setLocation] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [street, setStreet] = useState(null);
+  const [number, setNumber] = useState(null);
+  const [city, setCity] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [trafficData, setTrafficData] = useState([]);
@@ -46,6 +50,17 @@ const StartRouteMap = () => {
 
   const confirmFinishPractice = () => {
     navigation.navigate("PostPractice");
+    saveRoute();
+  };
+
+  const saveRoute = async () => {
+    try {
+      const routeData = JSON.stringify(routeCoordinates);
+      await AsyncStorage.setItem("savedRoute", routeData);
+      console.log("Route data saved successfully!");
+    } catch (error) {
+      console.error("Error saving route data:", error);
+    }
   };
 
   useEffect(() => {
@@ -54,6 +69,20 @@ const StartRouteMap = () => {
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+
+      let addressResponse = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      if (addressResponse.length > 0) {
+        setStreet(addressResponse[0].street);
+        setNumber(addressResponse[0].name);
+        setCity(addressResponse[0].city);
       }
 
       Location.watchPositionAsync({ distanceInterval: 10 }, (newLocation) => {
@@ -81,10 +110,6 @@ const StartRouteMap = () => {
       });
     })();
   }, []);
-
-
-
-
 
 
   // Audio managment start
@@ -279,10 +304,8 @@ const StartRouteMap = () => {
                 )}
               </View>
             </TouchableOpacity>
-            {/* Audio managment end */}
-
-            <Text style={styles.addressText}>Carrer de riudara, 25</Text>
-            <Text style={styles.addressText}>OLOT</Text>
+            <Text style={styles.addressText}>{street} {number}</Text>
+            <Text style={styles.cityText}>{city}</Text>
           </View>
           <TouchableOpacity
             style={styles.flagIconContainer}
@@ -424,6 +447,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addressText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  cityText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",

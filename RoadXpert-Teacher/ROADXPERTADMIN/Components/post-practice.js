@@ -19,7 +19,7 @@ const PostPractice = () => {
   const navigation = useNavigation();
 
   const handleStartButtonPress = () => {
-    navigation.navigate("StartRouteMap");
+    navigation.navigate("Dashboard");
   };
 
   const handleClearSignature = () => {
