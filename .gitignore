@@ -74,3 +74,5 @@ Ia/local_settings.py
 # Sphinx documentation
 Api/docs/_build/
 Ia/docs/_build/
+
+Database/Docker/DB
