@@ -1,6 +1,6 @@
 -- DROP SCHEMA dbo;
 
-CREATE SCHEMA dbo;
+-- CREATE SCHEMA dbo;
 -- RoadXpertDatabase.dbo.Alumne definition
 
 -- Drop table
@@ -70,19 +70,6 @@ CREATE TABLE RoadXpertDatabase.dbo.Carnet (
 );
 
 
--- RoadXpertDatabase.dbo.Comet definition
-
--- Drop table
-
--- DROP TABLE RoadXpertDatabase.dbo.Comet;
-
-CREATE TABLE RoadXpertDatabase.dbo.Comet (
-	PracticaID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	AnotacioID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	CONSTRAINT PK__Comet__DAA1457E77FB9E77 PRIMARY KEY (PracticaID,AnotacioID)
-);
-
-
 -- RoadXpertDatabase.dbo.ErrorLog definition
 
 -- Drop table
@@ -117,19 +104,6 @@ CREATE TABLE RoadXpertDatabase.dbo.EstatHora (
 );
 
 
--- RoadXpertDatabase.dbo.Exercir definition
-
--- Drop table
-
--- DROP TABLE RoadXpertDatabase.dbo.Exercir;
-
-CREATE TABLE RoadXpertDatabase.dbo.Exercir (
-	RolID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	TreballadorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	CONSTRAINT PK__Exercir__6E10AB776DE56547 PRIMARY KEY (RolID,TreballadorID)
-);
-
-
 -- RoadXpertDatabase.dbo.HistorialPractica definition
 
 -- Drop table
@@ -141,22 +115,6 @@ CREATE TABLE RoadXpertDatabase.dbo.HistorialPractica (
 	[Data] datetime NULL,
 	Accio varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	Descripcio text COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-);
-
-
--- RoadXpertDatabase.dbo.Hora definition
-
--- Drop table
-
--- DROP TABLE RoadXpertDatabase.dbo.Hora;
-
-CREATE TABLE RoadXpertDatabase.dbo.Hora (
-	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	DiaSetmana varchar(15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	HoraInici time NOT NULL,
-	HoraFi time NOT NULL,
-	HorariID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	CONSTRAINT PK__Hora__3214EC27899D2B9D PRIMARY KEY (ID)
 );
 
 
@@ -191,41 +149,6 @@ CREATE TABLE RoadXpertDatabase.dbo.Incidencia (
 );
 
 
--- RoadXpertDatabase.dbo.Matricula definition
-
--- Drop table
-
--- DROP TABLE RoadXpertDatabase.dbo.Matricula;
-
-CREATE TABLE RoadXpertDatabase.dbo.Matricula (
-	AlumneID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	CarnetID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	DataFi date NULL,
-	DataInici date NULL,
-	CONSTRAINT PK__Matricul__85CB8C24D9712D52 PRIMARY KEY (AlumneID,CarnetID)
-);
-
-
--- RoadXpertDatabase.dbo.Practica definition
-
--- Drop table
-
--- DROP TABLE RoadXpertDatabase.dbo.Practica;
-
-CREATE TABLE RoadXpertDatabase.dbo.Practica (
-	AlumneID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	Ruta varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	Km decimal(10,2) NULL,
-	HoraInici time(3) NULL,
-	HoraFi time(3) NULL,
-	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	ProfesorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	VehicleID varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	EstatHoraID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[Data] date NULL
-);
-
-
 -- RoadXpertDatabase.dbo.Rol definition
 
 -- Drop table
@@ -237,41 +160,6 @@ CREATE TABLE RoadXpertDatabase.dbo.Rol (
 	Nom varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	Descripcio text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	CONSTRAINT PK__Rol__3214EC274002EFEE PRIMARY KEY (ID)
-);
-
-
--- RoadXpertDatabase.dbo.Treballador definition
-
--- Drop table
-
--- DROP TABLE RoadXpertDatabase.dbo.Treballador;
-
-CREATE TABLE RoadXpertDatabase.dbo.Treballador (
-	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	Nom varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	Cognom varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	SegonCognom varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	DNI varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	Adreca varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	Sexe varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	CarnetConduirFront text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	CarnetConduirDarrera text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	HorariID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	CONSTRAINT PK__Treballa__3214EC277B081D2F PRIMARY KEY (ID),
-	CONSTRAINT UQ__Treballa__C035B8DD3BE6E9AC UNIQUE (DNI)
-);
-
-
--- RoadXpertDatabase.dbo.TreballadorTeIncidencia definition
-
--- Drop table
-
--- DROP TABLE RoadXpertDatabase.dbo.TreballadorTeIncidencia;
-
-CREATE TABLE RoadXpertDatabase.dbo.TreballadorTeIncidencia (
-	TreballadorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	IncidenciaID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	CONSTRAINT PK__Treballa__0D7B89546A10A0A6 PRIMARY KEY (TreballadorID,IncidenciaID)
 );
 
 
@@ -309,68 +197,145 @@ CREATE TABLE RoadXpertDatabase.dbo.sysdiagrams (
 );
 
 
--- RoadXpertDatabase.dbo.Alumne foreign keys
+-- RoadXpertDatabase.dbo.Alumne definition
 
--- RoadXpertDatabase.dbo.Anotacio foreign keys
+-- Drop table
 
--- RoadXpertDatabase.dbo.BuildVersion foreign keys
+-- DROP TABLE RoadXpertDatabase.dbo.Alumne;
 
--- RoadXpertDatabase.dbo.Carnet foreign keys
-
--- RoadXpertDatabase.dbo.Comet foreign keys
-
-ALTER TABLE RoadXpertDatabase.dbo.Comet ADD CONSTRAINT Comet_FK FOREIGN KEY (AnotacioID) REFERENCES RoadXpertDatabase.dbo.Anotacio(ID);
-ALTER TABLE RoadXpertDatabase.dbo.Comet ADD CONSTRAINT FK__Comet__PracticaI__7A3223E8 FOREIGN KEY (PracticaID) REFERENCES RoadXpertDatabase.dbo.Practica(ID);
-
-
--- RoadXpertDatabase.dbo.ErrorLog foreign keys
-
--- RoadXpertDatabase.dbo.EstatHora foreign keys
-
--- RoadXpertDatabase.dbo.Exercir foreign keys
-
-ALTER TABLE RoadXpertDatabase.dbo.Exercir ADD CONSTRAINT FK__Exercir__RolID__00DF2177 FOREIGN KEY (RolID) REFERENCES RoadXpertDatabase.dbo.Rol(ID);
-ALTER TABLE RoadXpertDatabase.dbo.Exercir ADD CONSTRAINT FK__Exercir__Treball__01D345B0 FOREIGN KEY (TreballadorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID);
+CREATE TABLE RoadXpertDatabase.dbo.Alumne (
+	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Nom varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	DNI varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Adreca varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Telefon varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__Alumne__3214EC27739B574A PRIMARY KEY (ID),
+	CONSTRAINT UQ__Alumne__C035B8DDB7BEDBB5 UNIQUE (DNI)
+);
 
 
--- RoadXpertDatabase.dbo.HistorialPractica foreign keys
+-- RoadXpertDatabase.dbo.Hora definition
 
--- RoadXpertDatabase.dbo.Hora foreign keys
+-- Drop table
 
-ALTER TABLE RoadXpertDatabase.dbo.Hora ADD CONSTRAINT FK__Hora__HorariID__531856C7 FOREIGN KEY (HorariID) REFERENCES RoadXpertDatabase.dbo.Horari(ID);
+-- DROP TABLE RoadXpertDatabase.dbo.Hora;
 
-
--- RoadXpertDatabase.dbo.Horari foreign keys
-
--- RoadXpertDatabase.dbo.Incidencia foreign keys
-
--- RoadXpertDatabase.dbo.Matricula foreign keys
-
-ALTER TABLE RoadXpertDatabase.dbo.Matricula ADD CONSTRAINT FK__Matricula__Alumn__6442E2C9 FOREIGN KEY (AlumneID) REFERENCES RoadXpertDatabase.dbo.Alumne(ID);
-ALTER TABLE RoadXpertDatabase.dbo.Matricula ADD CONSTRAINT FK__Matricula__Carne__65370702 FOREIGN KEY (CarnetID) REFERENCES RoadXpertDatabase.dbo.Carnet(ID);
-
-
--- RoadXpertDatabase.dbo.Practica foreign keys
-
-ALTER TABLE RoadXpertDatabase.dbo.Practica ADD CONSTRAINT FK_Practica_Vehicle FOREIGN KEY (VehicleID) REFERENCES RoadXpertDatabase.dbo.Vehicle(Matricula);
-ALTER TABLE RoadXpertDatabase.dbo.Practica ADD CONSTRAINT Practica_FK FOREIGN KEY (EstatHoraID) REFERENCES RoadXpertDatabase.dbo.EstatHora(ID);
-ALTER TABLE RoadXpertDatabase.dbo.Practica ADD CONSTRAINT Practica_FK_1 FOREIGN KEY (AlumneID) REFERENCES RoadXpertDatabase.dbo.Alumne(ID);
-ALTER TABLE RoadXpertDatabase.dbo.Practica ADD CONSTRAINT Practica_FK_profesorID FOREIGN KEY (ProfesorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID);
+CREATE TABLE RoadXpertDatabase.dbo.Hora (
+	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	DiaSetmana varchar(15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	HoraInici time NOT NULL,
+	HoraFi time NOT NULL,
+	HorariID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__Hora__3214EC27899D2B9D PRIMARY KEY (ID),
+	CONSTRAINT FK__Hora__HorariID__531856C7 FOREIGN KEY (HorariID) REFERENCES RoadXpertDatabase.dbo.Horari(ID)
+);
 
 
--- RoadXpertDatabase.dbo.Rol foreign keys
+-- RoadXpertDatabase.dbo.Matricula definition
 
--- RoadXpertDatabase.dbo.Treballador foreign keys
+-- Drop table
 
-ALTER TABLE RoadXpertDatabase.dbo.Treballador ADD CONSTRAINT FK__Treballad__Horar__03BB8E22 FOREIGN KEY (HorariID) REFERENCES RoadXpertDatabase.dbo.Horari(ID);
+-- DROP TABLE RoadXpertDatabase.dbo.Matricula;
+
+CREATE TABLE RoadXpertDatabase.dbo.Matricula (
+	AlumneID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	CarnetID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	DataFi date NULL,
+	DataInici date NULL,
+	CONSTRAINT PK__Matricul__85CB8C24D9712D52 PRIMARY KEY (AlumneID,CarnetID),
+	CONSTRAINT FK__Matricula__Alumn__6442E2C9 FOREIGN KEY (AlumneID) REFERENCES RoadXpertDatabase.dbo.Alumne(ID),
+	CONSTRAINT FK__Matricula__Carne__65370702 FOREIGN KEY (CarnetID) REFERENCES RoadXpertDatabase.dbo.Carnet(ID)
+);
 
 
--- RoadXpertDatabase.dbo.TreballadorTeIncidencia foreign keys
+-- RoadXpertDatabase.dbo.Treballador definition
 
-ALTER TABLE RoadXpertDatabase.dbo.TreballadorTeIncidencia ADD CONSTRAINT FK__Treballad__Incid__7E02B4CC FOREIGN KEY (IncidenciaID) REFERENCES RoadXpertDatabase.dbo.Incidencia(Codi);
-ALTER TABLE RoadXpertDatabase.dbo.TreballadorTeIncidencia ADD CONSTRAINT FK__Treballad__Treba__7D0E9093 FOREIGN KEY (TreballadorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID);
+-- Drop table
+
+-- DROP TABLE RoadXpertDatabase.dbo.Treballador;
+
+CREATE TABLE RoadXpertDatabase.dbo.Treballador (
+	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Nom varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Cognom varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	SegonCognom varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	DNI varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Adreca varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Sexe varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CarnetConduirFront text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CarnetConduirDarrera text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	HorariID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__Treballa__3214EC277B081D2F PRIMARY KEY (ID),
+	CONSTRAINT UQ__Treballa__C035B8DD3BE6E9AC UNIQUE (DNI),
+	CONSTRAINT FK__Treballad__Horar__03BB8E22 FOREIGN KEY (HorariID) REFERENCES RoadXpertDatabase.dbo.Horari(ID)
+);
 
 
--- RoadXpertDatabase.dbo.Vehicle foreign keys
+-- RoadXpertDatabase.dbo.TreballadorTeIncidencia definition
 
--- RoadXpertDatabase.dbo.sysdiagrams foreign keys;
+-- Drop table
+
+-- DROP TABLE RoadXpertDatabase.dbo.TreballadorTeIncidencia;
+
+CREATE TABLE RoadXpertDatabase.dbo.TreballadorTeIncidencia (
+	TreballadorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	IncidenciaID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	CONSTRAINT PK__Treballa__0D7B89546A10A0A6 PRIMARY KEY (TreballadorID,IncidenciaID),
+	CONSTRAINT FK__Treballad__Incid__7E02B4CC FOREIGN KEY (IncidenciaID) REFERENCES RoadXpertDatabase.dbo.Incidencia(Codi),
+	CONSTRAINT FK__Treballad__Treba__7D0E9093 FOREIGN KEY (TreballadorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID)
+);
+
+
+-- RoadXpertDatabase.dbo.Exercir definition
+
+-- Drop table
+
+-- DROP TABLE RoadXpertDatabase.dbo.Exercir;
+
+CREATE TABLE RoadXpertDatabase.dbo.Exercir (
+	RolID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	TreballadorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	CONSTRAINT PK__Exercir__6E10AB776DE56547 PRIMARY KEY (RolID,TreballadorID),
+	CONSTRAINT FK__Exercir__RolID__00DF2177 FOREIGN KEY (RolID) REFERENCES RoadXpertDatabase.dbo.Rol(ID),
+	CONSTRAINT FK__Exercir__Treball__01D345B0 FOREIGN KEY (TreballadorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID)
+);
+
+
+-- RoadXpertDatabase.dbo.Practica definition
+
+-- Drop table
+
+-- DROP TABLE RoadXpertDatabase.dbo.Practica;
+
+CREATE TABLE RoadXpertDatabase.dbo.Practica (
+	AlumneID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Ruta varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Km decimal(10,2) NULL,
+	HoraInici time(3) NULL,
+	HoraFi time(3) NULL,
+	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	ProfesorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	VehicleID varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	EstatHoraID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[Data] date NULL,
+	CONSTRAINT Practica_PK PRIMARY KEY (ID),
+	CONSTRAINT FK_Practica_Vehicle FOREIGN KEY (VehicleID) REFERENCES RoadXpertDatabase.dbo.Vehicle(Matricula),
+	CONSTRAINT Practica_FK FOREIGN KEY (EstatHoraID) REFERENCES RoadXpertDatabase.dbo.EstatHora(ID),
+	CONSTRAINT Practica_FK_1 FOREIGN KEY (AlumneID) REFERENCES RoadXpertDatabase.dbo.Alumne(ID),
+	CONSTRAINT Practica_FK_profesorID FOREIGN KEY (ProfesorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID)
+);
+
+
+-- RoadXpertDatabase.dbo.Comet definition
+
+-- Drop table
+
+-- DROP TABLE RoadXpertDatabase.dbo.Comet;
+
+CREATE TABLE RoadXpertDatabase.dbo.Comet (
+	PracticaID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	AnotacioID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	CONSTRAINT PK__Comet__DAA1457E77FB9E77 PRIMARY KEY (PracticaID,AnotacioID),
+	CONSTRAINT Comet_FK FOREIGN KEY (AnotacioID) REFERENCES RoadXpertDatabase.dbo.Anotacio(ID),
+	CONSTRAINT Comet__FK__PracticaID FOREIGN KEY (PracticaID) REFERENCES RoadXpertDatabase.dbo.Practica(ID)
+);
