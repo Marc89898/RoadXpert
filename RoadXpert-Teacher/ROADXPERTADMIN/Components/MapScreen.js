@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { Button } from "react-native-paper";
 import { GoogleMapsServices } from "react-native-google-maps-services";
 import * as Location from "expo-location";
+import polyline from "@mapbox/polyline";
 
 const MapScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [initialPosition, setInitialPosition] = useState(null);
+  const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [distance, setDistance] = useState("");
+  const [duration, setDuration] = useState("");
 
   const handleMapTouch = async (latitude, longitude) => {
     const API_KEY = "AIzaSyCNcRVPxV96NruUez95JitKhfMTB_9avcA";
@@ -27,7 +31,22 @@ const MapScreen = () => {
       const data = await response.json();
 
       if (data.status === "OK") {
-        console.log("Directions:", data.routes[0].legs[0]);
+        const distanceText = data.routes[0].legs[0].distance.text;
+        const durationText = data.routes[0].legs[0].duration.text;
+        console.log("Distància:", distanceText);
+        console.log("Temps:", durationText);
+        setDistance(distanceText);
+        setDuration(durationText);
+
+        const route = data.routes[0].overview_polyline.points;
+        const decodedRoute = polyline.decode(route);
+
+        setRouteCoordinates(
+          decodedRoute.map((point) => ({
+            latitude: point[0],
+            longitude: point[1],
+          }))
+        );
       } else {
         console.error("Directions error:", data.status);
       }
@@ -51,7 +70,7 @@ const MapScreen = () => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
-    }, 5000); 
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -59,6 +78,7 @@ const MapScreen = () => {
   return (
     <View style={styles.container}>
       <BackNavigation style={styles.backNavigation} />
+
       <MapView
         style={[styles.map, { zIndex: -1 }]}
         initialRegion={initialPosition}
@@ -69,6 +89,11 @@ const MapScreen = () => {
           handleMapTouch(latitude, longitude);
         }}
       >
+        <Polyline
+          coordinates={routeCoordinates}
+          strokeWidth={5}
+          strokeColor="blue"
+        />
         {initialPosition && (
           <Marker
             coordinate={{

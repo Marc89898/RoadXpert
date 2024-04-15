@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
-import NavBar from './BottomNavigation/NavBar.js';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -46,7 +45,6 @@ const Dashboard = () => {
                 <Button style={styles.button} onPress={handleCalender} mode="contained">Calendario</Button>
                 <Button style={styles.button} onPress={handleRoutes} mode="contained">Rutas</Button>
             </View>
-            <NavBar />
         </View>
     );
 };
