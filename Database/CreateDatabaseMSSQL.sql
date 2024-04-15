@@ -339,3 +339,5 @@ CREATE TABLE RoadXpertDatabase.dbo.Comet (
 	CONSTRAINT Comet_FK FOREIGN KEY (AnotacioID) REFERENCES RoadXpertDatabase.dbo.Anotacio(ID),
 	CONSTRAINT Comet__FK__PracticaID FOREIGN KEY (PracticaID) REFERENCES RoadXpertDatabase.dbo.Practica(ID)
 );
+
+ALTER TABLE RoadXpertDatabase.dbo.Hora ADD DuracioPractica numeric(38,0) NULL;
