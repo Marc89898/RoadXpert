@@ -7,7 +7,7 @@ import { APIService } from './ApiService';
 import { DataAdapter } from './Adapter';
 
 export default function App() {
-  const IDALUMNE = '77844111-E0AD-41A1-BC63-51A5EE79DDDF';
+  const IDALUMNE = 'BFC7AB7E-19F1-4D4D-A1CE-F11DA18D2C1F';
   const [data, setData] = useState(null);
   const [events, setEvents] = useState({});
 
@@ -27,7 +27,6 @@ export default function App() {
     fetchData();
   }, []);
 
-  console.log("Datos finales:", data);
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
   const availableHours = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'];
@@ -131,6 +130,7 @@ export default function App() {
             <View style={styles.itemTextContainer}>
               <Text style={styles.itemText}><Text style={styles.boldText}>Name: </Text>{item.name}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>Time: </Text>{item.horaInicial}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Duration: </Text>{item.duration}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Coche}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
@@ -195,10 +195,10 @@ export default function App() {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text>¿Estás seguro de que deseas eliminar este evento?</Text>
+            <Text>¿Estás seguro de que deseas eliminar este evento? Vas a mandar una peticion para borrar la practica a tu professor</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={handleDeleteEvent}>
-                <Text style={styles.buttonText}>Eliminar</Text>
+                <Text style={styles.buttonText}>Peticion para Eliminar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleCancelDelete}>
                 <Text style={styles.buttonText}>Cancelar</Text>
