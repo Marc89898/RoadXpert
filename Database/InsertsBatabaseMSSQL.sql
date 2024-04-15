@@ -1,12 +1,3 @@
--- Inserts para la tabla Alumne (Autoescola)
-INSERT INTO RoadXpertDatabase.dbo.Alumne
-    (ID, Nom, DNI, Adreca, Telefon)
-VALUES
-    ('Alumne_1', 'Jordi Sánchez', '12345678A', 'Carrer Major, 123', '612345678'),
-    ('Alumne_2', 'Laura Martínez', '98765432B', 'Plaça del Sol, 45', '655432189'),
-    ('Alumne_3', 'Marc Gómez', '45678901C', 'Avinguda Diagonal, 789', '698745632'),
-    ('Alumne_4', 'Anna López', '32109876D', 'Carrer Gran, 56', '633210987');
-
 -- Inserts para la tabla Anotacio (Autoescola)
 INSERT INTO RoadXpertDatabase.dbo.Anotacio
     (Tipus, Descripcio, Posicio, ID)
@@ -87,7 +78,7 @@ VALUES
 -- Inserts para la tabla Hora (Horarios)
 -- Horario de Mañana
 INSERT INTO RoadXpertDatabase.dbo.Hora
-    (ID, DiaSemana, HoraInici, HoraFi, HorariID, DuracioPractica)
+    (ID, DiaSetmana, HoraInici, HoraFi, HorariID, DuracioPractica)
 VALUES
     ('Hora_1', 'Lunes', '09:00:00', '13:00:00', 'Horari_1', '60'),
     ('Hora_2', 'Lunes', '16:00:00', '20:00:00', 'Horari_1', '60'),
