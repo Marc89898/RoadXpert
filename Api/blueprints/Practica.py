@@ -102,25 +102,25 @@ def post_new_Practica():
 def put_update_Practica(Practica_id):
     """PUT para actualizar un registro de Practica por su ID"""
     data = request.json
-    alumneID = data.get('alumneID')
-    ruta = data.get('ruta')
-    km = data.get('km')
-    dataInici = data.get('dataInici')
-    dataFi = data.get('dataFi')
-    pagat = data.get('pagat')
-    horaID = data.get('horaID')
-    vehicleId = data.get('vehicleID')
-    estatHora = data.get('estatHora')
+    AlumneID = data.get('AlumneID')
+    Ruta = data.get('Ruta')
+    Km = data.get('Km')
+    HoraInici = data.get('HoraInici')
+    HoraFi = data.get('HoraFi')
+    ProfesorID = data.get('ProfesorID')
+    VehicleID = data.get('VehicleID')
+    EstatHoraID = data.get('EstatHoraID')
+    Data = data.get('Data')
     try:
         with engine.connect() as connection:
             # Verificar si el registro de Practica con el ID dado existe
-            query_check = text("SELECT * FROM Practica WHERE id = :id")
-            result_check = connection.execute(query_check, {"id": Practica_id})
+            query_check = text("SELECT * FROM Practica WHERE ID = :Practica_id")
+            result_check = connection.execute(query_check, {"Practica_id": Practica_id})
             Practica = result_check.fetchone()
             if Practica:
                 # El registro de Practica existe, proceder con la actualización
-                sql = text("UPDATE Practica SET alumneID = :alumneID, ruta = :ruta, km = :km, dataInici = :dataInici, dataFi = :dataFi, pagat = :pagat, horaID = :horaID, vehicleId = :vehicleId, estatHora = :estatHora WHERE id = :id")
-                connection.execute(sql, alumneID=alumneID, ruta=ruta, km=km, dataInici=dataInici, dataFi=dataFi, pagat=pagat, horaID=horaID, vehicleId=vehicleId, estatHora=estatHora, id=Practica_id)
+                sql = text("UPDATE Practica SET AlumneID = :AlumneID, Ruta = :Ruta, Km = :Km, HoraInici = :HoraInici, HoraFi = :HoraFi, EstatHoraID = :EstatHoraID, VehicleID = :VehicleID, ProfesorID = :ProfesorID, Data = :Data WHERE ID = :Practica_id")
+                connection.execute(sql, {"AlumneID": AlumneID, "Ruta": Ruta, "Km": Km, "HoraInici": HoraInici, "HoraFi": HoraFi, "EstatHoraID": EstatHoraID, "ProfesorID": ProfesorID, "VehicleID": VehicleID, "Data": Data, "Practica_id": Practica_id})
                 connection.commit()
                 return jsonify({"message": f"Practica with ID {Practica_id} updated successfully"}), 200
             else:
@@ -128,6 +128,8 @@ def put_update_Practica(Practica_id):
                 return jsonify({"message": f"No Practica found with ID {Practica_id}"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 
 @Practica_bp.route("/Practica/<string:Practica_id>", methods=['DELETE'])
 def delete_Practica(Practica_id):

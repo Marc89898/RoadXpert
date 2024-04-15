@@ -4,9 +4,9 @@ import pymssql
 from urllib.parse import quote_plus
 
 server = 'localhost'
-database = 'RoadXpert'
+database = 'RoadXpertDatabase'
 username = 'sa'
-password = 'root1234@'
+password = 'Passw0rd!'
 
 password_encoded = quote_plus(password)
 

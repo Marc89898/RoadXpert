@@ -7,7 +7,7 @@ import { APIService } from './ApiService';
 import { DataAdapter } from './Adapter';
 
 export default function App() {
-  const IDALUMNE = 'BFC7AB7E-19F1-4D4D-A1CE-F11DA18D2C1F';
+  const IDALUMNE = 'Alumne_4';
   const [data, setData] = useState(null);
   const [events, setEvents] = useState({});
 
@@ -16,6 +16,7 @@ export default function App() {
     const fetchData = async () => {
       try {
         const result = await APIService.fetchEvents(IDALUMNE);
+        console.log(result)
         const adaptedData = DataAdapter.adaptData(result);
         setData(adaptedData);
         setEvents(adaptedData);
@@ -46,23 +47,32 @@ export default function App() {
     setDeleteConfirmationVisible(true);
   };
 
-  const handleDeleteEvent = () => {
-    const eventId = eventToDelete.id;
-    setEvents((prevEvents) => {
-      const updatedEvents = { ...prevEvents };
-      for (const date in updatedEvents) {
-        const eventsOnDate = updatedEvents[date];
-        const eventIndex = eventsOnDate.findIndex((event) => event.id === eventId);
-        if (eventIndex !== -1) {
-          updatedEvents[date] = [...eventsOnDate.slice(0, eventIndex), ...eventsOnDate.slice(eventIndex + 1)];
-          if (updatedEvents[date].length === 0) {
-            delete updatedEvents[date];
-          }
-        }
-      }
-      return updatedEvents;
-    });
-    setDeleteConfirmationVisible(false);
+  const handleDeleteEvent = async () => {
+    const newAttributes = {
+      "EstatHoraID": "EstatHora_2",
+    };
+    try {
+      const updatedEvent = await deleteEvent(eventId, newAttributes);
+      console.log('Event updated successfully:', updatedEvent);
+    }catch(error) {
+      console.error("Error in the delete petition: " + error.message)
+    }
+    // const eventId = eventToDelete.id;
+    // setEvents((prevEvents) => {
+    //   const updatedEvents = { ...prevEvents };
+    //   for (const date in updatedEvents) {
+    //     const eventsOnDate = updatedEvents[date];
+    //     const eventIndex = eventsOnDate.findIndex((event) => event.id === eventId);
+    //     if (eventIndex !== -1) {
+    //       updatedEvents[date] = [...eventsOnDate.slice(0, eventIndex), ...eventsOnDate.slice(eventIndex + 1)];
+    //       if (updatedEvents[date].length === 0) {
+    //         delete updatedEvents[date];
+    //       }
+    //     }
+    //   }
+    //   return updatedEvents;
+    // });
+    // setDeleteConfirmationVisible(false);
   };
 
   const handleAddEvent = () => {
