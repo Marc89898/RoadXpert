@@ -1,85 +1,113 @@
-import React, { useState } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Text, BottomNavigation } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Dashboard from "../Dashboard";
+import Categories from "../Categories";
+import Map from "../ViewRoutesMap";
+
 const Tab = createBottomTabNavigator();
-export default function NavBar() {
-    return (
-        <Tab.Navigator
-            screenOptions={{
-                headerShown: false,
-            }}
-            tabBar={({ state, descriptors, navigation, insets }) => (
-                <BottomNavigation.Bar
-                    navigationState={state}
-                    safeAreaInsets={insets}
-                    renderIcon={({ route }) => {
-                        const { options } = descriptors[route.key];
-                        const iconName = options.tabBarIconName || route.name;
-                        return <Icon name={iconName} size={24} />;
-                    }}
-                    getLabelText={({ route }) => {
-                        const { options } = descriptors[route.key];
-                        const label =
-                            options.tabBarLabel !== undefined
-                                ? options.tabBarLabel
-                                : options.title !== undefined
-                                    ? options.title
-                                    : route.name;
 
-                        return label;
-                    }}
-                    onTabPress = {({ route }) => {
-                        switch (route.name) {
-                            case "Home":
-                                navigation.navigate('Dashboard')
-                            break;
-                            case "Calendar":
-                                navigation.navigate('AppointmentScreen')
-                            break;
-                            case "Route":
-                                navigation.navigate('RouteInformation')
-                            break;
-                        }
-                        
-                    }}
-                />
-            )}
-        >
-            <Tab.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{
-                    tabBarIconName: 'home',
-                }}
-            />
-            <Tab.Screen
-                name="Calendar"
-                component={CalenderScreen}
-                options={{
-                    tabBarIconName: 'calendar',
-                }}
-            />
-            <Tab.Screen
-                name="Route"
-                component={RouteScreen}
-                options={{
-                    tabBarIconName: 'map-marker-path',
-                }}
-            />
-        </Tab.Navigator>
-    );
+export default function MyComponent() {
+  const navigation = useNavigation();
+
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      tabBar={({ navigation, state, descriptors, insets }) => (
+        <BottomNavigation.Bar
+          navigationState={state}
+          safeAreaInsets={insets}
+          onTabPress={({ route, preventDefault }) => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (event.defaultPrevented) {
+              preventDefault();
+            } else {
+              navigation.dispatch({
+                ...CommonActions.navigate(route.name, route.params),
+                target: state.key,
+              });
+            }
+          }}
+          renderIcon={({ route, focused, color }) => {
+            const { options } = descriptors[route.key];
+            if (options.tabBarIcon) {
+              return options.tabBarIcon({ focused, color, size: 24 });
+            }
+
+            return null;
+          }}
+          getLabelText={({ route }) => {
+            const { options } = descriptors[route.key];
+            const label =
+              options.tabBarLabel !== undefined
+                ? options.tabBarLabel
+                : options.title !== undefined
+                ? options.title
+                : route.title;
+
+            return label;
+          }}
+        />
+      )}
+    >
+      <Tab.Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={{
+          tabBarLabel: "Dashboard",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="home-outline" size={size} color={color} />;
+          },
+        }}
+      />
+      {/* <Tab.Screen
+        name="Calendar"
+        component={Calendar}
+        options={{
+          tabBarLabel: "Dashboard",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="calendar-outline" size={size} color={color} />;
+          },
+        }}
+      /> */}
+      <Tab.Screen
+        name="Categories"
+        component={Categories}
+        options={{
+          tabBarLabel: "Calendar",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="calendar-outline" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Map"
+        component={Map}
+        options={{
+          tabBarLabel: "Map",
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="map-marker-path" size={size} color={color} />;
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
 }
 
-function HomeScreen() {
-    return null;
-}
-
-function CalenderScreen() {
-    return null;
-}
-
-function RouteScreen() {
-    return null;
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
