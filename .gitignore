@@ -9,7 +9,7 @@ AppStudent/build
 AppStudent/dist
 AppInstructor/build
 AppInstructor/dist
-
+Api/__pycache__
 # Archivos de registro y caché
 AppStudent/npm-debug.log*
 AppInstructor/npm-debug.log*
