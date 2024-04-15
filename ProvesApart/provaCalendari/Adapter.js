@@ -7,10 +7,11 @@ class DataAdapter {
         const event = {
           id: item.ID,
           name: "Practica",
+          duration: "45m",
           horaInicial: item.HoraInici,
           Ruta: item.Ruta,
           Coche: item.VehicleID,
-          Estat: "En Process de confirmacio"
+          Estat: "En Procés de confirmació"
         };
   
         if (adaptedData[date]) {
