@@ -7,7 +7,7 @@ import { APIService } from './ApiService';
 import { DataAdapter } from './Adapter';
 
 export default function App() {
-  const IDALUMNE = '77844111-E0AD-41A1-BC63-51A5EE79DDDF';
+  const IDALUMNE = 'Alumne_4';
   const [data, setData] = useState(null);
   const [events, setEvents] = useState({});
 
@@ -16,6 +16,7 @@ export default function App() {
     const fetchData = async () => {
       try {
         const result = await APIService.fetchEvents(IDALUMNE);
+        console.log(result)
         const adaptedData = DataAdapter.adaptData(result);
         setData(adaptedData);
         setEvents(adaptedData);
@@ -27,7 +28,6 @@ export default function App() {
     fetchData();
   }, []);
 
-  console.log("Datos finales:", data);
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
   const availableHours = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'];
@@ -47,23 +47,32 @@ export default function App() {
     setDeleteConfirmationVisible(true);
   };
 
-  const handleDeleteEvent = () => {
-    const eventId = eventToDelete.id;
-    setEvents((prevEvents) => {
-      const updatedEvents = { ...prevEvents };
-      for (const date in updatedEvents) {
-        const eventsOnDate = updatedEvents[date];
-        const eventIndex = eventsOnDate.findIndex((event) => event.id === eventId);
-        if (eventIndex !== -1) {
-          updatedEvents[date] = [...eventsOnDate.slice(0, eventIndex), ...eventsOnDate.slice(eventIndex + 1)];
-          if (updatedEvents[date].length === 0) {
-            delete updatedEvents[date];
-          }
-        }
-      }
-      return updatedEvents;
-    });
-    setDeleteConfirmationVisible(false);
+  const handleDeleteEvent = async () => {
+    const newAttributes = {
+      "EstatHoraID": "EstatHora_2",
+    };
+    try {
+      const updatedEvent = await deleteEvent(eventId, newAttributes);
+      console.log('Event updated successfully:', updatedEvent);
+    }catch(error) {
+      console.error("Error in the delete petition: " + error.message)
+    }
+    // const eventId = eventToDelete.id;
+    // setEvents((prevEvents) => {
+    //   const updatedEvents = { ...prevEvents };
+    //   for (const date in updatedEvents) {
+    //     const eventsOnDate = updatedEvents[date];
+    //     const eventIndex = eventsOnDate.findIndex((event) => event.id === eventId);
+    //     if (eventIndex !== -1) {
+    //       updatedEvents[date] = [...eventsOnDate.slice(0, eventIndex), ...eventsOnDate.slice(eventIndex + 1)];
+    //       if (updatedEvents[date].length === 0) {
+    //         delete updatedEvents[date];
+    //       }
+    //     }
+    //   }
+    //   return updatedEvents;
+    // });
+    // setDeleteConfirmationVisible(false);
   };
 
   const handleAddEvent = () => {
@@ -131,6 +140,7 @@ export default function App() {
             <View style={styles.itemTextContainer}>
               <Text style={styles.itemText}><Text style={styles.boldText}>Name: </Text>{item.name}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>Time: </Text>{item.horaInicial}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Duration: </Text>{item.duration}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Coche}</Text>
               <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
@@ -195,10 +205,10 @@ export default function App() {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text>¿Estás seguro de que deseas eliminar este evento?</Text>
+            <Text>¿Estás seguro de que deseas eliminar este evento? Vas a mandar una peticion para borrar la practica a tu professor</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={handleDeleteEvent}>
-                <Text style={styles.buttonText}>Eliminar</Text>
+                <Text style={styles.buttonText}>Peticion para Eliminar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleCancelDelete}>
                 <Text style={styles.buttonText}>Cancelar</Text>
