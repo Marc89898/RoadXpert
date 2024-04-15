@@ -149,10 +149,10 @@ VALUES
 INSERT INTO RoadXpertDatabase.dbo.Practica
     (AlumneID, Ruta, Km, HoraInici, HoraFi, ID, ProfesorID, VehicleID, EstatHoraID, [Data])
 VALUES
-    ('Alumne_1', 'Ruta 1', 25.50, '10:00:00', '11:30:00', 'Practica_1', 'Treballador_1', '1234ABC', 'EstatHora_3', '2024-04-01'),
-    ('Alumne_2', 'Ruta 2', 30.75, '14:00:00', '15:45:00', 'Practica_2', 'Treballador_5', '5678DEF', 'EstatHora_3', '2024-04-02'),
-    ('Alumne_3', 'Ruta 3', 20.00, '09:30:00', '11:00:00', 'Practica_3', 'Treballador_2', '3456JKL', 'EstatHora_3', '2024-04-03'),
-    ('Alumne_4', 'Ruta 4', 15.25, '16:00:00', '17:15:00', 'Practica_4', 'Treballador_3', '7890MNO', 'EstatHora_3', '2024-04-04');
+    ('Alumne_1', 'Ruta 1', 25.50, '10:00:00', '11:00:00', 'Practica_1', 'Treballador_1', '1234ABC', 'EstatHora_3', '2024-04-01'),
+    ('Alumne_2', 'Ruta 2', 30.75, '13:00:00', '14:00:00', 'Practica_2', 'Treballador_5', '5678DEF', 'EstatHora_3', '2024-04-02'),
+    ('Alumne_3', 'Ruta 3', 20.00, '10:00:00', '11:00:00', 'Practica_3', 'Treballador_2', '3456JKL', 'EstatHora_3', '2024-04-03'),
+    ('Alumne_4', 'Ruta 4', 15.25, '12:00:00', '13:00:00', 'Practica_4', 'Treballador_3', '7890MNO', 'EstatHora_3', '2024-04-04');
 
 -- Inserts para la tabla Comet (Autoescola)
 INSERT INTO RoadXpertDatabase.dbo.Comet

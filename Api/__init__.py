@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_swagger_ui import get_swaggerui_blueprint
+import blueprints.horas_libres_bp
 from db_configuration import test_database_connection
-import blueprints.Alumne , blueprints.Carnet  , blueprints.Anotacio, blueprints.Comet , blueprints.EstatHora , blueprints.Exercir , blueprints.HistorialPractica , blueprints.Hora , blueprints.Hora , blueprints.Horari , blueprints.Incidencia , blueprints.Matricula , blueprints.Practica , blueprints.Treballador , blueprints.TreballadorTeIncidencia , blueprints.Vehicle, blueprints.Rol
+import blueprints.Alumne , blueprints.Carnet  , blueprints.Anotacio, blueprints.Comet , blueprints.EstatHora , blueprints.Exercir , blueprints.HistorialPractica , blueprints.Hora , blueprints.Hora , blueprints.Horari , blueprints.Incidencia , blueprints.Matricula , blueprints.Practica , blueprints.Treballador , blueprints.TreballadorTeIncidencia , blueprints.Vehicle, blueprints.Rol, blueprints.horas_libres_bp
+
 def blueprint_register():
     app.register_blueprint(blueprints.Alumne.Alumne_bp, url_prefix='/')
     app.register_blueprint(blueprints.Carnet.Carnet_bp, url_prefix='/')
@@ -19,6 +21,8 @@ def blueprint_register():
     app.register_blueprint(blueprints.TreballadorTeIncidencia.TreballadorTeIncidencia_bp, url_prefix='/')
     app.register_blueprint(blueprints.Vehicle.Vehicle_bp, url_prefix='/')
     app.register_blueprint(blueprints.Rol.Rol_bp, url_prefix='/')
+    app.register_blueprint(blueprints.horas_libres_bp.HorasLibres_bp, url_prefix='/')
+
 SWAGGER_URL="/swagger"
 API_URL="/static/swagger.json"
 app = Flask(__name__)
