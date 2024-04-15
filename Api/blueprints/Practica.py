@@ -131,6 +131,8 @@ def put_update_Practica(Practica_id):
 
 
 
+
+
 @Practica_bp.route("/Practica/<string:Practica_id>", methods=['DELETE'])
 def delete_Practica(Practica_id):
     try:

@@ -19,7 +19,7 @@ class APIService {
       return data;
     } catch (error) {
       console.error('Error fetching events:', error.message);
-      throw new Error('Error fetching events. Please check your internet connection or API availability.');
+      throw error;
     }
   }
   /*
@@ -36,13 +36,13 @@ class APIService {
         body: JSON.stringify(newAttributes) 
       });
       if (!response.ok) {
-        throw new Error('Failed to update event');
+        throw new Error('Failed to update event: ' + error);
       }
       const data = await response.json();
       return data;
     } catch (error) {
       console.error('Error updating event:', error.message);
-      throw new Error('Error updating event. Please check your internet connection or API availability.');
+      throw error;
     }
   }
   

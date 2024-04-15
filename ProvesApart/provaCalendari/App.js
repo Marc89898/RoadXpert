@@ -16,7 +16,6 @@ export default function App() {
     const fetchData = async () => {
       try {
         const result = await APIService.fetchEvents(IDALUMNE);
-        console.log(result)
         const adaptedData = DataAdapter.adaptData(result);
         setData(adaptedData);
         setEvents(adaptedData);
@@ -48,11 +47,12 @@ export default function App() {
   };
 
   const handleDeleteEvent = async () => {
+    const eventId = eventToDelete.id;
     const newAttributes = {
-      "EstatHoraID": "EstatHora_2",
+      "EstatHoraID": "EstatHora_4",
     };
     try {
-      const updatedEvent = await deleteEvent(eventId, newAttributes);
+      const updatedEvent = await APIService.deleteEvent(eventId, newAttributes);
       console.log('Event updated successfully:', updatedEvent);
     }catch(error) {
       console.error("Error in the delete petition: " + error.message)
