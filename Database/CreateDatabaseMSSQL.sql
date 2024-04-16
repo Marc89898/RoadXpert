@@ -341,3 +341,6 @@ CREATE TABLE RoadXpertDatabase.dbo.Comet (
 );
 
 ALTER TABLE RoadXpertDatabase.dbo.Hora ADD DuracioPractica numeric(38,0) NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Alumne ADD Contrasenya varchar(50) NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Alumne ADD ProfessorID varchar(36) NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Alumne ADD CONSTRAINT Alumne_FK FOREIGN KEY (ProfessorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID);
