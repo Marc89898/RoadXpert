@@ -24,7 +24,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="MyCars"
+        initialRouteName="LoginScreen"
         screenOptions={{
           headerShown: false,
         }}
