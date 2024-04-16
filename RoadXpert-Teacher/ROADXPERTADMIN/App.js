@@ -18,6 +18,7 @@ import StartRouteMap from './Components/StartRouteMap.js';
 import PostPractice from './Components/post-practice.js';
 import AllStudents from './Components/AllStudents.js';
 import Categories from './Components/Categories.js';
+import SelectedCategory from './Components/SelectedCategory.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="LoginScreen"
+        initialRouteName="NavBar"
         screenOptions={{
           headerShown: false,
         }}
@@ -47,6 +48,7 @@ export default function App() {
         <Stack.Screen name="PostPractice" component={PostPractice} />
         <Stack.Screen name="AllStudents" component={AllStudents} />
         <Stack.Screen name="Categories" component={Categories} />
+        <Stack.Screen name="SelectedCategory" component={SelectedCategory} />
       </Stack.Navigator>
     </NavigationContainer>
   );
