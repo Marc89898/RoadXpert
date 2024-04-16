@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native-rapi-ui";
 import { APIService } from "./ApiService";
-import { isValidDNI, isValidPassword } from '../utils/utils.js';
+import { isValidDNI, isValidPassword, sha256 } from '../utils/utils.js';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
@@ -19,6 +19,7 @@ const LoginScreen = () => {
         console.error("El usuario no tiene el formato correcto");
         return;
       }
+      password = sha256(password)
       if (!isValidPassword(password)) {
         console.error("La contraseña no es válida");
         return;

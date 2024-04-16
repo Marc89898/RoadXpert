@@ -54,7 +54,7 @@ def post_new_Exercir():
     try:
         with engine.connect() as connection:
             sql = text("INSERT INTO Exercir (rolID, treballadorID) VALUES (:rolID, :treballdorID)")
-            connection.execute(sql, rolID=rolID, treballadorID=treballadorID)
+            connection.execute(sql, {"rolID":rolID, "treballadorID":treballadorID})
             connection.commit()
             return jsonify({"message": "Exercir added successfully"}), 201
     except Exception as e:
@@ -80,18 +80,15 @@ def update_Exercir(Exercir_id):
     treballadorID = data.get('treballadorID')
     try:
         with engine.connect() as connection:
-            # Verificar si el Exercir con el ID dado existe
             query_check = text("SELECT * FROM Exercir WHERE id = :id")
             result_check = connection.execute(query_check, {"id": Exercir_id})
             connection.commit()
             Exercir = result_check.fetchone()
             if Exercir:
-                # Exercir existe, proceder con la actualización
                 sql = text("UPDATE Exercir SET rolID = :rolID, treballadorID = :treballadorID WHERE id = :id")
                 connection.execute(sql, rolID=rolID, treballadorID=treballadorID, id=Exercir_id)
                 return jsonify({"message": f"Exercir with ID {Exercir_id} updated successfully"}), 200
             else:
-                # No se encontró ningún Exercir con el ID dado
                 return jsonify({"message": f"No Exercir found with ID {Exercir_id}"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
