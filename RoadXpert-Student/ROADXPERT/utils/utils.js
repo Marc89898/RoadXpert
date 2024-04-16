@@ -10,8 +10,12 @@ export const isValidPassword = (password) => {
   return password.length >= 4 && passwordRegExp.test(password);
 };
 
+import * as Crypto from 'expo-crypto';
 
-const crypto = require('crypto');
-export function sha256(password) {
-  return crypto.createHash('sha256').update(password).digest('hex');
+export async function sha256(password) {
+  const digest = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  );
+  return digest;
 }
