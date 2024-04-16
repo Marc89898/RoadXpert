@@ -2,6 +2,7 @@ from sqlalchemy import text
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import sessionmaker
 import db_configuration as db
+import locale
 import datetime
 
 engine = db.engine
@@ -10,46 +11,79 @@ session = Session()
 
 HorasLibres_bp = Blueprint('HorasLibres', __name__)
 
+# Configurar el locale para español
+locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+
+def get_fecha():
+    fecha_str = request.args.get('fecha', datetime.date.today().strftime('%Y-%m-%d'))
+    fecha = datetime.datetime.strptime(fecha_str, '%Y-%m-%d').date()
+    return fecha
+
+def obtener_horario(profesor_id, conn):
+    horari_query = text("SELECT * FROM Horari WHERE ID = (SELECT HorariID FROM Treballador WHERE ID = :profesor_id)")
+    horari_result = conn.execute(horari_query, {"profesor_id": profesor_id})
+    horari_row = horari_result.fetchone()
+
+    if not horari_row:
+        return None
+
+    return horari_row[0]  # ID del horario
+
+def obtener_horas_laborales(dia_semana, horari_id, conn):
+    hora_query = text("SELECT * FROM Hora WHERE DiaSetmana = :dia AND HorariID = :horari_id")
+    hora_result = conn.execute(hora_query, {"dia": dia_semana, "horari_id": horari_id})
+
+    horas_laborales = []
+
+    for hora_row in hora_result.fetchall():
+        hora_inici = hora_row[2].hour  # HoraInici
+        hora_fi = hora_row[3].hour     # HoraFi
+        duracio_practica = hora_row[5]  # DuracioPractica
+
+        num_horas = int((hora_fi - hora_inici) * 60 / duracio_practica)
+
+        for i in range(num_horas):
+            hora = {
+                "HoraInici": (hora_inici + i),
+                "HoraFi": (hora_inici + i + 1)
+            }
+            horas_laborales.append(hora)
+
+    return horas_laborales
+
+def obtener_horas_ocupadas(profesor_id, fecha, conn):
+    practica_query = text("SELECT * FROM Practica WHERE ProfesorID = :profesor_id AND Data = :fecha")
+    practica_result = conn.execute(practica_query, {"profesor_id": profesor_id, "fecha": fecha})
+
+    horas_ocupadas = []
+
+    for practica_row in practica_result.fetchall():
+        hora_inici = practica_row[3].hour  # HoraInici
+        hora_fi = practica_row[4].hour     # HoraFi
+
+        horas_ocupadas.append({"HoraFi": hora_fi, "HoraInici": hora_inici})
+
+    return horas_ocupadas
+
 @HorasLibres_bp.route("/horas_libres", methods=['GET'])
 def get_horas_libres():
-    """GET free hours for a specific day and teacher"""
     try:
-        dia = request.args.get('dia')
+        fecha = get_fecha()
         profesor_id = request.args.get('profesor_id')
-        fecha = request.args.get('fecha', datetime.date.today())
 
         with engine.connect() as conn:
-            query = text("""
-                DECLARE @DiaSetmana varchar(15) = :dia;
-                DECLARE @Data date = :fecha;
-                DECLARE @ProfesorID varchar(36) = :profesor_id;
+            horari_id = obtener_horario(profesor_id, conn)
 
-                WITH HorarioProfesor AS (
-                    SELECT h.ID, h.DiaSetmana, h.HoraInici, h.HoraFi
-                    FROM Hora h
-                    INNER JOIN Treballador t ON h.HorariID = t.HorariID
-                    WHERE t.ID = @ProfesorID AND h.DiaSetmana = @DiaSetmana
-                ),
-                HorasOcupadas AS (
-                    SELECT HoraInici, HoraFi
-                    FROM Practica
-                    WHERE [Data] = @Data AND ProfesorID = @ProfesorID
-                )
-                SELECT hp.HoraInici, hp.HoraFi
-                FROM HorarioProfesor hp
-                LEFT JOIN HorasOcupadas ho ON hp.HoraInici = ho.HoraInici AND hp.HoraFi = ho.HoraFi
-                WHERE ho.HoraInici IS NULL AND ho.HoraFi IS NULL;
-            """)
-            
-            result = conn.execute(query, {"dia": dia, "fecha": fecha, "profesor_id": profesor_id})
-            horas_libres = []
-            for row in result.fetchall():
-                hora_libre = {}
-                for idx, column in enumerate(result.keys()):
-                    hora_libre[column] = str(row[idx])
-                horas_libres.append(hora_libre)
+            if not horari_id:
+                return jsonify({"message": "Profesor no encontrado"}), 404
 
-            return jsonify(horas_libres), 200
+            dia_semana = fecha.strftime('%A')
+            horas_laborales = obtener_horas_laborales(dia_semana, horari_id, conn)
+            horas_ocupadas = obtener_horas_ocupadas(profesor_id, fecha, conn)
+
+            horas_disponibles = [hora for hora in horas_laborales if hora not in horas_ocupadas]
+
+            return jsonify(horas_disponibles), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
