@@ -12,7 +12,7 @@ const RouteInformation = () => {
     };
 
     const handleViewCategories = () => {
-        navigation.navigate('Categories');
+        navigation.navigate('Calendar');
     };
 
     const handleViewPractics = () => {
@@ -88,8 +88,6 @@ const RouteInformation = () => {
 
                 </Card>
             </TouchableOpacity>
-
-            <NavBar />
         </View>
     );
 };

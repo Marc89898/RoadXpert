@@ -5,7 +5,7 @@ import SplashScreen from './Components/SplashScreen.js';
 import LoginScreen from './Components/LoginScreen.js';
 import Dashboard from './Components/Dashboard.js';
 import NavBar from './Components/BottomNavigation/NavBar.js';
-import AppointmentScreen from './Components/AppointmentScreen.js';
+import Calendar from './Components/Calendar/Calendar.js';
 import RouteInformation from './Components/RouteInformation.js';
 import ViewRoutesMap from './Components/ViewRoutesMap.js';
 import BackNavigation from './Components/BottomNavigation/BackNavigation.js'
@@ -30,7 +30,7 @@ export default function App() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="NavBar" component={NavBar} />
-        <Stack.Screen name="AppointmentScreen" component={AppointmentScreen} />
+        <Stack.Screen name="Calendar" component={Calendar} />
         <Stack.Screen name="RouteInformation" component={RouteInformation} />
         <Stack.Screen name="ViewRoutesMap" component={ViewRoutesMap} />
         <Stack.Screen name="BackNavigation" component={BackNavigation} />

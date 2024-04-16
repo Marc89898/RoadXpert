@@ -6,6 +6,20 @@ import { v4 as uuidv4 } from 'uuid';
 import { APIService } from './ApiService';
 import { DataAdapter } from './Adapter';
 
+// {
+//   "AlumneID": Alumne_4,
+//   "Ruta": "Ruta 4",
+//   "Km": 15.25,
+//   "HoraInici": "16:00:00.000",
+//   "HoraFi": "17:15:00.000",
+//   "ID": Practica_4,
+//   "ProfesorID": Treballador_3,
+//   "VehicleID": 7890MNO,
+//   "EstatHoraID": EstatHora_4,
+//   "Data": "2024-04-05"
+// }
+
+
 export default function App() {
   const IDALUMNE = 'Alumne_4';
   const [data, setData] = useState(null);

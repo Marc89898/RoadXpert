@@ -11,7 +11,7 @@ import TuImagen from '../assets/images/Dashboard/ProvaFoto.jpeg';
 const Dashboard = () => {
     const navigation = useNavigation(); 
     const handleCalender = () => {
-        navigation.navigate('AppointmentScreen');
+        navigation.navigate('Calendar');
     };
     const handleRoutes = () => {
         navigation.navigate('RouteInformation');
