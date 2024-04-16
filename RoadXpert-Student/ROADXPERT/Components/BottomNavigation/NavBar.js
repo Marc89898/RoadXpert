@@ -7,6 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Dashboard from "../Dashboard";
 import Categories from "../Categories";
 import Map from "../ViewRoutesMap";
+import Calendar from "../Calendar/Calendar";
 
 const Tab = createBottomTabNavigator();
 
@@ -70,17 +71,17 @@ export default function MyComponent() {
           },
         }}
       />
-      {/* <Tab.Screen
+      { <Tab.Screen
         name="Calendar"
         component={Calendar}
         options={{
-          tabBarLabel: "Dashboard",
+          tabBarLabel: "Calendar",
           tabBarIcon: ({ color, size }) => {
             return <Icon name="calendar-outline" size={size} color={color} />;
           },
         }}
-      /> */}
-      <Tab.Screen
+      />}
+      {/* <Tab.Screen
         name="Categories"
         component={Categories}
         options={{
@@ -89,7 +90,7 @@ export default function MyComponent() {
             return <Icon name="calendar-outline" size={size} color={color} />;
           },
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Map"
         component={Map}
