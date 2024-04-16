@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'reac
 import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import { v4 as uuidv4 } from 'uuid';
-import { APIService } from './ApiService';
+import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
 
 // {
@@ -29,7 +29,7 @@ export default function Calendar() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const result = await APIService.fetchEvents(IDALUMNE);
+          const result = await APIService.fetchEventsCalendar(IDALUMNE);
           const adaptedData = DataAdapter.adaptData(result);
           setData(adaptedData);
           setEvents(adaptedData);
@@ -46,7 +46,7 @@ export default function Calendar() {
     const availableHours = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'];
   
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(formattedDate);
+    const [selectedDate, setSelectedDate] = useState(null);
     const [selectedHour, setSelectedHour] = useState(availableHours[0]);
     const [selectedRoute, setSelectedRoute] = useState('');
     const [selectedCar, setSelectedCar] = useState('');
@@ -60,13 +60,18 @@ export default function Calendar() {
       setDeleteConfirmationVisible(true);
     };
   
+      
+    const handleDayPress = (day) => {
+      setSelectedDate(day.dateString);
+    };
+
     const handleDeleteEvent = async () => {
       const eventId = eventToDelete.id;
       const newAttributes = {
         "EstatHoraID": "EstatHora_4",
       };
       try {
-        const updatedEvent = await APIService.deleteEvent(eventId, newAttributes);
+        const updatedEvent = await APIService.deleteEventCalendar(eventId, newAttributes);
         console.log('Event updated successfully:', updatedEvent);
       }catch(error) {
         console.error("Error in the delete petition: " + error.message)
@@ -113,7 +118,6 @@ export default function Calendar() {
       setEventName('');
       setSelectedRoute('');
       setSelectedCar('');
-      setSelectedDate(formattedDate);
       setSelectedHour(availableHours[0]);
     };
   
@@ -122,7 +126,6 @@ export default function Calendar() {
       setEventName('');
       setSelectedRoute('');
       setSelectedCar('');
-      setSelectedDate(formattedDate);
       setSelectedHour(availableHours[0]);
     };
   
@@ -145,7 +148,8 @@ export default function Calendar() {
     return (
       <View style={{ flex: 1 }}>
         <Agenda
-          selected={formattedDate}
+          onDayPress={handleDayPress} // Pass the function to handle day press
+          selected={selectedDate}
           items={events}
           renderItem={(item, key) => (
             <TouchableOpacity
@@ -180,7 +184,9 @@ export default function Calendar() {
               <TextInput
                 style={styles.input}
                 value={selectedDate}
-                onChangeText={setSelectedDate}
+                onChangeText={() => {
+                  setSelectedDate();
+                }}
                 type="date"
               />
               <Text>Selecciona una hora:</Text>

@@ -2,7 +2,7 @@ class APIService {
     /*
     * Fetch to all events of Alumn
     */
-    static async fetchEvents(idAlumne) {
+    static async fetchEventsCalendar(idAlumne) {
       try {
         const url = "http://10.0.2.2:8888/Practica/Alumn/" + idAlumne;
         const response = await fetch(url);
@@ -25,7 +25,7 @@ class APIService {
     /*
     * Fetch to modify and petition of delete from part of alumn
     */
-    static async deleteEvent(eventId, newAttributes) {
+    static async deleteEventCalendar(eventId, newAttributes) {
       try {
         const url = "http://10.0.2.2:8888/Practica/" + eventId;
         const response = await fetch(url, {
@@ -45,14 +45,31 @@ class APIService {
         throw error;
       }
     }
-    
     /*
     * Fetch to see avialable hours of a day
     */
     static async fetchAvailableHours(day) {
   
     }
-  
+
+  /**
+   * Fetch All Alumns
+   */
+  static async fetchAllAlumns() {
+    try {
+      const url = "http://10.0.2.2:8888/Alumne"
+      const response = await fetch(url);
+      let data = "";
+      if (response.status != 500 && response.status != 404) {
+        data = await response.json();
+        return data;
+      } else {
+        console.error("Error en la petición: Status", response.status, response.statusText);
+      }
+    }catch(error) {
+      console.error("Error en la peticion de todos los alumnos" + error)
+    }
+  }
   
   }
   

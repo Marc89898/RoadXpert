@@ -1,10 +1,11 @@
-
 import React, { useState } from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native-rapi-ui";
+import { APIService } from "./ApiService";
+import { isValidDNI, isValidPassword } from '../utils/utils.js';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
@@ -12,9 +13,29 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false); 
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    navigation.navigate("Dashboard");
+  const handleLogin = async () => {
+    try {
+      if (!isValidDNI(username)) {
+        console.error("El usuario no tiene el formato correcto");
+        return;
+      }
+      if (!isValidPassword(password)) {
+        console.error("La contraseña no es válida");
+        return;
+      }
+      const alumns = await APIService.fetchAllAlumns();
+      const foundAlumn = alumns.find(alumn => alumn.DNI === username && alumn.Contrasenya === password);
+      if (foundAlumn) {
+        console.log("Inicio de sesión exitoso");
+        navigation.navigate("NavBar");
+      } else {
+        console.error("Usuario o contraseña incorrectos");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error.message);
+    }
   };
+  
 
   return (
     <View style={styles.container}> 

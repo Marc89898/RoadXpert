@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-// Importa tus imágenes aquí
 import CircleImage1 from '../assets/images/Dashboard/notification.png';
 import CircleImage2 from '../assets/images/Dashboard/settings.png';
 import TuImagen from '../assets/images/Dashboard/ProvaFoto.jpeg';
