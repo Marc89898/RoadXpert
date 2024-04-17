@@ -153,7 +153,6 @@ const AllStudents = ({ navigation }) => {
           />
         ))}
       </View>
-      <NavBar />
     </View>
   );
 };

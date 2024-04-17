@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
@@ -30,7 +31,7 @@ export default function Calendar() {
       const fetchData = async () => {
         try {
           const result = await APIService.fetchEventsCalendar(IDALUMNE);
-          const adaptedData = DataAdapter.adaptData(result);
+          const adaptedData = DataAdapter.adaptDataDelete(result);
           setData(adaptedData);
           setEvents(adaptedData);
         } catch (error) {
@@ -92,7 +93,15 @@ export default function Calendar() {
   
     const handleAddEvent = () => {
       const eventId = uuidv4();
-      const event = { id: eventId, Nom: eventName, horaInicial: selectedHour, Ruta: selectedRoute, Coche: selectedCar, Estat: eventEstat};
+      const event = {
+        id: eventId,
+        name: eventName,
+        duration: "45m",
+        horaInicial: selectedHour,
+        Ruta: selectedRoute,
+        Coche: selectedCar,
+        Estat: 'Practica Solicitada'
+      };
       setEvents((prevEvents) => {
         const updatedEvents = { ...prevEvents };
         if (updatedEvents[selectedDate]) {
@@ -103,6 +112,7 @@ export default function Calendar() {
         return updatedEvents;
       });
     };
+    
   
     const addPractica = () => {
       setModalVisible(true);
@@ -144,7 +154,7 @@ export default function Calendar() {
     return (
       <View style={{ flex: 1 }}>
         <Agenda
-          onDayPress={handleDayPress} // Pass the function to handle day press
+          onDayPress={handleDayPress}
           selected={selectedDate}
           items={events}
           renderItem={(item, key) => (
@@ -192,12 +202,6 @@ export default function Calendar() {
                 value={eventName}
                 onChangeText={setEventName}
                 placeholder="Nombre de la práctica"
-              />
-              <TextInput
-                style={styles.input}
-                value={selectedRoute}
-                onChangeText={setSelectedRoute}
-                placeholder="Ruta"
               />
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
