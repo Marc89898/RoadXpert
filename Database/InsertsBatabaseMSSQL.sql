@@ -26,7 +26,8 @@ VALUES
     ('EstatHora_2', 'Confirmada', 'Hora confirmada pel professor o l`autoescola.'),
     ('EstatHora_3', 'Realitzada', 'Hora realitzada, l`alumne va assistir.'),
     ('EstatHora_4', 'Pendent de pagament', 'Hora pendent de pagament per part de l`alumne.'),
-    ('EstatHora_5', 'Pagada', 'Hora ja pagada per l`alumne.');
+    ('EstatHora_5', 'Pagada', 'Hora ja pagada per l`alumne.'),
+    ('EstatHora_6', 'Pendent de confirmacio', 'Hora pendent de confirmacio.');
 
 -- Inserts para la tabla Horari (Autoescola)
 INSERT INTO RoadXpertDatabase.dbo.Horari
