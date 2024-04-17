@@ -1,9 +1,27 @@
 class DataAdapter {
-    static adaptData(jsonData) {
+    static adaptDataDelete(jsonData) {
       const adaptedData = {};
   
       jsonData.forEach((item) => {
         const date = new Date(item.Data).toISOString().split('T')[0];
+        var EstatModificat;
+        switch(item.EstatHoraID) {
+          case "EstatHora_6":
+            EstatModificat = "Pendent d'eliminacio"
+            break;
+          case "EstatHora_1":
+            EstatModificat = "Practica Solicitada"
+            break;
+          case "EstatHora_2":
+            EstatModificat = "Practica Confirmada"
+            break;
+          case "EstatHora_3":
+            EstatModificat = "Practica ja Realitzada"
+            break;
+          default:
+            EstatModificat = EstatHoraID
+        }
+
         const event = {
           id: item.ID,
           name: "Practica",
@@ -11,7 +29,7 @@ class DataAdapter {
           horaInicial: item.HoraInici,
           Ruta: item.Ruta,
           Coche: item.VehicleID,
-          Estat: item.EstatHoraID
+          Estat: EstatModificat
         };
   
         if (adaptedData[date]) {
@@ -22,6 +40,9 @@ class DataAdapter {
       });
   
       return adaptedData;
+    }
+    static adaptDataFetch(jsonData) {
+      
     }
   }
   

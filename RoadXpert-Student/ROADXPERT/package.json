@@ -13,6 +13,7 @@
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.5.19",
     "@react-navigation/native-stack": "^6.9.25",
+    "crypto": "^1.0.1",
     "expo": "~50.0.13",
     "expo-app-loading": "^2.1.1",
     "expo-crypto": "^12.8.1",
@@ -22,12 +23,14 @@
     "react-native": "0.73.6",
     "react-native-calendars": "^1.1304.1",
     "react-native-gesture-handler": "~2.14.0",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-ionicons": "^4.6.5",
     "react-native-maps": "1.10.0",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
     "react-native-paper": "^5.12.3",
     "react-native-rapi-ui": "^0.2.1",
-    "react-native-reanimated": "~3.6.2"
+    "react-native-reanimated": "~3.6.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

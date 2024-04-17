@@ -67,8 +67,13 @@ class APIService {
         throw error;
       }
     }
-    
-    
+    /**
+     * To add Event calendar in to database
+     * @param {*} Event 
+     */
+    static async addEventCalendar(Event) {
+
+    }
     
     
     /*
