@@ -11,7 +11,7 @@ class DataAdapter {
           horaInicial: item.HoraInici,
           Ruta: item.Ruta,
           Coche: item.VehicleID,
-          Estat: "En Procés de confirmació"
+          Estat: item.EstatHoraID
         };
   
         if (adaptedData[date]) {

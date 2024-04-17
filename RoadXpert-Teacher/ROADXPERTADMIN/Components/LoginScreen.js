@@ -12,8 +12,8 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    if (username === " " && password === " ") {
-      navigation.navigate("Dashboard");
+    if (username === "" && password === "") {
+      navigation.navigate("NavBar");
     } else {
       console.log("Incorrect credentials. Please try again.");
     }

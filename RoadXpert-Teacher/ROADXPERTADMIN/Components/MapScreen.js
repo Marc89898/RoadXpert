@@ -4,7 +4,7 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { Button } from "react-native-paper";
-import { GoogleMapsServices } from "react-native-google-maps-services";
+// import { GoogleMapsServices } from "react-native-google-maps-services";
 import * as Location from "expo-location";
 import polyline from "@mapbox/polyline";
 
@@ -70,7 +70,7 @@ const MapScreen = () => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
-    }, 5000);
+    }, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -78,7 +78,6 @@ const MapScreen = () => {
   return (
     <View style={styles.container}>
       <BackNavigation style={styles.backNavigation} />
-
       <MapView
         style={[styles.map, { zIndex: -1 }]}
         initialRegion={initialPosition}

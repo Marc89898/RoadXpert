@@ -2,15 +2,19 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { Card } from "react-native-paper";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 const StudentInfo = ({ route }) => {
   const { name, image } = route.params;
   const navigation = useNavigation();
 
   const goToStudentProfile = () => {
-    navigation.navigate('StudentProfile', { name, image });
-  }
+    navigation.navigate("StudentProfile", { name, image });
+  };
+
+  const handleCardClick = () => {
+    navigation.navigate('Categories');
+  };
 
   return (
     <View style={styles.container}>
@@ -42,15 +46,17 @@ const StudentInfo = ({ route }) => {
           </Card.Content>
         </Card>
 
-        <Card style={styles.routesCard}>
-          <Card.Content style={{ backgroundColor: "#081A00" }}>
-            <Text style={styles.cardHeaderText}>Categorias</Text>
-            <Image
-              source={require("../assets/images/RouteInformation/Sign.png")}
-              style={styles.cardImage}
-            />
-          </Card.Content>
-        </Card>
+        <TouchableOpacity onPress={handleCardClick}>
+          <Card style={styles.routesCard}>
+            <Card.Content style={{ backgroundColor: "#081A00" }}>
+              <Text style={styles.cardHeaderText}>Categorias</Text>
+              <Image
+                source={require("../assets/images/RouteInformation/Sign.png")}
+                style={styles.cardImage}
+              />
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
       </View>
     </View>
   );

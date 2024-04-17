@@ -19,13 +19,14 @@ const LoginScreen = () => {
         console.error("El usuario no tiene el formato correcto");
         return;
       }
-      password = sha256(password)
-      if (!isValidPassword(password)) {
+      var passwordHashed = await sha256(password)
+      setPassword(passwordHashed)
+      if (!isValidPassword(passwordHashed)) {
         console.error("La contraseña no es válida");
         return;
       }
       const alumns = await APIService.fetchAllAlumns();
-      const foundAlumn = alumns.find(alumn => alumn.DNI === username && alumn.Contrasenya === password);
+      const foundAlumn = alumns.find(alumn => alumn.DNI === username && alumn.Contrasenya === passwordHashed);
       if (foundAlumn) {
         console.log("Inicio de sesión exitoso");
         navigation.navigate("NavBar");

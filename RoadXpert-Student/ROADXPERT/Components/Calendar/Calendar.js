@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
-
+import { Alert } from 'react-native';
 // {
 //   "AlumneID": Alumne_4,
 //   "Ruta": "Ruta 4",
@@ -67,32 +67,28 @@ export default function Calendar() {
 
     const handleDeleteEvent = async () => {
       const eventId = eventToDelete.id;
-      const newAttributes = {
-        "EstatHoraID": "EstatHora_4",
-      };
       try {
-        const updatedEvent = await APIService.deleteEventCalendar(eventId, newAttributes);
+        const updatedEvent = await APIService.deleteEventCalendar(eventId, "EstatHora_6");
         console.log('Event updated successfully:', updatedEvent);
-      }catch(error) {
+
+        Alert.alert(
+          'Evento Actualizado',
+          'El evento se ha modificado correctamente.',
+          [
+            { text: 'OK', onPress: () => {
+                setDeleteConfirmationVisible(false);
+              }
+            }
+          ],
+          { cancelable: false }
+        );
+        
+      } catch(error) {
         console.error("Error in the delete petition: " + error.message)
       }
-      // const eventId = eventToDelete.id;
-      // setEvents((prevEvents) => {
-      //   const updatedEvents = { ...prevEvents };
-      //   for (const date in updatedEvents) {
-      //     const eventsOnDate = updatedEvents[date];
-      //     const eventIndex = eventsOnDate.findIndex((event) => event.id === eventId);
-      //     if (eventIndex !== -1) {
-      //       updatedEvents[date] = [...eventsOnDate.slice(0, eventIndex), ...eventsOnDate.slice(eventIndex + 1)];
-      //       if (updatedEvents[date].length === 0) {
-      //         delete updatedEvents[date];
-      //       }
-      //     }
-      //   }
-      //   return updatedEvents;
-      // });
-      // setDeleteConfirmationVisible(false);
     };
+    
+    
   
     const handleAddEvent = () => {
       const eventId = uuidv4();
