@@ -314,7 +314,7 @@ CREATE TABLE RoadXpertDatabase.dbo.Practica (
 	HoraInici time(3) NULL,
 	HoraFi time(3) NULL,
 	ID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	ProfesorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	ProfessorID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	VehicleID varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	EstatHoraID varchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[Data] date NULL,
@@ -322,7 +322,7 @@ CREATE TABLE RoadXpertDatabase.dbo.Practica (
 	CONSTRAINT FK_Practica_Vehicle FOREIGN KEY (VehicleID) REFERENCES RoadXpertDatabase.dbo.Vehicle(Matricula),
 	CONSTRAINT Practica_FK FOREIGN KEY (EstatHoraID) REFERENCES RoadXpertDatabase.dbo.EstatHora(ID),
 	CONSTRAINT Practica_FK_1 FOREIGN KEY (AlumneID) REFERENCES RoadXpertDatabase.dbo.Alumne(ID),
-	CONSTRAINT Practica_FK_profesorID FOREIGN KEY (ProfesorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID)
+	CONSTRAINT Practica_FK_professorID FOREIGN KEY (ProfessorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID)
 );
 
 
@@ -344,3 +344,4 @@ ALTER TABLE RoadXpertDatabase.dbo.Hora ADD DuracioPractica numeric(38,0) NULL;
 ALTER TABLE RoadXpertDatabase.dbo.Alumne ADD Contrasenya varchar(50) NULL;
 ALTER TABLE RoadXpertDatabase.dbo.Alumne ADD ProfessorID varchar(36) NULL;
 ALTER TABLE RoadXpertDatabase.dbo.Alumne ADD CONSTRAINT Alumne_FK FOREIGN KEY (ProfessorID) REFERENCES RoadXpertDatabase.dbo.Treballador(ID);
+ALTER TABLE RoadXpertDatabase.dbo.Practica ALTER COLUMN VehicleID varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL;
