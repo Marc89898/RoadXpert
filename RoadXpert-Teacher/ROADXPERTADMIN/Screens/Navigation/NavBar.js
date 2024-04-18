@@ -4,9 +4,9 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text, BottomNavigation } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Dashboard from "../Dashboard";
-import MyStudents from "../MyStudents";
-import Cars from "../Cars";
+import Dashboard from "../DashboardSection/Dashboard";
+import MyStudents from "../StudentsSection/MyStudents";
+import Cars from "../Cars/Cars";
 
 const Tab = createBottomTabNavigator();
 
@@ -53,8 +53,7 @@ export default function MyComponent() {
                 ? options.tabBarLabel
                 : options.title !== undefined
                 ? options.title
-                : route.title;
-
+                : route.title; 
             return label;
           }}
         />
@@ -65,8 +64,9 @@ export default function MyComponent() {
         component={Dashboard}
         options={{
           tabBarLabel: "Dashboard",
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="home-outline" size={size} color={color} />;
+          tabBarIcon: ({ color, size, focused }) => {
+            const iconName = focused ? "home" : "home-outline";
+            return <Icon name={iconName} size={size} color={color} />;
           },
         }}
       />
@@ -85,8 +85,11 @@ export default function MyComponent() {
         component={MyStudents}
         options={{
           tabBarLabel: "Students",
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="account-outline" size={size} color={color} />;
+          tabBarIcon: ({ color, size, focused }) => {
+            const iconName = focused
+              ? "account-group"
+              : "account-group-outline";
+            return <Icon name={iconName} size={size} color={color} />;
           },
         }}
       />
@@ -95,8 +98,9 @@ export default function MyComponent() {
         component={Cars}
         options={{
           tabBarLabel: "Cars",
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="car-outline" size={size} color={color} />;
+          tabBarIcon: ({ color, size, focused }) => {
+            const iconName = focused ? "car" : "car-outline";
+            return <Icon name={iconName} size={size} color={color} />;
           },
         }}
       />

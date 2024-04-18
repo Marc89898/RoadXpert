@@ -71,8 +71,8 @@ class APIService {
      * @param {*} Event 
      */
     static async addEventCalendar(event) {
-      console.log(event)
-      const url = "http://10.0.2.2:8888/Practica/";
+      console.log(event);
+      const url = "http://10.0.2.2:8888/Practica";
     
       try {
         const response = await fetch(url, {
@@ -84,7 +84,8 @@ class APIService {
         });
     
         if (!response.ok) {
-          throw new Error('Failed to add event');
+          const errorData = await response.text();
+          throw new Error(`Failed to add event. Status: ${response.status}, Response: ${errorData}`);
         }
     
         const responseData = await response.json();
@@ -95,13 +96,28 @@ class APIService {
       }
     }
     
-      
     
     /*
     * Fetch to see avialable hours of a day
     */
-    static async fetchAvailableHours(day) {
-      const url = "http://10.0.2.2:8888/Practica/"  ;
+    static async fetchAvailableHours(professorID, day) {
+      try {
+        const url = "http://10.0.2.2:8888/horas_libres?profesor_id=" + professorID + "&" + "fecha=" + day;
+        const response = await fetch(url);
+        let data = "";
+
+        if(response.status != 500 && response.status != 404) {
+          data = await response.json();
+          const hours = data.map(item => item.HoraInici);
+          console.log("Hores " + hours)
+          return hours;
+        } else {
+          console.error("Error en la petición: Status", response.status, response.statusText)
+        }
+      }catch(error) {
+        console.error("Error en la peticion de todos los alumnos" + error)
+      }
+      
     }
 
   /**

@@ -43,16 +43,16 @@ class DataAdapter {
     }
     static adaptJsonToDatabase(jsonData) {
       return {
-        AlumneID: '',
+        AlumneID: jsonData.AlumneID,
         Ruta: jsonData.Ruta || '',
         Km: 0, 
         HoraInici: jsonData.horaInicial || '',
-        HoraFi: '',
+        HoraFi: jsonData.horaInicial,
         ID: jsonData.id || '',
-        ProfesorID: '', 
-        VehicleID: '',
-        EstatHoraID: jsonData.Estat || 'Practica Solicitada', 
-        Data: '' 
+        ProfesorID: jsonData.ProfessorID, 
+        VehicleID: jsonData.VehicleID,
+        EstatHoraID: 'EstatHora_1', 
+        Data: jsonData.data
       };
     }
     

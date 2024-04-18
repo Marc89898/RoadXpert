@@ -79,20 +79,21 @@ def get_practicas_by_alumn_id(alumne_id):
 @Practica_bp.route("/Practica", methods=['POST'])
 def post_new_Practica():
     """POST of a driving school"""
+    id = generate_uuid()
     data = request.json
-    alumneID = data.get('alumneID')
-    ruta = data.get('ruta')
-    km = data.get('km')
-    dataInici = data.get('dataInici')
-    dataFi = data.get('dataFi')
-    pagat = data.get('pagat')
-    horaID = data.get('horaID')
-    vehicleId = data.get('vehicleID')
-    estatHora = data.get('estatHora')
+    AlumneID = data.get('AlumneID')
+    Ruta = data.get('Ruta')
+    Km = data.get('Km')
+    HoraInici = data.get('HoraInici')
+    HoraFi = data.get('HoraFi')
+    ProfesorID = data.get('ProfesorID')
+    VehicleID = data.get('VehicleID')
+    EstatHoraID = data.get('EstatHoraID')
+    Data = data.get('Data')
     try:
         with engine.connect() as connection:
-            sql = text("INSERT INTO Practica (alumneID, ruta, km, dataInici, dataFi, pagat, horaID, vehicleId, estatHora) VALUES (:alumneID, :ruta, :km, :dataInici, :dataFi, :pagat, :horaID, :vehicleId, :estatHora)")
-            connection.execute(sql, {"ID": generate_uuid(), "alumneID": alumneID, "ruta":ruta, "km":km, "dataInici":dataInici, "dataFi":dataFi, "pagat":pagat, "horaID":horaID, "vehicleId":vehicleId, "estatHora":estatHora})
+            sql = text("INSERT INTO Practica (ID, AlumneID, Ruta, Km, HoraInici, HoraFi, ProfesorID, VehicleID, EstatHoraID, Data) VALUES (:ID, :AlumneID, :Ruta, :Km, :HoraInici, :HoraFi, :ProfesorID, :VehicleID, :EstatHoraID, :Data)")
+            connection.execute(sql, {"ID": id, "AlumneID": AlumneID, "Ruta":Ruta, "Km":Km, "HoraInici":HoraInici, "HoraFi":HoraFi,"ProfesorID": ProfesorID , "VehicleID":VehicleID, "EstatHoraID":EstatHoraID, "Data": Data})
             connection.commit()
             return jsonify({"message": "Practica added successfully"}), 201
     except Exception as e:

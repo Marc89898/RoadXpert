@@ -7,25 +7,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
 import { Alert } from 'react-native';
-// {
-//   "AlumneID": Alumne_4,
-//   "Ruta": "Ruta 4",
-//   "Km": 15.25,
-//   "HoraInici": "16:00:00.000",
-//   "HoraFi": "17:15:00.000",
-//   "ID": Practica_4,
-//   "ProfesorID": Treballador_3,
-//   "VehicleID": 7890MNO,
-//   "EstatHoraID": EstatHora_4,
-//   "Data": "2024-04-05"
-// }
-
 
 export default function Calendar() {
     const IDALUMNE = 'Alumne_4';
+    const ProfesorID = "Treballador_1";
     const [data, setData] = useState(null);
-    const [events, setEvents] = useState({});
-  
+    const [events, setEvents] = useState({}); 
+    const today = new Date();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
+    const [selectedRoute, setSelectedRoute] = useState('');
+    const [selectedCar, setSelectedCar] = useState('');
+    const [eventName, setEventName] = useState('');
+    const [eventEstat, setEventEstat] = useState('');
+    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+    const [eventToDelete, setEventToDelete] = useState(null);
+    const [selectedHour, setSelectedHour] = useState(availableHours[0]); // Nuevo estado para la hora seleccionada
+
     // Effect to fill the events
     useEffect(() => {
       const fetchData = async () => {
@@ -42,19 +41,7 @@ export default function Calendar() {
       fetchData();
     }, []);
   
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0];
-    const availableHours = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'];
-  
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedHour, setSelectedHour] = useState(availableHours[0]);
-    const [selectedRoute, setSelectedRoute] = useState('');
-    const [selectedCar, setSelectedCar] = useState('');
-    const [eventName, setEventName] = useState('');
-    const [eventEstat, setEventEstat] = useState('');
-    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-    const [eventToDelete, setEventToDelete] = useState(null);
+
   
     const handleDeleteConfirmation = (item) => {
       setEventToDelete(item);
@@ -97,10 +84,14 @@ export default function Calendar() {
         id: eventId,
         name: eventName,
         duration: "45m",
-        horaInicial: selectedHour,
+        horaInicial: selectedHour, // Utiliza selectedHour en lugar de selectedHour
         Ruta: selectedRoute,
         Coche: selectedCar,
-        Estat: 'Practica Solicitada'
+        Estat: 'Practica Solicitada',
+        AlumneID: IDALUMNE,
+        ProfessorID: 'Treballador_3',
+        VehicleID: '3456JKL',
+        data: selectedDate
       };
       setEvents((prevEvents) => {
         const updatedEvents = { ...prevEvents };
@@ -116,9 +107,22 @@ export default function Calendar() {
     };
     
   
-    const addPractica = () => {
-      setModalVisible(true);
+    
+
+    const addPractica = async () => {
+      try {
+        const fetchedHours = await APIService.fetchAvailableHours(ProfesorID, selectedDate);
+        if (fetchedHours) {
+          setAvailableHours(fetchedHours); // Elimina setAvailableHours(null)
+          setModalVisible(true);
+        } else {
+          console.error('No se pudieron obtener las horas disponibles');
+        }
+      } catch (error) {
+        console.error('Error al obtener las horas disponibles:', error);
+      }
     };
+    
   
     const handleModalSubmit = () => {
       handleAddEvent();
@@ -126,7 +130,7 @@ export default function Calendar() {
       setEventName('');
       setSelectedRoute('');
       setSelectedCar('');
-      setSelectedHour(availableHours[0]);
+      setSelectedHour(availableHours[0]); // Utiliza setSelectedHour en lugar de availableHours[0]
     };
   
     const handleModalCancel = () => {
@@ -134,7 +138,7 @@ export default function Calendar() {
       setEventName('');
       setSelectedRoute('');
       setSelectedCar('');
-      setSelectedHour(availableHours[0]);
+      setSelectedHour(availableHours[0]); // Utiliza setSelectedHour en lugar de availableHours[0]
     };
   
     const renderAvailableHours = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import BackNavigation from './BottomNavigation/BackNavigation';
+import BackNavigation from '../Navigation/BackNavigation';
 import { SegmentedButtons } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 

@@ -7,19 +7,18 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-// import NavBar from "./BottomNavigation/NavBar.js";
 import { Card, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-import CircleImage1 from "../assets/images/Dashboard/notification.png";
-import CircleImage2 from "../assets/images/Dashboard/settings.png";
-import TuImagen from "../assets/images/Dashboard/ProvaFoto.jpeg";
+import CircleImage1 from "../../assets/images/Dashboard/notification.png";
+import CircleImage2 from "../../assets/images/Dashboard/settings.png";
+import TuImagen from "../../assets/images/Dashboard/ProvaFoto.jpeg";
 
 const Dashboard = () => {
   const navigation = useNavigation();
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
-  };
+  }; 
   const handleStartPractical = () => {
     navigation.navigate("prePractice");
   };
