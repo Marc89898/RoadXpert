@@ -4,9 +4,9 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text, BottomNavigation } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Dashboard from "../Dashboard";
-import MyStudents from "../MyStudents";
-import Cars from "../Cars";
+import Dashboard from "../DashboardSection/Dashboard";
+import MyStudents from "../StudentsSection/MyStudents";
+import Cars from "../Cars/Cars";
 
 const Tab = createBottomTabNavigator();
 

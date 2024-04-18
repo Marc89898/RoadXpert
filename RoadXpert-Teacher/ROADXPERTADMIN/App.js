@@ -1,55 +1,10 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashScreen from './Components/SplashScreen.js';
-import LoginScreen from './Components/LoginScreen.js';
-import Dashboard from './Components/Dashboard.js';
-import NavBar from './Components/BottomNavigation/NavBar.js';
-import BackNavigation from './Components/BottomNavigation/BackNavigation.js';
-import MyCars from './Components/Cars.js';
-import NotificationsScreen from './Components/NotificationsScreen.js';
-import MyStudents from './Components/MyStudents.js';
-import StudentInfo from './Components/StudentInfo.js';
-import StudentProfile from './Components/StudentProfile.js';
-import CarInfo from './Components/CarInfo.js';
-import MapScreen from './Components/MapScreen.js';
-import prePractice from './Components/pre-practice.js';
-import StartRouteMap from './Components/StartRouteMap.js';
-import PostPractice from './Components/post-practice.js';
-import AllStudents from './Components/AllStudents.js';
-import Categories from './Components/Categories.js';
-import SelectedCategory from './Components/SelectedCategory.js';
+// Purpose: Main file for the app, contains the navigation stack for the app.
+import React from "react";
+import Profesor from "./Router/Profesor";
+// import Admin from "./Router/Admin";
 
-const Stack = createNativeStackNavigator();
-
+// Main App Component
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="NavBar"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="NavBar" component={NavBar} />
-        <Stack.Screen name="BackNavigation" component={BackNavigation} />
-        <Stack.Screen name="MyCars" component={MyCars} />
-        <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
-        <Stack.Screen name="MyStudents" component={MyStudents} />
-        <Stack.Screen name="StudentInfo" component={StudentInfo} />
-        <Stack.Screen name="StudentProfile" component={StudentProfile} />
-        <Stack.Screen name="CarInfo" component={CarInfo} />
-        <Stack.Screen name="MapScreen" component={MapScreen} />
-        <Stack.Screen name="prePractice" component={prePractice} />
-        <Stack.Screen name="StartRouteMap" component={StartRouteMap} />
-        <Stack.Screen name="PostPractice" component={PostPractice} />
-        <Stack.Screen name="AllStudents" component={AllStudents} />
-        <Stack.Screen name="Categories" component={Categories} />
-        <Stack.Screen name="SelectedCategory" component={SelectedCategory} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return <Profesor />;
+  // return <Admin />;
 }

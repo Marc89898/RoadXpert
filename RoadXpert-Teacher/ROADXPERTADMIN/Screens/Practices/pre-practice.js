@@ -8,10 +8,10 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from "react-native";
-import BackNavigation from "./BottomNavigation/BackNavigation";
+import BackNavigation from "../Navigation/BackNavigation";
 import SignatureCanvas from "react-native-signature-canvas";
-import MainButton from "../assets/Buttons/mainButton.js";
-import CustomTextInput from "../assets/Inputs/CustomTextInput.js";
+import MainButton from "../../Components/Buttons/mainButton.js";
+import CustomTextInput from "../../Components/Inputs/CustomTextInput.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 

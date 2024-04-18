@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import BackNavigation from "./BottomNavigation/BackNavigation";
+import BackNavigation from "../Navigation/BackNavigation";
 import { Card } from "react-native-paper";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from '@react-navigation/native';

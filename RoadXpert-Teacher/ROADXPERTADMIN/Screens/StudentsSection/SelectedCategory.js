@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
-import BackNavigation from "./BottomNavigation/BackNavigation";
+import BackNavigation from "../Navigation/BackNavigation";
 import MapView from "react-native-maps";
 
 const SelectedCategory = () => {
@@ -25,7 +25,7 @@ const SelectedCategory = () => {
           </View>
           <View style={styles.imageContainer}>
             <Image
-              source={require("../assets/images/Categories/StopSign.png")}
+              source={require("../../assets/images/Categories/StopSign.png")}
               style={[styles.image, { resizeMode: "contain" }]}
             />
           </View>
