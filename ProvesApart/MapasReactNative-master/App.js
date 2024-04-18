@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
+import * as FileSystem from "expo-file-system";
 
 export default function App() {
   const [location, setLocation] = useState(null);
@@ -62,15 +63,69 @@ export default function App() {
     };
   }, [recording, isInRoute, lastSavedLocation]);
 
-  const handleButtonPress = () => {
+  const handleButtonPress = async () => {
+    // Verificar si la ruta está activa
     if (isInRoute) {
+      // Detener la grabación de la ruta
       setRecording(false);
-      setIsInRoute(false); // Detener la grabación y la ruta
-      const locationData = JSON.stringify(coordinates);
-      console.log(locationData);
+      setIsInRoute(false);
+
+      // Crear un objeto GeoJSON con la ruta
+      const routeGeoJSON = {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: coordinates.map((coord) => [
+            coord.longitude,
+            coord.latitude,
+          ]),
+        },
+      };
+
+      // Convertir el objeto GeoJSON a una cadena de texto
+      const routeData = JSON.stringify(routeGeoJSON);
+
+      // guardar la ruta en un archivo JSON y guardarlo en la carpeta de descargas
+      saveRouteFile(routeData);
+        
+      // Limpiar las coordenadas de la ruta
+      setCoordinates([]);
+
+      // Mostrar la ruta en formato GeoJSON en la consola
+      console.log(routeData);
     } else {
+      // Iniciar la grabación de la ruta
       setRecording(true);
-      setIsInRoute(true); // Iniciar la grabación y la ruta
+      setIsInRoute(true);
+    }
+  };
+
+  const saveRouteFile = async (routeData) => {
+    try {
+      const fileUri = FileSystem.documentDirectory + 'ruta.json'; // Ruta del archivo en la carpeta de documentos
+      // vaciar el archivo si ya existe
+      await FileSystem.writeAsStringAsync(fileUri, '');
+      await FileSystem.writeAsStringAsync(fileUri, routeData); // Escribir el archivo JSON
+      console.log('Ruta guardada en:', fileUri);
+    } catch (error) {
+      console.error('Error al guardar la ruta:', error);
+    }
+  }
+
+  const handleLoadRoutePress = async () => {
+    try {
+      const fileUri = FileSystem.documentDirectory + 'ruta.json'; // Ruta del archivo en la carpeta de documentos
+      const routeData = await FileSystem.readAsStringAsync(fileUri); // Leer el archivo JSON
+      const routeGeoJSON = JSON.parse(routeData); // Convertir la cadena JSON a objeto GeoJSON
+      
+      // Mostrar la ruta en el mapa
+      setCoordinates(routeGeoJSON.geometry.coordinates.map((coord) => ({
+        latitude: coord[1],
+        longitude: coord[0],
+      })));
+    } catch (error) {
+      console.error('Error al cargar la ruta:', error);
     }
   };
 
@@ -97,7 +152,7 @@ export default function App() {
           <Polyline
             coordinates={coordinates}
             strokeWidth={5}
-            strokeColor="blue"
+            strokeColor="grey"
           />
         </MapView>
       )}
@@ -105,6 +160,10 @@ export default function App() {
         <Button
           title={isInRoute ? "Detener Ruta" : "Empezar Ruta"}
           onPress={handleButtonPress}
+        />
+        <Button
+          title="Cargar Ruta"
+          onPress={handleLoadRoutePress}
         />
       </View>
     </View>
