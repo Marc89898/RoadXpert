@@ -6,43 +6,72 @@ import * as Location from "expo-location";
 export default function App() {
   const [location, setLocation] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
-  const [recording, setRecording] = useState(true); 
-  const [watchId, setWatchId] = useState(null); 
+  const [recording, setRecording] = useState(true);
+  const [lastSavedLocation, setLastSavedLocation] = useState(null);
+  // Variable para controlar la ruta
+  const [isInRoute, setIsInRoute] = useState(false); 
 
   useEffect(() => {
+    let intervalId;
+
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
         return;
       }
-
-      if (recording) {
+      // Verificar si se está grabando y si la ruta está activa
+      if (recording && isInRoute) { 
         intervalId = setInterval(async () => {
-          const newLocation = await Location.getCurrentPositionAsync({}); // Obtener la ubicación actual
+          // Obtener la ubicación actual
+          const newLocation = await Location.getCurrentPositionAsync({});
+
+          // Actualizar la ubicación actual
           setLocation(newLocation.coords);
-          setCoordinates((prev) => [
-            ...prev,
-            {
+
+          // Verificar si la ubicación actual es diferente a la última guardada
+          if (
+            !lastSavedLocation ||
+            newLocation.coords.latitude !== lastSavedLocation.latitude ||
+            newLocation.coords.longitude !== lastSavedLocation.longitude
+          ) {
+
+            // Guardar la ubicación actual
+            setCoordinates((prev) => [
+              ...prev,
+              {
+                latitude: newLocation.coords.latitude,
+                longitude: newLocation.coords.longitude,
+              },
+            ]);
+            setLastSavedLocation({
               latitude: newLocation.coords.latitude,
               longitude: newLocation.coords.longitude,
-            },
-          ]);
-        }, 6000);
+            });
+          }
+        }, 2000); // Guardar la ubicación cada 2 segundos
+      } else {
+        clearInterval(intervalId); // Detener el intervalo si la ruta no está activa
       }
     })();
 
     return () => {
-      if (watchId) {
-        watchId.remove(); // Detener la actualización de la ubicación al desmontar el componente
+      if (intervalId) {
+        clearInterval(intervalId);
       }
     };
-  }, [recording]);
+  }, [recording, isInRoute, lastSavedLocation]);
 
   const handleButtonPress = () => {
-    setRecording(false); // Detener la grabación al presionar el botón
-    const locationData = JSON.stringify(coordinates); // Conv ertir las coordenadas a JSON
-    console.log(locationData); // Mostrar el JSON en la consola
+    if (isInRoute) {
+      setRecording(false);
+      setIsInRoute(false); // Detener la grabación y la ruta
+      const locationData = JSON.stringify(coordinates);
+      console.log(locationData);
+    } else {
+      setRecording(true);
+      setIsInRoute(true); // Iniciar la grabación y la ruta
+    }
   };
 
   return (
@@ -73,7 +102,10 @@ export default function App() {
         </MapView>
       )}
       <View style={styles.buttonContainer}>
-        <Button title="Detener Recorrido" onPress={handleButtonPress} />
+        <Button
+          title={isInRoute ? "Detener Ruta" : "Empezar Ruta"}
+          onPress={handleButtonPress}
+        />
       </View>
     </View>
   );
