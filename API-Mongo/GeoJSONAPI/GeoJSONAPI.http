@@ -1,0 +1,6 @@
+@GeoJSONAPI_HostAddress = http://localhost:5221
+
+GET {{GeoJSONAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

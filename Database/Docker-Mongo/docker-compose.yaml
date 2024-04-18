@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: roadXPertDB-Mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mongo_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Passw0rd!
+
+networks:
+  mongo_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
+
+
+# to run the container
+# docker-compose up -d

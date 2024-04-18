@@ -19,9 +19,9 @@ def get_fecha():
     fecha = datetime.datetime.strptime(fecha_str, '%Y-%m-%d').date()
     return fecha
 
-def obtener_horario(profesor_id, conn):
-    horari_query = text("SELECT * FROM Horari WHERE ID = (SELECT HorariID FROM Treballador WHERE ID = :profesor_id)")
-    horari_result = conn.execute(horari_query, {"profesor_id": profesor_id})
+def obtener_horario(professor_id, conn):
+    horari_query = text("SELECT * FROM Horari WHERE ID = (SELECT HorariID FROM Treballador WHERE ID = :professor_id)")
+    horari_result = conn.execute(horari_query, {"professor_id": professor_id})
     horari_row = horari_result.fetchone()
 
     if not horari_row:
@@ -51,9 +51,9 @@ def obtener_horas_laborales(dia_semana, horari_id, conn):
 
     return horas_laborales
 
-def obtener_horas_ocupadas(profesor_id, fecha, conn):
-    practica_query = text("SELECT * FROM Practica WHERE ProfesorID = :profesor_id AND Data = :fecha")
-    practica_result = conn.execute(practica_query, {"profesor_id": profesor_id, "fecha": fecha})
+def obtener_horas_ocupadas(professor_id, fecha, conn):
+    practica_query = text("SELECT * FROM Practica WHERE ProfessorID = :professor_id AND Data = :fecha")
+    practica_result = conn.execute(practica_query, {"professor_id": professor_id, "fecha": fecha})
 
     horas_ocupadas = []
 
@@ -69,17 +69,17 @@ def obtener_horas_ocupadas(profesor_id, fecha, conn):
 def get_horas_libres():
     try:
         fecha = get_fecha()
-        profesor_id = request.args.get('profesor_id')
+        professor_id = request.args.get('professor_id')
 
         with engine.connect() as conn:
-            horari_id = obtener_horario(profesor_id, conn)
+            horari_id = obtener_horario(professor_id, conn)
 
             if not horari_id:
-                return jsonify({"message": "Profesor no encontrado"}), 404
+                return jsonify({"message": "Professor no encontrado"}), 404
 
             dia_semana = fecha.strftime('%A')
             horas_laborales = obtener_horas_laborales(dia_semana, horari_id, conn)
-            horas_ocupadas = obtener_horas_ocupadas(profesor_id, fecha, conn)
+            horas_ocupadas = obtener_horas_ocupadas(professor_id, fecha, conn)
 
             horas_disponibles = [hora for hora in horas_laborales if hora not in horas_ocupadas]
 
