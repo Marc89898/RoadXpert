@@ -58,8 +58,8 @@ def obtener_horas_ocupadas(profesor_id, fecha, conn):
     horas_ocupadas = []
 
     for practica_row in practica_result.fetchall():
-        hora_inici = practica_row[3].hour  # HoraInici
-        hora_fi = practica_row[4].hour     # HoraFi
+        hora_inici = practica_row[3].hour
+        hora_fi = practica_row[4].hour
 
         horas_ocupadas.append({"HoraFi": hora_fi, "HoraInici": hora_inici})
 

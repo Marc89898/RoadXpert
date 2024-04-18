@@ -41,9 +41,21 @@ class DataAdapter {
   
       return adaptedData;
     }
-    static adaptDataFetch(jsonData) {
-      
+    static adaptJsonToDatabase(jsonData) {
+      return {
+        AlumneID: '',
+        Ruta: jsonData.Ruta || '',
+        Km: 0, 
+        HoraInici: jsonData.horaInicial || '',
+        HoraFi: '',
+        ID: jsonData.id || '',
+        ProfesorID: '', 
+        VehicleID: '',
+        EstatHoraID: jsonData.Estat || 'Practica Solicitada', 
+        Data: '' 
+      };
     }
+    
   }
   
   export { DataAdapter };

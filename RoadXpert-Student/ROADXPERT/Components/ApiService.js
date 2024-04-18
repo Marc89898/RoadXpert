@@ -34,7 +34,6 @@ class APIService {
         }
         const currentData = await currentDataResponse.json();
         
-        // Convertir fechas a formato 'YYYY-MM-DD HH:MM:SS'
         const HoraIniciFormatted = currentData.HoraInici.replace('T', ' ').substring(0, 19);
         const HoraFiFormatted = currentData.HoraFi.replace('T', ' ').substring(0, 19);
         const DataFormatted = new Date(currentData.Data).toISOString().substring(0, 19);
@@ -71,16 +70,38 @@ class APIService {
      * To add Event calendar in to database
      * @param {*} Event 
      */
-    static async addEventCalendar(Event) {
-
+    static async addEventCalendar(event) {
+      console.log(event)
+      const url = "http://10.0.2.2:8888/Practica/";
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(event)
+        });
+    
+        if (!response.ok) {
+          throw new Error('Failed to add event');
+        }
+    
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        console.error('Error adding event:', error.message);
+        throw error;
+      }
     }
     
+      
     
     /*
     * Fetch to see avialable hours of a day
     */
     static async fetchAvailableHours(day) {
-  
+      const url = "http://10.0.2.2:8888/Practica/"  ;
     }
 
   /**

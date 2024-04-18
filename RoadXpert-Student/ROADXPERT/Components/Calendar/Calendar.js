@@ -109,6 +109,8 @@ export default function Calendar() {
         } else {
           updatedEvents[selectedDate] = [event];
         }
+        eventAdapted = DataAdapter.adaptJsonToDatabase(event)
+        APIService.addEventCalendar(eventAdapted)
         return updatedEvents;
       });
     };
