@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Card } from "react-native-paper";
 import BackNavigation from "./BottomNavigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
@@ -29,11 +29,20 @@ const CustomCard = ({ title, subtitle, backgroundImage }) => {
 };
 
 const MyStudents = () => {
+  const navigation = useNavigation();
+
+  const handleAllStudentsPress = () => {
+    navigation.navigate("AllStudents");
+  };
+
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
         <Text style={styles.headerText}>My Students</Text>
+        <TouchableOpacity style={styles.button} onPress={handleAllStudentsPress}>
+          <Text style={styles.buttonText}>All Students</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
         <CustomCard
@@ -61,10 +70,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingLeft: 24,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 24,
+    marginBottom: 10,
   },
   headerText: {
     fontSize: 25,
+  },
+  button: {
+    backgroundColor: "#007bff",
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 50,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
   },
   cardContainer: {
     flexDirection: "row",
