@@ -25,7 +25,18 @@ export default function Calendar() {
     const IDALUMNE = 'Alumne_4';
     const [data, setData] = useState(null);
     const [events, setEvents] = useState({});
-  
+    const today = new Date();
+    const availableHours = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'];
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedHour, setSelectedHour] = useState(availableHours[0]);
+    const [selectedRoute, setSelectedRoute] = useState('');
+    const [selectedCar, setSelectedCar] = useState('');
+    const [eventName, setEventName] = useState('');
+    const [eventEstat, setEventEstat] = useState('');
+    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+    const [eventToDelete, setEventToDelete] = useState(null);
+
     // Effect to fill the events
     useEffect(() => {
       const fetchData = async () => {
@@ -42,19 +53,7 @@ export default function Calendar() {
       fetchData();
     }, []);
   
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0];
-    const availableHours = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'];
-  
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedHour, setSelectedHour] = useState(availableHours[0]);
-    const [selectedRoute, setSelectedRoute] = useState('');
-    const [selectedCar, setSelectedCar] = useState('');
-    const [eventName, setEventName] = useState('');
-    const [eventEstat, setEventEstat] = useState('');
-    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-    const [eventToDelete, setEventToDelete] = useState(null);
+
   
     const handleDeleteConfirmation = (item) => {
       setEventToDelete(item);
@@ -100,7 +99,11 @@ export default function Calendar() {
         horaInicial: selectedHour,
         Ruta: selectedRoute,
         Coche: selectedCar,
-        Estat: 'Practica Solicitada'
+        Estat: 'Practica Solicitada',
+        AlumneID: IDALUMNE,
+        ProfessorID: 'Treballador_3',
+        VehicleID: '3456JKL',
+        data: selectedDate
       };
       setEvents((prevEvents) => {
         const updatedEvents = { ...prevEvents };

@@ -71,8 +71,8 @@ class APIService {
      * @param {*} Event 
      */
     static async addEventCalendar(event) {
-      console.log(event)
-      const url = "http://10.0.2.2:8888/Practica/";
+      console.log(event);
+      const url = "http://10.0.2.2:8888/Practica";
     
       try {
         const response = await fetch(url, {
@@ -84,7 +84,8 @@ class APIService {
         });
     
         if (!response.ok) {
-          throw new Error('Failed to add event');
+          const errorData = await response.text();
+          throw new Error(`Failed to add event. Status: ${response.status}, Response: ${errorData}`);
         }
     
         const responseData = await response.json();
@@ -94,6 +95,8 @@ class APIService {
         throw error;
       }
     }
+    
+    
     
       
     
