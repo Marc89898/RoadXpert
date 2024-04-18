@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Card } from "react-native-paper";
-import BackNavigation from "./BottomNavigation/BackNavigation";
+import BackNavigation from "../Navigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
 
 const CustomCard = ({ title, subtitle, backgroundImage }) => {
@@ -18,7 +18,7 @@ const CustomCard = ({ title, subtitle, backgroundImage }) => {
       <Card style={styles.card}>
         <Card.Cover source={backgroundImage} style={styles.cardCover} />
         <Image
-          source={require("../assets/images/Students/imgOverlay.png")}
+          source={require("../../assets/images/Students/imgOverlay.png")}
           style={styles.overlayImage}
         />
         <Text style={styles.overlayText}>{title}</Text>
@@ -40,7 +40,10 @@ const MyStudents = () => {
       <BackNavigation />
       <View style={styles.header}>
         <Text style={styles.headerText}>My Students</Text>
-        <TouchableOpacity style={styles.button} onPress={handleAllStudentsPress}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleAllStudentsPress}
+        >
           <Text style={styles.buttonText}>All Students</Text>
         </TouchableOpacity>
       </View>
@@ -48,17 +51,17 @@ const MyStudents = () => {
         <CustomCard
           title={"Tony Stark"}
           subtitle={"23 years old"}
-          backgroundImage={require("../assets/images/Students/imgProbaToni.jpg")}
+          backgroundImage={require("../../assets/images/Students/imgProbaToni.jpg")}
         />
         <CustomCard
           title={"Peter Parker"}
           subtitle={"20 years old"}
-          backgroundImage={require("../assets/images/Students/imgProbaTom.jpg")}
+          backgroundImage={require("../../assets/images/Students/imgProbaTom.jpg")}
         />
         <CustomCard
           title={"Bruce Wayne"}
           subtitle={"35 years old"}
-          backgroundImage={require("../assets/images/Students/imgProbaBruce.jpg")}
+          backgroundImage={require("../../assets/images/Students/imgProbaBruce.jpg")}
         />
       </View>
     </View>

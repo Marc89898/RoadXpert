@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import BackNavigation from "./BottomNavigation/BackNavigation";
+import BackNavigation from "../Navigation/BackNavigation";
 import { MaterialIcons } from "@expo/vector-icons"; 
 import * as ImagePicker from 'expo-image-picker';  
 

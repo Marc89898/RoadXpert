@@ -13,8 +13,7 @@ import {
   Card,
   IconButton,
 } from "react-native-paper";
-import BackNavigation from "./BottomNavigation/BackNavigation";
-import NavBar from "./BottomNavigation/NavBar";
+import BackNavigation from "../Navigation/BackNavigation";
 import { useNavigation } from '@react-navigation/native';
 
 const StudentCard = ({ name, age, image, onDelete }) => {
@@ -107,12 +106,12 @@ const AllStudents = ({ navigation }) => {
     {
       name: "Mariano Gomez",
       age: "18 años",
-      image: require("../assets/images/Students/imgProbaToni.jpg"),
+      image: require("../../assets/images/Students/imgProbaToni.jpg"),
     },
     {
       name: "Pere Naus",
       age: "25 años",
-      image: require("../assets/images/Students/imgProbaTom.jpg"),
+      image: require("../../assets/images/Students/imgProbaTom.jpg"),
     },
   ]);
 

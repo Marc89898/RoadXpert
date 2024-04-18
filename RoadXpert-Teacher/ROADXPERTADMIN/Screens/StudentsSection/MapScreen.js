@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from "react-native-vector-icons/FontAwesome";
-import BackNavigation from "./BottomNavigation/BackNavigation";
+import BackNavigation from "../Navigation/BackNavigation";
 import { Button } from "react-native-paper";
 // import { GoogleMapsServices } from "react-native-google-maps-services";
 import * as Location from "expo-location";

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton, Card } from "react-native-paper";
-import BackNavigation from "./BottomNavigation/BackNavigation";
+import BackNavigation from "../Navigation/BackNavigation";
 import Icon from "react-native-vector-icons/Feather";
 
 export default function MyCars({}) {
@@ -55,13 +55,13 @@ export default function MyCars({}) {
         cardTitle="Volkswagen Golf"
         cardSubtitle="Disponible"
         circleColor="red"
-        imagePath={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
+        imagePath={require("../../assets/images/CarsScreen/VolkswagenGolf.png")}
       />
       <CarCard
         cardTitle="Volkswagen Arteon"
         cardSubtitle="No Disponible"
         circleColor="green"
-        imagePath={require("../assets/images/CarsScreen/VolkswagenArteon.webp")}
+        imagePath={require("../../assets/images/CarsScreen/VolkswagenArteon.webp")}
       />
     </View>
   );

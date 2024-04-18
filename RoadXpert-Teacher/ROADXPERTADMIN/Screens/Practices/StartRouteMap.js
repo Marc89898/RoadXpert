@@ -15,15 +15,15 @@ import { useNavigation } from "@react-navigation/native";
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/FontAwesome";
-import BackNavigation from "./BottomNavigation/BackNavigation";
-import { getTrafficData } from "./api/trafficService";
+import BackNavigation from "../Navigation/BackNavigation";
+import { getTrafficData } from "../api/trafficService";
 // import * as AsyncStorage from '@react-native-community/async-storage';
 
 // audio amanagment
 import axios from 'axios';
 import { Audio } from 'expo-av';
 // import env from '../env.js';
-import ms from '../prompts/messagesGPT.json';
+import ms from '../../prompts/messagesGPT.json';
 
 const StartRouteMap = () => {
   const navigation = useNavigation();
@@ -324,7 +324,7 @@ const StartRouteMap = () => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Image
-                  source={require("../assets/images/StartRouteMap/FinishLineIcon.png")}
+                  source={require("../../assets/images/StartRouteMap/FinishLineIcon.png")}
                   style={styles.modalImage}
                 />
                 <Text style={styles.modalText}>
