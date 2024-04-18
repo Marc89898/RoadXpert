@@ -18,7 +18,7 @@ const StudentInfo = ({ route }) => {
 
   const handleroutesView = () => {
     navigation.navigate("MapScreen");
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -26,6 +26,7 @@ const StudentInfo = ({ route }) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>{name}</Text>
       </View>
+
       <TouchableOpacity onPress={goToStudentProfile}>
         <Card style={styles.card}>
           <Card.Content style={styles.cardContent}>
