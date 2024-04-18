@@ -78,3 +78,12 @@ Ia/docs/_build/
 
 Database/Docker/DB
 Entitat-Relacio/DB
+RoadXpert-Teacher/ProvesApart/ProvaAudios/Audio2Text/node_modules/*
+RoadXpert-Teacher/ProvesApart/ProvaAudios/Audio2Text/.expo/*
+/RoadXpert-Teacher/ProvaAudios/Audio2Text/.expo
+/RoadXpert-Teacher/ProvaAudios/Audio2Text/node_modules/
+/RoadXpert-Teacher/ProvaAudios/example-react-native-voice/.expo
+/RoadXpert-Teacher/ProvaAudios/example-react-native-voice/node_modules
+/RoadXpert-Teacher/ProvaAudios/STTOpenIA/.expo
+/RoadXpert-Teacher/ProvaAudios/STTOpenIA/node_modules
+RoadXpert-Teacher/ProvaAudios/example-react-native-voice/env.js

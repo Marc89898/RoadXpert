@@ -20,14 +20,8 @@ const Dashboard = () => {
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
   };
-  const handleCars = () => {
-    navigation.navigate("MyCars");
-  };
   const handleStartPractical = () => {
     navigation.navigate("prePractice");
-  };
-  const hadleAllStudents = () => {
-    navigation.navigate("AllStudents");
   };
 
   return (
@@ -60,15 +54,6 @@ const Dashboard = () => {
           </Card>
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <Button style={styles.button} onPress={handleCars} mode="contained">
-          Coches
-        </Button>
-        <Button style={styles.button} onPress={hadleAllStudents} mode="contained">
-          All Students
-        </Button>
-      </View>
-      {/* <NavBar /> */}
     </View>
   );
 };

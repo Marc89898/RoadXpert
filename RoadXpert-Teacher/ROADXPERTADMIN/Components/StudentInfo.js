@@ -12,8 +12,12 @@ const StudentInfo = ({ route }) => {
     navigation.navigate("StudentProfile", { name, image });
   };
 
-  const handleCardClick = () => {
-    navigation.navigate('Categories');
+  const handlerouteClick = () => {
+    navigation.navigate("Categories");
+  };
+
+  const handleroutesView = () => {
+    navigation.navigate("MapScreen");
   };
 
   return (
@@ -22,6 +26,7 @@ const StudentInfo = ({ route }) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>{name}</Text>
       </View>
+
       <TouchableOpacity onPress={goToStudentProfile}>
         <Card style={styles.card}>
           <Card.Content style={styles.cardContent}>
@@ -35,18 +40,21 @@ const StudentInfo = ({ route }) => {
           </Card.Content>
         </Card>
       </TouchableOpacity>
-      <View style={styles.cardContainer}>
-        <Card style={styles.routesCard}>
-          <Card.Content style={{ backgroundColor: "#00041A" }}>
-            <Text style={styles.cardHeaderText}>Ver Rutas</Text>
-            <Image
-              source={require("../assets/images/RouteInformation/Map.png")}
-              style={styles.cardImage}
-            />
-          </Card.Content>
-        </Card>
 
-        <TouchableOpacity onPress={handleCardClick}>
+      <View style={styles.cardContainer}>
+        <TouchableOpacity onPress={handleroutesView}>
+          <Card style={styles.routesCard}>
+            <Card.Content style={{ backgroundColor: "#00041A" }}>
+              <Text style={styles.cardHeaderText}>Ver Rutas</Text>
+              <Image
+                source={require("../assets/images/RouteInformation/Map.png")}
+                style={styles.cardImage}
+              />
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handlerouteClick}>
           <Card style={styles.routesCard}>
             <Card.Content style={{ backgroundColor: "#081A00" }}>
               <Text style={styles.cardHeaderText}>Categorias</Text>
