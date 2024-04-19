@@ -13,7 +13,7 @@ const LoginScreen = () => {
 
   const handleLogin = () => {
     if (username === "" && password === "") {
-      navigation.navigate("NavBar");
+      navigation.navigate("WelcomePage");
     } else {
       console.log("Incorrect credentials. Please try again.");
     }
@@ -23,7 +23,7 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/images/SplashScreen/RoadLogo.png")}
+          source={require("../assets/images/SplashScreen/LogoRoadXpert.png")}
           style={styles.image}
         />
       </View>
