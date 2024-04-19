@@ -86,14 +86,14 @@ def post_new_Practica():
     Km = data.get('Km')
     HoraInici = data.get('HoraInici')
     HoraFi = data.get('HoraFi')
-    ProfesorID = data.get('ProfesorID')
+    ProfessorID = data.get('ProfessorID')
     VehicleID = data.get('VehicleID')
     EstatHoraID = data.get('EstatHoraID')
     Data = data.get('Data')
     try:
         with engine.connect() as connection:
-            sql = text("INSERT INTO Practica (ID, AlumneID, Ruta, Km, HoraInici, HoraFi, ProfesorID, VehicleID, EstatHoraID, Data) VALUES (:ID, :AlumneID, :Ruta, :Km, :HoraInici, :HoraFi, :ProfesorID, :VehicleID, :EstatHoraID, :Data)")
-            connection.execute(sql, {"ID": id, "AlumneID": AlumneID, "Ruta":Ruta, "Km":Km, "HoraInici":HoraInici, "HoraFi":HoraFi,"ProfesorID": ProfesorID , "VehicleID":VehicleID, "EstatHoraID":EstatHoraID, "Data": Data})
+            sql = text("INSERT INTO Practica (ID, AlumneID, Ruta, Km, HoraInici, HoraFi, ProfessorID, VehicleID, EstatHoraID, Data) VALUES (:ID, :AlumneID, :Ruta, :Km, :HoraInici, :HoraFi, :ProfessorID, :VehicleID, :EstatHoraID, :Data)")
+            connection.execute(sql, {"ID": id, "AlumneID": AlumneID, "Ruta":Ruta, "Km":Km, "HoraInici":HoraInici, "HoraFi":HoraFi,"ProfessorID": ProfessorID , "VehicleID":VehicleID, "EstatHoraID":EstatHoraID, "Data": Data})
             connection.commit()
             return jsonify({"message": "Practica added successfully"}), 201
     except Exception as e:
@@ -108,7 +108,7 @@ def put_update_Practica(Practica_id):
     Km = data.get('Km')
     HoraInici = data.get('HoraInici')
     HoraFi = data.get('HoraFi')
-    ProfesorID = data.get('ProfesorID')
+    ProfessorID = data.get('ProfessorID')
     VehicleID = data.get('VehicleID')
     EstatHoraID = data.get('EstatHoraID')
     Data = data.get('Data')
@@ -120,8 +120,8 @@ def put_update_Practica(Practica_id):
             Practica = result_check.fetchone()
             if Practica:
                 # El registro de Practica existe, proceder con la actualización
-                sql = text("UPDATE Practica SET AlumneID = :AlumneID, Ruta = :Ruta, Km = :Km, HoraInici = :HoraInici, HoraFi = :HoraFi, EstatHoraID = :EstatHoraID, VehicleID = :VehicleID, ProfesorID = :ProfesorID, Data = :Data WHERE ID = :Practica_id")
-                connection.execute(sql, {"AlumneID": AlumneID, "Ruta": Ruta, "Km": Km, "HoraInici": HoraInici, "HoraFi": HoraFi, "EstatHoraID": EstatHoraID, "ProfesorID": ProfesorID, "VehicleID": VehicleID, "Data": Data, "Practica_id": Practica_id})
+                sql = text("UPDATE Practica SET AlumneID = :AlumneID, Ruta = :Ruta, Km = :Km, HoraInici = :HoraInici, HoraFi = :HoraFi, EstatHoraID = :EstatHoraID, VehicleID = :VehicleID, ProfessorID = :ProfessorID, Data = :Data WHERE ID = :Practica_id")
+                connection.execute(sql, {"AlumneID": AlumneID, "Ruta": Ruta, "Km": Km, "HoraInici": HoraInici, "HoraFi": HoraFi, "EstatHoraID": EstatHoraID, "ProfessorID": ProfessorID, "VehicleID": VehicleID, "Data": Data, "Practica_id": Practica_id})
                 connection.commit()
                 return jsonify({"message": f"Practica with ID {Practica_id} updated successfully"}), 200
             else:

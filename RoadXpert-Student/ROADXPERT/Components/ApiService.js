@@ -11,7 +11,7 @@ class APIService {
           data = await response.json();
           console.log("Datos:", data);
         } else {
-          console.error("Error en la petición: Status", response.status, response.statusText);
+          console.error("Error en la petición de eventos: Status", response.status, response.statusText);
         }
         if (data == null) {
           console.error("La peticion no funciona correctamente comprueva la api i la base de datos")
@@ -102,7 +102,7 @@ class APIService {
     */
     static async fetchAvailableHours(professorID, day) {
       try {
-        const url = "http://10.0.2.2:8888/horas_libres?profesor_id=" + professorID + "&" + "fecha=" + day;
+        const url = "http://10.0.2.2:8888/horas_libres?professor_id=" + professorID + "&" + "fecha=" + day;
         const response = await fetch(url);
         let data = "";
 
@@ -112,7 +112,7 @@ class APIService {
           console.log("Hores " + hours)
           return hours;
         } else {
-          console.error("Error en la petición: Status", response.status, response.statusText)
+          console.error("Error en la petición de horas disponibles: Status", response.status, response.statusText);
         }
       }catch(error) {
         console.error("Error en la peticion de todos los alumnos" + error)
@@ -132,7 +132,7 @@ class APIService {
         data = await response.json();
         return data;
       } else {
-        console.error("Error en la petición: Status", response.status, response.statusText);
+        console.error("Error en la petición de alumnos: Status", response.status, response.statusText);
       }
     }catch(error) {
       console.error("Error en la peticion de todos los alumnos" + error)
