@@ -7,6 +7,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from '../ScreensAdmin/SplashScreen.js';
 import LoginScreen from '../ScreensAdmin/LoginScreen.js';
 
+// Welcome Page
+import WelcomePage from '../ScreensAdmin/WelcomePage.js'
+
 // Navigation Stack
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +25,7 @@ export default function Admin() {
       >
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="WelcomePage" component={WelcomePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
