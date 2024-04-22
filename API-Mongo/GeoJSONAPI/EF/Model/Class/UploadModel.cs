@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace GeoJSONAPI.ApiMongoDB{
+namespace GeoJSONAPI.Models{
     /// <summary>
     /// Class to upload a file
     /// </summary>
