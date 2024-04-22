@@ -10,7 +10,7 @@ using MongoDB.Driver.GridFS;
 
 namespace GeoJSONAPI.Controllers
 {
-    [Route("FitxersAPI/v1/[controller]")]
+    [Route("GeoJSONAPI/v1/[controller]")]
     [ApiController]
     public class GeoJSONFileController : ControllerBase
     {

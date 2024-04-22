@@ -1,0 +1,8 @@
+{
+    "mongoRouteApi": {
+        "API_URL": "http://localhost:5010"
+    },
+    "mssqlApi": {
+        "API_URL": "https://localhost:8888"
+    }
+}
