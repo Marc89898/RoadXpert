@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
-using MongoStoreApi.Services;
-using GeoJSONAPI.ApiMongoDB;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
-using System;
-using System.IO;
+using GeoJSONAPI.Services;
+using GeoJSONAPI.Models;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
+using MongoDB.Bson;
+using MongoDB.Driver.GridFS;
 
 namespace GeoJSONAPI.Controllers
 {
@@ -18,29 +16,31 @@ namespace GeoJSONAPI.Controllers
     {
         private readonly GeoJSONFileService _geoJSONFileService;
 
-        public GeoJSONFileController(GeoJSONFileService geoJSONFileService) =>
+        public GeoJSONFileController(GeoJSONFileService geoJSONFileService)
+        {
             _geoJSONFileService = geoJSONFileService;
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<GeoJSONFile>>> GetAll()
         {
             var files = await _geoJSONFileService.GetAsync();
-            if (files is null)
+            if (files == null)
             {
                 return NotFound();
             }
-            return files;
+            return Ok(files);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<GeoJSONFile>> GetFile(string id)
         {
             var file = await _geoJSONFileService.GetAsync(id);
-            if (file is null)
+            if (file == null)
             {
                 return NotFound();
             }
-            return file;
+            return Ok(file);
         }
 
         [HttpPost]
@@ -61,12 +61,12 @@ namespace GeoJSONAPI.Controllers
                 using (var stream = uploadFile.File.OpenReadStream())
                 {
                     var fileId = await _geoJSONFileService.UploadFileAsync(uploadFile.File.FileName, stream, uploadOptions);
-                    geoJSONFile.ObjectID = fileId.ToString();
+                    geoJSONFile.Id = fileId;
                 }
 
                 await _geoJSONFileService.CreateAsync(geoJSONFile);
 
-                return Ok(new { Message = "Archivo GeoJSON subido con éxito.", ObjectId = geoJSONFile.ObjectID });
+                return Ok(new { Message = "Archivo GeoJSON subido con éxito.", ObjectId = geoJSONFile.Id });
             }
             catch (Exception ex)
             {
@@ -78,13 +78,25 @@ namespace GeoJSONAPI.Controllers
         public async Task<IActionResult> DeleteFile(string id)
         {
             var file = await _geoJSONFileService.GetAsync(id);
-            if (file is null)
+            if (file == null)
             {
                 return NotFound();
             }
 
             await _geoJSONFileService.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("download/{id}")]
+        public async Task<IActionResult> DownloadFile(string id)
+        {
+            var stream = await _geoJSONFileService.GetFileStreamAsync(id);
+            if (stream == null)
+            {
+                return NotFound();
+            }
+
+            return File(stream, "application/octet-stream", id);
         }
     }
 }

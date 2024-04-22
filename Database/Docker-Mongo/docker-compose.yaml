@@ -1,27 +1,60 @@
-version: '3'
+# version: '3'
+
+# services:
+#   mongo:
+#     image: mongo:latest
+#     container_name: roadXPertDB-Mongo
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo_data:/data/db
+#     networks:
+#       - mongo_network
+#     environment:
+#       MONGO_INITDB_DATABASE: initial
+#       MONGO_INITDB_ROOT_USERNAME: root
+#       MONGO_INITDB_ROOT_PASSWORD: a
+
+# networks:
+#   mongo_network:
+#     driver: bridge
+
+# volumes:
+#   mongo_data:
+#     driver: local
+
+
+
+
+
+
+
+# Use root/example as user/password credentials
+version: '3.1'
 
 services:
+
   mongo:
-    image: mongo:latest
-    container_name: roadXPertDB-Mongo
+    image: mongo:4.2
+    restart: always
+    command: --auth
+    environment:
+      MONGO_INITDB_DATABASE: initial
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: a
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db
+      # - ./server/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro  
+      - ./mongodata:/data/db  
     networks:
-      - mongo_network
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: Passw0rd!
+      - code-network
 
 networks:
-  mongo_network:
-    driver: bridge
+    code-network:
+        driver: bridge
 
-volumes:
-  mongo_data:
-    driver: local
-
+  
 
 # to run the container
 # docker-compose up -d

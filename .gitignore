@@ -95,3 +95,4 @@ API-Mongo/GeoJSONAPI/bin/Debug/net8.0/AWSSDK.Core.dll
 /API-Mongo/GeoJSONAPI/obj
 /API-Mongo/GeoJSONAPI2/bin
 /API-Mongo/GeoJSONAPI2/obj
+/Database/Docker-Mongo/mongodata
