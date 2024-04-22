@@ -7,15 +7,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
 import { Alert } from 'react-native';
+import Config from "../../configuracions"
 
 export default function Calendar() {
-    const IDALUMNE = 'Alumne_4';
-    const ProfesorID = "Treballador_1";
+
     const [data, setData] = useState(null);
-    const [events, setEvents] = useState({}); 
+    const [events, setEvents] = useState(null); 
     const today = new Date();
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState();
     const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
     const [selectedRoute, setSelectedRoute] = useState('');
     const [selectedCar, setSelectedCar] = useState('');
@@ -23,22 +23,23 @@ export default function Calendar() {
     const [eventEstat, setEventEstat] = useState('');
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
     const [eventToDelete, setEventToDelete] = useState(null);
-    const [selectedHour, setSelectedHour] = useState(availableHours[0]); // Nuevo estado para la hora seleccionada
+    const [selectedHour, setSelectedHour] = useState(availableHours[0]);
 
     // Effect to fill the events
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const result = await APIService.fetchEventsCalendar(IDALUMNE);
+          const result = await APIService.fetchEventsCalendar(Config.IDALUMNE);
           const adaptedData = DataAdapter.adaptDataDelete(result);
           setData(adaptedData);
           setEvents(adaptedData);
         } catch (error) {
-          console.error('ERROR IN THE DATABASE');
+          console.error('ERROR IN THE DATABASE: ' + error);
         }
       };
   
       fetchData();
+      updateAgenda()
     }, []);
   
 
@@ -74,22 +75,33 @@ export default function Calendar() {
       } catch(error) {
         console.error("Error in the delete petition: " + error.message)
       }
+      updateAgenda()
     };
     
+    const updateAgenda = async () => {
+      try {
+        const result = await APIService.fetchEventsCalendar(Config.IDALUMNE);
+        const adaptedData = DataAdapter.adaptDataDelete(result);
+        setEvents(adaptedData);
+      } catch (error) {
+        console.error('ERROR IN THE DATABASE: ' + error);
+      }
+    };
     
   
     const handleAddEvent = () => {
       const eventId = uuidv4();
+      Horas = selectedHour.split(" ")
       const event = {
         id: eventId,
         name: eventName,
-        duration: "45m",
-        horaInicial: selectedHour, // Utiliza selectedHour en lugar de selectedHour
+        horaInicial: Horas[0],
+        horaFinal: Horas[2],
         Ruta: selectedRoute,
         Coche: selectedCar,
         Estat: 'Practica Solicitada',
-        AlumneID: IDALUMNE,
-        ProfessorID: 'Treballador_3',
+        AlumneID: Config.IDALUMNE,
+        ProfessorID: Config.ProfesorID,
         VehicleID: '3456JKL',
         data: selectedDate
       };
@@ -104,6 +116,7 @@ export default function Calendar() {
         APIService.addEventCalendar(eventAdapted)
         return updatedEvents;
       });
+      updateAgenda()
     };
     
   
@@ -111,15 +124,15 @@ export default function Calendar() {
 
     const addPractica = async () => {
       try {
-        const fetchedHours = await APIService.fetchAvailableHours(ProfesorID, selectedDate);
+        const fetchedHours = await APIService.fetchAvailableHours(Config.ProfesorID, selectedDate);
         if (fetchedHours) {
-          setAvailableHours(fetchedHours); // Elimina setAvailableHours(null)
+          setAvailableHours(fetchedHours);
           setModalVisible(true);
         } else {
           console.error('No se pudieron obtener las horas disponibles');
         }
       } catch (error) {
-        console.error('Error al obtener las horas disponibles:', error);
+        console.error('Error al obtener las horas disponibles:', error.message);
       }
     };
     
@@ -130,7 +143,7 @@ export default function Calendar() {
       setEventName('');
       setSelectedRoute('');
       setSelectedCar('');
-      setSelectedHour(availableHours[0]); // Utiliza setSelectedHour en lugar de availableHours[0]
+      setSelectedHour(availableHours[0]);
     };
   
     const handleModalCancel = () => {
@@ -138,7 +151,7 @@ export default function Calendar() {
       setEventName('');
       setSelectedRoute('');
       setSelectedCar('');
-      setSelectedHour(availableHours[0]); // Utiliza setSelectedHour en lugar de availableHours[0]
+      setSelectedHour(availableHours[0]);
     };
   
     const renderAvailableHours = () => {
@@ -169,8 +182,8 @@ export default function Calendar() {
               onPress={() => handleDeleteConfirmation(item)}>
               <View style={styles.itemTextContainer}>
                 <Text style={styles.itemText}><Text style={styles.boldText}>Name: </Text>{item.name}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Time: </Text>{item.horaInicial}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Duration: </Text>{item.duration}</Text>
+                <Text style={styles.itemText}><Text style={styles.boldText}>Initial Time: </Text>{item.horaInicial}</Text>
+                <Text style={styles.itemText}><Text style={styles.boldText}>Final Time: </Text>{item.horaFinal}</Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Coche}</Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
@@ -201,7 +214,7 @@ export default function Calendar() {
                 }}
                 type="date"
               />
-              <Text>Selecciona una hora:</Text>
+              <Text>Selecciona una hora de inicio:</Text>
               <View style={styles.availableHoursContainer}>{renderAvailableHours()}</View>
               <TextInput
                 style={styles.input}

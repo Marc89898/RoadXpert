@@ -1,35 +1,20 @@
+import { APIService } from "../ApiService";
 class DataAdapter {
     static adaptDataDelete(jsonData) {
       const adaptedData = {};
   
-      jsonData.forEach((item) => {
+      jsonData.forEach(async (item) => {
         const date = new Date(item.Data).toISOString().split('T')[0];
-        var EstatModificat;
-        switch(item.EstatHoraID) {
-          case "EstatHora_6":
-            EstatModificat = "Pendent d'eliminacio"
-            break;
-          case "EstatHora_1":
-            EstatModificat = "Practica Solicitada"
-            break;
-          case "EstatHora_2":
-            EstatModificat = "Practica Confirmada"
-            break;
-          case "EstatHora_3":
-            EstatModificat = "Practica ja Realitzada"
-            break;
-          default:
-            EstatModificat = EstatHoraID
-        }
-
+        var EstatModificat = await APIService.fetchEstatDescription(item.EstatHoraID)
         const event = {
           id: item.ID,
           name: "Practica",
           duration: "45m",
           horaInicial: item.HoraInici,
+          horaFinal: item.HoraFi,
           Ruta: item.Ruta,
           Coche: item.VehicleID,
-          Estat: EstatModificat
+          Estat: EstatModificat.Nom
         };
   
         if (adaptedData[date]) {
@@ -47,7 +32,7 @@ class DataAdapter {
         Ruta: jsonData.Ruta || '',
         Km: 0, 
         HoraInici: jsonData.horaInicial || '',
-        HoraFi: jsonData.horaInicial,
+        HoraFi: jsonData.horaFinal,
         ID: jsonData.id || '',
         ProfesorID: jsonData.ProfessorID, 
         VehicleID: jsonData.VehicleID,

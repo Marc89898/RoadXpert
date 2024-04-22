@@ -1,10 +1,12 @@
+import Config from "../configuracions"
+
 class APIService {
     /*
     * Fetch to all events of Alumn
     */
     static async fetchEventsCalendar(idAlumne) {
       try {
-        const url = "http://10.0.2.2:8888/Practica/Alumn/" + idAlumne;
+        const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Practica/Alumn/" + idAlumne;
         const response = await fetch(url);
         let data = "";
         if (response.status != 500 && response.status != 404) {
@@ -27,7 +29,7 @@ class APIService {
     */
     static async deleteEventCalendar(eventId, newEstatHoraID) {
       try {
-        const url = "http://10.0.2.2:8888/Practica/" + eventId;
+        const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Practica/" + eventId;
         const currentDataResponse = await fetch(url);
         if (!currentDataResponse.ok) {
           throw new Error('Failed to fetch current event data. HTTP status code: ' + currentDataResponse.status);
@@ -72,7 +74,7 @@ class APIService {
      */
     static async addEventCalendar(event) {
       console.log(event);
-      const url = "http://10.0.2.2:8888/Practica";
+      const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Practica";
     
       try {
         const response = await fetch(url, {
@@ -95,20 +97,18 @@ class APIService {
         throw error;
       }
     }
-    
-    
     /*
     * Fetch to see avialable hours of a day
     */
     static async fetchAvailableHours(professorID, day) {
       try {
-        const url = "http://10.0.2.2:8888/horas_libres?profesor_id=" + professorID + "&" + "fecha=" + day;
+        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/horas_libres?profesor_id=" + professorID + "&" + "fecha=" + day;
         const response = await fetch(url);
         let data = "";
 
         if(response.status != 500 && response.status != 404) {
           data = await response.json();
-          const hours = data.map(item => item.HoraInici);
+          const hours = data.map(item => item.HoraInici + " - " + item.HoraFi);
           console.log("Hores " + hours)
           return hours;
         } else {
@@ -119,13 +119,12 @@ class APIService {
       }
       
     }
-
-  /**
-   * Fetch All Alumns
-   */
-  static async fetchAllAlumns() {
+    /**
+    * Fetch All Alumns
+    */
+    static async fetchAllAlumns() {
     try {
-      const url = "http://10.0.2.2:8888/Alumne"
+      const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Alumne"
       const response = await fetch(url);
       let data = "";
       if (response.status != 500 && response.status != 404) {
@@ -137,7 +136,24 @@ class APIService {
     }catch(error) {
       console.error("Error en la peticion de todos los alumnos" + error)
     }
-  }
+    }
+    static async fetchEstatDescription(EstatHoraID) {
+      try {
+        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/EstatHora/" + EstatHoraID
+        const response = await fetch(url)
+        let data = {}
+        if (response.status != 500 && response.status != 404) {
+          data = await response.json();
+          return data;
+        } else {
+          console.error("Error en la petición: Status", response.status, response.statusText);
+        }
+      }catch(error) {
+        console.error("Error en la peticion estado hora" + error)
+      }
+      
+
+    }
   
   }
   
