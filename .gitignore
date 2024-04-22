@@ -76,7 +76,8 @@ Ia/local_settings.py
 Api/docs/_build/
 Ia/docs/_build/
 
-Database/Docker/DB
+Database/Docker-MSSQL/DB
+Database/Docker-Mongo/DB
 Entitat-Relacio/DB
 RoadXpert-Teacher/ProvesApart/ProvaAudios/Audio2Text/node_modules/*
 RoadXpert-Teacher/ProvesApart/ProvaAudios/Audio2Text/.expo/*
@@ -87,3 +88,10 @@ RoadXpert-Teacher/ProvesApart/ProvaAudios/Audio2Text/.expo/*
 /RoadXpert-Teacher/ProvaAudios/STTOpenIA/.expo
 /RoadXpert-Teacher/ProvaAudios/STTOpenIA/node_modules
 RoadXpert-Teacher/ProvaAudios/example-react-native-voice/env.js
+API-Mongo/GeoJSONAPI/bin/Debug/net8.0/AWSSDK.Core.dll
+/API-Mongo/GeoJSONAPI/bin
+/API-Mongo/GeoJSONAPI/obj
+/API-Mongo/GeoJSONAPI/obj
+/API-Mongo/GeoJSONAPI/obj
+/API-Mongo/GeoJSONAPI2/bin
+/API-Mongo/GeoJSONAPI2/obj

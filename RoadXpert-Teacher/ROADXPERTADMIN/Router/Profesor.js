@@ -45,7 +45,7 @@ export default function Profesor() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="NavBar"
+        initialRouteName="SplashScreen"
         screenOptions={{
           headerShown: false,
         }}
