@@ -98,8 +98,9 @@ namespace GeoJSONAPI.Controllers
             {
                 return NotFound();
             }
+            var fileName = await _geoJSONFileService.GetAsync(id);
 
-            return File(stream, "application/octet-stream", id);
+            return File(stream, "application/json", fileName.FileName);
         }
     }
 }
