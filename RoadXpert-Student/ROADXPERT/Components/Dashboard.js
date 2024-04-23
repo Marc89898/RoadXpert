@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-
 import CircleImage1 from '../assets/images/Dashboard/notification.png';
 import CircleImage2 from '../assets/images/Dashboard/settings.png';
 import TuImagen from '../assets/images/Dashboard/ProvaFoto.jpeg';
+
+import { Calendar } from './Calendar/Calendar';
 
 const Dashboard = () => {
     const navigation = useNavigation(); 

@@ -104,7 +104,7 @@ class APIService {
       try {
         console.log("Professor: " + professorID)
         console.log("Dia: " + day)
-        const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/horas_libres?profesor_id=" + professorID + "&" + "fecha=" + day;
+        const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/horas_libres?professor_id=" + professorID + "&" + "fecha=" + day;
         const response = await fetch(url);
         let data = "";
     

@@ -12,15 +12,13 @@ import Config from "../../configuracions"
 export default function Calendar() {
 
     const [data, setData] = useState(null);
-    const [events, setEvents] = useState(null); 
-    const today = new Date();
+    const [events, setEvents] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState();
+    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
     const [selectedRoute, setSelectedRoute] = useState('');
     const [selectedCar, setSelectedCar] = useState('');
     const [eventName, setEventName] = useState('');
-    const [eventEstat, setEventEstat] = useState('');
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
     const [eventToDelete, setEventToDelete] = useState(null);
     const [selectedHour, setSelectedHour] = useState(availableHours[0]);
@@ -36,13 +34,12 @@ export default function Calendar() {
         } catch (error) {
           console.error('ERROR IN THE DATABASE: ' + error);
         }
+        
       };
   
       fetchData();
-      updateAgenda()
+      // updateAgenda()
     }, []);
-  
-
   
     const handleDeleteConfirmation = (item) => {
       setEventToDelete(item);
@@ -75,7 +72,7 @@ export default function Calendar() {
       } catch(error) {
         console.error("Error in the delete petition: " + error.message)
       }
-      updateAgenda()
+      // updateAgenda()
     };
     
     const updateAgenda = async () => {
@@ -116,7 +113,7 @@ export default function Calendar() {
         APIService.addEventCalendar(eventAdapted)
         return updatedEvents;
       });
-      updateAgenda()
+      // updateAgenda()
     };
     
   
@@ -169,13 +166,13 @@ export default function Calendar() {
     const handleCancelDelete = () => {
       setDeleteConfirmationVisible(false);
     };
-  
+
     return (
       <View style={{ flex: 1 }}>
         <Agenda
-          onDayPress={handleDayPress}
           selected={selectedDate}
           items={events}
+          onDayPress={handleDayPress}
           renderItem={(item, key) => (
             <TouchableOpacity
               style={styles.item}
@@ -216,12 +213,6 @@ export default function Calendar() {
               />
               <Text>Selecciona una hora de inicio:</Text>
               <View style={styles.availableHoursContainer}>{renderAvailableHours()}</View>
-              <TextInput
-                style={styles.input}
-                value={eventName}
-                onChangeText={setEventName}
-                placeholder="Nombre de la práctica"
-              />
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
                   <Text style={styles.buttonText}>Cancelar</Text>
@@ -259,76 +250,75 @@ export default function Calendar() {
       </View>
     );
 }
-
 const styles = StyleSheet.create({
-    itemText: {
-      color: '#888',
-      fontSize: 16,
-    },
-    item: {
-      margin: 5,
-      backgroundColor: 'white',
-      borderRadius: 5,
-      padding: 10,
-      marginBottom: 10,
-    },
-    addButton: {
-      position: 'absolute',
-      bottom: 20,
-      right: 20,
-    },
-    boldText: {
-      color: 'black',
-      fontWeight: 'bold',
-    },
-    modalContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalContent: {
-      backgroundColor: 'white',
-      padding: 20,
-      borderRadius: 10,
-      width: '80%',
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5,
-      padding: 10,
-      marginBottom: 10,
-    },
-    buttonText: {
-      color: 'white',
-      fontSize: 16,
-      textAlign: 'center',
-    },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    button: {
-      padding: 5,
-      borderRadius: 5,
-      width: '40%',
-    },
-    availableHoursContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginBottom: 10,
-    },
-    hourButton: {
-      backgroundColor: '#ccc',
-      borderRadius: 5,
-      padding: 10,
-      margin: 5,
-    },
-    selectedHourButton: {
-      backgroundColor: 'blue',
-    },
-    hourButtonText: {
-      color: 'black',
-    },
-  });
+  itemText: {
+    color: '#888',
+    fontSize: 16,
+  },
+  item: {
+    margin: 5,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  boldText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  button: {
+    padding: 5,
+    borderRadius: 5,
+    width: '40%',
+  },
+  availableHoursContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 10,
+  },
+  hourButton: {
+    backgroundColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    margin: 5,
+  },
+  selectedHourButton: {
+    backgroundColor: 'blue',
+  },
+  hourButtonText: {
+    color: 'black',
+  },
+});
