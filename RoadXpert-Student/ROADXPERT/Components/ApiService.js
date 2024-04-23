@@ -102,23 +102,26 @@ class APIService {
     */
     static async fetchAvailableHours(professorID, day) {
       try {
-        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/horas_libres?profesor_id=" + professorID + "&" + "fecha=" + day;
+        console.log("Professor: " + professorID)
+        console.log("Dia: " + day)
+        const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/horas_libres?profesor_id=" + professorID + "&" + "fecha=" + day;
         const response = await fetch(url);
         let data = "";
-
-        if(response.status != 500 && response.status != 404) {
+    
+        if (response.ok) {
           data = await response.json();
           const hours = data.map(item => item.HoraInici + " - " + item.HoraFi);
-          console.log("Hores " + hours)
+          console.log("Horas disponibles: " + hours);
           return hours;
         } else {
-          console.error("Error en la petición de horas disponibles: Status", response.status, response.statusText);
+          const errorMessage = await response.text();
+          console.error("Error en la petición de horas disponibles. Status:", response.status, "Mensaje:", errorMessage);
         }
-      }catch(error) {
-        console.error("Error en la peticion de todos los alumnos" + error)
+      } catch (error) {
+        console.error("Error en la petición de todas las horas disponibles:", error);
       }
-      
     }
+    
     /**
     * Fetch All Alumns
     */

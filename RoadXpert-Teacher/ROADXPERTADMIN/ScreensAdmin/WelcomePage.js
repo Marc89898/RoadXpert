@@ -7,7 +7,7 @@ const WelcomePage = () => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate("StartUp");
+    navigation.navigate("w");
   };
 
   return (
