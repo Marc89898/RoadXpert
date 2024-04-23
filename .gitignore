@@ -9,8 +9,8 @@ AppStudent/build
 AppStudent/dist
 AppInstructor/build
 AppInstructor/dist
-Api/__pycache__
-Api/blueprints/__pycache__
+Api-SQL/__pycache__
+Api-SQL/blueprints/__pycache__
 # Archivos de registro y caché
 AppStudent/npm-debug.log*
 AppInstructor/npm-debug.log*
@@ -31,7 +31,7 @@ AppInstructor/.env.production.local
 # Archivos temporales
 AppStudent/.vscode/
 AppInstructor/.vscode/
-Api/.vscode/
+Api-SQL/.vscode/
 Ia/.vscode/
 AppStudent/.DS_Store
 # Byte-compiled / optimized / DLL files
