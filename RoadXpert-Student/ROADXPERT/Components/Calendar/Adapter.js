@@ -34,7 +34,7 @@ class DataAdapter {
         HoraInici: jsonData.horaInicial || '',
         HoraFi: jsonData.horaFinal,
         ID: jsonData.id || '',
-        ProfesorID: jsonData.ProfessorID, 
+        ProfessorID: jsonData.ProfessorID, 
         VehicleID: jsonData.VehicleID,
         EstatHoraID: 'EstatHora_1', 
         Data: jsonData.data

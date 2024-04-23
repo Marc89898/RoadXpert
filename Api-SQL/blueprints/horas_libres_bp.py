@@ -67,7 +67,6 @@ def obtener_horas_ocupadas(professor_id, fecha, conn):
     for practica_row in practica_result.fetchall():
         practica_row_dict = dict(zip(practica_result.keys(), practica_row))
 
-        # get all the hours between hora_inici and hora_fi
         hora_inici = practica_row_dict['HoraInici'].hour
         hora_fi = practica_row_dict['HoraFi'].hour
         print('hora_inici:', hora_inici)        
@@ -92,7 +91,6 @@ def get_horas_libres():
         with engine.connect() as conn:
             horari_id = obtener_horario(professor_id, conn)
 
-            # Si el profesor no tiene horario asignado
             if not horari_id:
                 return jsonify({"message": "Professor no encontrado"}), 404
 
