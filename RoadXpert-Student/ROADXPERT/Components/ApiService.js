@@ -11,7 +11,6 @@ class APIService {
         let data = "";
         if (response.status != 500 && response.status != 404) {
           data = await response.json();
-          console.log("Datos:", data);
         } else {
           console.error("Error en la petición de eventos: Status", response.status, response.statusText);
         }

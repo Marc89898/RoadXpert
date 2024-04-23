@@ -91,7 +91,7 @@ export default function Calendar() {
       Horas = selectedHour.split(" ")
       const event = {
         id: eventId,
-        name: eventName,
+        name: "Practica",
         horaInicial: Horas[0],
         horaFinal: Horas[2],
         Ruta: selectedRoute,

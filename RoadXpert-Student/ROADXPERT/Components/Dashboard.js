@@ -1,25 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import CircleImage1 from '../assets/images/Dashboard/notification.png';
 import CircleImage2 from '../assets/images/Dashboard/settings.png';
 import TuImagen from '../assets/images/Dashboard/ProvaFoto.jpeg';
-
-import { Calendar } from './Calendar/Calendar';
+import { APIService } from './ApiService';
+import Config from '../configuracions';
 
 const Dashboard = () => {
-    const navigation = useNavigation(); 
-    const handleCalender = () => {
-        navigation.navigate('Calendar');
-    };
-    const handleRoutes = () => {
-        navigation.navigate('RouteInformation');
-    };
+    const navigation = useNavigation();
+    const [nextEvent, setNextEvent] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const handleNotifications = () => {
         navigation.navigate('notificationsScreen');
     };
 
+    useEffect(() => {
+        const loadNextEvent = async () => {
+            try {
+                const events = await APIService.fetchEventsCalendar(Config.IDALUMNE);
+                const currentDate = new Date();
+                events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
+                const nextEvent1 = events.find(event => new Date(event.Data) > currentDate);
+                if (nextEvent1) {
+                    console.log("Next Event: ", nextEvent1);
+                    setNextEvent(nextEvent1);
+                } else {
+                    console.log("No upcoming events found.");
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+    
+        loadNextEvent();
+    }, []);
+    
+    
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.imageContainer}>
@@ -42,9 +62,16 @@ const Dashboard = () => {
             </View>
             <View style={styles.container}>
                 <Text style={styles.text}>¡I'm, Dashboard Page!</Text>
-                <Button style={styles.button} onPress={handleCalender} mode="contained">Calendario</Button>
-                <Button style={styles.button} onPress={handleRoutes} mode="contained">Rutas</Button>
             </View>
+            {nextEvent && (
+                <View style={styles.nextEventContainer}>
+                    <Text style={styles.nextEventTitle}>Siguiente Practica:</Text>
+                    <Text>{`Fecha: ${nextEvent.Data}`}</Text>
+                    <Text>{`Hora Inicio: ${nextEvent.HoraInici}`}</Text>
+                    <Text>{`Hora Fin: ${nextEvent.HoraFi}`}</Text>
+                    <Text>{`Ruta: ${nextEvent.Ruta}`}</Text>
+                </View>
+            )}
         </View>
     );
 };
@@ -58,6 +85,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         fontWeight: 'bold',
+        marginBottom: 20,
     },
     button: {
         margin: 5,
@@ -108,6 +136,25 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         color: 'white',
+    },
+    contentContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 0,
+    },
+    nextEventContainer: {
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 10,
+        borderRadius: 10,
+        marginTop: 20,
+    },
+    nextEventTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    nextEventDetails: {
+        marginTop: 10,
     },
 });
 
