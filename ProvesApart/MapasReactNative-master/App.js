@@ -105,15 +105,32 @@ export default function App() {
       const fileUri = FileSystem.documentDirectory + 'ruta.json';
       await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(routeData));
       console.log('Ruta guardada en:', fileUri);
-      pushFileToServer(fileUri);
+      await handleFileUpload(fileUri);
+      deleteFile(fileUri);
+
     } catch (error) {
       console.error('Error al guardar la ruta:', error);
     }
   };
 
-  const handleLoadRoutePress = async () => {
+  /**
+   * Eliminar un archivo
+   * @param {*} fileUri URI del archivo a eliminar
+   */
+  const deleteFile = async (fileUri) => {
     try {
-      const fileUri = FileSystem.documentDirectory + 'ruta.json';
+      await FileSystem.deleteAsync(fileUri);
+      console.log('Archivo eliminado:', fileUri);
+    } catch (error) {
+      console.error('Error al eliminar el archivo:', error);
+    }
+  };
+
+  const showRouteInMap = async (routeUrl) => {
+    try {
+      routeUrl = 'ruta.json'
+
+      const fileUri = FileSystem.documentDirectory + routeUrl;
       const routeData = await FileSystem.readAsStringAsync(fileUri);
       const routeGeoJSON = JSON.parse(routeData);
 
@@ -146,8 +163,24 @@ export default function App() {
     }
   };
 
-  const pushFileToServer = async (fileUri) => {
-    
+  // Ejemplo de subir archivo a MongoDB
+  const handleFileUpload = async (file) => {
+    try {
+      const objectID = await ApiHelper.uploadFileToMongo(file);
+      console.log('ObjectID from MongoDB:', objectID);
+    } catch (error) {
+      console.error('Error handling file upload:', error);
+    }
+  };
+
+  // Ejemplo de crear práctica en SQL
+  const handleCreatePractica = async (practicaData) => {
+    try {
+      const response = await ApiHelper.createPracticaInSQL(practicaData);
+      console.log('Response from SQL:', response);
+    } catch (error) {
+      console.error('Error handling create practica:', error);
+    }
   };
 
   return (
