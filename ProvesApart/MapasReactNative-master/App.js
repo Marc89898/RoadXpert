@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
+import ApiHelper from "./ApiHelper";
 
 const initialPointLocations = []; // Inicializar el array de puntos fuera del componente
 
@@ -163,11 +164,25 @@ export default function App() {
     }
   };
 
+  const practicaData = {
+    AlumneID: 'Alumne_1',
+    Ruta: '',
+    Km: 0,
+    HoraInici: '10:00:00', // Formato 'HH:mm:ss
+    HoraFi: '11:00:00', // Formato 'HH:mm:ss
+    ProfessorID: 'Treballador_1',
+    VehicleID: '1234ABC',
+    EstatHoraID: 'EstatHora_1',
+    Data: '2024-04-23', // Formato 'YYYY-MM-DD'
+  };
+
   // Ejemplo de subir archivo a MongoDB
   const handleFileUpload = async (file) => {
     try {
       const objectID = await ApiHelper.uploadFileToMongo(file);
       console.log('ObjectID from MongoDB:', objectID);
+      practicaData.Ruta = objectID;
+      handleCreatePractica(practicaData);
     } catch (error) {
       console.error('Error handling file upload:', error);
     }
@@ -229,7 +244,7 @@ export default function App() {
         />
         <Button
           title="Cargar Ruta"
-          onPress={handleLoadRoutePress}
+          onPress={showRouteInMap}
         />
         <Button
           title="ADD POINT"

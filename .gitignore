@@ -98,3 +98,4 @@ API-Mongo/GeoJSONAPI/bin/Debug/net8.0/AWSSDK.Core.dll
 /Database/Docker-Mongo/mongodata
 /Api-SQL/blueprints/__pycache__
 /Api-SQL/blueprints/__pycache__
+/Api-SQL/__pycache__
