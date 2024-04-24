@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
+import ApiHelper from "./ApiHelper";
 
 const initialPointLocations = []; // Inicializar el array de puntos fuera del componente
 
@@ -105,15 +106,32 @@ export default function App() {
       const fileUri = FileSystem.documentDirectory + 'ruta.json';
       await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(routeData));
       console.log('Ruta guardada en:', fileUri);
-      pushFileToServer(fileUri);
+      await handleFileUpload(fileUri);
+      deleteFile(fileUri);
+
     } catch (error) {
       console.error('Error al guardar la ruta:', error);
     }
   };
 
-  const handleLoadRoutePress = async () => {
+  /**
+   * Eliminar un archivo
+   * @param {*} fileUri URI del archivo a eliminar
+   */
+  const deleteFile = async (fileUri) => {
     try {
-      const fileUri = FileSystem.documentDirectory + 'ruta.json';
+      await FileSystem.deleteAsync(fileUri);
+      console.log('Archivo eliminado:', fileUri);
+    } catch (error) {
+      console.error('Error al eliminar el archivo:', error);
+    }
+  };
+
+  const showRouteInMap = async (routeUrl) => {
+    try {
+      routeUrl = 'ruta.json'
+
+      const fileUri = FileSystem.documentDirectory + routeUrl;
       const routeData = await FileSystem.readAsStringAsync(fileUri);
       const routeGeoJSON = JSON.parse(routeData);
 
@@ -146,8 +164,38 @@ export default function App() {
     }
   };
 
-  const pushFileToServer = async (fileUri) => {
-    
+  const practicaData = {
+    AlumneID: 'Alumne_1',
+    Ruta: '',
+    Km: 0,
+    HoraInici: '10:00:00', // Formato 'HH:mm:ss
+    HoraFi: '11:00:00', // Formato 'HH:mm:ss
+    ProfessorID: 'Treballador_1',
+    VehicleID: '1234ABC',
+    EstatHoraID: 'EstatHora_1',
+    Data: '2024-04-23', // Formato 'YYYY-MM-DD'
+  };
+
+  // Ejemplo de subir archivo a MongoDB
+  const handleFileUpload = async (file) => {
+    try {
+      const objectID = await ApiHelper.uploadFileToMongo(file);
+      console.log('ObjectID from MongoDB:', objectID);
+      practicaData.Ruta = objectID;
+      handleCreatePractica(practicaData);
+    } catch (error) {
+      console.error('Error handling file upload:', error);
+    }
+  };
+
+  // Ejemplo de crear práctica en SQL
+  const handleCreatePractica = async (practicaData) => {
+    try {
+      const response = await ApiHelper.createPracticaInSQL(practicaData);
+      console.log('Response from SQL:', response);
+    } catch (error) {
+      console.error('Error handling create practica:', error);
+    }
   };
 
   return (
@@ -196,7 +244,7 @@ export default function App() {
         />
         <Button
           title="Cargar Ruta"
-          onPress={handleLoadRoutePress}
+          onPress={showRouteInMap}
         />
         <Button
           title="ADD POINT"

@@ -27,7 +27,10 @@ def obtener_horario(professor_id, conn):
     if not horari_row:
         return None
 
-    return horari_row[0]  # ID del horario
+    # Convertir la tupla a un diccionario
+    horari_dict = dict(zip(horari_result.keys(), horari_row))
+    return horari_dict['ID']  # ID del horario
+
 
 def obtener_horas_laborales(dia_semana, horari_id, conn):
     hora_query = text("SELECT * FROM Hora WHERE DiaSetmana = :dia AND HorariID = :horari_id")
@@ -36,10 +39,14 @@ def obtener_horas_laborales(dia_semana, horari_id, conn):
     horas_laborales = []
 
     for hora_row in hora_result.fetchall():
-        hora_inici = hora_row[2].hour  # HoraInici
-        hora_fi = hora_row[3].hour     # HoraFi
-        duracio_practica = hora_row[5]  # DuracioPractica
+        hora_row_dict = dict(zip(hora_result.keys(), hora_row))
 
+        hora_inici = hora_row_dict['HoraInici'].hour
+        hora_fi = hora_row_dict['HoraFi'].hour
+
+        print('lllhora_inici:', hora_inici)        
+        print('lllhora_fi:', hora_fi)
+        duracio_practica = hora_row_dict['DuracioPractica']
         num_horas = int((hora_fi - hora_inici) * 60 / duracio_practica)
 
         for i in range(num_horas):
@@ -58,12 +65,22 @@ def obtener_horas_ocupadas(professor_id, fecha, conn):
     horas_ocupadas = []
 
     for practica_row in practica_result.fetchall():
-        hora_inici = practica_row[3].hour
-        hora_fi = practica_row[4].hour
+        practica_row_dict = dict(zip(practica_result.keys(), practica_row))
 
+        hora_inici = practica_row_dict['HoraInici'].hour
+        hora_fi = practica_row_dict['HoraFi'].hour
+        print('hora_inici:', hora_inici)        
+        print('hora_fi:', hora_fi)
         horas_ocupadas.append({"HoraFi": hora_fi, "HoraInici": hora_inici})
 
     return horas_ocupadas
+
+def convertir_a_formato_time(lista_horas):
+    for hora in lista_horas:
+        hora['HoraInici'] = f"{hora['HoraInici']}:00:00"
+        hora['HoraFi'] = f"{hora['HoraFi']}:00:00"
+    return lista_horas
+
 
 @HorasLibres_bp.route("/horas_libres", methods=['GET'])
 def get_horas_libres():
@@ -83,6 +100,7 @@ def get_horas_libres():
 
             horas_disponibles = [hora for hora in horas_laborales if hora not in horas_ocupadas]
 
+            horas_disponibles = convertir_a_formato_time(horas_disponibles)
             return jsonify(horas_disponibles), 200
 
     except Exception as e:

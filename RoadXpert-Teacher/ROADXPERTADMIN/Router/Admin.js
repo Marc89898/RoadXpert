@@ -14,6 +14,7 @@ import WelcomePage from '../ScreensAdmin/WelcomePage.js'
 import CreateSchool from '../ScreensAdmin/CreateSchool.js';
 import CreateRoles from '../ScreensAdmin/CreateRoles.js';
 import RegisterVehicle from '../ScreensAdmin/RegisterVehicle.js';
+import RegisterPerson from '../ScreensAdmin/RegisterPerson.js';
 
 // Navigation Stack
 const Stack = createNativeStackNavigator();
@@ -34,6 +35,7 @@ export default function Admin() {
         <Stack.Screen name="CreateSchool" component={CreateSchool} />
         <Stack.Screen name="CreateRoles" component={CreateRoles} />
         <Stack.Screen name="RegisterVehicle" component={RegisterVehicle} />
+        <Stack.Screen name="RegisterPerson" component={RegisterPerson} />
       </Stack.Navigator>
     </NavigationContainer>
   );

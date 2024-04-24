@@ -25,6 +25,10 @@ const CreateSchool = () => {
     navigation.navigate("RegisterVehicle");
   };
 
+  const handleRegisterPerson = () => {
+    navigation.navigate("RegisterPerson");
+  };
+
   const [image, setImage] = useState(null);
 
   const handleImageUpload = async () => {
@@ -94,13 +98,19 @@ const CreateSchool = () => {
             </View>
             <View style={styles.buttonRow}>
               <Text style={styles.labelText}>Registrar Vehiculo:</Text>
-              <TouchableOpacity style={styles.button} onPress={handleRegisterVehicle}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleRegisterVehicle}
+              >
                 <Text style={styles.buttonText}>Press here {">"}</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.buttonRow}>
               <Text style={styles.labelText}>Registrar Trabajadores:</Text>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleRegisterPerson}
+              >
                 <Text style={styles.buttonText}>Press here {">"}</Text>
               </TouchableOpacity>
             </View>

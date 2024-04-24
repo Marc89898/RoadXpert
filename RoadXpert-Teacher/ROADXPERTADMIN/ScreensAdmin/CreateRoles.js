@@ -13,11 +13,16 @@ import { MaterialIcons } from "@expo/vector-icons";
 import ColorPicker from "react-native-color-picker";
 import CustomSelectInput from "../Components/Inputs/CustomSelectInput.js";
 import { useNavigation } from "@react-navigation/native";
+import { AsyncStorage } from 'react-native';
 
 const CreateRoles = () => {
   const navigation = useNavigation();
   const [colorSeleccionado, setColorSeleccionado] = useState("black");
   const [mostrarSelector, setMostrarSelector] = useState(false);
+  const [rolName, setRolName] = useState(''); 
+  const [permisosAlumnos, setPermisosAlumnos] = useState('');
+  const [permisosVehiculos, setPermisosVehiculos] = useState('');
+  const [permisosProfesores, setPermisosProfesores] = useState('');
 
 const handleSave = () => {
     console.log("Guardado");
@@ -28,6 +33,12 @@ const handleSave = () => {
     setColorSeleccionado(color);
     setMostrarSelector(false);
   };
+
+  const opcionesSelect = [
+    { label: "Si", value: "Si" },
+    { label: "No", value: "No" },
+  ];
+
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -58,23 +69,23 @@ const handleSave = () => {
           <View style={styles.rectangleContainer}>
             <Text style={styles.rectangleText}>Permisos de alumnos</Text>
           </View>
-          <CustomSelectInput label="Crear alumnos"/>
-          <CustomSelectInput label="Eliminar alumnos"/>
-          <CustomSelectInput label="Gestionar alumnos"/>
+          <CustomSelectInput options={opcionesSelect} label="Crear alumnos"/>
+          <CustomSelectInput options={opcionesSelect} label="Eliminar alumnos"/>
+          <CustomSelectInput options={opcionesSelect} label="Gestionar alumnos"/>
 
           <View style={styles.rectangleContainer}>
             <Text style={styles.rectangleText}>Permisos de vehiculos</Text>
           </View>
-          <CustomSelectInput label="Crear vehiculos"/>
-          <CustomSelectInput label="Eliminar vehiculos"/>
-          <CustomSelectInput label="Gestionar vehiculos"/>
+          <CustomSelectInput options={opcionesSelect} label="Crear vehiculos"/>
+          <CustomSelectInput options={opcionesSelect} label="Eliminar vehiculos"/>
+          <CustomSelectInput options={opcionesSelect} label="Gestionar vehiculos"/>
           
           <View style={styles.rectangleContainer}>
             <Text style={styles.rectangleText}>Permisos de professores</Text>
           </View>
-          <CustomSelectInput label="Crear professores"/>
-          <CustomSelectInput label="Eliminar professores"/>
-          <CustomSelectInput label="Gestionar professores"/>
+          <CustomSelectInput options={opcionesSelect} label="Crear professores"/>
+          <CustomSelectInput options={opcionesSelect} label="Eliminar professores"/>
+          <CustomSelectInput options={opcionesSelect} label="Gestionar professores"/>
 
         </View>
           <MainButton title="Guardar" onPress={handleSave} />

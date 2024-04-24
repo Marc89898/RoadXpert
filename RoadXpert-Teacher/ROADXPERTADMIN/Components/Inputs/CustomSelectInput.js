@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-const CustomSelectInput = ({label, value, value2}) => {
-  const [selectedValue, setSelectedValue] = useState("Seleccionar opción");
+const CustomSelectInput = ({ label, options }) => {
+  const [selectedValue, setSelectedValue] = useState(
+    options && Array.isArray(options) && options.length > 0
+      ? options[0].value
+      : ""
+  );
 
   return (
     <View style={styles.greatContainer}>
@@ -15,9 +19,16 @@ const CustomSelectInput = ({label, value, value2}) => {
           itemStyle={styles.itemStyle}
           onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
         >
-          <Picker.Item label="Seleccionar opción" value="Seleccionar opción" />
-          <Picker.Item label="{value}" value="{value}" />
-          <Picker.Item label="{value2}" value="{value2}" />
+          {options &&
+            Array.isArray(options) &&
+            options.length > 0 &&
+            options.map((option, index) => (
+              <Picker.Item
+                key={index}
+                label={option.label}
+                value={option.value}
+              />
+            ))}
         </Picker>
       </View>
     </View>
