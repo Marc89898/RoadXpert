@@ -6,8 +6,20 @@ import * as FileSystem from "expo-file-system";
 import ApiHelper from "./ApiHelper";
 
 const initialPointLocations = []; // Inicializar el array de puntos fuera del componente
+// Datos de ejemplo para crear una práctica
+const practicaData2 = {
+  AlumneID: 'Alumne_1',
+  Ruta: '6627d530f53b02fe8d5bed5c',
+  Km: 0,
+  HoraInici: '10:00:00', // Formato 'HH:mm:ss
+  HoraFi: '11:00:00', // Formato 'HH:mm:ss
+  ProfessorID: 'Treballador_1',
+  VehicleID: '1234ABC',
+  EstatHoraID: 'EstatHora_1',
+  Data: '2024-04-23', // Formato 'YYYY-MM-DD'
+};
 
-export default function App() {
+export default function App({ practicaData }) {
   const [location, setLocation] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
   const [recording, setRecording] = useState(true);
@@ -49,7 +61,7 @@ export default function App() {
               longitude: newLocation.coords.longitude,
             });
           }
-        }, 2000);
+        }, 1000);
       } else {
         clearInterval(intervalId);
       }
@@ -63,6 +75,12 @@ export default function App() {
   }, [recording, isInRoute, lastSavedLocation]);
 
   const handleButtonPress = async () => {
+    if (!practicaData) {
+      console.log('No se ha proporcionado una clase de práctica');
+      practicaData = practicaData2;
+      // return;
+    }
+
     if (isInRoute) {
       setRecording(false);
       setIsInRoute(false);
@@ -127,18 +145,20 @@ export default function App() {
     }
   };
 
-  const showRouteInMap = async (routeUrl) => {
+  const showRouteInMap = async () => {
     try {
-      routeUrl = 'ruta.json'
-
-      const fileUri = FileSystem.documentDirectory + routeUrl;
+      const fileUri = await ApiHelper.downloadFileFromMongo(practicaData2.Ruta); // Esperar a que se descargue el archivo
+  
+      console.log('File URI:', fileUri);
+  
       const routeData = await FileSystem.readAsStringAsync(fileUri);
       const routeGeoJSON = JSON.parse(routeData);
-
+  
       setCoordinates(routeGeoJSON.geometry.coordinates.map((coord) => ({
         latitude: coord[1],
         longitude: coord[0],
       })));
+  
       setPointLocations(routeGeoJSON.features.map((feature) => ({
         latitude: feature.geometry.coordinates[1],
         longitude: feature.geometry.coordinates[0],
@@ -149,6 +169,7 @@ export default function App() {
       console.error('Error al cargar la ruta:', error);
     }
   };
+  
 
   const addPoint = () => {
     if (currentLocation) {
@@ -162,18 +183,6 @@ export default function App() {
         },
       ]);
     }
-  };
-
-  const practicaData = {
-    AlumneID: 'Alumne_1',
-    Ruta: '',
-    Km: 0,
-    HoraInici: '10:00:00', // Formato 'HH:mm:ss
-    HoraFi: '11:00:00', // Formato 'HH:mm:ss
-    ProfessorID: 'Treballador_1',
-    VehicleID: '1234ABC',
-    EstatHoraID: 'EstatHora_1',
-    Data: '2024-04-23', // Formato 'YYYY-MM-DD'
   };
 
   // Ejemplo de subir archivo a MongoDB
@@ -200,12 +209,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {location && (
+      {coordinates.length > 0 && (
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           region={{
-            ...location,
+            latitude: coordinates[0]?.latitude || 0,
+            longitude: coordinates[0]?.longitude || 0,
             latitudeDelta: 0.002,
             longitudeDelta: 0.002,
           }}
@@ -219,13 +229,13 @@ export default function App() {
               }}
               title={favoriteLocation.title}
               description={favoriteLocation.description}
-              pinColor="blue" // Establecer el color del marcador en azul
+              pinColor="blue"
             />
           ))}
           <Marker
             coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
+              latitude: coordinates[0]?.latitude || 0,
+              longitude: coordinates[0]?.longitude || 0,
             }}
             title="Mi Ubicación"
             description="Estoy aquí"
@@ -268,5 +278,3 @@ const styles = StyleSheet.create({
     left: 20,
   },
 });
-
-
