@@ -66,8 +66,11 @@ namespace GeoJSONAPI.Controllers
 
                 await _geoJSONFileService.CreateAsync(geoJSONFile);
 
-                return Ok(new { Message = "Archivo GeoJSON subido con éxito.", ObjectId = geoJSONFile.Id });
-            }
+                // Convertir ObjectId a su representación en cadena
+                string objectIdString = geoJSONFile.Id.ToString();
+
+                return Ok(new { Message = "Archivo GeoJSON subido con éxito.", ObjectId = objectIdString });
+                }
             catch (Exception ex)
             {
                 return StatusCode(500, new { Message = "Error interno del servidor.", Error = ex.Message });
@@ -95,8 +98,9 @@ namespace GeoJSONAPI.Controllers
             {
                 return NotFound();
             }
+            var fileName = await _geoJSONFileService.GetAsync(id);
 
-            return File(stream, "application/octet-stream", id);
+            return File(stream, "application/json", fileName.FileName);
         }
     }
 }
