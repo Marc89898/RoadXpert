@@ -23,7 +23,7 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/images/SplashScreen/RoadLogo.png")}
+          source={require("../assets/images/SplashScreen/LogoRoadXpert.png")}
           style={styles.image}
         />
       </View>

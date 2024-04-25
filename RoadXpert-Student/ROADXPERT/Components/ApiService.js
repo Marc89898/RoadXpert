@@ -120,7 +120,6 @@ class APIService {
         console.error("Error en la petición de todas las horas disponibles:", error);
       }
     }
-    
     /**
     * Fetch All Alumns
     */
@@ -129,6 +128,7 @@ class APIService {
       const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Alumne"
       const response = await fetch(url);
       let data = "";
+      console.log(response)
       if (response.status != 500 && response.status != 404) {
         data = await response.json();
         return data;
@@ -139,6 +139,7 @@ class APIService {
       console.error("Error en la peticion de todos los alumnos" + error)
     }
     }
+    
     static async fetchEstatDescription(EstatHoraID) {
       try {
         const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/EstatHora/" + EstatHoraID
@@ -156,6 +157,9 @@ class APIService {
       
 
     }
+
+
+
   
   }
   

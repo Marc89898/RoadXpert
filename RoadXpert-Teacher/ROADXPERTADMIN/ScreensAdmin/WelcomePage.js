@@ -6,8 +6,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const WelcomePage = () => {
   const navigation = useNavigation();
 
-  const handlePress = () => {
-    navigation.navigate("w");
+  const handlePress = () => { 
+    navigation.navigate("CreateSchool");
   };
 
   return (

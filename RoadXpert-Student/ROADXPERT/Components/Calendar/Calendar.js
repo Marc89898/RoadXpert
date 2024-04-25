@@ -72,19 +72,7 @@ export default function Calendar() {
       } catch(error) {
         console.error("Error in the delete petition: " + error.message)
       }
-      // updateAgenda()
     };
-    
-    const updateAgenda = async () => {
-      try {
-        const result = await APIService.fetchEventsCalendar(Config.IDALUMNE);
-        const adaptedData = DataAdapter.adaptDataDelete(result);
-        setEvents(adaptedData);
-      } catch (error) {
-        console.error('ERROR IN THE DATABASE: ' + error);
-      }
-    };
-    
   
     const handleAddEvent = () => {
       const eventId = uuidv4();

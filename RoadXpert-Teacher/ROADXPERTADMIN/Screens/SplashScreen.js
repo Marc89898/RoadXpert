@@ -16,7 +16,7 @@ const SplashScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/SplashScreen/RoadLogo.png')} style={styles.image} />
+                <Image source={require('../assets/images/SplashScreen/LogoRoadXpert.png')} style={styles.image} />
             </View>
         </View>
     );
