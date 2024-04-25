@@ -139,7 +139,11 @@ class APIService {
       console.error("Error en la peticion de todos los alumnos" + error)
     }
     }
-    
+    /**
+     * Fetch the table EstatHora of the practic
+     * @param {For the id of the db table EstatHora} EstatHoraID 
+     * @returns 
+     */
     static async fetchEstatDescription(EstatHoraID) {
       try {
         const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/EstatHora/" + EstatHoraID

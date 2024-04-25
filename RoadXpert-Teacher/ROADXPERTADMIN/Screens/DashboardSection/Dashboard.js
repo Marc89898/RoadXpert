@@ -1,4 +1,6 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
+import { APIService } from "../../ApiService";
+import { Config } from "../../configuracions"
 import {
   View,
   Text,
@@ -15,6 +17,8 @@ import CircleImage2 from "../../assets/images/Dashboard/settings.png";
 import TuImagen from "../../assets/images/Dashboard/ProvaFoto.jpeg";
 
 const Dashboard = () => {
+  const [nextEvent, setNextEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
@@ -22,6 +26,31 @@ const Dashboard = () => {
   const handleStartPractical = () => {
     navigation.navigate("prePractice");
   };
+
+  useEffect(() => {
+    const loadNextEvent = async () => {
+      try {
+        console.log("Professor id: " + Config.ProfessorID)
+        const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
+        const currentDate = new Date();
+        events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
+        const nextEvent1 = events.find(
+          (event) => new Date(event.Data) > currentDate
+        );
+        if (nextEvent1) {
+          console.log("Next Event: ", nextEvent1);
+          setNextEvent(nextEvent1);
+        } else {
+          console.log("No upcoming events found.");
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    loadNextEvent();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -53,6 +82,29 @@ const Dashboard = () => {
           </Card>
         </TouchableOpacity>
       </View>
+      {nextEvent && (
+        <View style={styles.nextEventContainer}>
+          <Text style={styles.nextEventTitle}>Siguiente Practica:</Text>
+          <View style={styles.eventDetail}>
+            <Icon name="calendar" size={20} color="black" />
+            <Text
+              style={styles.eventDetailText}
+            >{`Fecha: ${nextEvent.Data}`}</Text>
+          </View>
+          <View style={styles.eventDetail}>
+            <Icon name="clock" size={20} color="black" />
+            <Text
+              style={styles.eventDetailText}
+            >{`Hora: ${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+          </View>
+          <View style={styles.eventDetail}>
+            <Icon name="map-marker" size={20} color="black" />
+            <Text
+              style={styles.eventDetailText}
+            >{`Ruta: ${nextEvent.Ruta}`}</Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -130,6 +182,31 @@ const styles = StyleSheet.create({
   cardSubtitle: {
     fontSize: 10,
     color: "grey",
+  },
+  contentContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 0,
+  },
+  nextEventContainer: {
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  nextEventTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  eventDetail: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  eventDetailText: {
+    marginLeft: 10,
+    fontSize: 16,
   },
 });
 

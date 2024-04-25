@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { APIService } from "./ApiService";
 import { isValidDNI, isValidPassword, sha256 } from "../utils/utils.js";
+import Config  from "../configuracions.js"
 
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
@@ -26,9 +27,14 @@ const LoginScreen = () => {
       }
       const alumns = await APIService.fetchAllAlumns();
       const foundAlumn = alumns.find(
-        (alumn) =>
-          alumn.DNI === username && alumn.Contrasenya === passwordHashed
+        (alumn) => {
+          if (alumn.DNI === username && alumn.Contrasenya === passwordHashed) {
+            Config.guardarAlumne(alumn);  
+            return true;
+          }
+        } 
       );
+      console.log("Alumne: " + Config.Alumne.Nom)
       if (foundAlumn) {
         console.log("Inicio de sesión exitoso");
         navigation.navigate("NavBar");
