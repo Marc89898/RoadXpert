@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, Text, TextInput } from "react-native"; // Agregamos el componente TextInput de React Native
+import { View, StyleSheet, Image, Text, TextInput } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
