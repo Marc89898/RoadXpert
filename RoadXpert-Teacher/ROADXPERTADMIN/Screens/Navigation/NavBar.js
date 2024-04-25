@@ -6,6 +6,7 @@ import { Text, BottomNavigation } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Dashboard from "../DashboardSection/Dashboard";
 import MyStudents from "../StudentsSection/MyStudents";
+import Calendar from "../../Calendar/Calendar"
 import Cars from "../Cars/Cars";
 
 const Tab = createBottomTabNavigator();
@@ -70,16 +71,16 @@ export default function MyComponent() {
           },
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Calendar"
         component={Calendar}
         options={{
-          tabBarLabel: "Dashboard",
+          tabBarLabel: "Calendar",
           tabBarIcon: ({ color, size }) => {
             return <Icon name="calendar-outline" size={size} color={color} />;
           },
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Students"
         component={MyStudents}
