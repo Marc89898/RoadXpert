@@ -55,7 +55,7 @@ const Dashboard = () => {
         <ImageBackground source={TuImagen} style={styles.imageBackground}>
           <View style={styles.overlay}>
             <Text style={styles.welcomeText}>Welcome Back,</Text>
-            <Text style={styles.nameText}>Josep Maria Boix</Text>
+            <Text style={styles.nameText}>{Config.Alumne.Nom}</Text>
           </View>
         </ImageBackground>
       </View>
