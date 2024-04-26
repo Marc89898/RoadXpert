@@ -22,7 +22,7 @@ import { getTrafficData } from "../api/trafficService";
 // audio amanagment
 import axios from 'axios';
 import { Audio } from 'expo-av';
-// import env from '../env.js';
+import env from '../../env';
 import ms from '../../prompts/messagesGPT.json';
 
 const StartRouteMap = () => {
