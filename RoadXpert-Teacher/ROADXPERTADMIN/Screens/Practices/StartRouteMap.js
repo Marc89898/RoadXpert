@@ -6,24 +6,15 @@ import {
   TouchableOpacity,
   Modal,
   Image,
-  // Audio managment
-  Button,
   ActivityIndicator,
-  SafeAreaView
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "../Navigation/BackNavigation";
-import { getTrafficData } from "../api/trafficService";
-// import * as AsyncStorage from '@react-native-community/async-storage';
-
-// audio amanagment
-import axios from 'axios';
-import { Audio } from 'expo-av';
-// import env from '../../env';
-// import ms from '../../prompts/messagesGPT.json';
+import AudioManager from "./Models/AudioManager";
+import GPTManager from "./Models/GPTManager";
 
 const StartRouteMap = () => {
   const navigation = useNavigation();
@@ -32,21 +23,12 @@ const StartRouteMap = () => {
   const [street, setStreet] = useState(null);
   const [number, setNumber] = useState(null);
   const [city, setCity] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [trafficData, setTrafficData] = useState([]);
-
-  // Audio managment start
   const [isLoading, setLoading] = useState(false);
   const [recording, setRecording] = useState();
-  const [transcriptionText, setTranscriptionText] = useState('');
-  const [respondeGPT, setRespondeGPT] = useState('');
-  const [permissionResponse, requestPermission] = Audio.usePermissions();
-  // Audio managment end
 
-  const toggleConfirmationModal = () => {
-    setShowConfirmation(!showConfirmation);
-  };
+  const toggleConfirmationModal = () => setShowConfirmation(!showConfirmation);
 
   const confirmFinishPractice = () => {
     navigation.navigate("PostPractice");
@@ -66,10 +48,7 @@ const StartRouteMap = () => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
+      if (status !== "granted") return;
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
@@ -94,154 +73,59 @@ const StartRouteMap = () => {
             longitude: newLocation.coords.longitude,
           },
         ]);
-
-        const fetchTrafficData = async () => {
-          try {
-            const data = await getTrafficData(
-              newLocation.coords.latitude,
-              newLocation.coords.longitude
-            );
-            setTrafficData(data);
-          } catch (error) {
-            console.error("Error al obtener datos de tráfico:", error);
-          }
-        };
-        fetchTrafficData();
+        // const fetchTrafficData = async () => {
+        //   try {
+        //     const data = await getTrafficData(
+        //       newLocation.coords.latitude,
+        //       newLocation.coords.longitude
+        //     );
+        //     setTrafficData(data);
+        //   } catch (error) {
+        //     console.error("Error al obtener datos de tráfico:", error);
+        //   }
+        // };
+        // fetchTrafficData();
       });
     })();
   }, []);
 
-
-  // Audio managment start
-  async function startRecording() {
+  const startRecording = async () => {
     try {
-      if (permissionResponse.status !== 'granted') {
-        console.log('Requesting permission..');
-        await requestPermission();
+      if (isLoading) {
+        return;
       }
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-
-      console.log('Starting recording..');
-      const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
+      const recording = await AudioManager.startRecording();
       setRecording(recording);
-      console.log('Recording started');
+      console.log('Grabación iniciada');
     } catch (err) {
-      console.error('Failed to start recording', err);
+      console.error('Error al iniciar la grabación:', err);
     }
-  }
+  };
 
-  async function stopRecording() {
-    console.log('Stopping recording..');
-    setRecording(undefined);
-    await recording.stopAndUnloadAsync();
-    await Audio.setAudioModeAsync(
-      {
-        allowsRecordingIOS: false,
-      }
-    );
-    const uri = recording.getURI();
-    console.log('Recording stopped and stored at', uri);
+  const stopRecording = async () => {
     try {
-      const text = await speechToText(uri);
-      setTranscriptionText(text);
+      setLoading(true);
+      const audioUri = await AudioManager.stopRecording(recording);
+      setRecording(undefined);
 
-      const respondeGPT = await interpretGPT(text);
+      const text = await AudioManager.speechToText(audioUri);
+
+      const respondeGPT = await GPTManager.interpretGPT(text);
       if (respondeGPT === undefined) {
         setRespondeGPT('No se pudo interpretar el texto');
         return;
       }
 
       setRespondeGPT(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
-    } catch (error) {
-      console.error("Error transcribing audio:", error);
-      setTranscriptionText('Error occurred during transcription.');
-    }
-  }
-
-
-
-  const speechToText = async (audioURL) => {
-    setLoading(true);
-    try {
-      const uploadUrl = await uploadAudio(audioURL);
-      const transcriptText = await transcribeAudio(uploadUrl);
       setLoading(false);
-      return transcriptText;
     } catch (error) {
-      console.error("Error al transcribir el audio:", error);
-      setLoading(false);
-      throw new Error(`Error al transcribir el audio: ${error.message}`);
+      console.error('Error al detener la grabación:', error);
     }
   };
 
-  const uploadAudio = async (audioURL) => {
-    const baseUrl = 'https://api.assemblyai.com/v2';
-    const headers = { authorization: env.ASSEMBLY_API_KEY };
-
-    const audioData = await fetch(audioURL);
-    const audioBlob = await audioData.arrayBuffer();
-
-    const uploadResponse = await axios.post(`${baseUrl}/upload`, audioBlob, { headers });
-    return uploadResponse.data.upload_url;
-  };
-
-  const transcribeAudio = async (uploadUrl) => {
-    const baseUrl = 'https://api.assemblyai.com/v2';
-    const headers = { authorization: env.ASSEMBLY_API_KEY };
-
-    const data = { audio_url: uploadUrl, language_code: 'es' };
-    const response = await axios.post(`${baseUrl}/transcript`, data, { headers });
-
-    const transcriptId = response.data.id;
-    const pollingEndpoint = `${baseUrl}/transcript/${transcriptId}`;
-
-    while (true) {
-      const pollingResponse = await axios.get(pollingEndpoint, { headers });
-      const transcriptionResult = pollingResponse.data;
-
-      if (transcriptionResult.status === 'completed') {
-        return transcriptionResult.text;
-      } else if (transcriptionResult.status === 'error') {
-        throw new Error(`Transcription failed: ${transcriptionResult.error}`);
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-      }
-    }
+  const setRespondeGPT = (respondeGPT) => {
+    console.log(respondeGPT);
   }
-
-  const interpretGPT = async (text) => {
-    try {
-      const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-3.5-turbo",
-          messages: [...ms, { role: "user", content: text }] // aqui debe ir todo el jsonjunto al 'text'
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${env.GPT3_API_KEY}`,
-          },
-        }
-      );
-      const completions = response.data.choices;
-      if (completions.length > 0) {
-        const completionText = completions[0].message.content;
-        console.log("GPT3 Completions:", completionText);
-
-        return new Anotacio(completionText);
-
-      }
-    } catch (error) {
-      console.error("Error al interpretar texto con GPT-3:", error);
-    }
-  };
-
-  // Audio managment end
 
   return (
     <View style={styles.container}>
@@ -293,8 +177,6 @@ const StartRouteMap = () => {
         </View>
         <View style={styles.addressContainer}>
           <View style={styles.addressTextContainer}>
-
-            {/* Audio managment start */}
             <TouchableOpacity onPress={startRecording} style={[styles.microphoneCircle, { backgroundColor: recording ? 'red' : 'black', transform: recording ? [{ scale: 1.2 }] : [{ scale: 1 }] }]}>
               <View style={[styles.btnContainer]}>
                 {isLoading ? (
@@ -352,16 +234,6 @@ const StartRouteMap = () => {
     </View>
   );
 };
-
-class Anotacio {
-  constructor(jsonString) {
-    const jsonObject = JSON.parse(jsonString);
-    this.tipo = jsonObject.tipo;
-    this.CategoriaEscrita = jsonObject.CategoriaEscrita;
-    this.categoriaNumerica = jsonObject.categoriaNumerica;
-    this.gravedad = jsonObject.gravedad;
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
