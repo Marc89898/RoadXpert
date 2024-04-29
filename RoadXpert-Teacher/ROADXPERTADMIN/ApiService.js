@@ -139,6 +139,25 @@ class APIService {
       console.error("Error en la peticion de todos los alumnos" + error)
     }
     }
+    /**
+    * Fetch All Professors
+    */
+    static async fetchAllProfessors() {
+      try {
+        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Treballador"
+        const response = await fetch(url);
+        let data = "";
+        console.log(response)
+        if (response.status != 500 && response.status != 404) {
+          data = await response.json();
+          return data;
+        } else {
+          console.error("Error en la petición de professores: Status", response.status, response.statusText);
+        }
+      }catch(error) {
+        console.error("Error en la peticion de todos los professores: " + error)
+      }
+      }
     
     static async fetchEstatDescription(EstatHoraID) {
       try {
