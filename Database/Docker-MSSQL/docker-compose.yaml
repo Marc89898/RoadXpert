@@ -8,7 +8,7 @@ services:
     environment:
       SA_PASSWORD: "Passw0rd!"
       ACCEPT_EULA: "Y"
-      MSSQL_USER: "Developer" 
+      MSSQL_USER: "Developer"   
       MSSQL_PASSWORD: "Devel0per!"
     ports:
       - "1433:1433"

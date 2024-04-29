@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import { View, StyleSheet, Image, Text, TextInput } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { TextInput } from "react-native-rapi-ui";
 
-const LoginScreen = () => {
+const LoginScreen = () => { 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (username === "" && password === "") {
       navigation.navigate("NavBar");
+      
     } else {
-      console.log("Incorrect credentials. Please try again.");
+      console.error("Usuario o contraseña incorrectos");
     }
   };
 
@@ -33,34 +33,34 @@ const LoginScreen = () => {
           <Text style={styles.welcomeText}>Welcome Back</Text>
         </View>
         <View style={styles.inputsContainer}>
-          <TextInput
-            placeholder="Enter your username"
-            value={username}
-            onChangeText={(val) => setUsername(val)}
-            rightContent={
-              <Ionicons
-                name="person"
-                size={20}
-                color="#ccc"
-                style={styles.eyeIcon}
-              />
-            }
-          />
-          <TextInput
-            placeholder="Enter your password"
-            value={password}
-            secureTextEntry={!showPassword}
-            onChangeText={(val) => setPassword(val)}
-            rightContent={
-              <Ionicons
-                name={showPassword ? "eye" : "eye-off"}
-                size={20}
-                color="#ccc"
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(!showPassword)}
-              />
-            }
-          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your username"
+              value={username}
+              onChangeText={(val) => setUsername(val)}
+            />
+            <Ionicons
+              name="person"
+              size={18}
+              style={styles.icon}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your password"
+              value={password}
+              secureTextEntry={!showPassword}
+              onChangeText={(val) => setPassword(val)}
+            />
+            <Ionicons
+              name={showPassword ? "eye" : "eye-off"}
+              size={20}
+              style={styles.icon}
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          </View>
         </View>
         <Button style={styles.button} mode="contained" onPress={handleLogin}>
           Iniciar Sesión
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   inputsContainer: {
-    gap: 20,
+    gap: 10,
     width: "100%",
     paddingHorizontal: 20,
     marginBottom: 20,
@@ -113,10 +113,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
   },
+  inputContainer: {
+    position: "relative",
+  },
+  icon: {
+    position: "absolute",
+    top: 15,
+    color: "grey",
+    right: 15,
+  },
   input: {
     width: "100%",
+    height: 48,
     marginBottom: 12,
-    backgroundColor: "#F1F4FF",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "lightgrey",
+    padding: 10,
   },
   button: {
     backgroundColor: "#1F41BB",
