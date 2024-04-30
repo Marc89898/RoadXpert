@@ -14,6 +14,7 @@ import BackNavigation from '../Screens/Navigation/BackNavigation.js';
 // Dashboard Components
 import Dashboard from '../Screens/DashboardSection/Dashboard.js';
 import NotificationsScreen from '../Screens/DashboardSection/NotificationsScreen.js';
+import Settings from '../Screens/DashboardSection/Settings.js';
 
 // Students Components
 import MyStudents from '../Screens/StudentsSection/MyStudents.js';
@@ -56,6 +57,7 @@ export default function Profesor() {
         <Stack.Screen name="BackNavigation" component={BackNavigation} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
+        <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="MyStudents" component={MyStudents} />
         <Stack.Screen name="AllStudents" component={AllStudents} />
         <Stack.Screen name="StudentInfo" component={StudentInfo} />

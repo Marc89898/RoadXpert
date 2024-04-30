@@ -161,9 +161,6 @@ const StartRouteMap = () => {
       setTranscriptionText('Error occurred during transcription.');
     }
   }
-
-
-
   const speechToText = async (audioURL) => {
     setLoading(true);
     try {
