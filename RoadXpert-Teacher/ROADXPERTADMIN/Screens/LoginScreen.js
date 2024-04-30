@@ -3,6 +3,9 @@ import { View, StyleSheet, Image, Text, TextInput } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { APIService } from "../ApiService";
+import { sha256, isValidDNI } from "../utils";
+import Config from "../configuracions"
 
 const LoginScreen = () => { 
   const [username, setUsername] = useState("");
@@ -11,14 +14,27 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    if (username === "" && password === "") {
-      navigation.navigate("NavBar");
-      
+    if (!isValidDNI(username)) {
+      alert("Por favor, introduce un DNI válido.");
+      return;
+    }
+    const professors = await APIService.fetchAllProfessors();
+    const professor = professors.find(
+      (prof) => prof.DNI === username
+    );
+
+    if (professor) {
+      const hashedPassword = await sha256(password);
+      if (hashedPassword === professor.Contrasenya) {
+        Config.Professor = professor;
+        navigation.navigate("NavBar");
+      } else {
+        alert("Contraseña incorrecta. Por favor, inténtalo de nuevo.");
+      }
     } else {
-      console.error("Usuario o contraseña incorrectos");
+      alert("Usuario no encontrado. Por favor, comprueba tu DNI.");
     }
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
