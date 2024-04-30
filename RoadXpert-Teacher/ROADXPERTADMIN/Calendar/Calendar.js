@@ -8,7 +8,7 @@ import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
 import { Alert } from 'react-native';
 import Config from "../configuracions"
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 
 export default function Calendar() {
 
@@ -19,6 +19,7 @@ export default function Calendar() {
   const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
   const [selectedRoute, setSelectedRoute] = useState('');
   const [selectedCar, setSelectedCar] = useState('');
+  const [selectedAlumn, setSelectedAlumn] = useState('');
   const [eventName, setEventName] = useState('');
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [eventToDelete, setEventToDelete] = useState(null);
@@ -44,12 +45,16 @@ export default function Calendar() {
   const loadStudents = async () => {
     try {
       const studentsData = await APIService.fetchAllAlumns();
-      const studentNames = studentsData.map(student => student.Nom);
-      setStudents(studentNames);
+      const formattedStudents = studentsData.map(student => ({
+        id: student.ID,
+        name: student.Nom
+      }));
+      setStudents(formattedStudents);
     } catch (error) {
       console.error('Error al cargar los alumnos:', error);
     }
   };
+
 
   const handleDeleteConfirmation = (item) => {
     setEventToDelete(item);
@@ -63,26 +68,31 @@ export default function Calendar() {
   const handleDeleteEvent = async () => {
     const eventId = eventToDelete.id;
     try {
-      const updatedEvent = await APIService.deleteEventCalendar(eventId, "EstatHora_6");
-      console.log('Event updated successfully:', updatedEvent);
-
+      await APIService.deleteEventCalendar(eventId);
+      console.log('Event deleted successfully:', eventId);
+  
       Alert.alert(
-        'Evento Actualizado',
-        'El evento se ha modificado correctamente.',
+        'Evento Eliminado',
+        'El evento se ha eliminado correctamente.',
         [
           {
-            text: 'OK', onPress: () => {
+            text: 'OK', onPress: async () => {
               setDeleteConfirmationVisible(false);
+              // Refrescar los eventos
+              const updatedEvents = await APIService.fetchEventsCalendar(Config.ProfessorID);
+              const adaptedData = DataAdapter.adaptDataDelete(updatedEvents);
+              setData(adaptedData);
+              setEvents(adaptedData);
             }
           }
         ],
         { cancelable: false }
       );
-
     } catch (error) {
       console.error("Error in the delete petition: " + error.message)
     }
   };
+  
 
   const handleAddEvent = () => {
     const eventId = uuidv4();
@@ -95,8 +105,8 @@ export default function Calendar() {
       Ruta: selectedRoute,
       Coche: selectedCar,
       Estat: 'Practica Solicitada',
-      AlumneID: Config.IDALUMNE,
-      ProfessorID: Config.ProfesorID,
+      AlumneID: selectedAlumn.id,
+      ProfessorID: Config.ProfessorID,
       VehicleID: '3456JKL',
       data: selectedDate
     };
@@ -172,12 +182,18 @@ export default function Calendar() {
             style={styles.item}
             onPress={() => handleDeleteConfirmation(item)}>
             <View style={styles.itemTextContainer}>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Name: </Text>{item.name}</Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Initial Time: </Text>{item.horaInicial}</Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Final Time: </Text>{item.horaFinal}</Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Coche}</Text>
+              <Text style={[styles.itemText, { textAlign: 'center' }]}>
+                <Text style={styles.boldText}>PRACTICE</Text>
+              </Text>
+              <Text style={[styles.itemText, { textAlign: 'center' }]}>
+                <Text>--------------------------------------------------------------------</Text>
+              </Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
+              {/* <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text> */}
+              {/* <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Alumn}</Text>*/}
               <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Alumn: </Text>{selectedAlumn.name}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -205,12 +221,12 @@ export default function Calendar() {
             <View style={styles.availableHoursContainer}>{renderAvailableHours()}</View>
             <Text>Selecciona un Alumno:</Text>
             <Picker
-              selectedValue={selectedCar}
+              selectedValue={selectedAlumn}
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedCar(itemValue)
+                setSelectedAlumn(itemValue)
               }>
               {students.map((student, index) => (
-                <Picker.Item label={student} value={student} key={index} />
+                <Picker.Item label={student.name} value={student} key={index} />
               ))}
             </Picker>
 
@@ -243,7 +259,7 @@ export default function Calendar() {
             <Text>Vas a borrar una practica estas seguro ? </Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={handleDeleteEvent}>
-                <Text style={styles.buttonText}>Peticion para Eliminar</Text>
+                <Text style={styles.buttonText}>Eliminar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleCancelDelete}>
                 <Text style={styles.buttonText}>Cancelar</Text>
