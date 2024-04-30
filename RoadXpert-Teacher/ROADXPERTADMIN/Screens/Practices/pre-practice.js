@@ -28,8 +28,20 @@ const PrePractice = () => {
     setShowModal(false); 
   };
 
+  const practicaDataObj = {
+    AlumneID: 'Alumne_1',
+    Ruta: '6627d530f53b02fe8d5bed5c',
+    Km: 0,
+    HoraInici: '10:00:00', // Formato 'HH:mm:ss
+    HoraFi: '11:00:00', // Formato 'HH:mm:ss
+    ProfessorID: 'Treballador_1',
+    VehicleID: '1234ABC',
+    EstatHoraID: 'EstatHora_1',
+    Data: '2024-04-23', // Formato 'YYYY-MM-DD'
+  };
+
   const handleStartButtonPress = () => {
-    navigation.navigate("StartRouteMap"); 
+    navigation.navigate("StartRouteMap", { practiceData: practicaDataObj });
   };
 
   return (

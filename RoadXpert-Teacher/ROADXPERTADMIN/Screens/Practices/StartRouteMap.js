@@ -18,7 +18,9 @@ import AudioManager from "./Models/AudioManager";
 import GPTManager from "./Models/GPTManager";
 import ApiHelper from "./Models/data/ApiHelper";
 
-const StartRouteMap = () => {
+const StartRouteMap = ({ route }) => {
+  const { practiceData } = route.params;
+
   const navigation = useNavigation();
   // route managment
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -109,6 +111,7 @@ const StartRouteMap = () => {
         addAnotacioToRoute(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
       } catch (error) {
         console.log('No se pudo interpretar el texto');
+        addAnotacioToRoute(null);
         return;
       } finally {
         setLoading(false);
@@ -120,14 +123,24 @@ const StartRouteMap = () => {
   };
 
   const addAnotacioToRoute = async (anotacio) => {
-    if (currentLocation) {
+    if (currentLocation && anotacio != null) {
       setPointLocations((prevLocations) => [
         ...prevLocations,
         {
           latitude: currentLocation.latitude,
           longitude: currentLocation.longitude,
           title: anotacio.tipo,
-          description: anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad
+          description: anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad 
+        },
+      ]);
+    } else if (currentLocation && anotacio == null){
+      setPointLocations((prevLocations) => [
+        ...prevLocations,
+        {
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          title: "Anotación",
+          description: "No se pudo interpretar el audio"
         },
       ]);
     }
