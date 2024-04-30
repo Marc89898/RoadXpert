@@ -43,23 +43,26 @@ const StartRouteMap = ({ route }) => {
   };
 
   useEffect(() => {
+    let intervalId;
+
+
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
         return;
       }
-  
-      setInterval(async () => {
+
+      intervalId = setInterval(async () => {
         const newLocation = await Location.getCurrentPositionAsync({});
         setCurrentLocation(newLocation.coords);
-  
+
         // Verificar si la nueva coordenada es diferente a la última agregada
         const lastCoordinate = coordinates[coordinates.length - 1];
         if (
           !lastCoordinate ||
-          newLocation.coords.latitude !== lastCoordinate.latitude ||
-          newLocation.coords.longitude !== lastCoordinate.longitude
+          (newLocation.coords.latitude !== lastCoordinate.latitude &&
+            newLocation.coords.longitude !== lastCoordinate.longitude)
         ) {
           // Agregar la nueva coordenada solo si es diferente
           setCoordinates((prev) => [
@@ -69,21 +72,21 @@ const StartRouteMap = ({ route }) => {
               longitude: newLocation.coords.longitude,
             },
           ]);
-        }
+
+          let addressResponse = await Location.reverseGeocodeAsync({
+            latitude: newLocation.coords.latitude,
+            longitude: newLocation.coords.longitude,
+          });
   
-        let addressResponse = await Location.reverseGeocodeAsync({
-          latitude: newLocation.coords.latitude,
-          longitude: newLocation.coords.longitude,
-        });
-  
-        if (addressResponse.length > 0) {
-          setStreet(addressResponse[0].street);
-          setNumber(addressResponse[0].name);
-          setCity(addressResponse[0].city);
+          if (addressResponse.length > 0) {
+            setStreet(addressResponse[0].street);
+            setNumber(addressResponse[0].name);
+            setCity(addressResponse[0].city);
+          }
         }
       }, 2000);
     })();
-  }, [recording]);  
+  }, [recording]);
 
 
   const startRecording = async () => {
@@ -106,7 +109,7 @@ const StartRouteMap = ({ route }) => {
       setRecording(undefined);
       const text = await AudioManager.speechToText(audioUri);
       const respondeGPT = await GPTManager.interpretGPT(text);
-      
+
       try {
         addAnotacioToRoute(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
       } catch (error) {
@@ -130,10 +133,10 @@ const StartRouteMap = ({ route }) => {
           latitude: currentLocation.latitude,
           longitude: currentLocation.longitude,
           title: anotacio.tipo,
-          description: anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad 
+          description: anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad
         },
       ]);
-    } else if (currentLocation && anotacio == null){
+    } else if (currentLocation && anotacio == null) {
       setPointLocations((prevLocations) => [
         ...prevLocations,
         {
