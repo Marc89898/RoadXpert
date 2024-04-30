@@ -117,19 +117,6 @@ const StartRouteMap = () => {
       }
 
       setRespondeGPT(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
-<<<<<<< HEAD
-    } catch (error) {
-      console.error("Error transcribing audio:", error);
-      setTranscriptionText('Error occurred during transcription.');
-    }
-  }
-  const speechToText = async (audioURL) => {
-    setLoading(true);
-    try {
-      const uploadUrl = await uploadAudio(audioURL);
-      const transcriptText = await transcribeAudio(uploadUrl);
-=======
->>>>>>> 2de943712e30cf29323dc32fcf9ef71e54ef3b9e
       setLoading(false);
     } catch (error) {
       console.error('Error al detener la grabación:', error);
