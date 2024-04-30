@@ -8,6 +8,7 @@ import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
 import { Alert } from 'react-native';
 import Config from "../configuracions"
+import {Picker} from '@react-native-picker/picker';
 
 export default function Calendar() {
 
@@ -28,7 +29,7 @@ export default function Calendar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await APIService.fetchEventsCalendar(Config.ProfesorID);
+        const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
         const adaptedData = DataAdapter.adaptDataDelete(result);
         setData(adaptedData);
         setEvents(adaptedData);
@@ -114,7 +115,7 @@ export default function Calendar() {
 
   const addPractica = async () => {
     try {
-      const fetchedHours = await APIService.fetchAvailableHours(Config.ProfesorID, selectedDate);
+      const fetchedHours = await APIService.fetchAvailableHours(Config.ProfessorID, selectedDate);
       loadStudents()
       if (fetchedHours) {
         setAvailableHours(fetchedHours);
@@ -203,14 +204,15 @@ export default function Calendar() {
             <Text>Selecciona una hora de inicio:</Text>
             <View style={styles.availableHoursContainer}>{renderAvailableHours()}</View>
             <Text>Selecciona un Alumno:</Text>
-            <FlatList
-              data={students}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handleStudentSelect(item)}>
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
+            <Picker
+              selectedValue={selectedCar}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedCar(itemValue)
+              }>
+              {students.map((student, index) => (
+                <Picker.Item label={student} value={student} key={index} />
+              ))}
+            </Picker>
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
