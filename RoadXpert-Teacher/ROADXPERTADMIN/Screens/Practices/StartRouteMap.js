@@ -16,7 +16,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "../Navigation/BackNavigation";
 import AudioManager from "./Models/AudioManager";
 import GPTManager from "./Models/GPTManager";
-import ApiHelper from "./Models/data/ApiHelper";
+import ApiHelper from "../../data/ApiHelper";
 
 const StartRouteMap = ({ route }) => {
   const { practiceData } = route.params;
@@ -44,8 +44,6 @@ const StartRouteMap = ({ route }) => {
 
   useEffect(() => {
     let intervalId;
-
-
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
