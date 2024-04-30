@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { APIService } from "../../ApiService";
-import  Config  from "../../configuracions"
+import { Config } from "../../configuracions";
 import {
   View,
   Text,
@@ -20,9 +20,13 @@ const Dashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
-  }; 
+  };
+  const handleSettings = () => {
+    navigation.navigate("Settings");
+  };
   const handleStartPractical = () => {
     navigation.navigate("prePractice");
   };
@@ -75,9 +79,11 @@ const Dashboard = () => {
             <Image source={CircleImage1} style={styles.circleImage} />
           </View>
         </TouchableOpacity>
-        <View style={styles.circle}>
-          <Image source={CircleImage2} style={styles.circleImage} />
-        </View>
+        <TouchableOpacity onPress={handleSettings}>
+          <View style={styles.circle}>
+            <Image source={CircleImage2} style={styles.circleImage} />
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
         <TouchableOpacity onPress={handleStartPractical}>
