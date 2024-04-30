@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   adminText: {
     fontSize: 16,
-    color: "#333",s
+    color: "#333",
   },
   buttonContainer: {
     flex: 1,

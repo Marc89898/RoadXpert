@@ -34,6 +34,12 @@ const Dashboard = () => {
   useEffect(() => {
     const loadNextEvent = async () => {
       try {
+        if (typeof Config.ProfessorID === 'undefined') {
+          console.log("ProfessorID is undefined. Skipping event loading.");
+          setLoading(false);
+          return;
+        }
+  
         console.log("Professor id: " + Config.ProfessorID);
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
         const currentDate = new Date();
@@ -52,9 +58,10 @@ const Dashboard = () => {
         console.error("Error fetching events:", error);
       }
     };
-
+  
     loadNextEvent();
   }, []);
+  
 
   return (
     <View style={{ flex: 1 }}>
@@ -62,7 +69,7 @@ const Dashboard = () => {
         <ImageBackground source={TuImagen} style={styles.imageBackground}>
           <View style={styles.overlay}>
             <Text style={styles.welcomeText}>Welcome Back,</Text>
-            <Text style={styles.nameText}>Manuel Coromines</Text>
+            <Text style={styles.nameText}>{Config.Professor.Nom} {Config.Professor.Cognom} {Config.Professor.SegonCognom}</Text>
           </View>
         </ImageBackground>
       </View>
