@@ -39,7 +39,7 @@ const StartRouteMap = ({ route }) => {
 
   const confirmFinishPractice = () => {
     generateRouteFile();
-    navigation.navigate("PostPractice");
+    navigation.navigate("PostPractice", { practiceData: practiceData });
   };
 
   useEffect(() => {

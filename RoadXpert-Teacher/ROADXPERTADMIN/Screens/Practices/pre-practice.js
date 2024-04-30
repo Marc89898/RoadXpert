@@ -75,15 +75,15 @@ const PrePractice = () => {
   const handleStartButtonPress = () => {
     // Verificar si se ha seleccionado un alumno
     if (!selectedAlumno) {
-      console.error('Debe seleccionar un alumno antes de continuar.');
+      // console.error('Debe seleccionar un alumno antes de continuar.');
       return;
     }
-    if (!selectedCarnet) {
-      console.error('Debe seleccionar un tipo de carnet antes de continuar.');
-      return;
-    }
+    // if (!selectedCarnet) {
+    //   console.error('Debe seleccionar un tipo de carnet antes de continuar.');
+    //   return;
+    // }
     if (!selectedCotxe) {
-      console.error('Debe seleccionar un vehículo antes de continuar.');
+      // console.error('Debe seleccionar un vehículo antes de continuar.');
       return;
     }
 
@@ -91,7 +91,7 @@ const PrePractice = () => {
     const today = new Date();
 
     // Crear el objeto practicaDataObj con los datos seleccionados
-    const practicaDataObj = {
+    const practiceDataObj = {
       AlumneID: selectedAlumno, // ID del alumno seleccionado
       Ruta: '6627d530f53b02fe8d5bed5c',
       Km: 0,
@@ -102,7 +102,7 @@ const PrePractice = () => {
       EstatHoraID: 'EstatHora_1',
       Data: today.toISOString().split('T')[0] // Formato 'YYYY-MM-DD' 
     };
-    navigation.navigate("StartRouteMap", { practiceData: practicaDataObj });
+    navigation.navigate("StartRouteMap", { practiceData: practiceDataObj });
   };
 
   return (
