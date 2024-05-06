@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, FlatList } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
@@ -11,228 +11,247 @@ import Config from "../configuracions"
 
 export default function Calendar() {
 
-    const [data, setData] = useState(null);
-    const [events, setEvents] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-    const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
-    const [selectedRoute, setSelectedRoute] = useState('');
-    const [selectedCar, setSelectedCar] = useState('');
-    const [eventName, setEventName] = useState('');
-    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-    const [eventToDelete, setEventToDelete] = useState(null);
-    const [selectedHour, setSelectedHour] = useState(availableHours[0]);
+  const [data, setData] = useState(null);
+  const [events, setEvents] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
+  const [selectedRoute, setSelectedRoute] = useState('');
+  const [selectedCar, setSelectedCar] = useState('');
+  const [eventName, setEventName] = useState('');
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState(null);
+  const [selectedHour, setSelectedHour] = useState(availableHours[0]);
+  const [students, setStudents] = useState([]);
 
-    // Effect to fill the events
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const result = await APIService.fetchEventsCalendar(Config.ProfesorID);
-          const adaptedData = DataAdapter.adaptDataDelete(result);
-          setData(adaptedData);
-          setEvents(adaptedData);
-        } catch (error) {
-          console.error('ERROR IN THE DATABASE: ' + error);
-        }
-        
-      };
-  
-      fetchData();
-      // updateAgenda()
-    }, []);
-  
-    const handleDeleteConfirmation = (item) => {
-      setEventToDelete(item);
-      setDeleteConfirmationVisible(true);
-    };
-  
-      
-    const handleDayPress = (day) => {
-      setSelectedDate(day.dateString);
-    };
-
-    const handleDeleteEvent = async () => {
-      const eventId = eventToDelete.id;
+  // Effect to fill the events
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const updatedEvent = await APIService.deleteEventCalendar(eventId, "EstatHora_6");
-        console.log('Event updated successfully:', updatedEvent);
-
-        Alert.alert(
-          'Evento Actualizado',
-          'El evento se ha modificado correctamente.',
-          [
-            { text: 'OK', onPress: () => {
-                setDeleteConfirmationVisible(false);
-              }
-            }
-          ],
-          { cancelable: false }
-        );
-        
-      } catch(error) {
-        console.error("Error in the delete petition: " + error.message)
-      }
-    };
-  
-    const handleAddEvent = () => {
-      const eventId = uuidv4();
-      Horas = selectedHour.split(" ")
-      const event = {
-        id: eventId,
-        name: "Practica",
-        horaInicial: Horas[0],
-        horaFinal: Horas[2],
-        Ruta: selectedRoute,
-        Coche: selectedCar,
-        Estat: 'Practica Solicitada',
-        AlumneID: Config.IDALUMNE,
-        ProfessorID: Config.ProfesorID,
-        VehicleID: '3456JKL',
-        data: selectedDate
-      };
-      setEvents((prevEvents) => {
-        const updatedEvents = { ...prevEvents };
-        if (updatedEvents[selectedDate]) {
-          updatedEvents[selectedDate].push(event);
-        } else {
-          updatedEvents[selectedDate] = [event];
-        }
-        eventAdapted = DataAdapter.adaptJsonToDatabase(event)
-        APIService.addEventCalendar(eventAdapted)
-        return updatedEvents;
-      });
-      // updateAgenda()
-    };
-    
-  
-    
-
-    const addPractica = async () => {
-      try {
-        const fetchedHours = await APIService.fetchAvailableHours(Config.ProfesorID, selectedDate);
-        if (fetchedHours) {
-          setAvailableHours(fetchedHours);
-          setModalVisible(true);
-        } else {
-          console.error('No se pudieron obtener las horas disponibles');
-        }
+        const result = await APIService.fetchEventsCalendar(Config.ProfesorID);
+        const adaptedData = DataAdapter.adaptDataDelete(result);
+        setData(adaptedData);
+        setEvents(adaptedData);
       } catch (error) {
-        console.error('Error al obtener las horas disponibles:', error.message);
+        console.error('ERROR IN THE DATABASE: ' + error);
       }
     };
-    
-  
-    const handleModalSubmit = () => {
-      handleAddEvent();
-      setModalVisible(false);
-      setEventName('');
-      setSelectedRoute('');
-      setSelectedCar('');
-      setSelectedHour(availableHours[0]);
-    };
-  
-    const handleModalCancel = () => {
-      setModalVisible(false);
-      setEventName('');
-      setSelectedRoute('');
-      setSelectedCar('');
-      setSelectedHour(availableHours[0]);
-    };
-  
-    const renderAvailableHours = () => {
-      return availableHours.map((hour) => (
-        <TouchableOpacity
-          key={hour}
-          style={[styles.hourButton, selectedHour === hour ? styles.selectedHourButton : null]}
-          onPress={() => setSelectedHour(hour)}
-        >
-          <Text style={styles.hourButtonText}>{hour}</Text>
-        </TouchableOpacity>
-      ));
-    };
-  
-    const handleCancelDelete = () => {
-      setDeleteConfirmationVisible(false);
-    };
 
-    return (
-      <View style={{ flex: 1 }}>
-        <Agenda
-          selected={selectedDate}
-          items={events}
-          onDayPress={handleDayPress}
-          renderItem={(item, key) => (
-            <TouchableOpacity
-              style={styles.item}
-              onPress={() => handleDeleteConfirmation(item)}>
-              <View style={styles.itemTextContainer}>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Name: </Text>{item.name}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Initial Time: </Text>{item.horaInicial}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Final Time: </Text>{item.horaFinal}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Coche}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(false);
-          }}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text>Fecha:</Text>
-              <TextInput
-                style={styles.input}
-                value={selectedDate}
-                onChangeText={() => {
-                  setSelectedDate();
-                }}
-                type="date"
-              />
-              <Text>Selecciona una hora de inicio:</Text>
-              <View style={styles.availableHoursContainer}>{renderAvailableHours()}</View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
-                  <Text style={styles.buttonText}>Cancelar</Text>
+    fetchData();
+  }, []);
+
+  const loadStudents = async () => {
+    try {
+      const studentsData = await APIService.fetchAllAlumns();
+      const studentNames = studentsData.map(student => student.Nom);
+      setStudents(studentNames);
+    } catch (error) {
+      console.error('Error al cargar los alumnos:', error);
+    }
+  };
+
+  const handleDeleteConfirmation = (item) => {
+    setEventToDelete(item);
+    setDeleteConfirmationVisible(true);
+  };
+
+  const handleDayPress = (day) => {
+    setSelectedDate(day.dateString);
+  };
+
+  const handleDeleteEvent = async () => {
+    const eventId = eventToDelete.id;
+    try {
+      const updatedEvent = await APIService.deleteEventCalendar(eventId, "EstatHora_6");
+      console.log('Event updated successfully:', updatedEvent);
+
+      Alert.alert(
+        'Evento Actualizado',
+        'El evento se ha modificado correctamente.',
+        [
+          {
+            text: 'OK', onPress: () => {
+              setDeleteConfirmationVisible(false);
+            }
+          }
+        ],
+        { cancelable: false }
+      );
+
+    } catch (error) {
+      console.error("Error in the delete petition: " + error.message)
+    }
+  };
+
+  const handleAddEvent = () => {
+    const eventId = uuidv4();
+    Horas = selectedHour.split(" ")
+    const event = {
+      id: eventId,
+      name: "Practica",
+      horaInicial: Horas[0],
+      horaFinal: Horas[2],
+      Ruta: selectedRoute,
+      Coche: selectedCar,
+      Estat: 'Practica Solicitada',
+      AlumneID: Config.IDALUMNE,
+      ProfessorID: Config.ProfesorID,
+      VehicleID: '3456JKL',
+      data: selectedDate
+    };
+    setEvents((prevEvents) => {
+      const updatedEvents = { ...prevEvents };
+      if (updatedEvents[selectedDate]) {
+        updatedEvents[selectedDate].push(event);
+      } else {
+        updatedEvents[selectedDate] = [event];
+      }
+      eventAdapted = DataAdapter.adaptJsonToDatabase(event)
+      APIService.addEventCalendar(eventAdapted)
+      return updatedEvents;
+    });
+  };
+
+  const addPractica = async () => {
+    try {
+      const fetchedHours = await APIService.fetchAvailableHours(Config.ProfesorID, selectedDate);
+      loadStudents()
+      if (fetchedHours) {
+        setAvailableHours(fetchedHours);
+        setModalVisible(true);
+      } else {
+        console.error('No se pudieron obtener las horas disponibles');
+      }
+    } catch (error) {
+      console.error('Error al obtener las horas disponibles:', error.message);
+    }
+  };
+
+  const handleModalSubmit = () => {
+    handleAddEvent();
+    setModalVisible(false);
+    setEventName('');
+    setSelectedRoute('');
+    setSelectedCar('');
+    setSelectedHour(availableHours[0]);
+  };
+
+  const handleModalCancel = () => {
+    setModalVisible(false);
+    setEventName('');
+    setSelectedRoute('');
+    setSelectedCar('');
+    setSelectedHour(availableHours[0]);
+  };
+
+  const renderAvailableHours = () => {
+    return availableHours.map((hour) => (
+      <TouchableOpacity
+        key={hour}
+        style={[styles.hourButton, selectedHour === hour ? styles.selectedHourButton : null]}
+        onPress={() => setSelectedHour(hour)}
+      >
+        <Text style={styles.hourButtonText}>{hour}</Text>
+      </TouchableOpacity>
+    ));
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmationVisible(false);
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <Agenda
+        selected={selectedDate}
+        items={events}
+        onDayPress={handleDayPress}
+        renderItem={(item, key) => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => handleDeleteConfirmation(item)}>
+            <View style={styles.itemTextContainer}>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Name: </Text>{item.name}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Initial Time: </Text>{item.horaInicial}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Final Time: </Text>{item.horaFinal}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Coche}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text>Fecha:</Text>
+            <TextInput
+              style={styles.input}
+              value={selectedDate}
+              onChangeText={() => {
+                setSelectedDate();
+              }}
+              type="date"
+            />
+            <Text>Selecciona una hora de inicio:</Text>
+            <View style={styles.availableHoursContainer}>{renderAvailableHours()}</View>
+            <Text>Selecciona un Alumno:</Text>
+            <FlatList
+              data={students}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleStudentSelect(item)}>
+                  <Text>{item}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalSubmit}>
-                  <Text style={styles.buttonText}>Agregar</Text>
-                </TouchableOpacity>
-              </View>
+              )}
+            />
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
+                <Text style={styles.buttonText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalSubmit}>
+                <Text style={styles.buttonText}>Agregar</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </Modal>
-  
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={deleteConfirmationVisible}
-          onRequestClose={() => {
-            setDeleteConfirmationVisible(false);
-          }}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text>¿Estás seguro de que deseas eliminar este evento? Vas a mandar una peticion para borrar la practica a tu professor</Text>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={handleDeleteEvent}>
-                  <Text style={styles.buttonText}>Peticion para Eliminar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleCancelDelete}>
-                  <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
-              </View>
+        </View>
+      </Modal>
+
+      <TouchableOpacity style={styles.addButton}>
+        <Ionicons onPress={addPractica} name="add-circle" size={70} color="black" />
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={deleteConfirmationVisible}
+        onRequestClose={() => {
+          setDeleteConfirmationVisible(false);
+        }}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text>Vas a borrar una practica estas seguro ? </Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={handleDeleteEvent}>
+                <Text style={styles.buttonText}>Peticion para Eliminar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleCancelDelete}>
+                <Text style={styles.buttonText}>Cancelar</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </Modal>
-      </View>
-    );
+        </View>
+      </Modal>
+    </View>
+  );
 }
 const styles = StyleSheet.create({
   itemText: {

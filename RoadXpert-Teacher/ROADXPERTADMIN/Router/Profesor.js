@@ -15,6 +15,7 @@ import BackNavigation from '../Screens/Navigation/BackNavigation.js';
 import Dashboard from '../Screens/DashboardSection/Dashboard.js';
 import NotificationsScreen from '../Screens/DashboardSection/NotificationsScreen.js';
 import Settings from '../Screens/DashboardSection/Settings.js';
+import UserProfile from '../Screens/DashboardSection/UserProfile.js';
 
 // Students Components
 import MyStudents from '../Screens/StudentsSection/MyStudents.js';
@@ -46,7 +47,7 @@ export default function Profesor() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SplashScreen"
+        initialRouteName="Settings"
         screenOptions={{
           headerShown: false,
         }}
@@ -58,6 +59,7 @@ export default function Profesor() {
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
         <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
         <Stack.Screen name="MyStudents" component={MyStudents} />
         <Stack.Screen name="AllStudents" component={AllStudents} />
         <Stack.Screen name="StudentInfo" component={StudentInfo} />

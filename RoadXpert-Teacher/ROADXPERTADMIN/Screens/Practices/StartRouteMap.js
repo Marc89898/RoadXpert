@@ -9,85 +9,80 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
+import * as FileSystem from "expo-file-system";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "../Navigation/BackNavigation";
 import AudioManager from "./Models/AudioManager";
 import GPTManager from "./Models/GPTManager";
+import ApiHelper from "./Models/data/ApiHelper";
 
 const StartRouteMap = () => {
   const navigation = useNavigation();
-  const [location, setLocation] = useState(null);
-  const [routeCoordinates, setRouteCoordinates] = useState([]);
+  // route managment
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [coordinates, setCoordinates] = useState([]);
+  const [pointLocations, setPointLocations] = useState([]);
+  // Información de la dirección actual
   const [street, setStreet] = useState(null);
   const [number, setNumber] = useState(null);
   const [city, setCity] = useState(null);
+  // Modal de confirmación
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [trafficData, setTrafficData] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [recording, setRecording] = useState();
+  const [recording, setRecording] = useState(false);
 
   const toggleConfirmationModal = () => setShowConfirmation(!showConfirmation);
 
   const confirmFinishPractice = () => {
+    generateRouteFile();
     navigation.navigate("PostPractice");
-    saveRoute();
-  };
-
-  const saveRoute = async () => {
-    try {
-      const routeData = JSON.stringify(routeCoordinates);
-      await AsyncStorage.setItem("savedRoute", routeData);
-      console.log("Route data saved successfully!");
-    } catch (error) {
-      console.error("Error saving route data:", error);
-    }
   };
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") return;
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-
-      let addressResponse = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-
-      if (addressResponse.length > 0) {
-        setStreet(addressResponse[0].street);
-        setNumber(addressResponse[0].name);
-        setCity(addressResponse[0].city);
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
       }
-
-      Location.watchPositionAsync({ distanceInterval: 10 }, (newLocation) => {
-        setLocation(newLocation);
-        setRouteCoordinates((prevCoordinates) => [
-          ...prevCoordinates,
-          {
-            latitude: newLocation.coords.latitude,
-            longitude: newLocation.coords.longitude,
-          },
-        ]);
-        // const fetchTrafficData = async () => {
-        //   try {
-        //     const data = await getTrafficData(
-        //       newLocation.coords.latitude,
-        //       newLocation.coords.longitude
-        //     );
-        //     setTrafficData(data);
-        //   } catch (error) {
-        //     console.error("Error al obtener datos de tráfico:", error);
-        //   }
-        // };
-        // fetchTrafficData();
-      });
+  
+      setInterval(async () => {
+        const newLocation = await Location.getCurrentPositionAsync({});
+        setCurrentLocation(newLocation.coords);
+  
+        // Verificar si la nueva coordenada es diferente a la última agregada
+        const lastCoordinate = coordinates[coordinates.length - 1];
+        if (
+          !lastCoordinate ||
+          newLocation.coords.latitude !== lastCoordinate.latitude ||
+          newLocation.coords.longitude !== lastCoordinate.longitude
+        ) {
+          // Agregar la nueva coordenada solo si es diferente
+          setCoordinates((prev) => [
+            ...prev,
+            {
+              latitude: newLocation.coords.latitude,
+              longitude: newLocation.coords.longitude,
+            },
+          ]);
+        }
+  
+        let addressResponse = await Location.reverseGeocodeAsync({
+          latitude: newLocation.coords.latitude,
+          longitude: newLocation.coords.longitude,
+        });
+  
+        if (addressResponse.length > 0) {
+          setStreet(addressResponse[0].street);
+          setNumber(addressResponse[0].name);
+          setCity(addressResponse[0].city);
+        }
+      }, 2000);
     })();
-  }, []);
+  }, [recording]);  
+
 
   const startRecording = async () => {
     try {
@@ -107,13 +102,16 @@ const StartRouteMap = () => {
       setLoading(true);
       const audioUri = await AudioManager.stopRecording(recording);
       setRecording(undefined);
-
       const text = await AudioManager.speechToText(audioUri);
-
       const respondeGPT = await GPTManager.interpretGPT(text);
-      if (respondeGPT === undefined) {
-        setRespondeGPT('No se pudo interpretar el texto');
+      
+      try {
+        addAnotacioToRoute(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
+      } catch (error) {
+        console.log('No se pudo interpretar el texto');
         return;
+      } finally {
+        setLoading(false);
       }
 
       setRespondeGPT(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
@@ -123,47 +121,143 @@ const StartRouteMap = () => {
     }
   };
 
-  const setRespondeGPT = (respondeGPT) => {
-    console.log(respondeGPT);
-  }
+  const addAnotacioToRoute = async (anotacio) => {
+    if (currentLocation) {
+      setPointLocations((prevLocations) => [
+        ...prevLocations,
+        {
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          title: anotacio.tipo,
+          description: anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad
+        },
+      ]);
+    }
+  };
+
+  const generateRouteFile = async () => {
+    try {
+      // Crear routeGeoJSON cuando se detiene la grabación
+      const routeGeoJSON = {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: coordinates.map((coord) => [
+            coord.longitude,
+            coord.latitude,
+          ]),
+        },
+        features: pointLocations.map((location, index) => ({
+          type: "Feature",
+          properties: {
+            title: location.title,
+            description: location.description,
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [location.longitude, location.latitude],
+          },
+        })),
+      };
+
+      // Guardar la ruta
+      await saveRouteFile(routeGeoJSON);
+    } catch (error) {
+      console.error("Error saving route data:", error);
+    }
+  };
+
+  const saveRouteFile = async (routeData) => {
+    try {
+      const fileUri = FileSystem.documentDirectory + 'ruta.json';
+      await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(routeData));
+      console.log('Ruta guardada en:', fileUri);
+      console.log('Ruta: ' + JSON.stringify(routeData))
+      await handleFileUpload(fileUri);
+      handleDeleteFile(fileUri);
+
+    } catch (error) {
+      console.error('Error al guardar la ruta:', error);
+    }
+  };
+
+  const handleFileUpload = async (file) => {
+    try {
+      const objectID = await ApiHelper.uploadFileToMongo(file);
+      console.log('ObjectID from MongoDB:', objectID);
+      practiceData.Ruta = objectID;
+      handleCreatePractica(practiceData);
+    } catch (error) {
+      console.error('Error handling file upload:', error);
+    }
+  };
+
+  const handleCreatePractica = async (practicaData) => {
+    try {
+      const response = await ApiHelper.createPracticaInSQL(practicaData);
+      console.log('Response from SQL:', response);
+    } catch (error) {
+      console.error('Error handling create practica:', error);
+    }
+  };
+
+  const handleDeleteFile = async (fileUri) => {
+    try {
+      await FileSystem.deleteAsync(fileUri);
+      console.log('Archivo eliminado:', fileUri);
+    } catch (error) {
+      console.error('Error al eliminar el archivo:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {location && (
+
+      {coordinates.length > 0 && (
         <MapView
-          provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+          provider={PROVIDER_GOOGLE}
+          region={{
+            latitude: currentLocation
+              ? currentLocation.latitude
+              : coordinates[0]?.latitude || 0,
+            longitude: currentLocation
+              ? currentLocation.longitude
+              : coordinates[0]?.longitude || 0,
+            latitudeDelta: 0.002,
+            longitudeDelta: 0.002,
           }}
         >
-          <Polyline
-            coordinates={routeCoordinates}
-            strokeColor="#FF0000"
-            strokeWidth={6}
-          />
-          <Marker
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            }}
-            title="Mi Ubicación"
-          />
-          {trafficData.map((trafficPoint, index) => (
+          {pointLocations.map((favoriteLocation, index) => (
             <Marker
               key={index}
               coordinate={{
-                latitude: trafficPoint.latitude,
-                longitude: trafficPoint.longitude,
+                latitude: favoriteLocation.latitude,
+                longitude: favoriteLocation.longitude,
               }}
-              title="Tráfico"
-              description={`Intensidad: ${trafficPoint.intensity}`}
-              pinColor="red"
+              title={favoriteLocation.title}
+              description={favoriteLocation.description}
+              pinColor="blue"
             />
           ))}
+
+          {currentLocation && (
+            <Marker
+              coordinate={{
+                latitude: currentLocation.latitude,
+                longitude: currentLocation.longitude,
+              }}
+              title="Mi Ubicación"
+              description="Estoy aquí"
+            />
+          )}
+
+          <Polyline
+            coordinates={coordinates}
+            strokeWidth={5}
+            strokeColor="grey"
+          />
         </MapView>
       )}
 

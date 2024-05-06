@@ -1,6 +1,6 @@
 import axios from 'axios';
-import ms from '../Models/prompts/messagesGPT.json';
-import env from '../../../env';
+//import ms from '../Models/prompts/messagesGPT.json';
+//import env from '../../../env';
 
 class GPTManager {
     static async interpretGPT(text) {

@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from '../ScreensAdmin/SplashScreen.js';
 import LoginScreen from '../ScreensAdmin/LoginScreen.js';
 
-
+// Create Welcome Page
 import WelcomePage from '../ScreensAdmin/WelcomePage.js'
 
 // Create Screens of school register
@@ -16,7 +16,6 @@ import RegisterVehicle from '../ScreensAdmin/RegisterVehicle.js';
 import RegisterPerson from '../ScreensAdmin/RegisterPerson.js';
 
 const Stack = createNativeStackNavigator();
-
 
 export default function Admin() {
   return (
