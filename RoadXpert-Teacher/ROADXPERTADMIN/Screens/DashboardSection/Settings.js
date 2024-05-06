@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Switch } from "react-native";
 import BackNavigation from "../Navigation/BackNavigation";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"; 
 import MainButton from "../../Components/Buttons/mainButton";
 import { useNavigation } from "@react-navigation/native";
 

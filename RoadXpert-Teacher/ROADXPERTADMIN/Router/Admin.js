@@ -2,10 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
-import SplashScreen from '../ScreensAdmin/SplashScreen.js';
-import LoginScreen from '../ScreensAdmin/LoginScreen.js';
-
 // Create Welcome Page
 import WelcomePage from '../ScreensAdmin/WelcomePage.js'
 
@@ -26,8 +22,6 @@ export default function Admin() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="CreateSchool" component={CreateSchool} />
         <Stack.Screen name="CreateRoles" component={CreateRoles} />
