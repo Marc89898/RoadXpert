@@ -16,6 +16,7 @@ import CustomTextInput from "../../Components/Inputs/CustomTextInput.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import ApiHelper from "../../data/ApiHelper.js";
+import Config from "../../configuracions.js";
 
 const PrePractice = () => {
   const navigation = useNavigation();
@@ -97,7 +98,7 @@ const PrePractice = () => {
       Km: 0,
       HoraInici: '10:00:00', // Formato 'HH:mm:ss
       HoraFi: '11:00:00', // Formato 'HH:mm:ss
-      ProfessorID: 'Treballador_1',
+      ProfessorID: Config.ProfessorID,
       VehicleID: selectedCotxe, // Matrícula del vehículo seleccionado
       EstatHoraID: 'EstatHora_1',
       Data: today.toISOString().split('T')[0] // Formato 'YYYY-MM-DD' 

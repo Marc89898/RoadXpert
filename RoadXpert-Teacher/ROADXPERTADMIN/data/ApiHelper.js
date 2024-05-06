@@ -160,7 +160,76 @@ class ApiHelper {
         }
     }
 
+    static async fetchAlumnosPorProfesor(professorId) {
+        try {
+            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/AlumnesDeProfessor/${professorId}`);
+            if (response.status !== 200) {
+                throw new Error('Error fetching students for professor');
+            }
+            const data = response.data;
+            return data.map(alumno => ({
+                ID: alumno.ID,
+                Nom: alumno.Nom,
+                DNI: alumno.DNI,
+                Adreca: alumno.Adreca,
+                Telefon: alumno.Telefon,
+                ProfessorID: alumno.ProfessorID,
+                Contrasenya: alumno.Contrasenya
+            }));
+        } catch (error) {
+            console.error('Error fetching students for professor:', error);
+            throw new Error(`Error fetching students for professor: ${error.message}`);
+        }
+    }
 
+    static async fetchPracticasPorAlumno(alumnoId) {
+        try {
+            const response = await axios.get(`/Practica/Alumn/${alumnoId}`);
+            const data = response.data;
+            // Mapear los datos devueltos a un array de objetos
+            const practicas = data.map(practica => ({
+                id: practica.ID,
+                alumneId: practica.AlumneID,
+                data: practica.Data,
+                estatHoraId: practica.EstatHoraID,
+                horaFi: practica.HoraFi,
+                horaInici: practica.HoraInici,
+                km: practica.Km,
+                professorId: practica.ProfessorID,
+                ruta: practica.Ruta,
+                vehicleId: practica.VehicleID
+            }));
+            return practicas;
+        } catch (error) {
+            console.error('Error fetching practicas:', error);
+            throw error;
+        }
+    }
+
+    static async asignarProfesorAAlumno(alumnoId, profesorId) {
+        try {
+            // Verificar que se proporcionaron ambos IDs
+            if (!alumnoId || !profesorId) {
+                throw new Error("Se requiere el ID del alumno y del profesor");
+            }
+    
+            // Realizar la solicitud para asignar el profesor al alumno
+            const response = await axios.put(`${apiconfig.mssqlApi.API_URL}/Alumno/AsignarProfesor`, {
+                alumno_id: alumnoId,
+                profesor_id: profesorId
+            });
+    
+            if (response.status !== 200) {
+                throw new Error('Error asigning professor to student');
+            }
+    
+            const data = response.data;
+            return data.message;
+        } catch (error) {
+            console.error('Error assigning professor to student:', error);
+            throw new Error(`Error assigning professor to student: ${error.message}`);
+        }
+    }
 }
 
 export default ApiHelper;

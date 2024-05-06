@@ -170,9 +170,27 @@ def get_alumnos_de_profesor(professor_id):
     """GET all the students taught by a specific teacher"""
     try:
         with engine.connect() as conn:
+            # Primero, obtenemos los IDs de los alumnos enseñados por el profesor
             query = text("SELECT DISTINCT AlumneID FROM Practica WHERE ProfessorID = :profesor_id")
             result = conn.execute(query, {"profesor_id": professor_id})
-            alumnos = [row[0] for row in result.fetchall()]
+            alumno_ids = [row[0] for row in result.fetchall()]
+            
+            # Luego, obtenemos los detalles de cada alumno en base a sus IDs
+            alumnos = []
+            for alumno_id in alumno_ids:
+                query_alumno = text("SELECT * FROM Alumne WHERE ID = :alumno_id")
+                result_alumno = conn.execute(query_alumno, {"alumno_id": alumno_id})
+                alumno = result_alumno.fetchone()
+                if alumno:
+                    alumnos.append({
+                        "ID": alumno[0],
+                        "Nom": alumno[1],
+                        "Adreca": alumno[2],
+                        "DNI": alumno[3],
+                        "Telefon": alumno[4],
+                        "ProfessorID": alumno[5]
+                    })
+
             if alumnos:
                 return jsonify({"alumnos": alumnos}), 200
             else:
