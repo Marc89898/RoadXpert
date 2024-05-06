@@ -1,20 +1,29 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Switch, ActivityIndicator } from "react-native";
 import BackNavigation from "../Navigation/BackNavigation";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"; 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import MainButton from "../../Components/Buttons/mainButton";
 import { useNavigation } from "@react-navigation/native";
 
 const Settings = () => {
   const navigation = useNavigation();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = () => {
     navigation.navigate("LoginScreen");
   };
 
-  const handleAdmin = () => {
-    navigation.navigate("");
+  const handleAdmin = async () => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000)); 
+      navigation.navigate("WelcomePage");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEditProfile = () => {
@@ -95,6 +104,12 @@ const Settings = () => {
           onPress={handleLogout}
         />
       </View>
+
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#333" />
+        </View>
+      )}
     </View>
   );
 };
@@ -175,6 +190,16 @@ const styles = StyleSheet.create({
   },
   settingsContainer: {
     marginTop: 24,
+  },
+  loadingContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

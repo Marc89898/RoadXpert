@@ -66,7 +66,6 @@ export default function Router() {
         }}
       >
         {/*/////////////////////////////////// PROFESSOR ///////////////////////////////////  */}
-
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="NavBar" component={NavBar} />
@@ -90,7 +89,6 @@ export default function Router() {
 
 
         {/*/////////////////////////////////// ADMIN ////////////////////////////////////  */}
-
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="CreateSchool" component={CreateSchool} />
         <Stack.Screen name="CreateRoles" component={CreateRoles} />
