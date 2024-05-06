@@ -98,3 +98,30 @@ def delete_Alumne(ID):
                 return jsonify({"message": f"No Alumne found with ID {ID}"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@Alumne_bp.route("/AlumnesDeProfessor/<string:professor_id>", methods=['GET'])
+def get_alumnos_de_profesor(professor_id):
+    """GET all the students of a specific teacher"""
+    try:
+        with engine.connect() as conn:
+            query = text("SELECT * FROM Alumne WHERE ProfessorID = :professor_id")
+            result = conn.execute(query, {"professor_id": professor_id})
+            alumnos_data = result.fetchall()  # Almacenar los resultados en una variable
+            
+            # Obtener los nombres de las columnas
+            column_names = result.keys()
+            
+            # Convertir las tuplas en diccionarios
+            alumnos = []
+            for row in alumnos_data:
+                alumno_dict = {}
+                for idx, column_name in enumerate(column_names):
+                    alumno_dict[column_name] = row[idx]
+                alumnos.append(alumno_dict)
+            
+            if alumnos:
+                return jsonify(alumnos), 200
+            else:
+                return jsonify({"message": f"No students found for professor with ID {professor_id}"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
