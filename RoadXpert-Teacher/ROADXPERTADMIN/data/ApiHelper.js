@@ -205,6 +205,31 @@ class ApiHelper {
             throw error;
         }
     }
+
+    static async asignarProfesorAAlumno(alumnoId, profesorId) {
+        try {
+            // Verificar que se proporcionaron ambos IDs
+            if (!alumnoId || !profesorId) {
+                throw new Error("Se requiere el ID del alumno y del profesor");
+            }
+    
+            // Realizar la solicitud para asignar el profesor al alumno
+            const response = await axios.put(`${apiconfig.mssqlApi.API_URL}/Alumno/AsignarProfesor`, {
+                alumno_id: alumnoId,
+                profesor_id: profesorId
+            });
+    
+            if (response.status !== 200) {
+                throw new Error('Error asigning professor to student');
+            }
+    
+            const data = response.data;
+            return data.message;
+        } catch (error) {
+            console.error('Error assigning professor to student:', error);
+            throw new Error(`Error assigning professor to student: ${error.message}`);
+        }
+    }
 }
 
 export default ApiHelper;
