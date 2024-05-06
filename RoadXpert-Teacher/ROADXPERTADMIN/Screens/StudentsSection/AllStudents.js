@@ -61,7 +61,8 @@ const AllStudents = ({ navigation }) => {
   };
 
   const filteredStudents = students.filter((student) =>
-    student.nombre.toLowerCase().includes(searchQuery.toLowerCase())
+    student.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.dni.includes(searchQuery)
   );
 
   return (
@@ -73,7 +74,7 @@ const AllStudents = ({ navigation }) => {
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Buscar por nombre..."
+          placeholder="Buscar por nombre o DNI..."
           value={searchQuery}
           onChangeText={(query) => setSearchQuery(query)}
         />
