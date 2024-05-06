@@ -118,6 +118,8 @@ const StartRouteMap = ({ route }) => {
         setLoading(false);
       }
 
+      setRespondeGPT(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
+      setLoading(false);
     } catch (error) {
       console.error('Error al detener la grabación:', error);
     }

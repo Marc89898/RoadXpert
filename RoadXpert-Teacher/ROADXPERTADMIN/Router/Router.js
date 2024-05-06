@@ -1,7 +1,9 @@
-// Purpose: Main file for the Profesor, contains the navigation stack for the Profesor.
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
+
+/////////////////////////////////////// PROFESSOR ///////////////////////////////////////
 
 // Principal Screens
 import SplashScreen from '../Screens/SplashScreen.js';
@@ -15,6 +17,7 @@ import BackNavigation from '../Screens/Navigation/BackNavigation.js';
 import Dashboard from '../Screens/DashboardSection/Dashboard.js';
 import NotificationsScreen from '../Screens/DashboardSection/NotificationsScreen.js';
 import Settings from '../Screens/DashboardSection/Settings.js';
+import UserProfile from '../Screens/DashboardSection/UserProfile.js';
 
 // Students Components
 import MyStudents from '../Screens/StudentsSection/MyStudents.js';
@@ -38,19 +41,31 @@ import PostPractice from '../Screens/Practices/post-practice.js';
 import Categories from '../Screens/StudentsSection/Categories.js';
 import SelectedCategory from '../Screens/StudentsSection/SelectedCategory.js';
 
-// Navigation Stack
-const Stack = createNativeStackNavigator();
 
-// Main Profesor Component
-export default function Profesor() {
+/////////////////////////////////////// ADMIN ///////////////////////////////////////
+
+// Create Welcome Page
+import WelcomePage from '../ScreensAdmin/WelcomePage.js'
+
+// Create Screens of school register
+import CreateSchool from '../ScreensAdmin/CreateSchool.js';
+import CreateRoles from '../ScreensAdmin/CreateRoles.js';
+import RegisterVehicle from '../ScreensAdmin/RegisterVehicle.js';
+import RegisterPerson from '../ScreensAdmin/RegisterPerson.js';
+
+
+/////////////////////////////////////// MAIN COMPONENET ///////////////////////////////////////
+
+export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SplashScreen"
+        initialRouteName="Settings"
         screenOptions={{
           headerShown: false,
         }}
       >
+        {/*/////////////////////////////////// PROFESSOR ///////////////////////////////////  */}
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="NavBar" component={NavBar} />
@@ -58,6 +73,7 @@ export default function Profesor() {
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
         <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
         <Stack.Screen name="MyStudents" component={MyStudents} />
         <Stack.Screen name="AllStudents" component={AllStudents} />
         <Stack.Screen name="StudentInfo" component={StudentInfo} />
@@ -70,6 +86,15 @@ export default function Profesor() {
         <Stack.Screen name="PostPractice" component={PostPractice} />
         <Stack.Screen name="Categories" component={Categories} />
         <Stack.Screen name="SelectedCategory" component={SelectedCategory} />
+
+
+        {/*/////////////////////////////////// ADMIN ////////////////////////////////////  */}
+        <Stack.Screen name="WelcomePage" component={WelcomePage} />
+        <Stack.Screen name="CreateSchool" component={CreateSchool} />
+        <Stack.Screen name="CreateRoles" component={CreateRoles} />
+        <Stack.Screen name="RegisterVehicle" component={RegisterVehicle} />
+        <Stack.Screen name="RegisterPerson" component={RegisterPerson} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
