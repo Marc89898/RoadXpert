@@ -16,9 +16,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "../Navigation/BackNavigation";
 import AudioManager from "./Models/AudioManager";
 import GPTManager from "./Models/GPTManager";
-import ApiHelper from "./Models/data/ApiHelper";
+import ApiHelper from "../../data/ApiHelper";
 
-const StartRouteMap = () => {
+const StartRouteMap = ({ route }) => {
+  const { practiceData } = route.params;
+
   const navigation = useNavigation();
   // route managment
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -37,27 +39,28 @@ const StartRouteMap = () => {
 
   const confirmFinishPractice = () => {
     generateRouteFile();
-    navigation.navigate("PostPractice");
+    navigation.navigate("PostPractice", { practiceData: practiceData });
   };
 
   useEffect(() => {
+    let intervalId;
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
         return;
       }
-  
-      setInterval(async () => {
+
+      intervalId = setInterval(async () => {
         const newLocation = await Location.getCurrentPositionAsync({});
         setCurrentLocation(newLocation.coords);
-  
+
         // Verificar si la nueva coordenada es diferente a la última agregada
         const lastCoordinate = coordinates[coordinates.length - 1];
         if (
           !lastCoordinate ||
-          newLocation.coords.latitude !== lastCoordinate.latitude ||
-          newLocation.coords.longitude !== lastCoordinate.longitude
+          (newLocation.coords.latitude !== lastCoordinate.latitude &&
+            newLocation.coords.longitude !== lastCoordinate.longitude)
         ) {
           // Agregar la nueva coordenada solo si es diferente
           setCoordinates((prev) => [
@@ -67,21 +70,21 @@ const StartRouteMap = () => {
               longitude: newLocation.coords.longitude,
             },
           ]);
-        }
+
+          let addressResponse = await Location.reverseGeocodeAsync({
+            latitude: newLocation.coords.latitude,
+            longitude: newLocation.coords.longitude,
+          });
   
-        let addressResponse = await Location.reverseGeocodeAsync({
-          latitude: newLocation.coords.latitude,
-          longitude: newLocation.coords.longitude,
-        });
-  
-        if (addressResponse.length > 0) {
-          setStreet(addressResponse[0].street);
-          setNumber(addressResponse[0].name);
-          setCity(addressResponse[0].city);
+          if (addressResponse.length > 0) {
+            setStreet(addressResponse[0].street);
+            setNumber(addressResponse[0].name);
+            setCity(addressResponse[0].city);
+          }
         }
       }, 2000);
     })();
-  }, [recording]);  
+  }, [recording]);
 
 
   const startRecording = async () => {
@@ -104,11 +107,12 @@ const StartRouteMap = () => {
       setRecording(undefined);
       const text = await AudioManager.speechToText(audioUri);
       const respondeGPT = await GPTManager.interpretGPT(text);
-      
+
       try {
         addAnotacioToRoute(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
       } catch (error) {
         console.log('No se pudo interpretar el texto');
+        addAnotacioToRoute(null);
         return;
       } finally {
         setLoading(false);
@@ -122,7 +126,7 @@ const StartRouteMap = () => {
   };
 
   const addAnotacioToRoute = async (anotacio) => {
-    if (currentLocation) {
+    if (currentLocation && anotacio != null) {
       setPointLocations((prevLocations) => [
         ...prevLocations,
         {
@@ -130,6 +134,16 @@ const StartRouteMap = () => {
           longitude: currentLocation.longitude,
           title: anotacio.tipo,
           description: anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad
+        },
+      ]);
+    } else if (currentLocation && anotacio == null) {
+      setPointLocations((prevLocations) => [
+        ...prevLocations,
+        {
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          title: "Anotación",
+          description: "No se pudo interpretar el audio"
         },
       ]);
     }

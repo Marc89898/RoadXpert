@@ -26,47 +26,29 @@ class APIService {
     /*
     * Fetch to modify and petition of delete from part of alumn
     */
-    static async deleteEventCalendar(eventId, newEstatHoraID) {
+    static async deleteEventCalendar(eventId) {
       try {
         const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Practica/" + eventId;
-        const currentDataResponse = await fetch(url);
-        if (!currentDataResponse.ok) {
-          throw new Error('Failed to fetch current event data. HTTP status code: ' + currentDataResponse.status);
-        }
-        const currentData = await currentDataResponse.json();
-        
-        const HoraIniciFormatted = currentData.HoraInici.replace('T', ' ').substring(0, 19);
-        const HoraFiFormatted = currentData.HoraFi.replace('T', ' ').substring(0, 19);
-        const DataFormatted = new Date(currentData.Data).toISOString().substring(0, 19);
-    
-        const updatedData = { 
-          ...currentData, 
-          EstatHoraID: newEstatHoraID,
-          HoraInici: HoraIniciFormatted,
-          HoraFi: HoraFiFormatted,
-          Data: DataFormatted
-        };
-        
-        const updateResponse = await fetch(url, {
-          method: 'PUT',
+        const deleteResponse = await fetch(url, {
+          method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(updatedData) 
+          }
         });
         
-        if (!updateResponse.ok) {
-          const errorResponseData = await updateResponse.json();
-          throw new Error('Failed to update event. HTTP status code: ' + updateResponse.status + '. Error details: ' + JSON.stringify(errorResponseData));
+        if (!deleteResponse.ok) {
+          const errorResponseData = await deleteResponse.json();
+          throw new Error('Failed to delete event. HTTP status code: ' + deleteResponse.status + '. Error details: ' + JSON.stringify(errorResponseData));
         }
         
-        const updatedEventData = await updateResponse.json();
-        return updatedEventData;
+        const deletedEventData = await deleteResponse.json();
+        return deletedEventData;
       } catch (error) {
-        console.error('Error updating event:', error.message);
+        console.error('Error deleting event:', error.message);
         throw error;
       }
     }
+    
     /**
      * To add Event calendar in to database
      * @param {*} Event 

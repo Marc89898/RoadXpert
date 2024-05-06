@@ -1,4 +1,4 @@
-import apiconfig from "./../../../../apiconfig.json";
+import apiconfig from "../apiconfig.json";
 import axios from 'axios';
 import * as FileSystem from "expo-file-system";
 
@@ -80,16 +80,16 @@ class ApiHelper {
         try {
             // URL para descargar el archivo basado en el objectId
             const downloadUrl = `${apiconfig.mongoRouteApi.API_URL}/GeoJSONAPI/v1/GeoJSONFile/download/${objectId}`;
-    
+
             // Realizar la solicitud para descargar el archivo
             const response = await axios.get(downloadUrl, {
                 responseType: 'blob', // Para recibir datos binarios
             });
-    
+
             // Convertir el blob a un objeto de texto
             const reader = new FileReader();
             reader.readAsText(response.data);
-    
+
             // Esperar a que el lector termine
             const fileContent = await new Promise((resolve, reject) => {
                 reader.onloadend = () => {
@@ -97,24 +97,69 @@ class ApiHelper {
                 };
                 reader.onerror = reject;
             });
-    
+
             // Crear una URL local para el archivo descargado
             const localFileUri = FileSystem.documentDirectory + `mapa_${objectId}.json`;
-    
+
             // Guardar el archivo descargado localmente
             await FileSystem.writeAsStringAsync(localFileUri, fileContent, {
                 encoding: FileSystem.EncodingType.UTF8,
             });
-    
+
             console.log('Archivo guardado en:', localFileUri);
-    
+
             return localFileUri;
-    
+
         } catch (error) {
             console.error('Error downloading file from MongoDB:', error);
             throw new Error(`Error downloading file from MongoDB: ${error.message}`);
         }
-    } 
+    }
+
+    static async fetchAlumnos() {
+        try {
+            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Alumne`);
+            if (response.status !== 200) {
+                throw new Error('Error fetching alumnos');
+            }
+            const data = response.data;
+            // Mapear los datos devueltos a un objeto ORM
+            const alumnos = data.map(alumno => ({
+                id: alumno.ID,
+                nombre: alumno.Nom,
+                direccion: alumno.Adreca,
+                dni: alumno.DNI,
+                telefono: alumno.Telefon,
+                profesorId: alumno.ProfessorID
+            }));
+            return alumnos;
+        } catch (error) {
+            console.error('Error fetching alumnos:', error);
+            throw new Error(`Error fetching alumnos: ${error.message}`);
+        }
+    };
+
+    // Obtener la lista de carnets desde la API
+    static async fetchCarnets() {
+        try {
+            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Carnet`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching carnets:', error);
+            throw new Error(`Error fetching carnets: ${error.message}`);
+        }
+    }
+
+    static async fetchCotxes() {
+        try {
+            const response = await axios.get('http://172.23.3.204:8888/Vehicle');
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching cotxes:', error);
+            throw error;
+        }
+    }
+
 
 }
 

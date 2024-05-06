@@ -3,8 +3,6 @@ import axios from 'axios';
 import * as FileSystem from "expo-file-system";
 
 class ApiHelper {
-    // static mongoUrl = apiconfig.mongoRouteApi.API_URL;
-    // static sqlUrl = apiconfig.mssqlApi.API_URL;
 
     // Subir archivo a MongoDB
     static async uploadFileToMongo(fileUri) {
@@ -80,16 +78,16 @@ class ApiHelper {
         try {
             // URL para descargar el archivo basado en el objectId
             const downloadUrl = `${apiconfig.mongoRouteApi.API_URL}/GeoJSONAPI/v1/GeoJSONFile/download/${objectId}`;
-    
+
             // Realizar la solicitud para descargar el archivo
             const response = await axios.get(downloadUrl, {
                 responseType: 'blob', // Para recibir datos binarios
             });
-    
+
             // Convertir el blob a un objeto de texto
             const reader = new FileReader();
             reader.readAsText(response.data);
-    
+
             // Esperar a que el lector termine
             const fileContent = await new Promise((resolve, reject) => {
                 reader.onloadend = () => {
@@ -97,24 +95,24 @@ class ApiHelper {
                 };
                 reader.onerror = reject;
             });
-    
+
             // Crear una URL local para el archivo descargado
             const localFileUri = FileSystem.documentDirectory + `mapa_${objectId}.json`;
-    
+
             // Guardar el archivo descargado localmente
             await FileSystem.writeAsStringAsync(localFileUri, fileContent, {
                 encoding: FileSystem.EncodingType.UTF8,
             });
-    
+
             console.log('Archivo guardado en:', localFileUri);
-    
+
             return localFileUri;
-    
+
         } catch (error) {
             console.error('Error downloading file from MongoDB:', error);
             throw new Error(`Error downloading file from MongoDB: ${error.message}`);
         }
-    } 
+    }
 
 }
 
