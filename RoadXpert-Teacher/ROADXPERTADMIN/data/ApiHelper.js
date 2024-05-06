@@ -160,7 +160,28 @@ class ApiHelper {
         }
     }
 
-
+    static async fetchAlumnosPorProfesor(professorId) {
+        try {
+            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/AlumnesDeProfessor/${professorId}`);
+            if (response.status !== 200) {
+                throw new Error('Error fetching students for professor');
+            }
+            const data = response.data;
+            return data.map(alumno => ({
+                ID: alumno.ID,
+                Nom: alumno.Nom,
+                DNI: alumno.DNI,
+                Adreca: alumno.Adreca,
+                Telefon: alumno.Telefon,
+                ProfessorID: alumno.ProfessorID,
+                Contrasenya: alumno.Contrasenya
+            }));
+        } catch (error) {
+            console.error('Error fetching students for professor:', error);
+            throw new Error(`Error fetching students for professor: ${error.message}`);
+        }
+    }
+    
 }
 
 export default ApiHelper;
