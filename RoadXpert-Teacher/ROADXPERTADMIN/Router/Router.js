@@ -60,7 +60,7 @@ export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Settings"
+        initialRouteName="SplashScreen"
         screenOptions={{
           headerShown: false,
         }}

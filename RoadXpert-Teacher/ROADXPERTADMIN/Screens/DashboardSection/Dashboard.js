@@ -9,7 +9,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Card, Button } from "react-native-paper";
+import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import CircleImage1 from "../../assets/images/Dashboard/notification.png";
@@ -56,10 +56,8 @@ const Dashboard = () => {
         console.error("Error fetching events:", error);
       }
     };
-
     loadNextEvent();
   }, []);
-
 
   return (
     <View style={{ flex: 1 }}>
