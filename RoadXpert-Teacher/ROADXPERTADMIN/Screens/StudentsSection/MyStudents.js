@@ -108,39 +108,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 8,
   },
-  card: {
-    width: 169,
-    margin: 9,
-    height: 181,
-    borderRadius: 20,
-    overflow: "hidden",
-  },
-  overlayText: {
-    position: "absolute",
-    bottom: 34,
-    left: 14,
-    fontWeight: "bold",
-    color: "white",
-    fontSize: 20,
-  },
-  smallText: {
-    position: "absolute",
-    bottom: 15,
-    left: 14,
-    color: "#D7D3D3",
-    fontSize: 12,
-  },
-  cardCover: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
-  },
-  overlayImage: {
-    opacity: 0.5,
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-  },
 });
 
 export default MyStudents;

@@ -5,8 +5,6 @@ import Router from "./Router/Router";
 // Main App Component
 export default function App() {
   return (
-    <>
-      <Router />
-    </>
+    <><Router /></>
   );
 }
