@@ -60,7 +60,7 @@ export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Settings"
+        initialRouteName="NavBar"
         screenOptions={{
           headerShown: false,
         }}
