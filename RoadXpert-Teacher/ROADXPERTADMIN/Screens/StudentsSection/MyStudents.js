@@ -5,7 +5,7 @@ import BackNavigation from "../Navigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
 import ApiHelper from "../../data/ApiHelper";
 import Config from "../../configuracions";
-import CustomCard from "../../Components/Cards/MyStudentsCard";
+import MyStudentsCard from "../../Components/Cards/MyStudentsCard";
 
 const MyStudents = () => {
   const navigation = useNavigation();
@@ -41,10 +41,8 @@ const MyStudents = () => {
       </View>
       <View style={styles.cardContainer}>
         {alumnos.map((alumno) => (
-          <CustomCard
-            key={alumno.ID}
-            title={alumno.Nom}
-            subtitle={alumno.DNI}
+          <MyStudentsCard
+            student={alumno}
             backgroundImage={require("../../assets/images/Students/imgOverlay.png")}
           />
         ))}

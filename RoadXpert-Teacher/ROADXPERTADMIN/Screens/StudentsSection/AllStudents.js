@@ -1,45 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import {
-  Provider as PaperProvider,
-  Card,
-  IconButton,
-} from "react-native-paper";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import BackNavigation from "../Navigation/BackNavigation";
-import { useNavigation } from '@react-navigation/native';
 import ApiHelper from "../../data/ApiHelper";
-  
-const StudentCard = ({ student, onOpen }) => {
-  const handleOpen = () => {
-    onOpen(student);
-  };
+import AllStudentsCard from "./../../Components/Cards/AllStudentsCard";
 
-  return (
-    <TouchableOpacity onPress={handleOpen} style={styles.card}>
-      <Card>
-        <Card.Content style={styles.cardContent}>
-          <View style={styles.leftContent}>
-            <Image source={require("../../assets/images/Students/imgOverlay.png")} style={styles.profileImage} />
-            <View style={styles.textContainer}>
-              <Text style={styles.nameText}>{student.nombre}</Text>
-              <Text style={styles.dniText}>{student.dni}</Text>
-            </View>
-          </View>
-        </Card.Content>
-      </Card>
-    </TouchableOpacity>
-  );
-};
-
-const AllStudents = ({ navigation }) => {
+const AllStudents = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -56,12 +21,9 @@ const AllStudents = ({ navigation }) => {
     }
   };
 
-  const handleOpenStudent = (student) => {
-    navigation.navigate('StudentInfo', { student });
-  };
-
   const filteredStudents = students.filter((student) =>
-    student.nombre.toLowerCase().includes(searchQuery.toLowerCase())
+    student.Nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.DNI.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -80,10 +42,9 @@ const AllStudents = ({ navigation }) => {
       </View>
       <View style={styles.content}>
         {filteredStudents.map((student, index) => (
-          <StudentCard
+          <AllStudentsCard 
             key={index}
             student={student}
-            onOpen={handleOpenStudent}
           />
         ))}
       </View>
@@ -118,33 +79,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
-  },
-  card: {
-    marginVertical: 5,
-  },
-  cardContent: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  leftContent: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 30,
-    marginRight: 10,
-  },
-  textContainer: {
-    justifyContent: "center",
-  },
-  nameText: {
-    fontSize: 15,
-  },
-  dniText: {
-    fontSize: 12,
-    color: "#666",
   },
 });
 

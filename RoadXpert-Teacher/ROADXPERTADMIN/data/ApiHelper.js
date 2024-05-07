@@ -125,12 +125,13 @@ class ApiHelper {
             const data = response.data;
             // Mapear los datos devueltos a un objeto ORM
             const alumnos = data.map(alumno => ({
-                id: alumno.ID,
-                nombre: alumno.Nom,
-                direccion: alumno.Adreca,
-                dni: alumno.DNI,
-                telefono: alumno.Telefon,
-                profesorId: alumno.ProfessorID
+                ID: alumno.ID,
+                Nom: alumno.Nom,
+                DNI: alumno.DNI,
+                Adreca: alumno.Adreca,
+                Telefon: alumno.Telefon,
+                ProfessorID: alumno.ProfessorID,
+                Contrasenya: alumno.Contrasenya
             }));
             return alumnos;
         } catch (error) {
@@ -230,6 +231,21 @@ class ApiHelper {
             throw new Error(`Error assigning professor to student: ${error.message}`);
         }
     }
+
+    static async fetchProfessorNameById(professorId) {
+        try {
+            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Treballador/${professorId}`);
+            if (response.status !== 200) {
+                throw new Error('Error fetching professor by ID');
+            }
+            const data = response.data;
+            const fullName = `${data.Nom} ${data.Cognom} ${data.SegonCognom}`;
+            return fullName;
+        } catch (error) {
+            console.error('Error fetching professor by ID:', error);
+            throw new Error(`Error fetching professor by ID: ${error.message}`);
+        }
+    }    
 }
 
 export default ApiHelper;
