@@ -1,28 +1,27 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../Screens/Navigation/BackNavigation";
-import WorkersCard from "../Components/Cards/WorkersCard";
+import RolesCard from "../Components/Cards/RolesCard";
 import { useNavigation } from "@react-navigation/native";
 
-const AllWorkers = () => {
+const AllRoles = () => {
   const navigation = useNavigation();
-  
-  const handleOpen = () => {
-    navigation.navigate("RegisterPerson");
-  };
 
+  const handleOpen = () => {
+    navigation.navigate("CreateRoles");
+  };
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>All Workers</Text>
+        <Text style={styles.headerText}>All Roles</Text>
         <TouchableOpacity style={styles.button} onPress={handleOpen}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
-        <WorkersCard name="Pedro Sanchez" desc="15 años" />
-        <WorkersCard name="Pablo Escobar" desc="25 años" />
+        <RolesCard name="Admin" desc="2 Members" />
+        <RolesCard name="Secretary" desc="10 Members" />
       </View>
     </View>
   );
@@ -58,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllWorkers;
+export default AllRoles;

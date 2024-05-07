@@ -69,7 +69,7 @@ const RegisterVehicle = () => {
 
         <View style={styles.contentContainer}>
           <CustomSelectInput
-            label="Eliminar alumnos"
+            label="Tipo de vehiculo"
             options={opcionesVehicles}
           />
           <CustomTextInput

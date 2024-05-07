@@ -55,12 +55,13 @@ import AllWorkers from '../ScreensAdmin/AllWorkers.js';
 import RegisterPerson from '../ScreensAdmin/RegisterPerson.js';
 
 // Roles
-// import AllRoles from '../ScreensAdmin/AllRoles.js';
+import AllRoles from '../ScreensAdmin/AllRoles.js';
 import CreateRoles from '../ScreensAdmin/CreateRoles.js';
 
 // Vehicles
-// import AllVehicles from '../ScreensAdmin/AllVehicles.js';
+import AllVehicles from '../ScreensAdmin/AllVehicles.js';
 import RegisterVehicle from '../ScreensAdmin/RegisterVehicle.js';
+import NoPage from '../ScreensAdmin/NoPage.js';
 
 
 /////////////////////////////////////// MAIN COMPONENET ///////////////////////////////////////
@@ -102,10 +103,11 @@ export default function Router() {
         <Stack.Screen name="CreateSchool" component={CreateSchool} />
         <Stack.Screen name="AllWorkers" component={AllWorkers} />
         <Stack.Screen name="RegisterPerson" component={RegisterPerson} />
-        {/* <Stack.Screen name="AllRoles" component={AllRoles} /> */}
+        <Stack.Screen name="AllRoles" component={AllRoles} />
         <Stack.Screen name="CreateRoles" component={CreateRoles} />
-        {/* <Stack.Screen name="AllVehicles" component={AllVehicles} /> */}
+        <Stack.Screen name="AllVehicles" component={AllVehicles} />
         <Stack.Screen name="RegisterVehicle" component={RegisterVehicle} />
+        <Stack.Screen name="NoPage" component={NoPage} />
 
       </Stack.Navigator>
     </NavigationContainer>
