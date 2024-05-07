@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, FlatList } from 'react-native';
-import { Agenda } from 'react-native-calendars';
+import React, { useState, useCallback, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { Agenda, Calendar } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
 import { Alert } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Config from "../configuracions"
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from "@react-navigation/native";
 
-export default function Calendar() {
 
-  const [data, setData] = useState(null);
+
+export default function ProfessorCalendar() {
   const [events, setEvents] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -25,20 +27,20 @@ export default function Calendar() {
   const [eventToDelete, setEventToDelete] = useState(null);
   const [selectedHour, setSelectedHour] = useState(availableHours[0]);
   const [students, setStudents] = useState([]);
+  const navigation = useNavigation();
 
-  // Effect to fill the events
+  fetchData = async () => {
+    try {
+      const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
+      const adaptedData = DataAdapter.adaptDataDelete(result);
+      setEvents(adaptedData);
+
+    } catch (error) {
+      console.error('ERROR IN THE DATABASE: ' + error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
-        const adaptedData = DataAdapter.adaptDataDelete(result);
-        setData(adaptedData);
-        setEvents(adaptedData);
-      } catch (error) {
-        console.error('ERROR IN THE DATABASE: ' + error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -70,7 +72,7 @@ export default function Calendar() {
     try {
       await APIService.deleteEventCalendar(eventId);
       console.log('Event deleted successfully:', eventId);
-  
+
       Alert.alert(
         'Evento Eliminado',
         'El evento se ha eliminado correctamente.',
@@ -78,11 +80,7 @@ export default function Calendar() {
           {
             text: 'OK', onPress: async () => {
               setDeleteConfirmationVisible(false);
-              // Refrescar los eventos
-              const updatedEvents = await APIService.fetchEventsCalendar(Config.ProfessorID);
-              const adaptedData = DataAdapter.adaptDataDelete(updatedEvents);
-              setData(adaptedData);
-              setEvents(adaptedData);
+              fetchData()
             }
           }
         ],
@@ -92,7 +90,7 @@ export default function Calendar() {
       console.error("Error in the delete petition: " + error.message)
     }
   };
-  
+
 
   const handleAddEvent = () => {
     const eventId = uuidv4();
@@ -104,7 +102,7 @@ export default function Calendar() {
       horaFinal: Horas[2],
       Ruta: selectedRoute,
       Coche: selectedCar,
-      Estat: 'Practica Solicitada',
+      Estat: '',
       AlumneID: selectedAlumn.id,
       ProfessorID: Config.ProfessorID,
       VehicleID: '3456JKL',
@@ -141,17 +139,11 @@ export default function Calendar() {
   const handleModalSubmit = () => {
     handleAddEvent();
     setModalVisible(false);
-    setEventName('');
-    setSelectedRoute('');
-    setSelectedCar('');
     setSelectedHour(availableHours[0]);
   };
 
   const handleModalCancel = () => {
     setModalVisible(false);
-    setEventName('');
-    setSelectedRoute('');
-    setSelectedCar('');
     setSelectedHour(availableHours[0]);
   };
 
@@ -171,33 +163,47 @@ export default function Calendar() {
     setDeleteConfirmationVisible(false);
   };
 
+  const renderEmptyDate1 = () => {
+    return (
+      <Text style={[styles.emptyDateText]}>
+        <Text style={styles.boldText}>EMPTY DATE!</Text>
+      </Text>
+
+    );
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      <Agenda
-        selected={selectedDate}
-        items={events}
-        onDayPress={handleDayPress}
-        renderItem={(item, key) => (
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => handleDeleteConfirmation(item)}>
-            <View style={styles.itemTextContainer}>
-              <Text style={[styles.itemText, { textAlign: 'center' }]}>
-                <Text style={styles.boldText}>PRACTICE</Text>
-              </Text>
-              <Text style={[styles.itemText, { textAlign: 'center' }]}>
-                <Text>--------------------------------------------------------------------</Text>
-              </Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
-              {/* <Text style={styles.itemText}><Text style={styles.boldText}>Route: </Text>{item.Ruta}</Text> */}
-              {/* <Text style={styles.itemText}><Text style={styles.boldText}>Car: </Text>{item.Alumn}</Text>*/}
-              <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
-              <Text style={styles.itemText}><Text style={styles.boldText}>Alumn: </Text>{selectedAlumn.name}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      {events !== null ? (
+        <Agenda
+          selected={selectedDate}
+          items={events}
+          onDayPress={handleDayPress}
+          renderEmptyData={renderEmptyDate1}
+          renderItem={(item) => (
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => handleDeleteConfirmation(item)}>
+              <View style={styles.itemTextContainer}>
+                <Text style={[styles.itemText, { textAlign: 'center' }]}>
+                  <Text style={styles.boldText}>PRACTICE</Text>
+                </Text>
+                <Text style={[styles.itemText, { textAlign: 'center' }]}>
+                  <Text>--------------------------------------------------------------------</Text>
+                </Text>
+                <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
+                <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
+                <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
+                <Text style={styles.itemText}><Text style={styles.boldText}>Alumn: </Text>{item.AlumneID}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      ) : (
+        <Text style={[styles.itemText, { textAlign: 'center' }, {textAlignVertical: 'center'}]}>
+          <Text style={styles.boldText}>LOADING EVENTS...</Text>
+        </Text>
+      )}
       <Modal
         animationType="slide"
         transparent={true}
@@ -272,6 +278,15 @@ export default function Calendar() {
   );
 }
 const styles = StyleSheet.create({
+  emptyDateText: {
+    textAlignVertical: "center",
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    color: '#888',
+    fontSize: 16,
+  },
   itemText: {
     color: '#888',
     fontSize: 16,

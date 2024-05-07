@@ -9,7 +9,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Card, Button } from "react-native-paper";
+import { Card, Button, Icon } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import CircleImage1 from "../../assets/images/Dashboard/notification.png";

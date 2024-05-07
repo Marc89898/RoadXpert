@@ -1,8 +1,8 @@
 import { APIService } from "../ApiService";
+
 class DataAdapter {
     static adaptDataDelete(jsonData) {
       const adaptedData = {};
-  
       jsonData.forEach(async (item) => {
         const date = new Date(item.Data).toISOString().split('T')[0];
         var EstatModificat = await APIService.fetchEstatDescription(item.EstatHoraID)
@@ -36,7 +36,7 @@ class DataAdapter {
         ID: jsonData.id || '',
         ProfessorID: jsonData.ProfessorID, 
         VehicleID: jsonData.VehicleID,
-        EstatHoraID: 'EstatHora_1', 
+        EstatHoraID: 'EstatHora_2', 
         Data: jsonData.data
       };
     }
