@@ -5,11 +5,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';  
 
 const StudentProfile = ({ route }) => {
-  const name = route.params?.name;
-  const image = route.params?.image;
+  const student = route.params?.student;
 
   const NameInput = (
-    <TextInput style={styles.input} placeholder="Escriba aqui ..." />
+    <TextInput style={styles.input} placeholder="Escriba aquí ..." />
   );
 
   const handleImageUpload = async (isFromCamera) => {
@@ -51,12 +50,12 @@ const StudentProfile = ({ route }) => {
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>Students's Info</Text>
+        <Text style={styles.headerText}>Student's Info</Text>
       </View>
       <View style={styles.inputContainer}>
         <Text>Imagen de perfil</Text>
         <View style={styles.profileImageContainer}>
-          <Image source={image} style={styles.profileImage} />
+          <Image source={student.image} style={styles.profileImage} />
           <TouchableOpacity style={styles.Icon} onPress={() => handleImageUpload(true)}>
             <MaterialIcons name="camera-alt" size={24} color="black" />
           </TouchableOpacity>
@@ -68,32 +67,32 @@ const StudentProfile = ({ route }) => {
 
       <View style={styles.inputContainer}>
         <Text>Nombre:</Text>
-        {NameInput}
+        <TextInput style={styles.input} placeholder="Escriba aquí ..." value={student.nombre} />
       </View>
 
       <View style={styles.inputContainer}>
         <Text>Apellidos:</Text>
-        {NameInput}
+        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
       </View>
 
       <View style={styles.inputContainer}>
         <Text>DNI:</Text>
-        {NameInput}
+        <TextInput style={styles.input} placeholder="Escriba aquí ..." value={student.dni} />
       </View>
 
       <View style={styles.inputContainer}>
         <Text>Gmail:</Text>
-        {NameInput}
+        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
       </View>
 
       <View style={styles.inputContainer}>
         <Text>Género:</Text>
-        {NameInput}
+        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
       </View>
 
       <View style={styles.inputContainer}>
         <Text>Dirección:</Text>
-        {NameInput}
+        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
       </View>
     </View>
   );

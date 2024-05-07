@@ -3,14 +3,12 @@ import { TouchableOpacity, StyleSheet, Text, Image } from "react-native";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-const StudentsCard = ({ title, subtitle, backgroundImage }) => {
+const MyStudentsCard = ({ student, backgroundImage }) => {
   const navigation = useNavigation();
 
   const handleCardPress = () => {
-    navigation.navigate("StudentInfo", {
-      name: title,
-      image: backgroundImage,
-    });
+    console.log("Student from MyStudentCard:", student);
+    navigation.navigate("StudentInfo", { student: student });
   };
 
   return (
@@ -21,8 +19,8 @@ const StudentsCard = ({ title, subtitle, backgroundImage }) => {
           source={require("../../assets/images/Students/imgOverlay.png")}
           style={styles.overlayImage}
         />
-        <Text style={styles.overlayText}>{title}</Text>
-        <Text style={styles.smallText}>{subtitle}</Text>
+        <Text style={styles.overlayText}>{student.Nom}</Text>
+        <Text style={styles.smallText}>{student.DNI}</Text>
       </Card>
     </TouchableOpacity>
   );
@@ -64,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StudentsCard;
+export default MyStudentsCard;

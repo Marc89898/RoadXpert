@@ -5,36 +5,36 @@ import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 const StudentInfo = ({ route }) => {
-  const { name, image } = route.params;
+  const { student } = route.params;
   const navigation = useNavigation();
 
   const goToStudentProfile = () => {
-    navigation.navigate("StudentProfile", { name, image });
+    navigation.navigate("StudentProfile", { student });
   };
 
   const handlerouteClick = () => {
-    navigation.navigate("Categories");
+    navigation.navigate("Categories", { student });
   };
 
   const handleroutesView = () => {
-    navigation.navigate("MapScreen");
+    navigation.navigate("MapScreen", { student });
   };
 
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>{name}</Text>
+        <Text style={styles.headerText}>{student.Nom}</Text>
       </View>
 
       <TouchableOpacity onPress={goToStudentProfile}>
         <Card style={styles.card}>
           <Card.Content style={styles.cardContent}>
-            <Image source={image} style={styles.image} />
+            <Image source={require("../../assets/images/Students/imgOverlay.png")} style={styles.image} />
             <View>
               <Text style={styles.nameText}>View Profile</Text>
               <Text style={styles.infoText}>
-                Nombre, correo, num. telefono otra informacio
+                Nombre, DNI, Dirección, Teléfono, Profesor...
               </Text>
             </View>
           </Card.Content>

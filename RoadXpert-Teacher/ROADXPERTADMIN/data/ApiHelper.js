@@ -125,12 +125,13 @@ class ApiHelper {
             const data = response.data;
             // Mapear los datos devueltos a un objeto ORM
             const alumnos = data.map(alumno => ({
-                id: alumno.ID,
-                nombre: alumno.Nom,
-                direccion: alumno.Adreca,
-                dni: alumno.DNI,
-                telefono: alumno.Telefon,
-                profesorId: alumno.ProfessorID
+                ID: alumno.ID,
+                Nom: alumno.Nom,
+                DNI: alumno.DNI,
+                Adreca: alumno.Adreca,
+                Telefon: alumno.Telefon,
+                ProfessorID: alumno.ProfessorID,
+                Contrasenya: alumno.Contrasenya
             }));
             return alumnos;
         } catch (error) {
