@@ -16,7 +16,6 @@
 # INTRODUCCIÓ
 
 La nostra plataforma està dissenyada per millorar la gestió d'horaris de pràctiques i el seguiment del progrés dels alumnes a les autoescoles. La solució consta de dues aplicacions: una per a l'autoescola i una altra per als alumnes, integrades per a una experiència fluïda i eficient.
-
 # FUNCIONALITATS:
 
 ## Aplicació per a l'Autoescola:
@@ -24,7 +23,7 @@ La nostra plataforma està dissenyada per millorar la gestió d'horaris de pràc
 - **Gestió d'Alumnes:** Aquesta funció permet als administradors de l'autoescola donar d'alta als alumnes al sistema, permetent-los accedir a l'aplicació mòbil i reservar sessions de pràctica.
 - **Gestió d'Horaris:** Facilita la gestió dels horaris de pràctica disponibles, permetent als administradors assignar-los als alumnes i gestionar canvis o cancel·lacions, incloent la capacitat de fer peticions pendents per a futurs horaris.
 - **Seguiment en Temps Real:** Utilitzant la tecnologia GPS, aquesta funció permet rastrejar les rutes realitzades durant les pràctiques dels alumnes. Aquesta informació es registra i pot ser visualitzada posteriorment, oferint una supervisió en temps real.
-- **Registre d'Errors:** Permet als instructors enregistrar els errors comesos pels alumnes durant les pràctiques mitjançant audios, proporcionant una retroalimentació més precisa i segura. Aquests enregistraments es guarden com a "falta" en la categoria corresponent per a un seguiment detallat del progrés.
+- **Registre d'Errors:** Permet als instructors enregistrar els errors comesos pels alumnes durant les pràctiques mitjançant audios, proporcionant una retroalimentació més precisa i segura. Posteriorment, aquests enregistraments són processats mitjançant IA per passar-los a text i detectar la seva categoria, tipus i gravetat. Aquesta informació es guarda com a "Anotacions" en la categoria corresponent per a un seguiment detallat del progrés.
 - **Informes Personalitzats:** Aquesta funció genera informes detallats sobre el rendiment dels alumnes, destacant àrees de millora i assoliments aconseguits durant les pràctiques.
 - **Integració amb Sistema de Facturació:** S'integra amb el sistema de facturació (ERP) de l'autoescola per facilitar la gestió de pagaments associats a les pràctiques dels alumnes, assegurant una gestió financera eficient.
 
