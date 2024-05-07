@@ -5,30 +5,7 @@ import BackNavigation from "../Navigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
 import ApiHelper from "../../data/ApiHelper";
 import Config from "../../configuracions";
-
-const CustomCard = ({ title, subtitle, backgroundImage }) => {
-  const navigation = useNavigation();
-
-  const handleCardPress = () => {
-    navigation.navigate("StudentInfo", {
-      name: title,
-      image: backgroundImage,
-    });
-  };
-  return (
-    <TouchableOpacity onPress={handleCardPress}>
-      <Card style={styles.card}>
-        <Card.Cover source={backgroundImage} style={styles.cardCover} />
-        <Image
-          source={require("../../assets/images/Students/imgOverlay.png")}
-          style={styles.overlayImage}
-        />
-        <Text style={styles.overlayText}>{title}</Text>
-        <Text style={styles.smallText}>{subtitle}</Text>
-      </Card>
-    </TouchableOpacity>
-  );
-};
+import CustomCard from "../../Components/Cards/MyStudentsCard";
 
 const MyStudents = () => {
   const navigation = useNavigation();
