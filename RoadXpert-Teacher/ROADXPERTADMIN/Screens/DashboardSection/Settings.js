@@ -25,7 +25,7 @@ const Settings = () => {
     setIsLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      navigation.navigate("WelcomePage");
+      navigation.navigate("NoPage");
     } catch (error) {
       console.error(error);
     } finally {
@@ -130,6 +130,7 @@ const Settings = () => {
           iconName="account-check"
           iconColor="#333"
           text="Roles"
+          onPress={() => navigation.navigate("AllRoles")}
         />
 
         <SettingsOption
@@ -138,7 +139,12 @@ const Settings = () => {
           text="Students"
         />
 
-        <SettingsOption iconName="car-cog" iconColor="#333" text="Vehicles" />
+        <SettingsOption
+          iconName="car-cog"
+          iconColor="#333"
+          text="Vehicles"
+          onPress={() => navigation.navigate("AllVehicles")}
+        />
 
         <SettingsOption
           iconName="brightness-6"
