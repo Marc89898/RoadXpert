@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
 import { Alert } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import Config from "../configuracions"
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from "@react-navigation/native";
@@ -32,9 +31,9 @@ export default function ProfessorCalendar() {
   fetchData = async () => {
     try {
       const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
-      const adaptedData = DataAdapter.adaptDataDelete(result);
+      console.log(result)
+      const adaptedData = DataAdapter.adaptPracticaToAgenda(result);
       setEvents(adaptedData);
-
     } catch (error) {
       console.error('ERROR IN THE DATABASE: ' + error);
     }
@@ -194,7 +193,7 @@ export default function ProfessorCalendar() {
                 <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Alumn: </Text>{item.AlumneID}</Text>
+                <Text style={styles.itemText}><Text style={styles.boldText}>Alumn: </Text>{item.alumne}</Text>
               </View>
             </TouchableOpacity>
           )}

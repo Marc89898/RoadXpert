@@ -122,6 +122,26 @@ class APIService {
     }
     }
     /**
+     * 
+     * @returns object alumn
+     */
+    static async fetchAlumn(alumnID) {
+      try {
+        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Alumne/" + alumnID
+        const response = await fetch(url);
+        let data = "";
+        console.log(response)
+        if (response.status != 500 && response.status != 404) {
+          data = await response.json();
+          return data;
+        } else {
+          console.error("Error en la petición de alumnos: Status", response.status, response.statusText);
+        }
+      }catch(error) {
+        console.error("Error en la peticion de todos los alumnos" + error)
+      }
+      }
+    /**
     * Fetch All Professors
     */
     static async fetchAllProfessors() {
