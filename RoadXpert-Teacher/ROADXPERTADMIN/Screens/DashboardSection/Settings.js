@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Switch, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Switch,
+  ActivityIndicator,
+} from "react-native";
 import BackNavigation from "../Navigation/BackNavigation";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import MainButton from "../../Components/Buttons/mainButton";
@@ -17,7 +24,7 @@ const Settings = () => {
   const handleAdmin = async () => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); 
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       navigation.navigate("WelcomePage");
     } catch (error) {
       console.error(error);
@@ -46,8 +53,14 @@ const Settings = () => {
     <View style={[styles.divContainer, isDarkMode && styles.darkContainer]}>
       <TouchableOpacity onPress={onPress}>
         <View style={[styles.divItem, isDarkMode && styles.darkItem]}>
-          <Icon name={iconName} size={24} color={isDarkMode ? "#fff" : iconColor} />
-          <Text style={[styles.divText, isDarkMode && styles.darkText]}>{text}</Text>
+          <Icon
+            name={iconName}
+            size={24}
+            color={isDarkMode ? "#fff" : iconColor}
+          />
+          <Text style={[styles.divText, isDarkMode && styles.darkText]}>
+            {text}
+          </Text>
           {showSwitch ? (
             <Switch
               value={switchValue}
@@ -56,7 +69,11 @@ const Settings = () => {
               trackColor={{ false: "#767577", true: "#81b0ff" }}
             />
           ) : (
-            <Icon name="chevron-right" size={24} color={isDarkMode ? "#fff" : "#333"} />
+            <Icon
+              name="chevron-right"
+              size={24}
+              color={isDarkMode ? "#fff" : "#333"}
+            />
           )}
         </View>
       </TouchableOpacity>
@@ -67,13 +84,28 @@ const Settings = () => {
     <View style={[styles.container, isDarkMode && styles.darkContainer]}>
       <BackNavigation />
       <View style={[styles.header, isDarkMode && styles.darkHeader]}>
-        <Text style={[styles.headerText, isDarkMode && styles.darkText]}>Settings</Text>
+        <Text style={[styles.headerText, isDarkMode && styles.darkText]}>
+          Settings
+        </Text>
 
         <TouchableOpacity onPress={handleAdmin}>
-          <View style={[styles.iconAdminContainer, isDarkMode && styles.darkContainer]}>
-            <Text style={[styles.adminText, isDarkMode && styles.darkText]}>Admin</Text>
-            <View style={[styles.iconContainer, isDarkMode && styles.darkContainer]}>
-              <Icon name="account-cog" size={18} color={isDarkMode ? "#fff" : "#333"} />
+          <View
+            style={[
+              styles.iconAdminContainer,
+              isDarkMode && styles.darkContainer,
+            ]}
+          >
+            <Text style={[styles.adminText, isDarkMode && styles.darkText]}>
+              Admin
+            </Text>
+            <View
+              style={[styles.iconContainer, isDarkMode && styles.darkContainer]}
+            >
+              <Icon
+                name="account-cog"
+                size={18}
+                color={isDarkMode ? "#fff" : "#333"}
+              />
             </View>
           </View>
         </TouchableOpacity>
@@ -86,6 +118,27 @@ const Settings = () => {
           text="View Profile"
           onPress={handleEditProfile}
         />
+
+        <SettingsOption
+          iconName="account-details"
+          iconColor="#333"
+          text="Professors"
+          onPress={() => navigation.navigate("AllWorkers")}
+        />
+
+        <SettingsOption
+          iconName="account-check"
+          iconColor="#333"
+          text="Roles"
+        />
+
+        <SettingsOption
+          iconName="account-group"
+          iconColor="#333"
+          text="Students"
+        />
+
+        <SettingsOption iconName="car-cog" iconColor="#333" text="Vehicles" />
 
         <SettingsOption
           iconName="brightness-6"

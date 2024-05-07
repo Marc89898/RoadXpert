@@ -16,7 +16,7 @@ import {
 import BackNavigation from "../Navigation/BackNavigation";
 import { useNavigation } from '@react-navigation/native';
 import ApiHelper from "../../data/ApiHelper";
-
+  
 const StudentCard = ({ student, onOpen }) => {
   const handleOpen = () => {
     onOpen(student);
@@ -61,8 +61,7 @@ const AllStudents = ({ navigation }) => {
   };
 
   const filteredStudents = students.filter((student) =>
-    student.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.dni.includes(searchQuery)
+    student.nombre.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -74,7 +73,7 @@ const AllStudents = ({ navigation }) => {
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Buscar por nombre o DNI..."
+          placeholder="Buscar por nombre..."
           value={searchQuery}
           onChangeText={(query) => setSearchQuery(query)}
         />
