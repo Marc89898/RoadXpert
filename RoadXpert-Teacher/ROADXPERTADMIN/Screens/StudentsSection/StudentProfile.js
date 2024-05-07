@@ -1,26 +1,24 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../Navigation/BackNavigation";
-import { MaterialIcons } from "@expo/vector-icons"; 
-import * as ImagePicker from 'expo-image-picker';  
+import { MaterialIcons } from "@expo/vector-icons";
+import * as ImagePicker from 'expo-image-picker';
+import ApiHelper from "../../data/ApiHelper";
 
 const StudentProfile = ({ route }) => {
-  const student = route.params?.student;
-
-  const NameInput = (
-    <TextInput style={styles.input} placeholder="Escriba aquí ..." />
-  );
+  const { student } = route.params;
+  const [professorName, setProfessorName] = useState('');
 
   const handleImageUpload = async (isFromCamera) => {
     let result;
-    
+
     if (isFromCamera) {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== 'granted') {
         alert('Permiso denegado para acceder a la cámara.');
         return;
       }
-      
+
       result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3],
@@ -41,16 +39,30 @@ const StudentProfile = ({ route }) => {
       });
     }
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       console.log(result.uri);
     }
   };
+
+  useEffect(() => {
+    const fetchProfessorName = async () => {
+      try {
+        const name = await ApiHelper.fetchProfessorNameById(student.ProfessorID);
+        setProfessorName(name);
+      } catch (error) {
+        console.error('Error fetching professor name:', error);
+      }
+    };
+
+    fetchProfessorName();
+  }, [student.ProfessorID]);
+
 
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>Student's Info</Text>
+        <Text style={styles.headerText}>{student.Nom}</Text>
       </View>
       <View style={styles.inputContainer}>
         <Text>Imagen de perfil</Text>
@@ -65,34 +77,26 @@ const StudentProfile = ({ route }) => {
         </View>
       </View>
 
-      <View style={styles.inputContainer}>
-        <Text>Nombre:</Text>
-        <TextInput style={styles.input} placeholder="Escriba aquí ..." value={student.nombre} />
-      </View>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Text>DNI:</Text>
+          <Text style={styles.input}>{student.DNI}</Text>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text>Apellidos:</Text>
-        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text>Dirección:</Text>
+          <Text style={styles.input}>{student.Adreca}</Text>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text>DNI:</Text>
-        <TextInput style={styles.input} placeholder="Escriba aquí ..." value={student.dni} />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text>Teléfono:</Text>
+          <Text style={styles.input}>{student.Telefon}</Text>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text>Gmail:</Text>
-        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text>Género:</Text>
-        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text>Dirección:</Text>
-        <TextInput style={styles.input} placeholder="Escriba aquí ..." />
+        <View style={styles.inputContainer}>
+          <Text>Profesor:</Text>
+          <Text style={styles.input}>{professorName}</Text>
+        </View>
       </View>
     </View>
   );
@@ -115,9 +119,6 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 20,
     color: "#656565",
-    borderRadius: 5,
-    padding: 0,
-    fontWeight: "bold",
     marginTop: 5,
   },
   profileImageContainer: {
@@ -140,5 +141,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
 
 export default StudentProfile;
