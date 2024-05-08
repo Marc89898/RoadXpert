@@ -139,12 +139,7 @@ const Settings = () => {
           text="Students"
         />
 
-        <SettingsOption
-          iconName="car-cog"
-          iconColor="#333"
-          text="Vehicles"
-          onPress={() => navigation.navigate("AllVehicles")}
-        />
+        <SettingsOption iconName="car-cog" iconColor="#333" text="Vehicles" onPress={() => navigation.navigate("AllVehicles")}/>
 
         <SettingsOption
           iconName="brightness-6"

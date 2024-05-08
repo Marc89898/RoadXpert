@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const AllWorkers = () => {
   const navigation = useNavigation();
-  
+
   const handleOpen = () => {
     navigation.navigate("RegisterPerson");
   };
