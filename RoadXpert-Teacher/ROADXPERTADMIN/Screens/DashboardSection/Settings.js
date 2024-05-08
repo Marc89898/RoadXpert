@@ -137,9 +137,15 @@ const Settings = () => {
           iconName="account-group"
           iconColor="#333"
           text="Students"
+          onPress={() => navigation.navigate("AllStudent")}
         />
 
-        <SettingsOption iconName="car-cog" iconColor="#333" text="Vehicles" onPress={() => navigation.navigate("AllVehicles")}/>
+        <SettingsOption
+          iconName="car-cog"
+          iconColor="#333"
+          text="Vehicles"
+          onPress={() => navigation.navigate("AllVehicles")}
+        />
 
         <SettingsOption
           iconName="brightness-6"

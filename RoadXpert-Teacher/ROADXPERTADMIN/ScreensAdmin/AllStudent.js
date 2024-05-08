@@ -4,7 +4,7 @@ import BackNavigation from "../Screens/Navigation/BackNavigation";
 import WorkersCard from "../Components/Cards/WorkersCard";
 import { useNavigation } from "@react-navigation/native";
 
-const AllWorkers = () => {
+const AllStudent = () => {
   const navigation = useNavigation();
 
   const handleOpen = () => {
@@ -15,14 +15,14 @@ const AllWorkers = () => {
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>All Workers</Text>
+        <Text style={styles.headerText}>All Students</Text>
         <TouchableOpacity style={styles.button} onPress={handleOpen}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
-        <WorkersCard name="Pedro Sanchez" desc="19 años" />
-        <WorkersCard name="Pablo Escobar" desc="25 años" />
+        <WorkersCard name="Gabriel Pedro" desc="12 años" />
+        <WorkersCard name="Unai Caceres" desc="8 años" />
       </View>
     </View>
   );
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllWorkers;
+export default AllStudent;
