@@ -1,19 +1,80 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Modal, TouchableOpacity, Switch } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "../Navigation/BackNavigation";
 import { Button } from "react-native-paper";
-// import { GoogleMapsServices } from "react-native-google-maps-services";
 import * as Location from "expo-location";
 import polyline from "@mapbox/polyline";
+import ApiHelper from "../../data/ApiHelper";
 
-const MapScreen = () => {
+const MapScreen = ({ route }) => {
+  const { student } = route.params;
+  const alumnoId = student.ID; // Debes definir el ID del alumno
   const [modalVisible, setModalVisible] = useState(false);
   const [initialPosition, setInitialPosition] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
+  const [practicas, setPracticas] = useState([]);
+  const [filteredPracticas, setFilteredPracticas] = useState([]);
+  const [filters, setFilters] = useState({});
+
+  useEffect(() => {
+    const fetchInitialLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setInitialPosition({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    };
+
+    fetchInitialLocation();
+    fetchPracticas();
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [practicas, filters]);
+
+  const fetchPracticas = async () => {
+    try {
+      const fetchedPracticas = await ApiHelper.fetchPracticasPorAlumno(alumnoId); // Debes definir alumnoId
+      setPracticas(fetchedPracticas);
+    } catch (error) {
+      console.error("Error fetching practicas:", error);
+    }
+  };
+
+  const applyFilters = () => {
+    let filtered = [...practicas];
+
+    // Aplicar filtros
+    for (const key in filters) {
+      if (filters.hasOwnProperty(key)) {
+        if (filters[key]) {
+          filtered = filtered.filter(practica => practica[key]);
+        }
+      }
+    }
+
+    setFilteredPracticas(filtered);
+  };
+
+  const toggleFilter = (key) => {
+    setFilters({ ...filters, [key]: !filters[key] });
+  };
 
   const handleMapTouch = async (latitude, longitude) => {
     const API_KEY = "AIzaSyCNcRVPxV96NruUez95JitKhfMTB_9avcA";
@@ -55,26 +116,6 @@ const MapScreen = () => {
     }
   };
 
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setInitialPosition({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
   return (
     <View style={styles.container}>
       <BackNavigation style={styles.backNavigation} />
@@ -88,19 +129,7 @@ const MapScreen = () => {
           handleMapTouch(latitude, longitude);
         }}
       >
-        <Polyline
-          coordinates={routeCoordinates}
-          strokeWidth={5}
-          strokeColor="blue"
-        />
-        {initialPosition && (
-          <Marker
-            coordinate={{
-              latitude: initialPosition.latitude,
-              longitude: initialPosition.longitude,
-            }}
-          />
-        )}
+        {/* Renderizar las rutas */}
       </MapView>
       <View style={styles.header}>
         <Text style={styles.headerText}>Maps</Text>
@@ -119,7 +148,16 @@ const MapScreen = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.title}>Filtrar</Text>
-            <View style={styles.viewModel}></View>
+            {/* Renderizar filtros y controles de interruptor */}
+            {practicas.map((practica) => (
+              <View key={practica.id} style={styles.filterItem}>
+                <Text>{practica.data}</Text>
+                <Switch
+                  value={filters[practica.id]}
+                  onValueChange={() => toggleFilter(practica.id)}
+                />
+              </View>
+            ))}
             <Button
               style={styles.continueButton}
               mode="contained"
@@ -133,7 +171,7 @@ const MapScreen = () => {
     </View>
   );
 };
-
+  
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -194,6 +232,12 @@ const styles = StyleSheet.create({
   continueButtonText: {
     color: "white",
     fontSize: 16,
+  },
+  filterItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 5,
   },
 });
 

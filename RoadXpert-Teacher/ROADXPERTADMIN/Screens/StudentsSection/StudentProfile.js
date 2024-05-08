@@ -1,27 +1,24 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../Navigation/BackNavigation";
-import { MaterialIcons } from "@expo/vector-icons"; 
-import * as ImagePicker from 'expo-image-picker';  
+import { MaterialIcons } from "@expo/vector-icons";
+import * as ImagePicker from 'expo-image-picker';
+import ApiHelper from "../../data/ApiHelper";
 
 const StudentProfile = ({ route }) => {
-  const name = route.params?.name;
-  const image = route.params?.image;
-
-  const NameInput = (
-    <TextInput style={styles.input} placeholder="Escriba aqui ..." />
-  );
+  const { student } = route.params;
+  const [professorName, setProfessorName] = useState('');
 
   const handleImageUpload = async (isFromCamera) => {
     let result;
-    
+
     if (isFromCamera) {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== 'granted') {
         alert('Permiso denegado para acceder a la cámara.');
         return;
       }
-      
+
       result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3],
@@ -42,21 +39,35 @@ const StudentProfile = ({ route }) => {
       });
     }
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       console.log(result.uri);
     }
   };
+
+  useEffect(() => {
+    const fetchProfessorName = async () => {
+      try {
+        const name = await ApiHelper.fetchProfessorNameById(student.ProfessorID);
+        setProfessorName(name);
+      } catch (error) {
+        console.error('Error fetching professor name:', error);
+      }
+    };
+
+    fetchProfessorName();
+  }, [student.ProfessorID]);
+
 
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>Students's Info</Text>
+        <Text style={styles.headerText}>{student.Nom}</Text>
       </View>
       <View style={styles.inputContainer}>
         <Text>Imagen de perfil</Text>
         <View style={styles.profileImageContainer}>
-          <Image source={image} style={styles.profileImage} />
+          <Image source={student.image} style={styles.profileImage} />
           <TouchableOpacity style={styles.Icon} onPress={() => handleImageUpload(true)}>
             <MaterialIcons name="camera-alt" size={24} color="black" />
           </TouchableOpacity>
@@ -66,34 +77,26 @@ const StudentProfile = ({ route }) => {
         </View>
       </View>
 
-      <View style={styles.inputContainer}>
-        <Text>Nombre:</Text>
-        {NameInput}
-      </View>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Text>DNI:</Text>
+          <Text style={styles.input}>{student.DNI}</Text>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text>Apellidos:</Text>
-        {NameInput}
-      </View>
+        <View style={styles.inputContainer}>
+          <Text>Dirección:</Text>
+          <Text style={styles.input}>{student.Adreca}</Text>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text>DNI:</Text>
-        {NameInput}
-      </View>
+        <View style={styles.inputContainer}>
+          <Text>Teléfono:</Text>
+          <Text style={styles.input}>{student.Telefon}</Text>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text>Gmail:</Text>
-        {NameInput}
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text>Género:</Text>
-        {NameInput}
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text>Dirección:</Text>
-        {NameInput}
+        <View style={styles.inputContainer}>
+          <Text>Profesor:</Text>
+          <Text style={styles.input}>{professorName}</Text>
+        </View>
       </View>
     </View>
   );
@@ -116,9 +119,6 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 20,
     color: "#656565",
-    borderRadius: 5,
-    padding: 0,
-    fontWeight: "bold",
     marginTop: 5,
   },
   profileImageContainer: {
@@ -141,5 +141,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
 
 export default StudentProfile;

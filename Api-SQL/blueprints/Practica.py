@@ -151,10 +151,6 @@ def put_update_Practica(Practica_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
-
-
 @Practica_bp.route("/Practica/<string:Practica_id>", methods=['DELETE'])
 def delete_Practica(Practica_id):
     try:
@@ -168,3 +164,37 @@ def delete_Practica(Practica_id):
                 return jsonify({"message": f"No Practica found with ID {Practica_id}"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@Practica_bp.route("/Practica/AlumnesDeProfessor/<professor_id>", methods=['GET'])
+def get_alumnos_de_profesor(professor_id):
+    """GET all the students taught by a specific teacher"""
+    try:
+        with engine.connect() as conn:
+            # Primero, obtenemos los IDs de los alumnos enseñados por el profesor
+            query = text("SELECT DISTINCT AlumneID FROM Practica WHERE ProfessorID = :profesor_id")
+            result = conn.execute(query, {"profesor_id": professor_id})
+            alumno_ids = [row[0] for row in result.fetchall()]
+            
+            # Luego, obtenemos los detalles de cada alumno en base a sus IDs
+            alumnos = []
+            for alumno_id in alumno_ids:
+                query_alumno = text("SELECT * FROM Alumne WHERE ID = :alumno_id")
+                result_alumno = conn.execute(query_alumno, {"alumno_id": alumno_id})
+                alumno = result_alumno.fetchone()
+                if alumno:
+                    alumnos.append({
+                        "ID": alumno[0],
+                        "Nom": alumno[1],
+                        "Adreca": alumno[2],
+                        "DNI": alumno[3],
+                        "Telefon": alumno[4],
+                        "ProfessorID": alumno[5]
+                    })
+
+            if alumnos:
+                return jsonify({"alumnos": alumnos}), 200
+            else:
+                return jsonify({"message": f"No students found for professor with ID {professor_id}"}), 404
+    except Exception as e:
+        # Captura y maneja otros errores genéricos
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import BackNavigation from "../Screens/Navigation/BackNavigation";
-import MainButton from "../Components/Buttons/mainButton.js";
+import DuoButton from "../Components/Buttons/duoButton.js";
 import CustomSelectInput from "../Components/Inputs/CustomSelectInput.js";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -16,11 +16,6 @@ import CustomTextInput from "../Components/Inputs/CustomTextInput.js";
 
 const RegisterPerson = () => {
   const navigation = useNavigation();
-
-  const handleSave = () => {
-    console.log("Guardado");
-    navigation.navigate("CreateSchool");
-  };
 
   const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
   const opcionesSexo = [{ label: "Hombre", value: "Hombre" }, { label: "Mujer", value: "Mujer" }];
@@ -89,10 +84,10 @@ const RegisterPerson = () => {
             >
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
-          </View>
+          </View>k
           <CustomTextInput label="Direccion:" placeholder="Olot" />
 
-          <MainButton title="Guardar" onPress={handleSave} />
+          <DuoButton text="Guardar" />
         </View>
       </View>
     </ScrollView>

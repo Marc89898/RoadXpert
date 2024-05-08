@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import BackNavigation from "../Navigation/BackNavigation";
 import { Card } from "react-native-paper";
 import Icon from "react-native-vector-icons/Feather";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
+import CarCard from "../../Components/Cards/CarCard";
 
 const CarInfo = ({ route }) => {
   const { cardData } = route.params;
@@ -12,7 +13,7 @@ const CarInfo = ({ route }) => {
 
   const handleConsultarMapa = () => {
     navigation.navigate("MapScreen");
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -20,42 +21,12 @@ const CarInfo = ({ route }) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Coches</Text>
       </View>
-      <Card style={styles.card}>
-        <View style={styles.cardContainer}>
-          <Card.Content style={styles.cardContent}>
-            <View style={styles.contentContainer}>
-              <View style={styles.textContainer}>
-                <Text style={styles.cardTitle}>{cardData.cardTitle}</Text>
-                <View style={styles.subtitleContainer}>
-                  <View
-                    style={[
-                      styles.circle,
-                      { backgroundColor: cardData.circleColor },
-                    ]}
-                  ></View>
-                  <Text style={styles.cardSubtitle}>
-                    {cardData.cardSubtitle}
-                  </Text>
-                </View>
-                <Icon
-                  name="arrow-right"
-                  style={styles.icon}
-                  size={20}
-                  color="black"
-                />
-              </View>
-              <Image
-                style={styles.image}
-                source={
-                  typeof cardData.imagePath === "string"
-                    ? { uri: cardData.imagePath }
-                    : cardData.imagePath
-                }
-              />
-            </View>
-          </Card.Content>
-        </View>
-      </Card>
+      <CarCard
+        cardTitle={cardData.cardTitle}
+        cardSubtitle={cardData.cardSubtitle}
+        circleColor={cardData.circleColor}
+        imagePath={cardData.imagePath}
+      />
       <View style={styles.infoContainer}>
         <Text style={styles.infoTitle}>Información del vehículo</Text>
         <View style={styles.infoItem}>
@@ -64,7 +35,9 @@ const CarInfo = ({ route }) => {
         </View>
         <View style={styles.infoItem}>
           <Text style={styles.infoLabel}>Ver Recorrido</Text>
-          <Text style={styles.infoLink} onPress={handleConsultarMapa}>Consultar Mapa</Text>
+          <Text style={styles.infoLink} onPress={handleConsultarMapa}>
+            Consultar Mapa
+          </Text>
         </View>
         <View style={styles.infoItem}>
           <Text style={styles.infoLabel}>Transmisión</Text>
@@ -175,3 +148,42 @@ const styles = StyleSheet.create({
   },
 });
 export default CarInfo;
+
+{
+  /* <Card style={styles.card}>
+        <View style={styles.cardContainer}>
+          <Card.Content style={styles.cardContent}>
+            <View style={styles.contentContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.cardTitle}></Text>
+                <View style={styles.subtitleContainer}>
+                  <View
+                    style={[
+                      styles.circle,
+                      { backgroundColor: cardData.circleColor },
+                    ]}
+                  ></View>
+                  <Text style={styles.cardSubtitle}>
+                    {cardData.cardSubtitle}
+                  </Text>
+                </View>
+                <Icon
+                  name="arrow-right"
+                  style={styles.icon}
+                  size={20}
+                  color="black"
+                />
+              </View>
+              <Image
+                style={styles.image}
+                source={
+                  typeof cardData.imagePath === "string"
+                    ? { uri: cardData.imagePath }
+                    : cardData.imagePath
+                }
+              />
+            </View>
+          </Card.Content>
+        </View>
+      </Card> */
+}

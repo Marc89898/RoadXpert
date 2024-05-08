@@ -1,35 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Card } from "react-native-paper";
 import BackNavigation from "../Navigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
-
-const CustomCard = ({ title, subtitle, backgroundImage }) => {
-  const navigation = useNavigation();
-
-  const handleCardPress = () => {
-    navigation.navigate("StudentInfo", {
-      name: title,
-      image: backgroundImage,
-    });
-  };
-  return (
-    <TouchableOpacity onPress={handleCardPress}>
-      <Card style={styles.card}>
-        <Card.Cover source={backgroundImage} style={styles.cardCover} />
-        <Image
-          source={require("../../assets/images/Students/imgOverlay.png")}
-          style={styles.overlayImage}
-        />
-        <Text style={styles.overlayText}>{title}</Text>
-        <Text style={styles.smallText}>{subtitle}</Text>
-      </Card>
-    </TouchableOpacity>
-  );
-};
+import ApiHelper from "../../data/ApiHelper";
+import Config from "../../configuracions";
+import MyStudentsCard from "../../Components/Cards/MyStudentsCard";
 
 const MyStudents = () => {
   const navigation = useNavigation();
+  const [alumnos, setAlumnos] = useState([]);
+
+  useEffect(() => {
+    const fetchAlumnos = async () => {
+      try {
+        const alumnosData = await ApiHelper.fetchAlumnosPorProfesor(Config.ProfessorID);
+        setAlumnos(alumnosData);
+      } catch (error) {
+        console.error("Error fetching alumnos:", error);
+      }
+    };
+    fetchAlumnos();
+  }, []);
 
   const handleAllStudentsPress = () => {
     navigation.navigate("AllStudents");
@@ -48,21 +40,12 @@ const MyStudents = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
-        <CustomCard
-          title={"Tony Stark"}
-          subtitle={"23 years old"}
-          backgroundImage={require("../../assets/images/Students/imgProbaToni.jpg")}
-        />
-        <CustomCard
-          title={"Peter Parker"}
-          subtitle={"20 years old"}
-          backgroundImage={require("../../assets/images/Students/imgProbaTom.jpg")}
-        />
-        <CustomCard
-          title={"Bruce Wayne"}
-          subtitle={"35 years old"}
-          backgroundImage={require("../../assets/images/Students/imgProbaBruce.jpg")}
-        />
+        {alumnos.map((alumno) => (
+          <MyStudentsCard
+            student={alumno}
+            backgroundImage={require("../../assets/images/Students/imgOverlay.png")}
+          />
+        ))}
       </View>
     </View>
   );

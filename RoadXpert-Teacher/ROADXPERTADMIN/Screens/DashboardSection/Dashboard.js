@@ -56,10 +56,8 @@ const Dashboard = () => {
         console.error("Error fetching events:", error);
       }
     };
-
     loadNextEvent();
   }, []);
-
 
   return (
     <View style={{ flex: 1 }}>

@@ -14,7 +14,9 @@ import CustomTextInput from "../../Components/Inputs/CustomTextInput.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 
-const PostPractice = () => {
+const PostPractice = ({ route }) => {
+  const { practiceData } = route.params;
+  
   const signatureRef = useRef();
   const navigation = useNavigation();
 
