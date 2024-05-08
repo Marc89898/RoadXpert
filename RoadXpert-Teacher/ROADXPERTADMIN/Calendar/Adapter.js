@@ -2,37 +2,30 @@ import { APIService } from "../ApiService";
 
 class DataAdapter {
 
-  static adaptPracticaToAgenda = async (jsonData) => {
+  static adaptPracticaToAgenda(jsonData) {
     const adaptedData = {};
-    for (const item of jsonData) {
-        const date = new Date(item.Data).toISOString().split('T')[0];
-        try {
-            const fetchALUMN = await APIService.fetchAlumn(item.AlumneID);
-            const EstatModificat = await APIService.fetchEstatDescription(item.EstatHoraID);
-            console.log("Alumn fetch result:", fetchALUMN);
-            const event = {
-                id: item.ID,
-                name: "Practica",
-                horaInicial: item.HoraInici,
-                horaFinal: item.HoraFi,
-                Ruta: item.Ruta,
-                Coche: item.VehicleID,
-                Estat: EstatModificat,
-                alumne: fetchALUMN.Nom
-            };
-
-            if (adaptedData[date]) {
-                adaptedData[date].push(event);
-            } else {
-                adaptedData[date] = [event];
-            }
-        } catch (error) {
-            console.error("Error fetching ALUMN:", error);
-        }
-    }
+    jsonData.forEach(async (item) => {
+      const date = new Date(item.Data).toISOString().split('T')[0];
+      const fetchALUMN = await APIService.fetchAlumn(item.AlumneID)
+      var EstatModificat = await APIService.fetchEstatDescription(item.EstatHoraID)
+      const event = {
+        id: item.ID,
+        name: "Practica",
+        horaInicial: item.HoraInici,
+        horaFinal: item.HoraFi,
+        Ruta: item.Ruta,
+        Coche: item.VehicleID,
+        Estat: EstatModificat.Nom,
+        alumne: fetchALUMN.Nom
+      };
+      if (adaptedData[date]) {
+        adaptedData[date].push(event);
+      } else {
+        adaptedData[date] = [event];
+      }
+    });
     return adaptedData;
-};
-
+  }
   static adaptDataDelete(jsonData) {
     const adaptedData = {};
     jsonData.forEach(async (item) => {

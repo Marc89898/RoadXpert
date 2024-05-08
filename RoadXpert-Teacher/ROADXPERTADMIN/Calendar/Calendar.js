@@ -31,8 +31,8 @@ export default function ProfessorCalendar() {
   fetchData = async () => {
     try {
       const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
-      console.log(result)
       const adaptedData = DataAdapter.adaptPracticaToAgenda(result);
+      console.log("adapted data: " + adaptedData)
       setEvents(adaptedData);
     } catch (error) {
       console.error('ERROR IN THE DATABASE: ' + error);
@@ -192,14 +192,22 @@ export default function ProfessorCalendar() {
                 </Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>State: </Text>{item.Estat}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>Alumn: </Text>{item.alumne}</Text>
+                <Text style={styles.itemText}>
+                  <Text style={styles.boldText}>State: </Text>
+                  {item.Estat ? item.Estat : "Solicitada"}
+                </Text>
+
+                <Text style={styles.itemText}>
+                  <Text style={styles.boldText}>Alumno: </Text>
+                  {item.alumne ? item.alumne : selectedAlumn.name}
+                </Text>
+
               </View>
             </TouchableOpacity>
           )}
         />
       ) : (
-        <Text style={[styles.itemText, { textAlign: 'center' }, {textAlignVertical: 'center'}]}>
+        <Text style={[styles.itemText, { textAlign: 'center' }, { textAlignVertical: 'center' }]}>
           <Text style={styles.boldText}>LOADING EVENTS...</Text>
         </Text>
       )}
