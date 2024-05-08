@@ -185,7 +185,8 @@ class ApiHelper {
 
     static async fetchPracticasPorAlumno(alumnoId) {
         try {
-            const response = await axios.get(`/Practica/Alumn/${alumnoId}`);
+            console.log('Fetching practicas for alumno:', alumnoId);
+            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Practica/Alumn/${alumnoId}`);
             const data = response.data;
             // Mapear los datos devueltos a un array de objetos
             const practicas = data.map(practica => ({
@@ -200,6 +201,7 @@ class ApiHelper {
                 ruta: practica.Ruta,
                 vehicleId: practica.VehicleID
             }));
+            console.log('Practicas:', practicas);
             return practicas;
         } catch (error) {
             console.error('Error fetching practicas:', error);
