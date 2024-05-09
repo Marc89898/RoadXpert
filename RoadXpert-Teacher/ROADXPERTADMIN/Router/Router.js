@@ -52,6 +52,7 @@ import CreateSchool from '../ScreensAdmin/CreateSchool.js';
 
 // Students
 import AllStudent from '../ScreensAdmin/AllStudent.js';
+import RegisterStudent from '../ScreensAdmin/RegisterStudent.js';
 
 // Professors
 import AllWorkers from '../ScreensAdmin/AllWorkers.js';
@@ -105,6 +106,7 @@ export default function Router() {
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="CreateSchool" component={CreateSchool} />
         <Stack.Screen name="AllStudent" component={AllStudent} />
+        <Stack.Screen name="RegisterStudent" component={RegisterStudent} />
         <Stack.Screen name="AllWorkers" component={AllWorkers} />
         <Stack.Screen name="RegisterPerson" component={RegisterPerson} />
         <Stack.Screen name="AllRoles" component={AllRoles} />

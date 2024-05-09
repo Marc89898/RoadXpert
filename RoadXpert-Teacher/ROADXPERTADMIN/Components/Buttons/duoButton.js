@@ -10,12 +10,12 @@ const DuoButton = ({ text }) => {
   };
 
   const onPressConfirm = () => {
-    navigation.navigate("CreateSchool");
+    console.log("Confirm");
   };
 
   return (
     <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.buttonDelete}  onPress={onPressDelete}>
+      <TouchableOpacity style={styles.buttonDelete} onPress={onPressDelete}>
         <MaterialCommunityIcons name="delete" size={24} color="black" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.buttonConfirm} onPress={onPressConfirm}>
@@ -29,12 +29,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     width: "85%",
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
     gap: 10,
   },
-
   buttonDelete: {
     marginTop: 10,
     backgroundColor: "red",

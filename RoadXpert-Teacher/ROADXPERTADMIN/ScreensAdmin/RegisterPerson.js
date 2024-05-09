@@ -86,11 +86,10 @@ const RegisterPerson = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View>
-          k
           <CustomTextInput label="Direccion:" placeholder="Olot" />
-          <DuoButton text="Guardar" />
         </View>
       </View>
+      <DuoButton text="Guardar" />
     </ScrollView>
   );
 };

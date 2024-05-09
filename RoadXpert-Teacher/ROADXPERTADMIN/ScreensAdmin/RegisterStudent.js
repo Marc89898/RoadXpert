@@ -14,19 +14,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomTextInput from "../Components/Inputs/CustomTextInput.js";
 
-const RegisterVehicle = () => {
+const RegisterStudent = () => {
   const navigation = useNavigation();
 
-  const handleSave = () => {
-    console.log("Guardado");
-  };
-
-  const opcionesVehicles = [
-    { label: "Coche", value: "Coche" },
-    { label: "Motocicleta", value: "Motocicleta" },
-    { label: "Camion", value: "Camion" },
-    { label: "Tractor", value: "Tractor" },
-    { label: "Avion", value: "Avion" },
+  const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
+  const opcionesSexo = [
+    { label: "Hombre", value: "Hombre" },
+    { label: "Mujer", value: "Mujer" },
   ];
 
   const [image, setImage] = useState(null);
@@ -63,23 +57,12 @@ const RegisterVehicle = () => {
       <View style={styles.container}>
         <BackNavigation />
         <View style={styles.header}>
-          <Text style={styles.headerText}>Register Vehicle</Text>
+          <Text style={styles.headerText}>Register Student</Text>
         </View>
 
         <View style={styles.contentContainer}>
-          <CustomSelectInput
-            label="Tipo de vehiculo"
-            options={opcionesVehicles}
-          />
-          <CustomTextInput
-            label="Marca de vehiculo:"
-            placeholder="Volkswagen"
-          />
-          <CustomTextInput label="Modelo de vehiculo:" placeholder="Golf" />
-          <CustomTextInput label="CV de potencia:" placeholder="125cv" />
-          <CustomTextInput label="Motor:" placeholder="2.0 TDI" />
           <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Vehicle image:</Text>
+            <Text style={styles.uploadLabel}>Image:</Text>
             <TouchableOpacity
               style={styles.icon}
               onPress={() => handleImageUpload(false)}
@@ -87,9 +70,16 @@ const RegisterVehicle = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View>
+          <CustomTextInput label="Nombre:" placeholder="Antonio" />
+          <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
+          <CustomTextInput label="Segundo Apellido:" placeholder="Martin" />
+          <CustomTextInput label="DNI:" placeholder="99999999Z" />
+          <CustomSelectInput label="Sex:" options={opcionesSexo} />
+          <CustomTextInput label="Gmail:" placeholder="example@example.com" />
+          <CustomTextInput label="Direccion:" placeholder="Olot" />
         </View>
       </View>
-      <MainButton title="Guardar" onPress={handleSave} />
+      <MainButton title="Guardar" />
     </ScrollView>
   );
 };
@@ -153,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterVehicle;
+export default RegisterStudent;
