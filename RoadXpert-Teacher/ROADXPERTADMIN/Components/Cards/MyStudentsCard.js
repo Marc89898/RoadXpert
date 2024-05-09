@@ -7,7 +7,7 @@ const MyStudentsCard = ({ student, backgroundImage }) => {
   const navigation = useNavigation();
 
   const handleCardPress = () => {
-    console.log("Student from MyStudentCard:", student);
+    // console.log("Student from MyStudentCard:", student);
     navigation.navigate("StudentInfo", { student: student });
   };
 

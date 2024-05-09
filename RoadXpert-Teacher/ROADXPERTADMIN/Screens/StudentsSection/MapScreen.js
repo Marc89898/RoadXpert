@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Modal, TouchableOpacity, Switch } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  Switch,
+} from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BackNavigation from "../Navigation/BackNavigation";
 import { Button } from "react-native-paper";
 import * as Location from "expo-location";
-import polyline from "@mapbox/polyline";
+import * as FileSystem from "expo-file-system";
 import ApiHelper from "../../data/ApiHelper";
 
 const MapScreen = ({ route }) => {
   const { student } = route.params;
-  const alumnoId = student.ID; // Debes definir el ID del alumno
+  const alumnoId = student.ID;
   const [modalVisible, setModalVisible] = useState(false);
   const [initialPosition, setInitialPosition] = useState(null);
-  const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");
   const [practicas, setPracticas] = useState([]);
-  const [filteredPracticas, setFilteredPracticas] = useState([]);
-  const [filters, setFilters] = useState({});
+  const [practiceRouteFilters, setPracticeRouteFilters] = useState([]);
+  const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     const fetchInitialLocation = async () => {
@@ -45,74 +48,95 @@ const MapScreen = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    applyFilters();
-  }, [practicas, filters]);
+    renderPracticeRoutes();
+    renderMarkers();
+  }, [practiceRouteFilters]);
 
   const fetchPracticas = async () => {
     try {
-      const fetchedPracticas = await ApiHelper.fetchPracticasPorAlumno(alumnoId); // Debes definir alumnoId
+      const fetchedPracticas = await ApiHelper.fetchPracticasPorAlumno(alumnoId);
+      const filters = fetchedPracticas.map(practica => ({
+        id: practica.id,
+        url: practica.ruta,
+        showing: false
+      }));
+      // console log del numero de las practicas que hay
       setPracticas(fetchedPracticas);
+      console.log("Numero de fetchedPracticas:", fetchedPracticas.length);
+      setPracticeRouteFilters(filters);
+      console.log("Numero de filters:", filters.length);
     } catch (error) {
       console.error("Error fetching practicas:", error);
     }
   };
 
-  const applyFilters = () => {
-    let filtered = [...practicas];
+  const toggleFilter = (id) => {
+    setPracticeRouteFilters(prevFilters =>
+      prevFilters.map(filter =>
+        filter.id === id ? { ...filter, showing: !filter.showing } : filter
+      )
+    );
+  };
 
-    // Aplicar filtros
-    for (const key in filters) {
-      if (filters.hasOwnProperty(key)) {
-        if (filters[key]) {
-          filtered = filtered.filter(practica => practica[key]);
-        }
+  const renderPracticeRoutes = async () => {
+    const routes = [];
+    for (const filter of practiceRouteFilters) {
+      if (filter.showing) {
+        const coordinates = await getPracticeRouteCoordinates(filter.url);
+        routes.push(coordinates);
       }
     }
-
-    setFilteredPracticas(filtered);
+    setRouteCoordinates(routes);
   };
 
-  const toggleFilter = (key) => {
-    setFilters({ ...filters, [key]: !filters[key] });
+  const renderMarkers = async () => {
+    const markers = [];
+    for (const filter of practiceRouteFilters) {
+      if (filter.showing) {
+        const practiceMarkers = await getPracticeMarkers(filter.url);
+        markers.push(...practiceMarkers);
+      }
+    }
+    setMarkers(markers);
   };
 
-  const handleMapTouch = async (latitude, longitude) => {
-    const API_KEY = "AIzaSyCNcRVPxV96NruUez95JitKhfMTB_9avcA";
-
-    const url = `https://maps.googleapis.com/maps/api/directions/json?`;
-    const params = new URLSearchParams({
-      origin: `${initialPosition.latitude},${initialPosition.longitude}`,
-      destination: `${latitude},${longitude}`,
-      mode: "driving",
-      key: API_KEY,
-    });
-
+  const getPracticeRouteCoordinates = async (rutaId) => {
     try {
-      const response = await fetch(url + params.toString());
-      const data = await response.json();
+      const fileUri = await ApiHelper.downloadFileFromMongo(rutaId);
+      const routeData = await FileSystem.readAsStringAsync(fileUri);
+      const routeGeoJSON = JSON.parse(routeData);
 
-      if (data.status === "OK") {
-        const distanceText = data.routes[0].legs[0].distance.text;
-        const durationText = data.routes[0].legs[0].duration.text;
-        console.log("Distància:", distanceText);
-        console.log("Temps:", durationText);
-        setDistance(distanceText);
-        setDuration(durationText);
+      return routeGeoJSON.geometry.coordinates.map((coord) => ({
+        latitude: coord[1],
+        longitude: coord[0],
+      }));
+    } catch (error) {
+      console.error("Error al cargar la ruta:", error);
+      return [];
+    }
+  };
 
-        const route = data.routes[0].overview_polyline.points;
-        const decodedRoute = polyline.decode(route);
+  const getPracticeMarkers = async (rutaId) => {
+    try {
+      const fileUri = await ApiHelper.downloadFileFromMongo(rutaId);
+      const routeData = await FileSystem.readAsStringAsync(fileUri);
+      const routeGeoJSON = JSON.parse(routeData);
 
-        setRouteCoordinates(
-          decodedRoute.map((point) => ({
-            latitude: point[0],
-            longitude: point[1],
-          }))
-        );
+      if (routeGeoJSON.features) {
+        return routeGeoJSON.features.map((feature) => ({
+          id: feature.properties.id,
+          coordinate: {
+            latitude: feature.geometry.coordinates[1],
+            longitude: feature.geometry.coordinates[0],
+          },
+          title: feature.properties.title,
+        }));
       } else {
-        console.error("Directions error:", data.status);
+        return [];
       }
     } catch (error) {
-      console.error("Directions request error:", error);
+      console.error("Error al cargar los marcadores:", error);
+      return [];
     }
   };
 
@@ -122,17 +146,27 @@ const MapScreen = ({ route }) => {
       <MapView
         style={[styles.map, { zIndex: -1 }]}
         initialRegion={initialPosition}
-        onPress={(event) => {
-          const { nativeEvent } = event;
-          const latitude = nativeEvent.coordinate.latitude;
-          const longitude = nativeEvent.coordinate.longitude;
-          handleMapTouch(latitude, longitude);
-        }}
       >
-        {/* Renderizar las rutas */}
+        {routeCoordinates.map((coordinates, index) => (
+          <Polyline
+            key={index}
+            coordinates={coordinates}
+            strokeColor="blue"
+            strokeWidth={2}
+          />
+        ))}
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            coordinate={marker.coordinate}
+            title={marker.title}
+            // description={marker.description}
+            pinColor="orange"
+          />
+        ))}
       </MapView>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Maps</Text>
+        <Text style={styles.headerText}>{student.Nom}</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Icon name="filter" size={25} style={styles.icon} />
         </TouchableOpacity>
@@ -145,25 +179,27 @@ const MapScreen = ({ route }) => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.modalContainer}>
+        <View style={styles.modalBackground}>
           <View style={styles.modalContent}>
-            <Text style={styles.title}>Filtrar</Text>
-            {/* Renderizar filtros y controles de interruptor */}
-            {practicas.map((practica) => (
-              <View key={practica.id} style={styles.filterItem}>
-                <Text>{practica.data}</Text>
-                <Switch
-                  value={filters[practica.id]}
-                  onValueChange={() => toggleFilter(practica.id)}
-                />
-              </View>
-            ))}
+            <Text style={styles.title}>Prácticas</Text>
+            <ScrollView contentContainerStyle={styles.modalScrollView}>
+              {practiceRouteFilters.map((filter) => (
+                <View key={filter.id} style={styles.filterItem}>
+                  <Text>{(practicas.find(practica => practica.id === filter.id)?.data || "").slice(0, 16)}</Text>
+                  <Text>{practiceRouteFilters.length}</Text>
+                  <Switch
+                    value={filter.showing}
+                    onValueChange={() => toggleFilter(filter.id)}
+                  />
+                </View>
+              ))}
+            </ScrollView>
             <Button
-              style={styles.continueButton}
+              style={styles.exitButton}
               mode="contained"
               onPress={() => setModalVisible(false)}
             >
-              Cancelar
+              Guardar
             </Button>
           </View>
         </View>
@@ -171,7 +207,7 @@ const MapScreen = ({ route }) => {
     </View>
   );
 };
-  
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -203,35 +239,33 @@ const styles = StyleSheet.create({
   icon: {
     color: "black",
   },
-  modalContainer: {
+  modalBackground: {
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
+  },
+  modalScrollView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    marginTop: 2,
+    paddingHorizontal: 20,
+    flexGrow: 1,
   },
   modalContent: {
+    justifyContent: "flex-end",
+    marginBottom: 0,
+    marginTop: 150,
     backgroundColor: "white",
-    padding: 20,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    width: "100%",
-  },
-  viewModel: {
-    borderRadius: 15,
-    height: 200,
-    backgroundColor: "grey",
-    marginBottom: 20,
   },
   title: {
-    fontSize: 20,
-    marginBottom: 10,
-    textAlign: "left",
     fontSize: 25,
+    marginHorizontal: 20,
+    marginTop: 20,
+    textAlign: "left",
     color: "black",
   },
-  continueButtonText: {
-    color: "white",
-    fontSize: 16,
+  exitButton: {
+    marginHorizontal: 20,
   },
   filterItem: {
     flexDirection: "row",
