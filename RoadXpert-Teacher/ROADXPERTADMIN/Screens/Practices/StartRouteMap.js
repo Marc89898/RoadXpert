@@ -109,7 +109,7 @@ const StartRouteMap = ({ route }) => {
       const respondeGPT = await GPTManager.interpretGPT(text);
 
       try {
-        addAnotacioToRoute(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
+        addAnotacioToRoute(respondeGPT);
       } catch (error) {
         console.log('No se pudo interpretar el texto');
         addAnotacioToRoute(null);
