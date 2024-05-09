@@ -11,16 +11,16 @@ const MainButton = ({ title, onPress }) => {
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 10,
+    marginTop: 20,
     backgroundColor: "#D9D9D9",
     padding: 10,
     width: "85%",
     height: 50,
     borderRadius: 20,
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    marginBottom: 20,
   },
   buttonText: {
     color: "#000000",

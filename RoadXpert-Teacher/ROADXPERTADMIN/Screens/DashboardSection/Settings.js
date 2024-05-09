@@ -137,6 +137,7 @@ const Settings = () => {
           iconName="account-group"
           iconColor="#333"
           text="Students"
+          onPress={() => navigation.navigate("AllStudent")}
         />
 
         <SettingsOption

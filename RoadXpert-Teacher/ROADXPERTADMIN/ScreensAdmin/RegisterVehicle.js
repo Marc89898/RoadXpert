@@ -19,7 +19,6 @@ const RegisterVehicle = () => {
 
   const handleSave = () => {
     console.log("Guardado");
-    navigation.navigate("CreateSchool");
   };
 
   const opcionesVehicles = [
@@ -88,10 +87,9 @@ const RegisterVehicle = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View>
-
-          <MainButton title="Guardar" onPress={handleSave} />
         </View>
       </View>
+      <MainButton title="Guardar" onPress={handleSave} />
     </ScrollView>
   );
 };

@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const AllWorkers = () => {
   const navigation = useNavigation();
-  
+
   const handleOpen = () => {
     navigation.navigate("RegisterPerson");
   };
@@ -21,7 +21,7 @@ const AllWorkers = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
-        <WorkersCard name="Pedro Sanchez" desc="15 años" />
+        <WorkersCard name="Pedro Sanchez" desc="19 años" />
         <WorkersCard name="Pablo Escobar" desc="25 años" />
       </View>
     </View>
