@@ -14,12 +14,10 @@ import { useNavigation } from "@react-navigation/native";
 
 
 export default function ProfessorCalendar() {
-  const [events, setEvents] = useState(null);
+  const [events, setEvents] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
-  const [selectedRoute, setSelectedRoute] = useState('');
-  const [selectedCar, setSelectedCar] = useState('');
   const [selectedAlumn, setSelectedAlumn] = useState('');
   const [eventName, setEventName] = useState('');
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
@@ -32,13 +30,13 @@ export default function ProfessorCalendar() {
     try {
       const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
       const adaptedData = DataAdapter.adaptPracticaToAgenda(result);
-      console.log("adapted data: " + adaptedData)
+      setSelectedDate(selectedDate.toString());
       setEvents(adaptedData);
     } catch (error) {
       console.error('ERROR IN THE DATABASE: ' + error);
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -99,8 +97,8 @@ export default function ProfessorCalendar() {
       name: "Practica",
       horaInicial: Horas[0],
       horaFinal: Horas[2],
-      Ruta: selectedRoute,
-      Coche: selectedCar,
+      Ruta: "",
+      Coche: "",
       Estat: '',
       AlumneID: selectedAlumn.id,
       ProfessorID: Config.ProfessorID,
@@ -194,7 +192,7 @@ export default function ProfessorCalendar() {
                 <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
                 <Text style={styles.itemText}>
                   <Text style={styles.boldText}>State: </Text>
-                  {item.Estat ? item.Estat : "Solicitada"}
+                  {item.Estat ? item.Estat : "Confirmada"}
                 </Text>
 
                 <Text style={styles.itemText}>
