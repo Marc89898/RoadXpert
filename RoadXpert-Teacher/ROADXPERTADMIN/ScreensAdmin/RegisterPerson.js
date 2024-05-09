@@ -61,7 +61,7 @@ const RegisterPerson = () => {
         </View>
 
         <View style={styles.contentContainer}>
-          <View style={styles.uploadContainer}>
+          {/* <View style={styles.uploadContainer}>
             <Text style={styles.uploadLabel}>Image:</Text>
             <TouchableOpacity
               style={styles.icon}
@@ -69,14 +69,14 @@ const RegisterPerson = () => {
             >
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <CustomSelectInput label="Assigned rol:" options={opcionesVehicles} />
           <CustomTextInput label="Nombre:" placeholder="Antonio" />
           <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
           <CustomTextInput label="Segundo Apellido:" placeholder="Martin" />
-          <CustomTextInput label="Motor:" placeholder="2.0 TDI" />
-          <CustomSelectInput label="Sex:" options={opcionesSexo} />
           <CustomTextInput label="DNI:" placeholder="99999999Z" />
+          <CustomTextInput label="Direccion:" placeholder="Olot" />
+          <CustomSelectInput label="Sex:" options={opcionesSexo} />
           <View style={styles.uploadContainer}>
             <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
             <TouchableOpacity
@@ -86,7 +86,6 @@ const RegisterPerson = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View>
-          <CustomTextInput label="Direccion:" placeholder="Olot" />
         </View>
       </View>
       <DuoButton text="Guardar" />

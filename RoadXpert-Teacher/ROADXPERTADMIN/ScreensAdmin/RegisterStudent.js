@@ -61,7 +61,7 @@ const RegisterStudent = () => {
         </View>
 
         <View style={styles.contentContainer}>
-          <View style={styles.uploadContainer}>
+          {/* <View style={styles.uploadContainer}>
             <Text style={styles.uploadLabel}>Image:</Text>
             <TouchableOpacity
               style={styles.icon}
@@ -69,14 +69,11 @@ const RegisterStudent = () => {
             >
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <CustomTextInput label="Nombre:" placeholder="Antonio" />
-          <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
-          <CustomTextInput label="Segundo Apellido:" placeholder="Martin" />
           <CustomTextInput label="DNI:" placeholder="99999999Z" />
-          <CustomSelectInput label="Sex:" options={opcionesSexo} />
-          <CustomTextInput label="Gmail:" placeholder="example@example.com" />
-          <CustomTextInput label="Direccion:" placeholder="Olot" />
+          <CustomTextInput label="Adreça:" placeholder="Olot" />
+          <CustomTextInput label="Telefon:" placeholder="984353150" />
         </View>
       </View>
       <MainButton title="Guardar" />

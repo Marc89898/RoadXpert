@@ -5,7 +5,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   Image,
   TouchableOpacity,
 } from "react-native";
@@ -14,7 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 
 import CircleImage1 from "../../assets/images/Dashboard/notification.png";
 import CircleImage2 from "../../assets/images/Dashboard/settings.png";
-import TuImagen from "../../assets/images/Dashboard/ProvaFoto.jpeg";
 
 const Dashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
@@ -62,14 +60,16 @@ const Dashboard = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.imageContainer}>
-        <ImageBackground source={TuImagen} style={styles.imageBackground}>
+        <View style={styles.imageBackground}>
+          <Text style={styles.title}></Text>
           <View style={styles.overlay}>
             <Text style={styles.welcomeText}>Welcome Back,</Text>
             <Text style={styles.nameText}>
               {Config?.Professor?.Nom} {Config?.Professor?.Cognom} {Config?.Professor?.SegonCognom}
+              Yossef Joubayr Mejd
             </Text>
           </View>
-        </ImageBackground>
+        </View>
       </View>
       <View style={styles.circleContainer}>
         <TouchableOpacity onPress={handleNotifications}>
@@ -134,13 +134,22 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   imageContainer: {
-    borderBottomRightRadius: 100,
     overflow: "hidden",
   },
   imageBackground: {
-    height: 232,
+    height: 120,
     width: "100%",
-    resizeMode: "cover",
+    backgroundColor: "#1F41BB",
+  },
+  title: {
+    fontSize: 80,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+    alignContent: "center",
+    // paddingLeft: 10,
+    marginTop: 30,
+    opacity: 0.3,
   },
   circleContainer: {
     position: "absolute",
@@ -165,13 +174,14 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: "absolute",
-    bottom: 10,
+    flex: 1,
+    top: 50,
     left: 10,
-    backgroundColor: "rgba(0,0,0,0.5)",
     padding: 10,
     borderRadius: 5,
   },
   welcomeText: {
+    left: 7,
     fontSize: 8,
     color: "white",
   },
@@ -218,7 +228,7 @@ const styles = StyleSheet.create({
   eventDetailText: {
     marginLeft: 10,
     fontSize: 16,
-  },
+  }
 });
 
 export default Dashboard;

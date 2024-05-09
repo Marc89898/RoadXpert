@@ -76,9 +76,9 @@ const RegisterVehicle = () => {
             placeholder="Volkswagen"
           />
           <CustomTextInput label="Modelo de vehiculo:" placeholder="Golf" />
-          <CustomTextInput label="CV de potencia:" placeholder="125cv" />
-          <CustomTextInput label="Motor:" placeholder="2.0 TDI" />
-          <View style={styles.uploadContainer}>
+          <CustomTextInput label="Any fabricacio:" placeholder="2015" />
+          <CustomTextInput label="Color:" placeholder="Red" />
+          {/* <View style={styles.uploadContainer}>
             <Text style={styles.uploadLabel}>Vehicle image:</Text>
             <TouchableOpacity
               style={styles.icon}
@@ -86,7 +86,7 @@ const RegisterVehicle = () => {
             >
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
       <MainButton title="Guardar" onPress={handleSave} />

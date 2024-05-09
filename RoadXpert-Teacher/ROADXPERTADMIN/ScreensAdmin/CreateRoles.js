@@ -13,21 +13,21 @@ import { MaterialIcons } from "@expo/vector-icons";
 import ColorPicker from "react-native-color-picker";
 import CustomSelectInput from "../Components/Inputs/CustomSelectInput.js";
 import { useNavigation } from "@react-navigation/native";
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from "react-native";
 
 const CreateRoles = () => {
   const navigation = useNavigation();
   const [colorSeleccionado, setColorSeleccionado] = useState("black");
   const [mostrarSelector, setMostrarSelector] = useState(false);
-  const [rolName, setRolName] = useState(''); 
-  const [permisosAlumnos, setPermisosAlumnos] = useState('');
-  const [permisosVehiculos, setPermisosVehiculos] = useState('');
-  const [permisosProfesores, setPermisosProfesores] = useState('');
+  const [rolName, setRolName] = useState("");
+  const [permisosAlumnos, setPermisosAlumnos] = useState("");
+  const [permisosVehiculos, setPermisosVehiculos] = useState("");
+  const [permisosProfesores, setPermisosProfesores] = useState("");
 
-const handleSave = () => {
+  const handleSave = () => {
     console.log("Guardado");
     navigation.navigate("CreateSchool");
-}
+  };
 
   const handleColorSeleccionado = (color) => {
     setColorSeleccionado(color);
@@ -39,7 +39,6 @@ const handleSave = () => {
     { label: "No", value: "No" },
   ];
 
-
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
@@ -49,7 +48,7 @@ const handleSave = () => {
         </View>
 
         <View style={styles.contentContainer}>
-          <View style={styles.colorSelectionContainer}>
+          {/* <View style={styles.colorSelectionContainer}>
             <Text style={styles.label}>Color</Text>
             <TouchableOpacity
               style={[styles.colorpick, { backgroundColor: colorSeleccionado }]}
@@ -63,10 +62,12 @@ const handleSave = () => {
                 style={{ flex: 1 }}
               />
             )}
-          </View>
-          <CustomTextInput label="Rol name:" placeholder="Admin" />
+          </View> */}
 
-          <View style={styles.rectangleContainer}>
+          <CustomTextInput label="Rol name:" placeholder="Admin" />
+          <CustomTextInput label="Desc:" placeholder="Es una persona que s'encarerga de suspendre alumnes" />
+
+          {/* <View style={styles.rectangleContainer}>
             <Text style={styles.rectangleText}>Permisos de alumnos</Text>
           </View>
           <CustomSelectInput options={opcionesSelect} label="Crear alumnos"/>
@@ -85,11 +86,10 @@ const handleSave = () => {
           </View>
           <CustomSelectInput options={opcionesSelect} label="Crear professores"/>
           <CustomSelectInput options={opcionesSelect} label="Eliminar professores"/>
-          <CustomSelectInput options={opcionesSelect} label="Gestionar professores"/>
-
+          <CustomSelectInput options={opcionesSelect} label="Gestionar professores"/> */}
         </View>
-          <MainButton title="Guardar" onPress={handleSave} />
       </View>
+      <MainButton title="Guardar" onPress={handleSave} />
     </ScrollView>
   );
 };
