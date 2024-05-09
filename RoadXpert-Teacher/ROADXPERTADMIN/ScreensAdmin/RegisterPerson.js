@@ -18,7 +18,10 @@ const RegisterPerson = () => {
   const navigation = useNavigation();
 
   const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
-  const opcionesSexo = [{ label: "Hombre", value: "Hombre" }, { label: "Mujer", value: "Mujer" }];
+  const opcionesSexo = [
+    { label: "Hombre", value: "Hombre" },
+    { label: "Mujer", value: "Mujer" },
+  ];
 
   const [image, setImage] = useState(null);
 
@@ -67,7 +70,6 @@ const RegisterPerson = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View>
-
           <CustomSelectInput label="Assigned rol:" options={opcionesVehicles} />
           <CustomTextInput label="Nombre:" placeholder="Antonio" />
           <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
@@ -75,7 +77,6 @@ const RegisterPerson = () => {
           <CustomTextInput label="Motor:" placeholder="2.0 TDI" />
           <CustomSelectInput label="Sex:" options={opcionesSexo} />
           <CustomTextInput label="DNI:" placeholder="99999999Z" />
-
           <View style={styles.uploadContainer}>
             <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
             <TouchableOpacity
@@ -84,12 +85,11 @@ const RegisterPerson = () => {
             >
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
-          </View>k
+          </View>
           <CustomTextInput label="Direccion:" placeholder="Olot" />
-
-          <DuoButton text="Guardar" />
         </View>
       </View>
+      <DuoButton text="Guardar" />
     </ScrollView>
   );
 };

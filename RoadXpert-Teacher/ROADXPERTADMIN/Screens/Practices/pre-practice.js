@@ -119,7 +119,7 @@ const PrePractice = () => {
         >
           <Picker.Item label="Seleccionar alumno..." value={null} />
           {alumnos.map(alumno => (
-            <Picker.Item key={alumno.id} label={alumno.nombre} value={alumno.id} />
+            <Picker.Item key={alumno.ID} label={alumno.Nom} value={alumno.ID} />
           ))}
         </Picker>
         <Text style={styles.label}>Vehículo:</Text>
