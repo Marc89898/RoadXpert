@@ -2,6 +2,7 @@ import apiconfig from "../apiconfig.json";
 import axios from 'axios';
 import * as FileSystem from "expo-file-system";
 
+
 class ApiHelper {
     // static mongoUrl = apiconfig.mongoRouteApi.API_URL;
     // static sqlUrl = apiconfig.mssqlApi.API_URL;
@@ -106,12 +107,12 @@ class ApiHelper {
                 encoding: FileSystem.EncodingType.UTF8,
             });
 
-            console.log('Archivo guardado en:', localFileUri);
+            // console.log('Archivo guardado en:', localFileUri);
 
             return localFileUri;
 
         } catch (error) {
-            console.error('Error downloading file from MongoDB:', error);
+            // console.error('Error downloading file from MongoDB:', error);
             throw new Error(`Error downloading file from MongoDB: ${error.message}`);
         }
     }
@@ -185,7 +186,7 @@ class ApiHelper {
 
     static async fetchPracticasPorAlumno(alumnoId) {
         try {
-            console.log('Fetching practicas for alumno:', alumnoId);
+            // console.log('Fetching practicas for alumno:', alumnoId);
             const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Practica/Alumn/${alumnoId}`);
             const data = response.data;
             // Mapear los datos devueltos a un array de objetos
@@ -201,7 +202,7 @@ class ApiHelper {
                 ruta: practica.Ruta,
                 vehicleId: practica.VehicleID
             }));
-            console.log('Practicas:', practicas);
+            // console.log('Practicas:', practicas);
             return practicas;
         } catch (error) {
             console.error('Error fetching practicas:', error);

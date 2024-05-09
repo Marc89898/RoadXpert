@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { APIService } from "../../ApiService";
-import  Config  from "../../configuracions";
+import Config from "../../configuracions";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Card, Button, Icon } from "react-native-paper";
+import { Card, Button, Icon, CardContent } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import CircleImage1 from "../../assets/images/Dashboard/notification.png";
@@ -94,27 +94,27 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
       {nextEvent && (
-        <View style={styles.nextEventContainer}>
-          <Text style={styles.nextEventTitle}>Siguiente Practica:</Text>
-          <View style={styles.eventDetail}>
-            <Icon name="calendar" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Fecha: ${nextEvent.Data}`}</Text>
-          </View>
-          <View style={styles.eventDetail}>
-            <Icon name="clock" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Hora: ${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
-          </View>
-          <View style={styles.eventDetail}>
-            <Icon name="map-marker" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Ruta: ${nextEvent.Ruta}`}</Text>
-          </View>
+        <View style={styles.cardContainer}>
+  <Card style={styles.card}>
+    <TouchableOpacity>
+      <Card.Content style={styles.cardContent}>
+        <Text style={styles.nextEventTitle}>Siguiente Práctica</Text>
+        <View style={styles.eventDetail}>
+          <Icon name="calendar" size={20} color="black" />
+          <Text style={styles.eventDetailText}>{`Fecha: ${nextEvent.Data}`}</Text>
         </View>
+        <View style={styles.eventDetail}>
+          <Icon name="clock" size={20} color="black" />
+          <Text style={styles.eventDetailText}>{`Hora: ${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+        </View>
+        <View style={styles.eventDetail}>
+          <Icon name="map-marker" size={20} color="black" />
+          <Text style={styles.eventDetailText}>{`Ruta: ${nextEvent.Ruta}`}</Text>
+        </View>
+      </Card.Content>
+    </TouchableOpacity>
+  </Card>
+</View>
       )}
     </View>
   );
@@ -192,6 +192,27 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     margin: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
+  cardContent: {
+    padding: 10,
+  },
+  nextEventTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  eventDetail: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  eventDetailText: {
+    fontSize: 12,
+    marginLeft: 5,
   },
   card: {
     elevation: 5,
