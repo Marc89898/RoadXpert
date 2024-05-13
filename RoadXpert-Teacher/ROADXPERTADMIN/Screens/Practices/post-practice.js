@@ -3,11 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView, 
-  Button,
+  ScrollView,
   TouchableOpacity,
 } from "react-native";
-import BackNavigation from "../Navigation/BackNavigation";
 import SignatureCanvas from "react-native-signature-canvas";
 import MainButton from "../../Components/Buttons/mainButton.js";
 import CustomTextInput from "../../Components/Inputs/CustomTextInput.js";
@@ -16,42 +14,59 @@ import { useNavigation } from "@react-navigation/native";
 
 const PostPractice = ({ route }) => {
   const { practiceData } = route.params;
-  
+
   const signatureRef = useRef();
   const navigation = useNavigation();
 
-  const handleStartButtonPress = () => {
-    navigation.navigate("Dashboard");
+  const handleFinishButtonPress = () => {
+    navigation.navigate("NavBar");
   };
 
   const handleClearSignature = () => {
     signatureRef.current.clearSignature();
   };
 
+  function calcularDiferenciaHora(horaInicio, horaFin) {
+    // Agregar ":00" si las cadenas de hora no tienen segundos
+    const horaInicioFormat = horaInicio.includes(':') ? horaInicio : `${horaInicio}:00`;
+    const horaFinFormat = horaFin.includes(':') ? horaFin : `${horaFin}:00`;
+
+    // Convertir las cadenas de hora a objetos Date
+    const horaInicioDate = new Date(`1970-01-01T${horaInicioFormat}`);
+    const horaFinDate = new Date(`1970-01-01T${horaFinFormat}`);
+  
+    // Calcular la diferencia en milisegundos
+    const diferenciaMilisegundos = horaFinDate.getTime() - horaInicioDate.getTime();
+  
+    // Calcular horas, minutos y segundos
+    const horas = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60));
+    const minutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diferenciaMilisegundos % (1000 * 60)) / 1000);
+  
+    // Formatear la diferencia en el formato deseado
+    const diferenciaFormateada = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+  
+    return diferenciaFormateada;
+}
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContent}>
       <View style={styles.container}>
-        <BackNavigation />
         <View style={styles.contentContainer}>
-          <Text style={styles.headerText}>Resultados de la practica</Text>
-          <CustomTextInput label="Duracion total:" placeholder="58 mins" />
-          <CustomTextInput label="Errores:" placeholder="3 errores" />
-          <CustomTextInput label="Distancia recorrida:" placeholder="7km" />
-          <CustomTextInput label="Maxima Velocidad:" placeholder="43km/h" />
+          <Text style={styles.headerText}>Resultados de la práctica</Text>
+          <CustomTextInput label="Anotaciones:" placeholder={practiceData.TotalAnotacions.toString()} />
+          <CustomTextInput label="Duración total:" placeholder={calcularDiferenciaHora(practiceData.HoraInici, practiceData.HoraFi)} />
           <Text style={styles.alumnoDataText}>Datos del alumno</Text>
-          <CustomTextInput
-            label="Nombre del alumno:"
-            placeholder="Josep Maria"
-          />
-          <CustomTextInput
-            label="Num. Practica"
-            placeholder="Practica 8"
-          />
-          <CustomTextInput
-            label="Nombre de la practica:"
-            placeholder="Subidas i aparcamientos"
-          />
-          <View style={styles.signatureContainer}>
+          <CustomTextInput label="Nombre del alumno:" placeholder={practiceData.NombreAlumno} />
+          <CustomTextInput label="Num. Práctica" placeholder={practiceData.NumPracticas.toString()} />
+          {/* <CustomTextInput
+            label="Nombre de la práctica:"
+            placeholder={practiceData.NombrePractica}
+          /> */}
+          {/* <CustomTextInput label="Distancia recorrida:" placeholder="7km" />
+          <CustomTextInput label="Máxima Velocidad:" placeholder="43km/h" /> */}
+
+          {/* <View style={styles.signatureContainer}>
             <Text>Firma del alumno:</Text>
             <SignatureCanvas
               ref={signatureRef}
@@ -65,12 +80,12 @@ const PostPractice = ({ route }) => {
             >
               <Icon name="trash" size={30} color="red" />
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           <View>
             <MainButton
-              onPress={handleStartButtonPress}
-              title="Finalizar Practica"
+              onPress={handleFinishButtonPress}
+              title="Finalizar Práctica"
             />
           </View>
         </View>
@@ -102,8 +117,8 @@ const styles = StyleSheet.create({
   },
   alumnoDataText: {
     fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 15,
+    fontWeight: "normal",
+    marginTop: 30,
   },
   signatureCanvas: {
     height: 200,

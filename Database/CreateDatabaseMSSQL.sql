@@ -347,3 +347,11 @@ ALTER TABLE RoadXpertDatabase.dbo.Alumne ADD CONSTRAINT Alumne_FK FOREIGN KEY (P
 ALTER TABLE RoadXpertDatabase.dbo.Practica ALTER COLUMN VehicleID varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL;
 ALTER TABLE RoadXpertDatabase.dbo.Treballador ADD Constrasenya varchar(200) NULL;
 -- cambiar de horaInici a string de practica
+ALTER TABLE RoadXpertDatabase.dbo.Anotacio ADD CategoriaEscrita varchar(100) NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Anotacio ADD CategoriaNumerica float NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Anotacio ADD gravedad varchar(100) NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Anotacio ADD PracticaID varchar(36) NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Anotacio ADD CONSTRAINT Anotacio_FK_PracticaID FOREIGN KEY (PracticaID) REFERENCES RoadXpertDatabase.dbo.Practica(ID);
+ALTER TABLE RoadXpertDatabase.dbo.Anotacio ADD AlumneID varchar(36) NULL;
+ALTER TABLE RoadXpertDatabase.dbo.Anotacio ADD CONSTRAINT Anotacio_FK_AlumneID FOREIGN KEY (AlumneID) REFERENCES RoadXpertDatabase.dbo.Alumne(ID);
+DROP TABLE RoadXpertDatabase.dbo.Comet;

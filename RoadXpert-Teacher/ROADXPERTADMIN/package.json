@@ -29,6 +29,7 @@
     "react-native-audio-recorder-player": "^3.6.7",
     "react-native-calendars": "^1.1304.1",
     "react-native-color-picker": "^0.6.0",
+    "react-native-fab": "^1.0.18",
     "react-native-fingerprint-scanner": "^6.0.0",
     "react-native-get-random-values": "^1.11.0",
     "react-native-google-maps-services": "^0.5.1",

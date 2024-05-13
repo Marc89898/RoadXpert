@@ -58,13 +58,16 @@ const MapScreen = ({ route }) => {
       const filters = fetchedPracticas.map(practica => ({
         id: practica.id,
         url: practica.ruta,
-        showing: false
+        showing: false,
+        data: practica.data // Asegúrate de incluir la propiedad 'data' en cada filtro
       }));
+  
+      // Ordenar los filtros por la propiedad 'data' de manera descendente (de más reciente a más antiguo)
+      filters.sort((a, b) => new Date(b.data) - new Date(a.data));
+
       // console log del numero de las practicas que hay
       setPracticas(fetchedPracticas);
-      console.log("Numero de fetchedPracticas:", fetchedPracticas.length);
       setPracticeRouteFilters(filters);
-      console.log("Numero de filters:", filters.length);
     } catch (error) {
       console.error("Error fetching practicas:", error);
     }
@@ -130,6 +133,7 @@ const MapScreen = ({ route }) => {
             longitude: feature.geometry.coordinates[0],
           },
           title: feature.properties.title,
+          description: feature.properties.description,
         }));
       } else {
         return [];
@@ -160,7 +164,7 @@ const MapScreen = ({ route }) => {
             key={index}
             coordinate={marker.coordinate}
             title={marker.title}
-            // description={marker.description}
+            description={marker.description}
             pinColor="orange"
           />
         ))}

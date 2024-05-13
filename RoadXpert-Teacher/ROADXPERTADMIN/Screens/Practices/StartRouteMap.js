@@ -13,7 +13,6 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as FileSystem from "expo-file-system";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/FontAwesome";
-import BackNavigation from "../Navigation/BackNavigation";
 import AudioManager from "./Models/AudioManager";
 import GPTManager from "./Models/GPTManager";
 import ApiHelper from "../../data/ApiHelper";
@@ -34,11 +33,25 @@ const StartRouteMap = ({ route }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [recording, setRecording] = useState(false);
+  const [practiceID, setPracticeID] = useState(null);
+  const [routeID, setRouteID] = useState(null);
+
 
   const toggleConfirmationModal = () => setShowConfirmation(!showConfirmation);
 
-  const confirmFinishPractice = () => {
-    generateRouteFile();
+  const confirmFinishPractice = async () => {
+    await generateRouteFile();
+    practiceData.HoraFi = new Date().toLocaleTimeString('en-US', { hour12: false });
+    // anadir atributo a la practica de TotalAnotacions
+    practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 2;
+    // practiceData.Ruta = routeID;
+
+    try {
+      await ApiHelper.updatePracticaInSQL(practiceData);
+    } catch (error) {
+      console.error('Error updating practice:', error);
+    }
+
     navigation.navigate("PostPractice", { practiceData: practiceData });
   };
 
@@ -75,7 +88,7 @@ const StartRouteMap = ({ route }) => {
             latitude: newLocation.coords.latitude,
             longitude: newLocation.coords.longitude,
           });
-  
+
           if (addressResponse.length > 0) {
             setStreet(addressResponse[0].street);
             setNumber(addressResponse[0].name);
@@ -85,6 +98,22 @@ const StartRouteMap = ({ route }) => {
       }, 2000);
     })();
   }, [recording]);
+
+  useEffect(() => {
+    const createPractice = async () => {
+      try {
+        const newPractice = await ApiHelper.createPracticaInSQL(practiceData);
+        console.log('Práctica creada:', newPractice.ID);
+        // setPracticeID(newPractice.ID);
+        practiceData.ID = newPractice.ID;
+      } catch (error) {
+        console.error('Error creating practice:', error);
+      }
+    };
+  
+    createPractice();
+  }, []);
+  
 
 
   const startRecording = async () => {
@@ -109,7 +138,7 @@ const StartRouteMap = ({ route }) => {
       const respondeGPT = await GPTManager.interpretGPT(text);
 
       try {
-        addAnotacioToRoute(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
+        addAnotacioToRoute(respondeGPT);
       } catch (error) {
         console.log('No se pudo interpretar el texto');
         addAnotacioToRoute(null);
@@ -118,7 +147,7 @@ const StartRouteMap = ({ route }) => {
         setLoading(false);
       }
 
-      setRespondeGPT(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
+      // setRespondeGPT(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
       setLoading(false);
     } catch (error) {
       console.error('Error al detener la grabación:', error);
@@ -127,15 +156,35 @@ const StartRouteMap = ({ route }) => {
 
   const addAnotacioToRoute = async (anotacio) => {
     if (currentLocation && anotacio != null) {
-      setPointLocations((prevLocations) => [
-        ...prevLocations,
-        {
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-          title: anotacio.tipo,
-          description: anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad
-        },
-      ]);
+      const position = `${currentLocation.latitude},${currentLocation.longitude}`;
+      const descripcion = anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad;
+      const practicaID = practiceData.ID;
+      const alumneID = practiceData.AlumneID;
+
+      try {
+        const response = await ApiHelper.addNewAnotacion({
+          Tipus: anotacio.tipo,
+          Descripcio: descripcion,
+          Posicio: position,
+          CategoriaEscrita: anotacio.CategoriaEscrita,
+          CategoriaNumerica: anotacio.categoriaNumerica,
+          Gravedad: anotacio.gravedad,
+          PracticaID: practicaID,
+          AlumneID: alumneID
+        });
+        console.log('Anotación añadida correctamente:', response);
+        setPointLocations((prevLocations) => [
+          ...prevLocations,
+          {
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+            title: anotacio.tipo,
+            description: descripcion
+          },
+        ]);
+      } catch (error) {
+        console.error('Error al añadir la anotación:', error);
+      }
     } else if (currentLocation && anotacio == null) {
       setPointLocations((prevLocations) => [
         ...prevLocations,
@@ -200,8 +249,8 @@ const StartRouteMap = ({ route }) => {
     try {
       const objectID = await ApiHelper.uploadFileToMongo(file);
       console.log('ObjectID from MongoDB:', objectID);
+      // setRouteID(objectID);
       practiceData.Ruta = objectID;
-      handleCreatePractica(practiceData);
     } catch (error) {
       console.error('Error handling file upload:', error);
     }
@@ -275,7 +324,6 @@ const StartRouteMap = ({ route }) => {
         </MapView>
       )}
 
-      <BackNavigation />
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.headerText}>Práctica 8</Text>

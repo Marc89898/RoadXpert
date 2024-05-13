@@ -18,6 +18,7 @@ import Dashboard from '../Screens/DashboardSection/Dashboard.js';
 import NotificationsScreen from '../Screens/DashboardSection/NotificationsScreen.js';
 import Settings from '../Screens/DashboardSection/Settings.js';
 import UserProfile from '../Screens/DashboardSection/UserProfile.js';
+import ChatBot from '../Screens/DashboardSection/ChatBot.js';
 
 // Students Components
 import MyStudents from '../Screens/StudentsSection/MyStudents.js';
@@ -88,6 +89,7 @@ export default function Router() {
         <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
+        <Stack.Screen name="ChatBot" component={ChatBot} />
         <Stack.Screen name="MyStudents" component={MyStudents} />
         <Stack.Screen name="AllStudents" component={AllStudents} />
         <Stack.Screen name="StudentInfo" component={StudentInfo} />
