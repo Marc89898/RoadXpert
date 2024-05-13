@@ -122,7 +122,7 @@ const Settings = () => {
         <SettingsOption
           iconName="account-details"
           iconColor="#333"
-          text="Professors"
+          text="Workers"
           onPress={() => navigation.navigate("AllWorkers")}
         />
 

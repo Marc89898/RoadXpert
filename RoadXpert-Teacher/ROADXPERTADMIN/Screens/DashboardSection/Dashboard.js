@@ -66,7 +66,6 @@ const Dashboard = () => {
             <Text style={styles.welcomeText}>Welcome Back,</Text>
             <Text style={styles.nameText}>
               {Config?.Professor?.Nom} {Config?.Professor?.Cognom} {Config?.Professor?.SegonCognom}
-              Yossef Joubayr Mejd
             </Text>
           </View>
         </View>
