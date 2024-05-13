@@ -7,7 +7,6 @@ const MyStudentsCard = ({ student, backgroundImage }) => {
   const navigation = useNavigation();
 
   const handleCardPress = () => {
-    // console.log("Student from MyStudentCard:", student);
     navigation.navigate("StudentInfo", { student: student });
   };
 
@@ -15,6 +14,10 @@ const MyStudentsCard = ({ student, backgroundImage }) => {
     <TouchableOpacity onPress={handleCardPress}>
       <Card style={styles.card}>
         <Card.Cover source={backgroundImage} style={styles.cardCover} />
+        <Image
+          source={require("../../assets/images/Students/BackDropImg.png")}
+          style={styles.studentImage}
+        />
         <Image
           source={require("../../assets/images/Students/imgOverlay.png")}
           style={styles.overlayImage}
@@ -55,10 +58,16 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   overlayImage: {
-    opacity: 0.5,
     position: "absolute",
     width: "100%",
     height: "100%",
+    resizeMode: "cover",
+  },
+  studentImage: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 });
 

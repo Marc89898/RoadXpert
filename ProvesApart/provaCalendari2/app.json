@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "provaCalendari2",
+    "slug": "provaCalendari2",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

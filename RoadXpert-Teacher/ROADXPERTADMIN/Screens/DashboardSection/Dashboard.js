@@ -1,26 +1,22 @@
-import { React, useEffect, useState } from "react";
-import { APIService } from "../../ApiService";
-import  Config  from "../../configuracions";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import { Card, Button, Icon } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Card, Icon } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import FloatingButton from "../../Components/Buttons/floatingButton";
 
-import CircleImage1 from "../../assets/images/Dashboard/notification.png";
-import CircleImage2 from "../../assets/images/Dashboard/settings.png";
-import TuImagen from "../../assets/images/Dashboard/ProvaFoto.jpeg";
+import { APIService } from "../../ApiService";
+import Config from "../../configuracions";
+
+// Importar imágenes
+import NotificationsIcon from "../../assets/images/Dashboard/notification.png";
+import SettingsIcon from "../../assets/images/Dashboard/settings.png";
 
 const Dashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
+  // Función para navegar entre pantallas
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
   };
@@ -31,23 +27,31 @@ const Dashboard = () => {
     navigation.navigate("prePractice");
   };
 
+  // Efecto secundario para cargar el siguiente evento del calendario
   useEffect(() => {
     const loadNextEvent = async () => {
       try {
-        if (typeof Config.ProfessorID === 'undefined') {
+        // Verificar si el ProfessorID está definido en la configuración
+        if (typeof Config.ProfessorID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
           return;
         }
+
+        // Cargar los eventos del calendario del profesor
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
         const currentDate = new Date();
+
+        // Ordenar los eventos por fecha
         events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
-        const nextEvent1 = events.find(
+
+        // Encontrar el siguiente evento después de la fecha actual
+        const nextEvent = events.find(
           (event) => new Date(event.Data) > currentDate
         );
-        if (nextEvent1) {
-          console.log("Next Event: ", nextEvent1);
-          setNextEvent(nextEvent1);
+        if (nextEvent) {
+          console.log("Next Event: ", nextEvent);
+          setNextEvent(nextEvent);
         } else {
           console.log("No upcoming events found.");
         }
@@ -61,28 +65,34 @@ const Dashboard = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      {/* Encabezado con bienvenida */}
       <View style={styles.imageContainer}>
-        <ImageBackground source={TuImagen} style={styles.imageBackground}>
+        <View style={styles.imageBackground}>
           <View style={styles.overlay}>
             <Text style={styles.welcomeText}>Welcome Back,</Text>
             <Text style={styles.nameText}>
-              {Config?.Professor?.Nom} {Config?.Professor?.Cognom} {Config?.Professor?.SegonCognom}
+              {Config?.Professor?.Nom} {Config?.Professor?.Cognom}
+              {Config?.Professor?.SegonCognom}Youssef Joubayr Mejd
             </Text>
           </View>
-        </ImageBackground>
+        </View>
       </View>
+
+      {/* Botones de notificaciones y configuración */}
       <View style={styles.circleContainer}>
         <TouchableOpacity onPress={handleNotifications}>
           <View style={styles.circle}>
-            <Image source={CircleImage1} style={styles.circleImage} />
+            <Image source={NotificationsIcon} style={styles.circleImage} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSettings}>
           <View style={styles.circle}>
-            <Image source={CircleImage2} style={styles.circleImage} />
+            <Image source={SettingsIcon} style={styles.circleImage} />
           </View>
         </TouchableOpacity>
       </View>
+
+      {/* Tarjeta para iniciar práctica */}
       <View style={styles.cardContainer}>
         <TouchableOpacity onPress={handleStartPractical}>
           <Card style={styles.card}>
@@ -93,33 +103,43 @@ const Dashboard = () => {
           </Card>
         </TouchableOpacity>
       </View>
+
+      {/* Tarjeta con el siguiente evento */}
       {nextEvent && (
-        <View style={styles.nextEventContainer}>
-          <Text style={styles.nextEventTitle}>Siguiente Practica:</Text>
-          <View style={styles.eventDetail}>
-            <Icon name="calendar" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Fecha: ${nextEvent.Data}`}</Text>
-          </View>
-          <View style={styles.eventDetail}>
-            <Icon name="clock" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Hora: ${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
-          </View>
-          <View style={styles.eventDetail}>
-            <Icon name="map-marker" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Ruta: ${nextEvent.Ruta}`}</Text>
-          </View>
+        <View style={styles.cardContainer}>
+          <Card style={styles.card}>
+            <TouchableOpacity>
+              <Card.Content style={styles.cardContent}>
+                <Text style={styles.nextEventTitle}>Siguiente Práctica</Text>
+                <View style={styles.eventDetail}>
+                  <Icon name="calendar" size={20} color="black" />
+                  <Text
+                    style={styles.eventDetailText}
+                  >{`Fecha: ${nextEvent.Data}`}</Text>
+                </View>
+                <View style={styles.eventDetail}>
+                  <Icon name="clock" size={20} color="black" />
+                  <Text
+                    style={styles.eventDetailText}
+                  >{`Hora: ${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+                </View>
+                <View style={styles.eventDetail}>
+                  <Icon name="map-marker" size={20} color="black" />
+                  <Text
+                    style={styles.eventDetailText}
+                  >{`Ruta: ${nextEvent.Ruta}`}</Text>
+                </View>
+              </Card.Content>
+            </TouchableOpacity>
+          </Card>
         </View>
       )}
+      <FloatingButton />
     </View>
   );
 };
 
+// Estilos de la pantalla
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -134,13 +154,22 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   imageContainer: {
-    borderBottomRightRadius: 100,
     overflow: "hidden",
   },
   imageBackground: {
-    height: 232,
+    height: 120,
     width: "100%",
-    resizeMode: "cover",
+    backgroundColor: "#1F41BB",
+  },
+  title: {
+    fontSize: 80,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+    alignContent: "center",
+    // paddingLeft: 10,
+    marginTop: 30,
+    opacity: 0.3,
   },
   circleContainer: {
     position: "absolute",
@@ -165,13 +194,14 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: "absolute",
-    bottom: 10,
+    flex: 1,
+    top: 50,
     left: 10,
-    backgroundColor: "rgba(0,0,0,0.5)",
     padding: 10,
     borderRadius: 5,
   },
   welcomeText: {
+    left: 2,
     fontSize: 8,
     color: "white",
   },
@@ -182,6 +212,27 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     margin: 20,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
+    backgroundColor: "white",
+  },
+  cardContent: {
+    padding: 10,
+  },
+  nextEventTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  eventDetail: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  eventDetailText: {
+    fontSize: 12,
+    marginLeft: 5,
   },
   card: {
     elevation: 5,

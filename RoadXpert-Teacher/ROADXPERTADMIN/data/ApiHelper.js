@@ -233,7 +233,6 @@ class ApiHelper {
             if (!alumnoId || !profesorId) {
                 throw new Error("Se requiere el ID del alumno y del profesor");
             }
-
             // Realizar la solicitud para asignar el profesor al alumno
             const response = await axios.put(`${apiconfig.mssqlApi.API_URL}/Alumno/AsignarProfesor`, {
                 alumno_id: alumnoId,
