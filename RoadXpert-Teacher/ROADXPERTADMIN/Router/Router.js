@@ -74,7 +74,7 @@ export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="NavBar"
+        initialRouteName="LoginScreen"
         screenOptions={{
           headerShown: false,
         }}

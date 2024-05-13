@@ -12,42 +12,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import CustomTextInput from "../../Components/Inputs/CustomTextInput";
 import CustomSelectInput from "../../Components/Inputs/CustomSelectInput";
 import MainButton from "../../Components/Buttons/mainButton";
+import Config from "../../configuracions";
 
 const UserProfile = () => {
-  const opcionesSexo = [
-    { label: "Hombre", value: "Hombre" },
-    { label: "Mujer", value: "Mujer" },
-  ];
-
-  const [image, setImage] = useState(null);
-
-  const handleImageUpload = async () => {
-    try {
-      const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (!permissionResult.granted) {
-        Alert.alert(
-          "Permission denied",
-          "You need to enable permission to access the library"
-        );
-        return;
-      }
-
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      if (!pickerResult.cancelled) {
-        setImage(pickerResult.uri);
-      }
-    } catch (error) {
-      console.log("Error selecting image:", error);
-    }
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
@@ -57,35 +24,14 @@ const UserProfile = () => {
         </View>
 
         <View style={styles.contentContainer}>
-          <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Image:</Text>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={() => handleImageUpload(false)}
-            >
-              <MaterialIcons name="cloud-upload" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
-
-          <CustomTextInput label="Nombre:" placeholder="Antonio" />
-          <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
-          <CustomTextInput label="Segundo Apellido:" placeholder="Martin" />
-          <CustomTextInput label="Motor:" placeholder="2.0 TDI" />
-          <CustomSelectInput label="Sex:" options={opcionesSexo} />
-          <CustomTextInput label="DNI:" placeholder="99999999Z" />
-
-          <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={() => handleImageUpload(false)}
-            >
-              <MaterialIcons name="cloud-upload" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
-          <CustomTextInput label="Direccion:" placeholder="Olot" />
+          <CustomTextInput label="Nombre:" placeholder={Config.Professor.Nom} readOnly/>
+          <CustomTextInput label="Apellido:" placeholder={Config.Professor.Cognom}  readOnly/>
+          <CustomTextInput label="Segundo Apellido:" placeholder={Config.Professor.SegonCognom} readOnly/>
+          <CustomTextInput label="Sex:" placeholder={Config.Professor.Sexe} readOnly/>
+          <CustomTextInput label="DNI:" placeholder={Config.Professor.DNI} readOnly/>
+          <CustomTextInput label="Carnet:" placeholder={Config.Professor.CarnetConduirFront} readOnly/>
+          <CustomTextInput label="Direccion:" placeholder={Config.Professor.Adreca} readOnly/>
         </View>
-        <MainButton title="Guardar" />
       </View>
     </ScrollView>
   );

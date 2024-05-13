@@ -4,7 +4,7 @@ import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { APIService } from "../ApiService";
-// import { sha256, isValidDNI } from "../utils";
+//import { sha256, isValidDNI } from "../utils";
 import Config from "../configuracions"
 
 const LoginScreen = () => { 
@@ -14,18 +14,19 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    if (!isValidDNI(username)) {
-      alert("Por favor, introduce un DNI válido.");
-      return;
-    }
+    // if (!isValidDNI(username)) {
+    //   alert("Por favor, introduce un DNI válido.");
+    //   return;
+    // }
     const professors = await APIService.fetchAllProfessors();
     const professor = professors.find(
       (prof) => prof.DNI === username
     );
 
     if (professor) {
-      const hashedPassword = await sha256(password);
-      if (hashedPassword === professor.Contrasenya) {
+      Config.Professor = professor;
+        navigation.navigate("NavBar");
+      if (password === professor.Password) {
         Config.Professor = professor;
         navigation.navigate("NavBar");
       } else {
