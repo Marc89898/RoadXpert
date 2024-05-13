@@ -1,40 +1,50 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import BackNavigation from "../Screens/Navigation/BackNavigation";
+import React, { useState, useEffect } from "react"; // Importa useState y useEffect desde React
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import BackNavigation from "../Screens/Navigation/BackNavigation";
 import CarCard from "../Components/Cards/CarCard";
+import { APIService } from "../ApiService";
 
 const AllVehicles = () => {
   const navigation = useNavigation();
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    async function fetchCars() {
+      try {
+        const carsData = await APIService.getAllCars();
+        setCars(carsData);
+      } catch (error) {
+        console.error('Error fetching cars:', error.message);
+      }
+    }
+
+    fetchCars();
+  }, []);
 
   const handleOpen = () => {
     navigation.navigate("RegisterVehicle");
   };
+
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>All Vehicles</Text>
-        <TouchableOpacity style={styles.button} onPress={handleOpen}>
-          <Text style={styles.buttonText}>Create new</Text>
-        </TouchableOpacity>
+        <Text style={styles.headerText}>Coches</Text>
       </View>
-      <View style={styles.cardContainer}>
-        <CarCard
-          cardTitle="Volkswagen Golf"
-          cardSubtitle="No Disponible"
-          circleColor="red"
-          iconName="arrow-right"
-          imagePath={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
-        />
-        <CarCard
-          cardTitle="Volkswagen Golf 5"
-          cardSubtitle="Disponible"
-          circleColor="green"
-          iconName="arrow-right"
-          imagePath={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
-        />
-      </View>
+      <ScrollView style={styles.scrollContainer}>
+        {cars.map((car, index) => (
+          <CarCard
+            key={index}
+            cardTitle={car.Marca + ' ' + car.Model}
+            cardSubtitle={car.Tipus === 'Disponible' ? 'Disponible' : 'No Disponible'}
+            circleColor={car.Tipus === 'Disponible' ? 'red' : 'green'}
+            iconName="arrow-right"
+            imagePath={require("../assets/images/CarsScreen/VolkswagenGolf.png")}
+            onPress={() => handleOpen(car)}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };

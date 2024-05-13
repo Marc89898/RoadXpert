@@ -24,8 +24,6 @@ const LoginScreen = () => {
     );
 
     if (professor) {
-      console.log("professor.Password:", professor.Password);
-      console.log("password:", password);
       if (password.trim() === professor.Password.trim()){
         Config.Professor = professor;
         navigation.navigate("NavBar");

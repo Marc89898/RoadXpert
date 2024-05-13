@@ -15,6 +15,20 @@ import CustomSelectInput from "../Components/Inputs/CustomSelectInput.js";
 import { useNavigation } from "@react-navigation/native";
 import { AsyncStorage } from "react-native";
 
+
+// const newRoleData = {
+//   Nom: "Nuevo Rol",
+//   Descripcio: "Descripción del nuevo rol",
+// };
+
+// try {
+//   const response = await APIService.postRole(newRoleData);
+//   console.log('Role added successfully:', response);
+// } catch (error) {
+//   console.error('Failed to add role:', error);
+// }
+
+
 const CreateRoles = () => {
   const navigation = useNavigation();
   const [colorSeleccionado, setColorSeleccionado] = useState("black");

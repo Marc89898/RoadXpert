@@ -27,25 +27,23 @@ const Dashboard = () => {
     navigation.navigate("prePractice");
   };
 
-  // Efecto secundario para cargar el siguiente evento del calendario
+
   useEffect(() => {
     const loadNextEvent = async () => {
       try {
-        // Verificar si el ProfessorID está definido en la configuración
+
         if (typeof Config.ProfessorID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
           return;
         }
 
-        // Cargar los eventos del calendario del profesor
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
         const currentDate = new Date();
 
-        // Ordenar los eventos por fecha
+
         events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
 
-        // Encontrar el siguiente evento después de la fecha actual
         const nextEvent = events.find(
           (event) => new Date(event.Data) > currentDate
         );
@@ -65,7 +63,6 @@ const Dashboard = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Encabezado con bienvenida */}
       <View style={styles.imageContainer}>
         <View style={styles.imageBackground}>
           <View style={styles.overlay}>
@@ -77,7 +74,6 @@ const Dashboard = () => {
         </View>
       </View>
 
-      {/* Botones de notificaciones y configuración */}
       <View style={styles.circleContainer}>
         <TouchableOpacity onPress={handleNotifications}>
           <View style={styles.circle}>
@@ -91,7 +87,6 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Tarjeta para iniciar práctica */}
       <View style={styles.cardContainer}>
         <TouchableOpacity onPress={handleStartPractical}>
           <Card style={styles.card}>
@@ -103,7 +98,6 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Tarjeta con el siguiente evento */}
       {nextEvent && (
         <View style={styles.cardContainer}>
           <Card style={styles.card}>
@@ -138,7 +132,6 @@ const Dashboard = () => {
   );
 };
 
-// Estilos de la pantalla
 const styles = StyleSheet.create({
   container: {
     flex: 1,
