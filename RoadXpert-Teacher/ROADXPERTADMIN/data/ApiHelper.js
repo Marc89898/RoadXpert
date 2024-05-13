@@ -2,7 +2,6 @@ import apiconfig from "../apiconfig.json";
 import axios from 'axios';
 import * as FileSystem from "expo-file-system";
 
-
 class ApiHelper {
     // static mongoUrl = apiconfig.mongoRouteApi.API_URL;
     // static sqlUrl = apiconfig.mssqlApi.API_URL;
@@ -76,6 +75,23 @@ class ApiHelper {
         }
     };
 
+    static async updatePracticaInSQL(practicaData) {
+        try {
+            console.log('Updating Practica:', practicaData);
+            const response = await fetch(`${apiconfig.mssqlApi.API_URL}/Practica/${practicaData.ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(practicaData),
+            });
+            console.log('Response updating Practica:', response);
+        } catch (error) {
+            console.error('Error updating Practica:', error);
+            throw new Error(`Error updating Practica: ${error.message}`);
+        }
+    };
+
     // Descargar archivo desde MongoDB usando objectId
     static async downloadFileFromMongo(objectId) {
         try {
@@ -132,7 +148,8 @@ class ApiHelper {
                 Adreca: alumno.Adreca,
                 Telefon: alumno.Telefon,
                 ProfessorID: alumno.ProfessorID,
-                Contrasenya: alumno.Contrasenya
+                Contrasenya: alumno.Contrasenya,
+                NumPracticas: alumno.NumPracticas
             }));
             return alumnos;
         } catch (error) {
@@ -216,17 +233,17 @@ class ApiHelper {
             if (!alumnoId || !profesorId) {
                 throw new Error("Se requiere el ID del alumno y del profesor");
             }
-    
+
             // Realizar la solicitud para asignar el profesor al alumno
             const response = await axios.put(`${apiconfig.mssqlApi.API_URL}/Alumno/AsignarProfesor`, {
                 alumno_id: alumnoId,
                 profesor_id: profesorId
             });
-    
+
             if (response.status !== 200) {
                 throw new Error('Error asigning professor to student');
             }
-    
+
             const data = response.data;
             return data.message;
         } catch (error) {
@@ -248,7 +265,40 @@ class ApiHelper {
             console.error('Error fetching professor by ID:', error);
             throw new Error(`Error fetching professor by ID: ${error.message}`);
         }
-    }    
+    }
+
+    // Método para obtener todas las anotaciones de un alumno por su ID
+    static async fetchAnotacionesPorAlumno(alumnoId) {
+        try {
+            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Anotacio/Alumne/${alumnoId}`);
+            if (response.status !== 200) {
+                throw new Error('Error fetching annotations for student');
+            }
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching annotations for student:', error);
+            throw new Error(`Error fetching annotations for student: ${error.message}`);
+        }
+    }
+
+    // Método para agregar una nueva anotación
+    static async addNewAnotacion(anotacionData) {
+        console.log('Adding new annotation:', anotacionData);
+        try {
+            const response = await axios.post(`${apiconfig.mssqlApi.API_URL}/Anotacio`, anotacionData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.status !== 201) {
+                throw new Error('Error adding new annotation');
+            }
+            return response.data;
+        } catch (error) {
+            console.error('Error adding new annotation:', error);
+            throw new Error(`Error adding new annotation: ${error.message}`);
+        }
+    }
 }
 
 export default ApiHelper;
