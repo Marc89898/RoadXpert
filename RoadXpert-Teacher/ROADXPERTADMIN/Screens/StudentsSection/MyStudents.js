@@ -43,7 +43,6 @@ const MyStudents = () => {
         {alumnos.map((alumno) => (
           <MyStudentsCard
             student={alumno}
-            backgroundImage={require("../../assets/images/Students/imgOverlay.png")}
           />
         ))}
       </View>
