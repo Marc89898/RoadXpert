@@ -14,7 +14,7 @@ def get_autoescoles():
     """GET of all the driving schools"""
     try:
         with engine.connect() as conn:
-            query = text("SELECT * FROM Alumne")
+            query = text("SELECT *, (SELECT COUNT(*) FROM Practica WHERE Practica.AlumneID = Alumne.ID) AS NumPracticas FROM Alumne")
             result = conn.execute(query)
             autoescoles = []
             for row in result.fetchall():
