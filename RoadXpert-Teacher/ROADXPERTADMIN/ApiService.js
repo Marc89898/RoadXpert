@@ -159,8 +159,24 @@ class APIService {
       }catch(error) {
         console.error("Error en la peticion de todos los professores: " + error)
       }
-      }
+    }
     
+    static async fetchAllRoles() {
+      try {
+        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Rol"
+        const response = await fetch(url);
+        let data = "";
+        console.log(response)
+        if (response.status != 500 && response.status != 404) {
+          data = await response.json();
+          return data;
+        } else {
+          console.error("Error en la petición de Roles: Status", response.status, response.statusText);
+        }
+      }catch(error) {
+        console.error("Error en la peticion de todos los Roles: " + error)
+      }
+    }
     static async fetchEstatDescription(EstatHoraID) {
       try {
         const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/EstatHora/" + EstatHoraID

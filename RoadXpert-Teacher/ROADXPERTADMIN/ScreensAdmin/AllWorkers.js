@@ -36,7 +36,7 @@ const AllWorkers = () => {
           <WorkersCard
             key={index}
             name={professor.Nom}
-            desc={professor.ID}
+            desc={professor.DNI}
           />
         ))}
       </View>
