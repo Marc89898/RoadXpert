@@ -1,28 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import WorkersCard from "../../../../../Components/Cards/WorkersCard";
 import { useNavigation } from "@react-navigation/native";
+import { APIService } from "../ApiService";
 
 const AllWorkers = () => {
   const navigation = useNavigation();
+  const [Professors, setProfessors] = useState([]);
+
+  useEffect(() => {
+    getWorkers();
+  }, []);
 
   const handleOpen = () => {
     navigation.navigate("RegisterPerson");
+  };
+
+  const getWorkers = async () => {
+    const professorsFromApi = await APIService.fetchAllProfessors();
+    setProfessors(professorsFromApi);
   };
 
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>All Workers</Text>
+        <Text style={styles.headerText}>Workers</Text>
         <TouchableOpacity style={styles.button} onPress={handleOpen}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
-        <WorkersCard name="Pedro Sanchez" desc="19 años" />
-        <WorkersCard name="Pablo Escobar" desc="25 años" />
+        {Professors.map((professor, index) => (
+          <WorkersCard
+            key={index}
+            name={professor.Nom}
+            desc={professor.DNI}
+          />
+        ))}
       </View>
     </View>
   );

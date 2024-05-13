@@ -116,7 +116,7 @@ def post_new_Practica():
             sql = text("INSERT INTO Practica (ID, AlumneID, Ruta, Km, HoraInici, HoraFi, ProfessorID, VehicleID, EstatHoraID, Data) VALUES (:ID, :AlumneID, :Ruta, :Km, :HoraInici, :HoraFi, :ProfessorID, :VehicleID, :EstatHoraID, :Data)")
             connection.execute(sql, {"ID": id, "AlumneID": AlumneID, "Ruta":Ruta, "Km":Km, "HoraInici":HoraInici, "HoraFi":HoraFi,"ProfessorID": ProfessorID , "VehicleID":VehicleID, "EstatHoraID":EstatHoraID, "Data": Data})
             connection.commit()
-            return jsonify({"message": "Practica added successfully"}), 201
+            return jsonify({"message": "Practica added successfully", "ID": id}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

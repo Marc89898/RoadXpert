@@ -14,6 +14,28 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
 
+
+// const newProfessorData = {
+//   Nom: "Nombre",
+//   Cognom: "Apellido",
+//   SegonCognom: "Segundo Apellido",
+//   DNI: "12345678X",
+//   Adreca: "Dirección",
+//   Sexe: "Género",
+//   CarnetConduirFront: "URL del Carnet de Conducir (Frontal)",
+//   CarnetConduirDarrera: "URL del Carnet de Conducir (Dorso)",
+//   HorariID: "ID del Horario asignado",
+//   Password: "contraseña",
+// };
+
+// try {
+//   const response = await APIService.postProfessor(newProfessorData);
+//   console.log('Professor added successfully:', response);
+// } catch (error) {
+//   console.error('Failed to add professor:', error);
+// }
+
+
 const RegisterPerson = () => {
   const navigation = useNavigation();
 

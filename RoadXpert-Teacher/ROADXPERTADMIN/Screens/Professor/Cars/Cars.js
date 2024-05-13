@@ -1,15 +1,30 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
 import CarCard from "../../../Components/Cards/CarCard"; 
+import { APIService } from "../../ApiService";
 
 export default function MyCars() {
   const navigation = useNavigation();
+  const [cars, setCars] = useState([]);
 
-  const handleCardPress = (cardData) => {
-    navigation.navigate("CarInfo", { cardData });
+  const handleCardPress = (carData) => {
+    navigation.navigate("CarInfo", { carData });
   };
+
+  useEffect(() => {
+    async function fetchCars() {
+      try {
+        const carsData = await APIService.getAllCars();
+        setCars(carsData);
+      } catch (error) {
+        console.error('Error fetching cars:', error.message);
+      }
+    }
+
+    fetchCars();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -17,36 +32,19 @@ export default function MyCars() {
       <View style={styles.header}>
         <Text style={styles.headerText}>Coches</Text>
       </View>
-      <CarCard
-        cardTitle="Volkswagen Golf"
-        cardSubtitle="Disponible"
-        circleColor="red"
-        iconName="arrow-right"
-        imagePath={require("../../../assets/images/CarsScreen/VolkswagenGolf.png")}
-        onPress={() =>
-          handleCardPress({
-            cardTitle: "Volkswagen Golf",
-            cardSubtitle: "Disponible",
-            circleColor: "red",
-            imagePath: require("../../../assets/images/CarsScreen/VolkswagenGolf.png"),
-          })
-        }
-      />
-      <CarCard
-        cardTitle="Volkswagen Arteon"
-        cardSubtitle="No Disponible"
-        circleColor="green"
-        iconName= "arrow-right"
-        imagePath={require("../../../assets/images/CarsScreen/VolkswagenArteon.webp")}
-        onPress={() =>
-          handleCardPress({
-            cardTitle: "Volkswagen Arteon",
-            cardSubtitle: "No Disponible",
-            circleColor: "green",
-            imagePath: require("../../../assets/images/CarsScreen/VolkswagenArteon.webp"),
-          })
-        }
-      />
+      <ScrollView style={styles.scrollContainer}>
+        {cars.map((car, index) => (
+          <CarCard
+            key={index}
+            cardTitle={car.Marca + ' ' + car.Model}
+            cardSubtitle={car.Tipus === 'Disponible' ? 'Disponible' : 'No Disponible'}
+            circleColor={car.Tipus === 'Disponible' ? 'red' : 'green'}
+            iconName="arrow-right"
+            imagePath={require("../../assets/images/CarsScreen/VolkswagenGolf.png")}
+            onPress={() => handleCardPress(car)}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -60,5 +58,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 25,
+  },
+  scrollContainer: {
+    flex: 1,
   },
 });

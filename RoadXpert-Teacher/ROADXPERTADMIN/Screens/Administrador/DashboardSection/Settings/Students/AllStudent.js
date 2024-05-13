@@ -37,7 +37,7 @@ const AllStudent = () => {
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>All Roles</Text>
+        <Text style={styles.headerText}>All Students</Text>
         <TouchableOpacity style={styles.button} onPress={handleOpen}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>

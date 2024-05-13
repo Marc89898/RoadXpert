@@ -14,6 +14,24 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
 
+// const newAlumnData = {
+//   Nom: "Nuevo Alumno",
+//   DNI: "12345678A",
+//   Adreca: "Calle Ejemplo, 123",
+//   Telefon: "123456789",
+//   Contrasenya: "contraseña123",
+//   ProfessorID: 1,
+// };
+
+// try {
+//   const response = await APIService.postAlumn(newAlumnData);
+//   console.log('Alumn added successfully:', response);
+// } catch (error) {
+//   console.error('Failed to add alumn:', error);
+// }
+
+
+
 const RegisterStudent = () => {
   const navigation = useNavigation();
 

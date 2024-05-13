@@ -24,14 +24,11 @@ const PrePractice = () => {
   const [showModal, setShowModal] = useState(false);
   const [alumnos, setAlumnos] = useState([]);
   const [selectedAlumno, setSelectedAlumno] = useState(null); // Almacena el ID del alumno seleccionado
-  const [carnets, setCarnets] = useState([]);
-  const [selectedCarnet, setSelectedCarnet] = useState(null); // Almacena el ID del carnet seleccionado
   const [cotxes, setCotxes] = useState([]);
   const [selectedCotxe, setSelectedCotxe] = useState(null); // Almacena la matrícula del vehículo seleccionado
 
   useEffect(() => {
     fetchAlumnosData();
-    fetchCarnetsData();
     fetchCotxesData();
   }, []);
 
@@ -42,16 +39,6 @@ const PrePractice = () => {
       setAlumnos(alumnosData);
     } catch (error) {
       console.error('Error fetching alumnos:', error);
-    }
-  };
-
-  // Llamada a la función fetchCarnets para obtener la lista de carnets
-  const fetchCarnetsData = async () => {
-    try {
-      const carnetsData = await ApiHelper.fetchCarnets();
-      setCarnets(carnetsData);
-    } catch (error) {
-      console.error('Error fetching carnets:', error);
     }
   };
 
@@ -76,15 +63,9 @@ const PrePractice = () => {
   const handleStartButtonPress = () => {
     // Verificar si se ha seleccionado un alumno
     if (!selectedAlumno) {
-      // console.error('Debe seleccionar un alumno antes de continuar.');
       return;
     }
-    // if (!selectedCarnet) {
-    //   console.error('Debe seleccionar un tipo de carnet antes de continuar.');
-    //   return;
-    // }
     if (!selectedCotxe) {
-      // console.error('Debe seleccionar un vehículo antes de continuar.');
       return;
     }
 
@@ -93,15 +74,20 @@ const PrePractice = () => {
 
     // Crear el objeto practicaDataObj con los datos seleccionados
     const practiceDataObj = {
+      ID: '',
       AlumneID: selectedAlumno, // ID del alumno seleccionado
-      Ruta: '6627d530f53b02fe8d5bed5c',
+      Ruta: '',
       Km: 0,
-      HoraInici: '10:00:00', // Formato 'HH:mm:ss
-      HoraFi: '11:00:00', // Formato 'HH:mm:ss
+      HoraInici: new Date().toLocaleTimeString('en-US', { hour12: false }),
+      HoraFi: '00:00:00',
       ProfessorID: Config.ProfessorID,
       VehicleID: selectedCotxe, // Matrícula del vehículo seleccionado
       EstatHoraID: 'EstatHora_1',
-      Data: today.toISOString().split('T')[0] // Formato 'YYYY-MM-DD' 
+      Data: today.toISOString().split('T')[0], // Formato 'YYYY-MM-DD' 
+      NumPracticas: selectedAlumno && alumnos.find(alumno => alumno.ID === selectedAlumno)?.NumPracticas,
+      TotalAnotacions: 0,
+      NombreAlumno: selectedAlumno && alumnos.find(alumno => alumno.ID === selectedAlumno)?.Nom,
+      // NombrePractica: 'Práctica de conducción',
     };
     navigation.navigate("StartRouteMap", { practiceData: practiceDataObj });
   };
@@ -119,7 +105,7 @@ const PrePractice = () => {
         >
           <Picker.Item label="Seleccionar alumno..." value={null} />
           {alumnos.map(alumno => (
-            <Picker.Item key={alumno.ID} label={alumno.Nom} value={alumno.ID} />
+            <Picker.Item key={alumno.ID} label={`${alumno.Nom} (${alumno.NumPracticas} prácticas)`} value={alumno.ID} />
           ))}
         </Picker>
         <Text style={styles.label}>Vehículo:</Text>

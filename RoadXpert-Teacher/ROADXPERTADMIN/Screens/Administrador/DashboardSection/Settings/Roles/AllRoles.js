@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import RolesCard from "../../../../../Components/Cards/RolesCard";
 import { useNavigation } from "@react-navigation/native";
+import { APIService } from "../ApiService";
 
 const AllRoles = () => {
   const navigation = useNavigation();
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    // Llamamos a la función para obtener los roles cuando el componente se monta
+    getRoles();
+  }, []);
 
   const handleOpen = () => {
     navigation.navigate("CreateRoles");
   };
+
+  const getRoles = async () => {
+    // Obtenemos los roles de la API y actualizamos el estado
+    const rolesFromApi = await APIService.fetchAllRoles();
+    setRoles(rolesFromApi);
+  };
+
   return (
     <View style={styles.container}>
       <BackNavigation />
@@ -20,8 +34,12 @@ const AllRoles = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
-        <RolesCard name="Admin" desc="2 Members" />
-        <RolesCard name="Secretary" desc="10 Members" />
+        {roles.map((role, index) => (
+          <RolesCard
+            key={index}
+            name={role.Nom}
+          />
+        ))}
       </View>
     </View>
   );

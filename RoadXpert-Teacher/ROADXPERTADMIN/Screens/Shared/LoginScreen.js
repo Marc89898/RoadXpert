@@ -3,8 +3,8 @@ import { View, StyleSheet, Image, Text, TextInput } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { APIService } from "../../ApiService";
-// import { sha256, isValidDNI } from "../utils";
+import { APIService } from "../ApiService";
+import { sha256, isValidDNI } from "../utils";
 import Config from "../../configuracions";
 
 const LoginScreen = () => { 
@@ -24,8 +24,7 @@ const LoginScreen = () => {
     );
 
     if (professor) {
-      const hashedPassword = await sha256(password);
-      if (hashedPassword === professor.Contrasenya) {
+      if (password.trim() === professor.Password.trim()){
         Config.Professor = professor;
         navigation.navigate("NavBar");
       } else {

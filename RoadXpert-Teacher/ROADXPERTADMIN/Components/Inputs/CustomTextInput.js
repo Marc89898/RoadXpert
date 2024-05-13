@@ -6,7 +6,7 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 const CustomTextInput = ({ label, placeholder }) => (
   <View style={styles.inputContainer}>
     <Text style={styles.CustomTextLabel}>{label}</Text>
-    <TextInput style={styles.input} placeholder={placeholder} />
+    <TextInput style={styles.input} placeholder={placeholder} readOnly/>
   </View>
 );
 

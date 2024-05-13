@@ -2,6 +2,7 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { APIService } from "../../ApiService";
 
 const DuoButton = ({ text }) => {
   const navigation = useNavigation();
