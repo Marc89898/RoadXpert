@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import CircleImage1 from "../assets/images/Dashboard/notification.png";
 import CircleImage2 from "../assets/images/Dashboard/settings.png";
@@ -52,12 +52,12 @@ const Dashboard = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.imageContainer}>
-        <ImageBackground source={TuImagen} style={styles.imageBackground}>
+        <View style={styles.imageBackground}>
           <View style={styles.overlay}>
             <Text style={styles.welcomeText}>Welcome Back,</Text>
             <Text style={styles.nameText}>{Config.Alumne.Nom}</Text>
           </View>
-        </ImageBackground>
+        </View>
       </View>
       <View style={styles.circleContainer}>
         <TouchableOpacity onPress={handleNotifications}>
@@ -83,12 +83,11 @@ const Dashboard = () => {
                 </View>
 
                 <View style={styles.eventDetail}>
-                  <Icon name="calendar" size={20} color="black" />
+                  {/* <Icon name="calendar" size={20} color="black" /> */}
                   <Text style={styles.eventDetailText}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
                 </View>
 
                 <View style={styles.eventDetail}>
-                  <Icon name="clock" size={20} color="black" />
                   <Text
                     style={styles.eventDetailText}
                   >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
@@ -139,6 +138,22 @@ const styles = StyleSheet.create({
   },
   card: {
     elevation: 5,
+  },
+  overlay: {
+    position: "absolute",
+    flex: 1,
+    top: 50,
+    left: 10,
+    padding: 10,
+    borderRadius: 5,
+  },
+  imageContainer: {
+    overflow: "hidden",
+  },
+  imageBackground: {
+    height: 120,
+    width: "100%",
+    backgroundColor: "#1F41BB",
   },
   cardTitle: {
     fontSize: 18,
@@ -227,6 +242,25 @@ const styles = StyleSheet.create({
   eventDetailText: {
     marginLeft: 10,
     fontSize: 16,
+  },
+
+
+  imageContainer: {
+    overflow: "hidden",
+  },
+  imageBackground: {
+    height: 120,
+    width: "100%",
+    backgroundColor: "#1F41BB",
+  },
+
+  overlay: {
+    position: "absolute",
+    flex: 1,
+    top: 50,
+    left: 10,
+    padding: 10,
+    borderRadius: 5,
   },
 });
 
