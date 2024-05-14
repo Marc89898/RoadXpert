@@ -9,9 +9,9 @@ import {
   Image,
 } from "react-native";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
-import chatBotImg from "../../assets/images/Dashboard/chatBot.jpg";
+import chatBotImg from "../../../assets/images/Dashboard/chatBot.jpg";
 
-const ChatBot = () => {
+const AdminChatBot = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -147,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatBot;
+export default AdminChatBot;

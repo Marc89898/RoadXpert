@@ -7,42 +7,26 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
-import DuoButton from "../../../../../Components/Buttons/duoButton.js";
+import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
+import MainButton from "../../../../../Components/Buttons/mainButton.js";
 import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
 
-
-// const newProfessorData = {
-//   Nom: "Nombre",
-//   Cognom: "Apellido",
-//   SegonCognom: "Segundo Apellido",
-//   DNI: "12345678X",
-//   Adreca: "Dirección",
-//   Sexe: "Género",
-//   CarnetConduirFront: "URL del Carnet de Conducir (Frontal)",
-//   CarnetConduirDarrera: "URL del Carnet de Conducir (Dorso)",
-//   HorariID: "ID del Horario asignado",
-//   Password: "contraseña",
-// };
-
-// try {
-//   const response = await APIService.postProfessor(newProfessorData);
-//   console.log('Professor added successfully:', response);
-// } catch (error) {
-//   console.error('Failed to add professor:', error);
-// }
-
-
-const RegisterPerson = () => {
+const AdminRegisterVehicle = () => {
   const navigation = useNavigation();
 
-  const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
-  const opcionesSexo = [
-    { label: "Hombre", value: "Hombre" },
-    { label: "Mujer", value: "Mujer" },
+  const handleSave = () => {
+    console.log("Guardado");
+  };
+
+  const opcionesVehicles = [
+    { label: "Coche", value: "Coche" },
+    { label: "Motocicleta", value: "Motocicleta" },
+    { label: "Camion", value: "Camion" },
+    { label: "Tractor", value: "Tractor" },
+    { label: "Avion", value: "Avion" },
   ];
 
   const [image, setImage] = useState(null);
@@ -79,12 +63,23 @@ const RegisterPerson = () => {
       <View style={styles.container}>
         <BackNavigation />
         <View style={styles.header}>
-          <Text style={styles.headerText}>Register Person</Text>
+          <Text style={styles.headerText}>Register Vehicle</Text>
         </View>
 
         <View style={styles.contentContainer}>
+          <CustomSelectInput
+            label="Tipo de vehiculo"
+            options={opcionesVehicles}
+          />
+          <CustomTextInput
+            label="Marca de vehiculo:"
+            placeholder="Volkswagen"
+          />
+          <CustomTextInput label="Modelo de vehiculo:" placeholder="Golf" />
+          <CustomTextInput label="Any fabricacio:" placeholder="2015" />
+          <CustomTextInput label="Color:" placeholder="Red" />
           {/* <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Image:</Text>
+            <Text style={styles.uploadLabel}>Vehicle image:</Text>
             <TouchableOpacity
               style={styles.icon}
               onPress={() => handleImageUpload(false)}
@@ -92,25 +87,9 @@ const RegisterPerson = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View> */}
-          <CustomSelectInput label="Assigned rol:" options={opcionesVehicles} />
-          <CustomTextInput label="Nombre:" placeholder="Antonio" />
-          <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
-          <CustomTextInput label="Segundo Apellido:" placeholder="Martin" />
-          <CustomTextInput label="DNI:" placeholder="99999999Z" />
-          <CustomTextInput label="Direccion:" placeholder="Olot" />
-          <CustomSelectInput label="Sex:" options={opcionesSexo} />
-          <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={() => handleImageUpload(false)}
-            >
-              <MaterialIcons name="cloud-upload" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
-      <DuoButton text="Guardar" />
+      <MainButton title="Guardar" onPress={handleSave} />
     </ScrollView>
   );
 };
@@ -174,4 +153,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterPerson;
+export default AdminRegisterVehicle;

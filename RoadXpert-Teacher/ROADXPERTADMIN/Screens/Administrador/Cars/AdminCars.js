@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
 import CarCard from "../../../Components/Cards/CarCard"; 
 
-export default function MyCars() {
+export default function AdminMyCars() {
   const navigation = useNavigation();
 
   const handleCardPress = (cardData) => {

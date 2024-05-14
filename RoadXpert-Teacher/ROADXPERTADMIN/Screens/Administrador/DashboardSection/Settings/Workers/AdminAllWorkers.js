@@ -1,43 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
-import RolesCard from "../../../../../Components/Cards/RolesCard";
+import WorkersCard from "../../../../../Components/Cards/WorkersCard";
 import { useNavigation } from "@react-navigation/native";
 import { APIService } from "../../../../../ApiService";
 
-const AllRoles = () => {
+const AdminAllWorkers = () => {
   const navigation = useNavigation();
-  const [roles, setRoles] = useState([]);
+  const [Professors, setProfessors] = useState([]);
 
   useEffect(() => {
-    // Llamamos a la función para obtener los roles cuando el componente se monta
-    getRoles();
+    getWorkers();
   }, []);
 
   const handleOpen = () => {
-    navigation.navigate("CreateRoles");
+    navigation.navigate("RegisterPerson");
   };
 
-  const getRoles = async () => {
-    // Obtenemos los roles de la API y actualizamos el estado
-    const rolesFromApi = await APIService.fetchAllRoles();
-    setRoles(rolesFromApi);
+  const getWorkers = async () => {
+    const professorsFromApi = await APIService.fetchAllProfessors();
+    setProfessors(professorsFromApi);
   };
 
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>All Roles</Text>
+        <Text style={styles.headerText}>Workers</Text>
         <TouchableOpacity style={styles.button} onPress={handleOpen}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.cardContainer}>
-        {roles.map((role, index) => (
-          <RolesCard
+        {Professors.map((professor, index) => (
+          <WorkersCard
             key={index}
-            name={role.Nom}
+            name={professor.Nom}
+            desc={professor.DNI}
           />
         ))}
       </View>
@@ -75,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllRoles;
+export default AdminAllWorkers;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const NoPage = () => {
+const AdminNoPage = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>T'has vist?, Tens cara de ADMIN?, Fracasat, fora d'aqui</Text>
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default NoPage;
+export default AdminNoPage;

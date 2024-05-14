@@ -11,7 +11,7 @@ import Config from "../../../configuracions";
 import NotificationsIcon from "../../../assets/images/Dashboard/notification.png";
 import SettingsIcon from "../../../assets/images/Dashboard/settings.png";
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -272,4 +272,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dashboard;
+export default AdminDashboard;

@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import CarCard from "../../../Components/Cards/CarCard";
 
-const CarInfo = ({ route }) => {
+const AdminCarInfo = ({ route }) => {
   const { cardData } = route.params;
 
   const navigation = useNavigation();
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
 });
-export default CarInfo;
+export default AdminCarInfo;
 
 {
   /* <Card style={styles.card}>

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
-import ApiHelper from "../../../../../data/ApiHelper";
-import { useNavigation } from "@react-navigation/native";
-import AllStudentsCard from "../../../../../Components/Cards/AllStudentsCard.js";
+import { View, Text, StyleSheet, TextInput } from "react-native";
+import BackNavigation from "../../../Components/Navigation/BackNavigation";
+import ApiHelper from "../../../data/ApiHelper";
+import AllStudentsCard from "../../../Components/Cards/AllStudentsCard";
 
-const AllStudent = () => {
-  const navigation = useNavigation();
+const AdminAllStudents = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -19,18 +17,13 @@ const AllStudent = () => {
       const alumnos = await ApiHelper.fetchAlumnos();
       setStudents(alumnos);
     } catch (error) {
-      console.error("Error fetching students:", error);
+      console.error('Error fetching students:', error);
     }
   };
 
-  const handleOpen = () => {
-    navigation.navigate("RegisterStudent");
-  };
-
-  const filteredStudents = students.filter(
-    (student) =>
-      student.Nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.DNI.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredStudents = students.filter((student) =>
+    student.Nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.DNI.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -38,9 +31,6 @@ const AllStudent = () => {
       <BackNavigation />
       <View style={styles.header}>
         <Text style={styles.headerText}>All Students</Text>
-        <TouchableOpacity style={styles.button} onPress={handleOpen}>
-          <Text style={styles.buttonText}>Create new</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.searchContainer}>
         <TextInput
@@ -52,10 +42,9 @@ const AllStudent = () => {
       </View>
       <View style={styles.content}>
         {filteredStudents.map((student, index) => (
-          <AllStudentsCard
+          <AllStudentsCard 
             key={index}
             student={student}
-            handleNavigate={() => navigation.navigate("StudentProfile")}
           />
         ))}
       </View>
@@ -68,24 +57,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    paddingLeft: 24,
+    paddingTop: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 24,
-    marginBottom: 10,
   },
   headerText: {
     fontSize: 25,
-  },
-  button: {
-    backgroundColor: "#007bff",
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 50,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
+    flex: 1,
   },
   searchContainer: {
     padding: 20,
@@ -103,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllStudent;
+export default AdminAllStudents;

@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import ApiHelper from "../../../data/ApiHelper.js";
 import Config from "../../../configuracions.js";
 
-const PrePractice = () => {
+const AdminPrePractice = () => {
   const navigation = useNavigation();
   const signatureRef = useRef();
   const [showModal, setShowModal] = useState(false);
@@ -242,4 +242,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PrePractice;
+export default AdminPrePractice;

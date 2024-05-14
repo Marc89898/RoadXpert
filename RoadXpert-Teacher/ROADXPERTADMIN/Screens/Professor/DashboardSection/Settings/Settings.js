@@ -37,10 +37,6 @@ const Settings = () => {
     navigation.navigate("UserProfile");
   };
 
-  const handleDarkModeChange = () => {
-    setIsDarkMode((prevState) => !prevState);
-  };
-
   const SettingsOption = ({
     iconName = "account-edit",
     iconColor = "#333",
@@ -117,43 +113,6 @@ const Settings = () => {
           iconColor="#333"
           text="View Profile"
           onPress={handleEditProfile}
-        />
-
-        <SettingsOption
-          iconName="account-details"
-          iconColor="#333"
-          text="Workers"
-          onPress={() => navigation.navigate("AllWorkers")}
-        />
-
-        <SettingsOption
-          iconName="account-check"
-          iconColor="#333"
-          text="Roles"
-          onPress={() => navigation.navigate("AllRoles")}
-        />
-
-        <SettingsOption
-          iconName="account-group"
-          iconColor="#333"
-          text="Students"
-          onPress={() => navigation.navigate("AllStudent")}
-        />
-
-        <SettingsOption
-          iconName="car-cog"
-          iconColor="#333"
-          text="Vehicles"
-          onPress={() => navigation.navigate("AllVehicles")}
-        />
-
-        <SettingsOption
-          iconName="brightness-6"
-          iconColor="#333"
-          text="Dark Mode"
-          showSwitch
-          switchValue={isDarkMode}
-          onSwitchValueChange={handleDarkModeChange}
         />
       </View>
 
@@ -247,7 +206,7 @@ const styles = StyleSheet.create({
   darkButton: {
     backgroundColor: "#333",
     color: "#fff",
-  },
+  },  
   settingsContainer: {
     marginTop: 24,
   },

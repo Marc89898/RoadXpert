@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import MainButton from "../../../../Components/Buttons/mainButton";
 import { useNavigation } from "@react-navigation/native";
 
-const Settings = () => {
+const AdminSettings = () => {
   const navigation = useNavigation();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -263,4 +263,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Settings;
+export default AdminSettings;

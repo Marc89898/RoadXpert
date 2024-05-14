@@ -18,7 +18,7 @@ import AudioManager from "./Models/AudioManager";
 import GPTManager from "./Models/GPTManager";
 import ApiHelper from "../../../data/ApiHelper";
 
-const StartRouteMap = ({ route }) => {
+const AdminStartRouteMap = ({ route }) => {
   const { practiceData } = route.params;
 
   const navigation = useNavigation();
@@ -462,4 +462,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StartRouteMap;
+export default AdminStartRouteMap;
