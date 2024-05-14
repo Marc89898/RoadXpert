@@ -243,8 +243,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
-
-
   imageContainer: {
     overflow: "hidden",
   },
