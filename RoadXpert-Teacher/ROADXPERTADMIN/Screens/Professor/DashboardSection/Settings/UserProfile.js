@@ -12,7 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import CustomTextInput from "../../../../Components/Inputs/CustomTextInput";
 import CustomSelectInput from "../../../../Components/Inputs/CustomSelectInput";
 import MainButton from "../../../../Components/Buttons/mainButton";
-import Config from "../../configuracions";
+import Config from "../../../../configuracions";
 
 const UserProfile = () => {
   return (

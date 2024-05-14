@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
 import CarCard from "../../../Components/Cards/CarCard"; 
-import { APIService } from "../../ApiService";
+import { APIService } from "../../../ApiService";
 
 export default function MyCars() {
   const navigation = useNavigation();
@@ -40,7 +40,7 @@ export default function MyCars() {
             cardSubtitle={car.Tipus === 'Disponible' ? 'Disponible' : 'No Disponible'}
             circleColor={car.Tipus === 'Disponible' ? 'red' : 'green'}
             iconName="arrow-right"
-            imagePath={require("../../assets/images/CarsScreen/VolkswagenGolf.png")}
+            imagePath={require("../../../assets/images/CarsScreen/VolkswagenGolf.png")}
             onPress={() => handleCardPress(car)}
           />
         ))}

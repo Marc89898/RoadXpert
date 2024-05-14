@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import WorkersCard from "../../../../../Components/Cards/WorkersCard";
 import { useNavigation } from "@react-navigation/native";
-import { APIService } from "../ApiService";
+import { APIService } from "../../../../../ApiService";
 
 const AllWorkers = () => {
   const navigation = useNavigation();

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import RolesCard from "../../../../../Components/Cards/RolesCard";
 import { useNavigation } from "@react-navigation/native";
-import { APIService } from "../ApiService";
+import { APIService } from "../../../../../ApiService";
 
 const AllRoles = () => {
   const navigation = useNavigation();
