@@ -4,7 +4,7 @@ import BackNavigation from '../../../Components/Navigation/BackNavigation';
 import { Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-const Categories = () => {
+const AdminCategories = () => {
     const navigation = useNavigation();
 
     const handleSelected = (text, subText, subTextInfo, imageSource) => {
@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Categories;
+export default AdminCategories;

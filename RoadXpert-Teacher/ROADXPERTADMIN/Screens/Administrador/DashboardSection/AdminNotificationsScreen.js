@@ -16,7 +16,7 @@ const NotificationItem = () => {
     );
 };
 
-const NotificationsScreen = () => {
+const AdminNotificationsScreen = () => {
     const [value, setValue] = React.useState('');
 
     return (
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default NotificationsScreen;
+export default AdminNotificationsScreen;

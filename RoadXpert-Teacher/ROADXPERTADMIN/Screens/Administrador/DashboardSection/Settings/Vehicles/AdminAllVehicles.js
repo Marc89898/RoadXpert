@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import CarCard from "../../../../../Components/Cards/CarCard";
 import { APIService } from "../../../../../ApiService";
 
-const AllVehicles = () => {
+const AdminAllVehicles = () => {
   const navigation = useNavigation();
   const [cars, setCars] = useState([]);
 
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllVehicles;
+export default AdminAllVehicles;

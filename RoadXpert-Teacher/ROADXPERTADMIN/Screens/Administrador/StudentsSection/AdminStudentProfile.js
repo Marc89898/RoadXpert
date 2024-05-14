@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import ApiHelper from "../../../data/ApiHelper";
 
-const StudentProfile = ({ route }) => {
+const AdminStudentProfile = ({ route }) => {
   const { student } = route.params;
   const [professorName, setProfessorName] = useState('');
 
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default StudentProfile;
+export default AdminStudentProfile;

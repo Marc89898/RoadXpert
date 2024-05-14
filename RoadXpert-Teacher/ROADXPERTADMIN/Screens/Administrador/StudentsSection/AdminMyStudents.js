@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Card } from "react-native-paper";
-import BackNavigation from "../../../Components/Navigation/BackNavigation";
+import BackNavigation from "../../../Components/Navigation/BackNavigation.js";
 import { useNavigation } from "@react-navigation/native";
-import ApiHelper from "../../../data/ApiHelper";
+import ApiHelper from "../../../data/ApiHelper.js";
 import Config from "../../../configuracions.js";
-import MyStudentsCard from "../../../Components/Cards/MyStudentsCard";
+import MyStudentsCard from "../../../Components/Cards/MyStudentsCard.js";
 
-const MyStudents = () => {
+const AdminMyStudents = () => {
   const navigation = useNavigation();
   const [alumnos, setAlumnos] = useState([]);
 
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyStudents;
+export default AdminMyStudents;

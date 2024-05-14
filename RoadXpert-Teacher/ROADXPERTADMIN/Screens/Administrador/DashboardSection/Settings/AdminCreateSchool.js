@@ -14,7 +14,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 
-const CreateSchool = () => {
+const AdminCreateSchool = () => {
   const navigation = useNavigation();
 
   const handleCreateRole = () => {
@@ -180,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateSchool;
+export default AdminCreateSchool;

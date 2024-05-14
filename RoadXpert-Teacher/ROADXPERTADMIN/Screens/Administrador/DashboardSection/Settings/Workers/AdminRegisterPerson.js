@@ -7,13 +7,39 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import BackNavigation from "../../../../Components/Navigation/BackNavigation";
+import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
+import DuoButton from "../../../../../Components/Buttons/duoButton.js";
+import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
 import { MaterialIcons } from "@expo/vector-icons";
-import CustomTextInput from "../../../../Components/Inputs/CustomTextInput";
-import CustomSelectInput from "../../../../Components/Inputs/CustomSelectInput";
-import MainButton from "../../../../Components/Buttons/mainButton";
+import { useNavigation } from "@react-navigation/native";
+import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
 
-const UserProfile = () => {
+
+// const newProfessorData = {
+//   Nom: "Nombre",
+//   Cognom: "Apellido",
+//   SegonCognom: "Segundo Apellido",
+//   DNI: "12345678X",
+//   Adreca: "Dirección",
+//   Sexe: "Género",
+//   CarnetConduirFront: "URL del Carnet de Conducir (Frontal)",
+//   CarnetConduirDarrera: "URL del Carnet de Conducir (Dorso)",
+//   HorariID: "ID del Horario asignado",
+//   Password: "contraseña",
+// };
+
+// try {
+//   const response = await APIService.postProfessor(newProfessorData);
+//   console.log('Professor added successfully:', response);
+// } catch (error) {
+//   console.error('Failed to add professor:', error);
+// }
+
+
+const AdminRegisterPerson = () => {
+  const navigation = useNavigation();
+
+  const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
   const opcionesSexo = [
     { label: "Hombre", value: "Hombre" },
     { label: "Mujer", value: "Mujer" },
@@ -53,11 +79,11 @@ const UserProfile = () => {
       <View style={styles.container}>
         <BackNavigation />
         <View style={styles.header}>
-          <Text style={styles.headerText}>User Profile</Text>
+          <Text style={styles.headerText}>Register Person</Text>
         </View>
 
         <View style={styles.contentContainer}>
-          <View style={styles.uploadContainer}>
+          {/* <View style={styles.uploadContainer}>
             <Text style={styles.uploadLabel}>Image:</Text>
             <TouchableOpacity
               style={styles.icon}
@@ -65,15 +91,14 @@ const UserProfile = () => {
             >
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
-          </View>
-
+          </View> */}
+          <CustomSelectInput label="Assigned rol:" options={opcionesVehicles} />
           <CustomTextInput label="Nombre:" placeholder="Antonio" />
           <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
           <CustomTextInput label="Segundo Apellido:" placeholder="Martin" />
-          <CustomTextInput label="Motor:" placeholder="2.0 TDI" />
-          <CustomSelectInput label="Sex:" options={opcionesSexo} />
           <CustomTextInput label="DNI:" placeholder="99999999Z" />
-
+          <CustomTextInput label="Direccion:" placeholder="Olot" />
+          <CustomSelectInput label="Sex:" options={opcionesSexo} />
           <View style={styles.uploadContainer}>
             <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
             <TouchableOpacity
@@ -83,10 +108,9 @@ const UserProfile = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View>
-          <CustomTextInput label="Direccion:" placeholder="Olot" />
         </View>
-        <MainButton title="Guardar" />
       </View>
+      <DuoButton text="Guardar" />
     </ScrollView>
   );
 };
@@ -150,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserProfile;
+export default AdminRegisterPerson;

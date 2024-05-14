@@ -29,7 +29,7 @@ import { AsyncStorage } from "react-native";
 // }
 
 
-const CreateRoles = () => {
+const AdminCreateRoles = () => {
   const navigation = useNavigation();
   const [colorSeleccionado, setColorSeleccionado] = useState("black");
   const [mostrarSelector, setMostrarSelector] = useState(false);
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateRoles;
+export default AdminCreateRoles;

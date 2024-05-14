@@ -4,7 +4,7 @@ import BackNavigation from "../../../Components/Navigation/BackNavigation";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-const StudentInfo = ({ route }) => {
+const AdminStudentInfo = ({ route }) => {
   const { student } = route.params;
   const navigation = useNavigation();
 
@@ -30,7 +30,7 @@ const StudentInfo = ({ route }) => {
       <TouchableOpacity onPress={goToStudentProfile}>
         <Card style={styles.card}>
           <Card.Content style={styles.cardContent}>
-            <Image source={require("../../assets/images/Students/imgOverlay.png")} style={styles.image} />
+            <Image source={require("../../../assets/images/Students/imgOverlay.png")} style={styles.image} />
             <View>
               <Text style={styles.nameText}>View Profile</Text>
               <Text style={styles.infoText}>
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StudentInfo;
+export default AdminStudentInfo;

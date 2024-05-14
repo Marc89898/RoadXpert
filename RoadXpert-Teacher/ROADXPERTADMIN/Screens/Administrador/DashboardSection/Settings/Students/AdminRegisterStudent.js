@@ -7,26 +7,38 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
+import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
 import MainButton from "../../../../../Components/Buttons/mainButton.js";
 import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
 
-const RegisterVehicle = () => {
+// const newAlumnData = {
+//   Nom: "Nuevo Alumno",
+//   DNI: "12345678A",
+//   Adreca: "Calle Ejemplo, 123",
+//   Telefon: "123456789",
+//   Contrasenya: "contraseña123",
+//   ProfessorID: 1,
+// };
+
+// try {
+//   const response = await APIService.postAlumn(newAlumnData);
+//   console.log('Alumn added successfully:', response);
+// } catch (error) {
+//   console.error('Failed to add alumn:', error);
+// }
+
+
+
+const AdminRegisterStudent = () => {
   const navigation = useNavigation();
 
-  const handleSave = () => {
-    console.log("Guardado");
-  };
-
-  const opcionesVehicles = [
-    { label: "Coche", value: "Coche" },
-    { label: "Motocicleta", value: "Motocicleta" },
-    { label: "Camion", value: "Camion" },
-    { label: "Tractor", value: "Tractor" },
-    { label: "Avion", value: "Avion" },
+  const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
+  const opcionesSexo = [
+    { label: "Hombre", value: "Hombre" },
+    { label: "Mujer", value: "Mujer" },
   ];
 
   const [image, setImage] = useState(null);
@@ -63,23 +75,12 @@ const RegisterVehicle = () => {
       <View style={styles.container}>
         <BackNavigation />
         <View style={styles.header}>
-          <Text style={styles.headerText}>Register Vehicle</Text>
+          <Text style={styles.headerText}>Register Student</Text>
         </View>
 
         <View style={styles.contentContainer}>
-          <CustomSelectInput
-            label="Tipo de vehiculo"
-            options={opcionesVehicles}
-          />
-          <CustomTextInput
-            label="Marca de vehiculo:"
-            placeholder="Volkswagen"
-          />
-          <CustomTextInput label="Modelo de vehiculo:" placeholder="Golf" />
-          <CustomTextInput label="Any fabricacio:" placeholder="2015" />
-          <CustomTextInput label="Color:" placeholder="Red" />
           {/* <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Vehicle image:</Text>
+            <Text style={styles.uploadLabel}>Image:</Text>
             <TouchableOpacity
               style={styles.icon}
               onPress={() => handleImageUpload(false)}
@@ -87,9 +88,13 @@ const RegisterVehicle = () => {
               <MaterialIcons name="cloud-upload" size={24} color="black" />
             </TouchableOpacity>
           </View> */}
+          <CustomTextInput label="Nombre:" placeholder="Antonio" />
+          <CustomTextInput label="DNI:" placeholder="99999999Z" />
+          <CustomTextInput label="Adreça:" placeholder="Olot" />
+          <CustomTextInput label="Telefon:" placeholder="984353150" />
         </View>
       </View>
-      <MainButton title="Guardar" onPress={handleSave} />
+      <MainButton title="Guardar" />
     </ScrollView>
   );
 };
@@ -153,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterVehicle;
+export default AdminRegisterStudent;

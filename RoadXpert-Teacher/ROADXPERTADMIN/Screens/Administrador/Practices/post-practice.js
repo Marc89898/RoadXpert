@@ -14,7 +14,7 @@ import CustomTextInput from "../../../Components/Inputs/CustomTextInput.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 
-const PostPractice = ({ route }) => {
+const AdminPostPractice = ({ route }) => {
   const { practiceData } = route.params;
   
   const signatureRef = useRef();
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostPractice;
+export default AdminPostPractice;

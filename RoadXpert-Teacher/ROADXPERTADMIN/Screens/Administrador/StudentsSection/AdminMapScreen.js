@@ -16,7 +16,7 @@ import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
 import ApiHelper from "../../../data/ApiHelper";
 
-const MapScreen = ({ route }) => {
+const AdminMapScreen = ({ route }) => {
   const { student } = route.params;
   const alumnoId = student.ID;
   const [modalVisible, setModalVisible] = useState(false);
@@ -275,4 +275,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MapScreen;
+export default AdminMapScreen;

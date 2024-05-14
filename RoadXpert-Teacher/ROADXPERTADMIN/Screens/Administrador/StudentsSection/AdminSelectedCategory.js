@@ -5,7 +5,7 @@ import { useRoute } from "@react-navigation/native";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
 import MapView from "react-native-maps";
 
-const SelectedCategory = () => {
+const AdminSelectedCategory = () => {
   const route = useRoute();
   const { categoryText, subText, subTextInfo, imageSource } =
     route.params || {};
@@ -105,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SelectedCategory;
+export default AdminSelectedCategory;
