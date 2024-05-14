@@ -103,24 +103,20 @@ const Dashboard = () => {
           <Card style={styles.card}>
             <TouchableOpacity>
               <Card.Content style={styles.cardContent}>
-                <Text style={styles.nextEventTitle}>Siguiente Práctica</Text>
+                <View style={styles.textCenter}>
+                  <Text style={styles.nextEventTitle}>Siguiente Práctica</Text>
+                </View>
+
                 <View style={styles.eventDetail}>
                   <Icon name="calendar" size={20} color="black" />
-                  <Text
-                    style={styles.eventDetailText}
-                  >{`Fecha: ${nextEvent.Data}`}</Text>
+                  <Text style={styles.eventDetailText}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
                 </View>
+
                 <View style={styles.eventDetail}>
                   <Icon name="clock" size={20} color="black" />
                   <Text
                     style={styles.eventDetailText}
-                  >{`Hora: ${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
-                </View>
-                <View style={styles.eventDetail}>
-                  <Icon name="map-marker" size={20} color="black" />
-                  <Text
-                    style={styles.eventDetailText}
-                  >{`Ruta: ${nextEvent.Ruta}`}</Text>
+                  >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
                 </View>
               </Card.Content>
             </TouchableOpacity>
@@ -133,6 +129,11 @@ const Dashboard = () => {
 };
 
 const styles = StyleSheet.create({
+  textCenter: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
