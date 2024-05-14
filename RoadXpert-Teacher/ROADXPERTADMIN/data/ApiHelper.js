@@ -1,11 +1,7 @@
-import apiconfig from "../apiconfig.json";
 import axios from 'axios';
 import * as FileSystem from "expo-file-system";
-
+import Config  from "../configuracions"
 class ApiHelper {
-    // static mongoUrl = apiconfig.mongoRouteApi.API_URL;
-    // static sqlUrl = apiconfig.mssqlApi.API_URL;
-
     // Subir archivo a MongoDB
     static async uploadFileToMongo(fileUri) {
         try {
@@ -16,8 +12,7 @@ class ApiHelper {
                 type: "application/json",
             };
             formData.append("File", file);
-
-            const response = await fetch(`${apiconfig.mongoRouteApi.API_URL}/GeoJSONAPI/v1/GeoJSONFile`, {
+            const response = await fetch(`http://${Config.ApiIP}:${Config.ApiPortMongo}/GeoJSONAPI/v1/GeoJSONFile`, {
                 method: "POST",
                 headers: {
                     'Accept': '*/*',
@@ -55,7 +50,7 @@ class ApiHelper {
     static async createPracticaInSQL(practicaData) {
         try {
             console.log('Creating Practica:', practicaData);
-            const response = await fetch(`${apiconfig.mssqlApi.API_URL}/Practica`, {
+            const response = await fetch(`http://${Config.ApiIP}:${Config.ApiPort}/Practica`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,7 +73,7 @@ class ApiHelper {
     static async updatePracticaInSQL(practicaData) {
         try {
             console.log('Updating Practica:', practicaData);
-            const response = await fetch(`${apiconfig.mssqlApi.API_URL}/Practica/${practicaData.ID}`, {
+            const response = await fetch(`http://${Config.ApiIP}:${Config.ApiPort}/Practica/${practicaData.ID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +91,7 @@ class ApiHelper {
     static async downloadFileFromMongo(objectId) {
         try {
             // URL para descargar el archivo basado en el objectId
-            const downloadUrl = `${apiconfig.mongoRouteApi.API_URL}/GeoJSONAPI/v1/GeoJSONFile/download/${objectId}`;
+            const downloadUrl = `http://${Config.ApiIP}:${Config.ApiPortMongo}/GeoJSONAPI/v1/GeoJSONFile/download/${objectId}`;
 
             // Realizar la solicitud para descargar el archivo
             const response = await axios.get(downloadUrl, {
@@ -135,7 +130,7 @@ class ApiHelper {
 
     static async fetchAlumnos() {
         try {
-            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Alumne`);
+            const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/Alumne`);
             if (response.status !== 200) {
                 throw new Error('Error fetching alumnos');
             }
@@ -161,7 +156,7 @@ class ApiHelper {
     // Obtener la lista de carnets desde la API
     static async fetchCarnets() {
         try {
-            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Carnet`);
+            const response = await axios.get(`${Config.ApiIP}:${Config.ApiPort}/Carnet`);
             return response.data;
         } catch (error) {
             console.error('Error fetching carnets:', error);
@@ -169,19 +164,11 @@ class ApiHelper {
         }
     }
 
-    static async fetchCotxes() {
-        try {
-            const response = await axios.get('http://172.23.3.204:8888/Vehicle');
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching cotxes:', error);
-            throw error;
-        }
-    }
-
     static async fetchAlumnosPorProfesor(professorId) {
         try {
-            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/AlumnesDeProfessor/${professorId}`);
+            console.log(Config.ApiIP + Config.ApiPort)
+            const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/AlumnesDeProfessor/${professorId}`);
+            console.log("Respuesta: ", response.data)
             if (response.status !== 200) {
                 throw new Error('Error fetching students for professor');
             }
@@ -204,7 +191,7 @@ class ApiHelper {
     static async fetchPracticasPorAlumno(alumnoId) {
         try {
             // console.log('Fetching practicas for alumno:', alumnoId);
-            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Practica/Alumn/${alumnoId}`);
+            const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/Practica/Alumn/${alumnoId}`);
             const data = response.data;
             // Mapear los datos devueltos a un array de objetos
             const practicas = data.map(practica => ({
@@ -234,7 +221,7 @@ class ApiHelper {
                 throw new Error("Se requiere el ID del alumno y del profesor");
             }
             // Realizar la solicitud para asignar el profesor al alumno
-            const response = await axios.put(`${apiconfig.mssqlApi.API_URL}/Alumno/AsignarProfesor`, {
+            const response = await axios.put(`http://${Config.ApiIP}:${Config.ApiPort}/Alumno/AsignarProfesor`, {
                 alumno_id: alumnoId,
                 profesor_id: profesorId
             });
@@ -253,7 +240,7 @@ class ApiHelper {
 
     static async fetchProfessorNameById(professorId) {
         try {
-            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Treballador/${professorId}`);
+            const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/Treballador/${professorId}`);
             if (response.status !== 200) {
                 throw new Error('Error fetching professor by ID');
             }
@@ -269,7 +256,7 @@ class ApiHelper {
     // Método para obtener todas las anotaciones de un alumno por su ID
     static async fetchAnotacionesPorAlumno(alumnoId) {
         try {
-            const response = await axios.get(`${apiconfig.mssqlApi.API_URL}/Anotacio/Alumne/${alumnoId}`);
+            const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/Anotacio/Alumne/${alumnoId}`);
             if (response.status !== 200) {
                 throw new Error('Error fetching annotations for student');
             }
@@ -284,7 +271,7 @@ class ApiHelper {
     static async addNewAnotacion(anotacionData) {
         console.log('Adding new annotation:', anotacionData);
         try {
-            const response = await axios.post(`${apiconfig.mssqlApi.API_URL}/Anotacio`, anotacionData, {
+            const response = await axios.post(`http://${Config.ApiIP}:${Config.ApiPort}/Anotacio`, anotacionData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

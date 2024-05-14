@@ -15,6 +15,7 @@ const AllStudents = () => {
   const fetchStudents = async () => {
     try {
       const alumnos = await ApiHelper.fetchAlumnos();
+      console.log("Resultado: ", alumnos)
       setStudents(alumnos);
     } catch (error) {
       console.error('Error fetching students:', error);
