@@ -175,7 +175,6 @@ export default function ProfessorCalendar() {
         <Agenda
           theme={
             {
-              
               agendaTodayColor: 'blue',
               agendaKnobColor: 'black',
               selectedDayBackgroundColor: 'grey',
