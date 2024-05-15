@@ -123,28 +123,28 @@ const AdminSettings = () => {
           iconName="account-details"
           iconColor="#333"
           text="Professors"
-          onPress={() => navigation.navigate("AllWorkers")}
+          onPress={() => navigation.navigate("AdminAllWorkers")}
         />
 
         <SettingsOption
           iconName="account-check"
           iconColor="#333"
           text="Roles"
-          onPress={() => navigation.navigate("AllRoles")}
+          onPress={() => navigation.navigate("AdminAllRoles")}
         />
 
         <SettingsOption
           iconName="account-group"
           iconColor="#333"
           text="Students"
-          onPress={() => navigation.navigate("AllStudent")}
+          onPress={() => navigation.navigate("AdminAllStudent")}
         />
 
         <SettingsOption
           iconName="car-cog"
           iconColor="#333"
           text="Vehicles"
-          onPress={() => navigation.navigate("AllVehicles")}
+          onPress={() => navigation.navigate("AdminAllVehicles")}
         />
 
         <SettingsOption

@@ -21,7 +21,7 @@ const Dashboard = () => {
     navigation.navigate("NotificationsScreen");
   };
   const handleSettings = () => {
-    navigation.navigate("Settings");
+    navigation.navigate("AdminSettings");
   };
   const handleStartPractical = () => {
     navigation.navigate("prePractice");
