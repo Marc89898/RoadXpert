@@ -123,7 +123,7 @@ const Dashboard = () => {
           </Card>
         </View>
       )}
-      <FloatingButton />
+      {/* <FloatingButton /> */}
     </View>
   );
 };

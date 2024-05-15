@@ -8,6 +8,7 @@ import Dashboard from "../../Screens/Professor/DashboardSection/Dashboard";
 import MyStudents from "../../Screens/Professor/StudentsSection/MyStudents";
 import Calendar from "../../Calendar/Calendar"
 import Cars from "../../Screens/Professor/Cars/Cars";
+import ChatBot from "../../Screens/Professor/DashboardSection/ChatBot"
 
 const Tab = createBottomTabNavigator();
 
@@ -95,12 +96,12 @@ export default function MyComponent() {
         }}
       />
       <Tab.Screen
-        name="Cars"
-        component={Cars}
+        name="ChatBot"
+        component={ChatBot}
         options={{
-          tabBarLabel: "Cars",
+          tabBarLabel: "ChatBot",
           tabBarIcon: ({ color, size, focused }) => {
-            const iconName = focused ? "car" : "car-outline";
+            const iconName = focused ? "robot" : "robot-outline";
             return <Icon name={iconName} size={size} color={color} />;
           },
         }}
