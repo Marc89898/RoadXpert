@@ -42,6 +42,7 @@ const MyStudents = () => {
       <View style={styles.cardContainer}>
         {alumnos.map((alumno) => (
           <MyStudentsCard
+            key={alumno.ID}
             student={alumno}
           />
         ))}
