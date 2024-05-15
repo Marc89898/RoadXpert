@@ -14,7 +14,7 @@ const AdminAllWorkers = () => {
   }, []);
 
   const handleOpen = () => {
-    navigation.navigate("RegisterPerson");
+    navigation.navigate("AdminRegisterPerson");
   };
 
   const getWorkers = async () => {

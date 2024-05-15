@@ -87,28 +87,6 @@ const AdminSettings = () => {
         <Text style={[styles.headerText, isDarkMode && styles.darkText]}>
           Settings
         </Text>
-
-        <TouchableOpacity onPress={handleAdmin}>
-          <View
-            style={[
-              styles.iconAdminContainer,
-              isDarkMode && styles.darkContainer,
-            ]}
-          >
-            <Text style={[styles.adminText, isDarkMode && styles.darkText]}>
-              Admin
-            </Text>
-            <View
-              style={[styles.iconContainer, isDarkMode && styles.darkContainer]}
-            >
-              <Icon
-                name="account-cog"
-                size={18}
-                color={isDarkMode ? "#fff" : "#333"}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.settingsContainer}>

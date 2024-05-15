@@ -1,56 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
-import DuoButton from "../../../../../Components/Buttons/duoButton.js";
-import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
-
-
-// const newProfessorData = {
-//   Nom: "Nombre",
-//   Cognom: "Apellido",
-//   SegonCognom: "Segundo Apellido",
-//   DNI: "12345678X",
-//   Adreca: "Dirección",
-//   Sexe: "Género",
-//   CarnetConduirFront: "URL del Carnet de Conducir (Frontal)",
-//   CarnetConduirDarrera: "URL del Carnet de Conducir (Dorso)",
-//   HorariID: "ID del Horario asignado",
-//   Password: "contraseña",
-// };
-
-// try {
-//   const response = await APIService.postProfessor(newProfessorData);
-//   console.log('Professor added successfully:', response);
-// } catch (error) {
-//   console.error('Failed to add professor:', error);
-// }
-
+import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
+import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
+import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
+import DuoButton from "../../../../../Components/Buttons/duoButton.js";
+import { APIService } from "../../../../../ApiService.js";
 
 const AdminRegisterPerson = () => {
   const navigation = useNavigation();
 
-  const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
+  const [opcionesRoles, setOpcionesRoles] = useState([]);
+  const [loadingRoles, setLoadingRoles] = useState(true);
   const opcionesSexo = [
     { label: "Hombre", value: "Hombre" },
     { label: "Mujer", value: "Mujer" },
   ];
+  
+  const [professor, setProfessor] = useState({
+    Nom: "",
+    Cognom: "",
+    SegonCognom: "",
+    DNI: "",
+    Adreca: "",
+    Sexe: "",
+    CarnetConduirFront: "",
+    CarnetConduirDarrera: "",
+    HorariID: "",
+    Password: ""
+  });
 
-  const [image, setImage] = useState(null);
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const roles = await APIService.fetchAllRoles();
+        const nombresRoles = roles.map(role => ({ label: role.Nom, value: role.ID }));
+        setOpcionesRoles(nombresRoles);
+        setLoadingRoles(false);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+
+    fetchRoles();
+  }, []);
+
+  const handleSave = () => {
+    try {
+      APIService.postProfessor(professor);
+    } catch(error) {
+      console.error("Error en guardar el professor: ", error);
+    }
+  };
 
   const handleImageUpload = async () => {
     try {
-      const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permissionResult.granted) {
         Alert.alert(
           "Permission denied",
@@ -74,103 +81,120 @@ const AdminRegisterPerson = () => {
     }
   };
 
-  return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.container}>
-        <BackNavigation />
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Register Person</Text>
-        </View>
+  const handleInputChange = (key, value) => {
+    setProfessor(prevState => ({ ...prevState, [key]: value }));
+  };
 
-        <View style={styles.contentContainer}>
-          {/* <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Image:</Text>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={() => handleImageUpload(false)}
-            >
-              <MaterialIcons name="cloud-upload" size={24} color="black" />
-            </TouchableOpacity>
-          </View> */}
-          <CustomSelectInput label="Assigned rol:" options={opcionesVehicles} />
-          <CustomTextInput label="Nombre:" placeholder="Antonio" />
-          <CustomTextInput label="Apellido:" placeholder="Rodriguez" />
-          <CustomTextInput label="Segundo Apellido:" placeholder="Martin" />
-          <CustomTextInput label="DNI:" placeholder="99999999Z" />
-          <CustomTextInput label="Direccion:" placeholder="Olot" />
-          <CustomSelectInput label="Sex:" options={opcionesSexo} />
-          <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={() => handleImageUpload(false)}
-            >
-              <MaterialIcons name="cloud-upload" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <BackNavigation />
+      <Text style={styles.headerText}>REGISTRAR</Text>
+      <View style={styles.contentContainer}>
+        {loadingRoles ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <>
+            {opcionesRoles.length > 0 ? (
+              <CustomSelectInput options={opcionesRoles} />
+            ) : (
+              <View style={styles.placeholder}>
+                <Text style={styles.placeholderText}>Rol</Text>
+              </View>
+            )}
+          </>
+        )}
+        <CustomTextInputUnlocked
+          placeholder="Nombre"
+          onChangeText={text => handleInputChange("Nom", text)}
+        />
+        <CustomTextInputUnlocked
+          placeholder="Apellido"
+          onChangeText={text => handleInputChange("Cognom", text)}
+        />
+        <CustomTextInputUnlocked
+          placeholder="Segundo Apellido"
+          onChangeText={text => handleInputChange("SegonCognom", text)}
+        />
+        <CustomTextInputUnlocked
+          placeholder="Dni"
+          onChangeText={text => handleInputChange("DNI", text)}
+        />
+        <CustomTextInputUnlocked
+          placeholder="Direccion"
+          onChangeText={text => handleInputChange("Adreca", text)}
+        />
+        <CustomTextInputUnlocked
+          placeholder="Contraseña"
+          onChangeText={text => handleInputChange("Password", text)}
+        />
+        <CustomSelectInput options={opcionesSexo} />
+        <View style={styles.uploadContainer}>
+          <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
+          <TouchableOpacity
+            style={styles.icon}
+            onPress={handleImageUpload}
+          >
+            <MaterialIcons name="cloud-upload" size={24} color="black" />
+          </TouchableOpacity>
         </View>
       </View>
-      <DuoButton text="Guardar" />
+      <TouchableOpacity onPress={handleSave} style={styles.button}>
+        <Text style={styles.buttonText}>Guardar</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-  },
   container: {
-    flex: 1,
-  },
-  header: {
-    paddingLeft: 24,
+    flexGrow: 1,
+    padding: 20,
   },
   headerText: {
     fontSize: 25,
+    marginBottom: 20,
+    textAlign: "center",
   },
   contentContainer: {
-    padding: 20,
+    marginBottom: 20,
   },
-  label: {
-    fontSize: 13,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  colorpick: {
-    width: "100%",
-    borderRadius: 10,
-    height: 50,
-    backgroundColor: "lightgray",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  rectangleContainer: {
-    backgroundColor: "lightgray",
-    padding: 10,
+  placeholder: {
+    marginTop: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
     borderRadius: 5,
-    marginTop: 30,
-    alignItems: "center",
+    padding: 10,
   },
-  rectangleText: {
+  placeholderText: {
     fontSize: 16,
     fontWeight: "bold",
   },
   uploadContainer: {
-    alignItems: "left",
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 20,
   },
   uploadLabel: {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginRight: 10,
   },
   icon: {
-    width: "100%",
     borderRadius: 10,
-    height: 50,
+    padding: 10,
     backgroundColor: "lightgray",
-    justifyContent: "center",
+  },
+  button: {
+    backgroundColor: "black",
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginTop: 20,
     alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
