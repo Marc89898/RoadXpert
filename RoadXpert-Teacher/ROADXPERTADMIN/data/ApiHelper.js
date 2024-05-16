@@ -128,6 +128,16 @@ class ApiHelper {
         }
     }
 
+    static async fetchCotxes() {
+        try {
+            const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/Vehicle`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching cotxes:', error);
+            throw error;
+        }
+    }
+
     static async fetchAlumnos() {
         try {
             const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/Alumne`);

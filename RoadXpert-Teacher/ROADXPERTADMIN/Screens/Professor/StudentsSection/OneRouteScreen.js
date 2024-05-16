@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as FileSystem from "expo-file-system";
-import ApiHelper from "../../data/ApiHelper";
-import BackNavigation from "../Navigation/BackNavigation";
+import ApiHelper from "../../../data/ApiHelper";
+import BackNavigation from "../../../Components/Navigation/BackNavigation";
 
 const OneRouteScreen = ({ practiceRuta }) => {
     const [coordinates, setCoordinates] = useState([]);

@@ -46,7 +46,7 @@ import Categories from '../Screens/Professor/StudentsSection/Categories.js';
 import SelectedCategory from '../Screens/Professor/StudentsSection/SelectedCategory.js';
 
 // OneRouteScreen
-import OneRouteScreen from '../Screens/StudentsSection/OneRouteScreen.js';
+import OneRouteScreen from '../Screens/Professor/StudentsSection/OneRouteScreen.js';
 
 
 
