@@ -20,17 +20,19 @@ const AdminRegisterPerson = () => {
   ];
   
   const [professor, setProfessor] = useState({
-    Nom: "",
-    Cognom: "",
-    SegonCognom: "",
-    DNI: "",
-    Adreca: "",
-    Sexe: "",
-    CarnetConduirFront: "",
-    CarnetConduirDarrera: "",
-    HorariID: "",
-    Password: ""
+    nom: "",
+    cognom: "",
+    segonCognom: "",
+    dni: "",
+    adreca: "",
+    sexe: "",
+    carnetConduirFront: "",
+    carnetConduirDarrera: "",
+    horariID: "",
+    password: ""
   });
+  
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -47,11 +49,11 @@ const AdminRegisterPerson = () => {
     fetchRoles();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
-      APIService.postProfessor(professor);
+      await APIService.postProfessor(professor);
     } catch(error) {
-      console.error("Error en guardar el professor: ", error);
+      console.error("Error en guardar el profesor: ", error);
     }
   };
 
@@ -85,6 +87,10 @@ const AdminRegisterPerson = () => {
     setProfessor(prevState => ({ ...prevState, [key]: value }));
   };
 
+  const handleSelectSexo = (value) => {
+    handleInputChange("sexe", value);
+  };
+  
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <BackNavigation />
@@ -105,29 +111,29 @@ const AdminRegisterPerson = () => {
         )}
         <CustomTextInputUnlocked
           placeholder="Nombre"
-          onChangeText={text => handleInputChange("Nom", text)}
+          onChangeText={text => handleInputChange("nom", text)}
         />
         <CustomTextInputUnlocked
           placeholder="Apellido"
-          onChangeText={text => handleInputChange("Cognom", text)}
+          onChangeText={text => handleInputChange("cognom", text)}
         />
         <CustomTextInputUnlocked
           placeholder="Segundo Apellido"
-          onChangeText={text => handleInputChange("SegonCognom", text)}
+          onChangeText={text => handleInputChange("segonCognom", text)}
         />
         <CustomTextInputUnlocked
           placeholder="Dni"
-          onChangeText={text => handleInputChange("DNI", text)}
+          onChangeText={text => handleInputChange("dni", text)}
         />
         <CustomTextInputUnlocked
           placeholder="Direccion"
-          onChangeText={text => handleInputChange("Adreca", text)}
+          onChangeText={text => handleInputChange("adreca", text)}
         />
         <CustomTextInputUnlocked
           placeholder="Contraseña"
-          onChangeText={text => handleInputChange("Password", text)}
+          onChangeText={text => handleInputChange("password", text)}
         />
-        <CustomSelectInput options={opcionesSexo} />
+        <CustomSelectInput options={opcionesSexo}  onSelect={handleSelectSexo}/>
         <View style={styles.uploadContainer}>
           <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
           <TouchableOpacity

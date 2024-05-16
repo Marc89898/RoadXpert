@@ -10,16 +10,14 @@ const AdminAllRoles = () => {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    // Llamamos a la función para obtener los roles cuando el componente se monta
     getRoles();
   }, []);
 
   const handleOpen = () => {
-    navigation.navigate("CreateRoles");
+    navigation.navigate("AdminCreateRoles");
   };
 
   const getRoles = async () => {
-    // Obtenemos los roles de la API y actualizamos el estado
     const rolesFromApi = await APIService.fetchAllRoles();
     setRoles(rolesFromApi);
   };

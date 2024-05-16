@@ -1,10 +1,14 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
-const CustomTextInputUnlocked = ({ label, placeholder }) => (
+const CustomTextInputUnlocked = ({ label, placeholder, onChangeText }) => (
   <View style={styles.inputContainer}>
     <Text style={styles.CustomTextLabel}>{label}</Text>
-    <TextInput style={styles.input} placeholder={placeholder}/>
+    <TextInput
+      style={styles.input}
+      placeholder={placeholder}
+      onChangeText={onChangeText}
+    />
   </View>
 );
 

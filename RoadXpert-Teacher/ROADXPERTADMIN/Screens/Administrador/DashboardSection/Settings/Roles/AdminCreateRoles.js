@@ -1,107 +1,43 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
-import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
+import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
 import MainButton from "../../../../../Components/Buttons/mainButton.js";
-import { MaterialIcons } from "@expo/vector-icons";
-import ColorPicker from "react-native-color-picker";
-import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
-import { useNavigation } from "@react-navigation/native";
-import { AsyncStorage } from "react-native";
-
-
-// const newRoleData = {
-//   Nom: "Nuevo Rol",
-//   Descripcio: "Descripción del nuevo rol",
-// };
-
-// try {
-//   const response = await APIService.postRole(newRoleData);
-//   console.log('Role added successfully:', response);
-// } catch (error) {
-//   console.error('Failed to add role:', error);
-// }
-
+import { APIService } from "../../../../../ApiService.js";
 
 const AdminCreateRoles = () => {
-  const navigation = useNavigation();
-  const [colorSeleccionado, setColorSeleccionado] = useState("black");
-  const [mostrarSelector, setMostrarSelector] = useState(false);
-  const [rolName, setRolName] = useState("");
-  const [permisosAlumnos, setPermisosAlumnos] = useState("");
-  const [permisosVehiculos, setPermisosVehiculos] = useState("");
-  const [permisosProfesores, setPermisosProfesores] = useState("");
+  const [rol, setRole] = useState({
+    nom: "",
+    descripcio: ""
+  });
 
-  const handleSave = () => {
-    console.log("Guardado");
-    navigation.navigate("CreateSchool");
+  const handleSave = async () => {
+    try {
+      console.log("Rol: ", rol)
+      const response = await APIService.postRole(rol);
+      if (response) {
+        console.log("Rol creado:", response);
+      } else {
+        console.log("Error al crear el rol");
+      }
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
   };
-
-  const handleColorSeleccionado = (color) => {
-    setColorSeleccionado(color);
-    setMostrarSelector(false);
-  };
-
-  const opcionesSelect = [
-    { label: "Si", value: "Si" },
-    { label: "No", value: "No" },
-  ];
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.container}>
-        <BackNavigation />
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Create Roles</Text>
-        </View>
-
-        <View style={styles.contentContainer}>
-          {/* <View style={styles.colorSelectionContainer}>
-            <Text style={styles.label}>Color</Text>
-            <TouchableOpacity
-              style={[styles.colorpick, { backgroundColor: colorSeleccionado }]}
-              onPress={() => setMostrarSelector(true)}
-            >
-              <Text>Seleccionar Color</Text>
-            </TouchableOpacity>
-            {mostrarSelector && (
-              <ColorPicker
-                onColorSelected={handleColorSeleccionado}
-                style={{ flex: 1 }}
-              />
-            )}
-          </View> */}
-
-          <CustomTextInput label="Rol name:" placeholder="Admin" />
-          <CustomTextInput label="Desc:" placeholder="Es una persona que s'encarerga de suspendre alumnes" />
-
-          {/* <View style={styles.rectangleContainer}>
-            <Text style={styles.rectangleText}>Permisos de alumnos</Text>
-          </View>
-          <CustomSelectInput options={opcionesSelect} label="Crear alumnos"/>
-          <CustomSelectInput options={opcionesSelect} label="Eliminar alumnos"/>
-          <CustomSelectInput options={opcionesSelect} label="Gestionar alumnos"/>
-
-          <View style={styles.rectangleContainer}>
-            <Text style={styles.rectangleText}>Permisos de vehiculos</Text>
-          </View>
-          <CustomSelectInput options={opcionesSelect} label="Crear vehiculos"/>
-          <CustomSelectInput options={opcionesSelect} label="Eliminar vehiculos"/>
-          <CustomSelectInput options={opcionesSelect} label="Gestionar vehiculos"/>
-          
-          <View style={styles.rectangleContainer}>
-            <Text style={styles.rectangleText}>Permisos de professores</Text>
-          </View>
-          <CustomSelectInput options={opcionesSelect} label="Crear professores"/>
-          <CustomSelectInput options={opcionesSelect} label="Eliminar professores"/>
-          <CustomSelectInput options={opcionesSelect} label="Gestionar professores"/> */}
-        </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <BackNavigation />
+      <Text style={styles.headerText}>Crear Roles</Text>
+      <View style={styles.inputContainer}>
+        <CustomTextInputUnlocked
+          placeholder="Rol"
+          onChangeText={text => setRole(prevState => ({ ...prevState, Nom: text }))}
+        />
+        <CustomTextInputUnlocked
+          placeholder="Descripción"
+          onChangeText={text => setRole(prevState => ({ ...prevState, Descripcio: text }))}
+        />
       </View>
       <MainButton title="Guardar" onPress={handleSave} />
     </ScrollView>
@@ -109,44 +45,17 @@ const AdminCreateRoles = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-  },
   container: {
-    flex: 1,
-  },
-  header: {
-    paddingLeft: 24,
+    flexGrow: 1,
+    padding: 20,
   },
   headerText: {
     fontSize: 25,
+    textAlign: "center",
+    marginBottom: 20,
   },
-  contentContainer: {
-    padding: 20,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  colorpick: {
-    width: "100%",
-    borderRadius: 10,
-    height: 50,
-    backgroundColor: "lightgray",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  rectangleContainer: {
-    backgroundColor: "lightgray",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 30,
-    alignItems: "center",
-  },
-  rectangleText: {
-    fontSize: 16,
-    fontWeight: "bold",
+  inputContainer: {
+    marginBottom: 20,
   },
 });
 
