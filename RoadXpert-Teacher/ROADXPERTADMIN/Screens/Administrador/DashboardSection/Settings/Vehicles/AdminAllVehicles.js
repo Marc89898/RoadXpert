@@ -15,7 +15,7 @@ const AdminAllVehicles = () => {
         const carsData = await APIService.getAllCars();
         setCars(carsData);
       } catch (error) {
-        console.error('Error fetching cars:', error.message);
+        console.error("Error fetching cars:", error.message);
       }
     }
 
@@ -30,15 +30,20 @@ const AdminAllVehicles = () => {
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>Coches</Text>
+        <Text style={styles.headerText}>All Students</Text>
+        <TouchableOpacity style={styles.button} onPress={handleOpen}>
+          <Text style={styles.buttonText}>Create new</Text>
+        </TouchableOpacity>
       </View>
       <ScrollView style={styles.scrollContainer}>
         {cars.map((car, index) => (
           <CarCard
             key={index}
-            cardTitle={car.Marca + ' ' + car.Model}
-            cardSubtitle={car.Tipus === 'Disponible' ? 'Disponible' : 'No Disponible'}
-            circleColor={car.Tipus === 'Disponible' ? 'red' : 'green'}
+            cardTitle={car.Marca + " " + car.Model}
+            cardSubtitle={
+              car.Tipus === "Disponible" ? "Disponible" : "No Disponible"
+            }
+            circleColor={car.Tipus === "Disponible" ? "red" : "green"}
             iconName="arrow-right"
             imagePath={require("../../../../../assets/images/CarsScreen/VolkswagenGolf.png")}
             onPress={() => handleOpen(car)}
@@ -62,6 +67,16 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 25,
+  },
+  button: {
+    backgroundColor: "#007bff",
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 50,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
   },
   button: {
     backgroundColor: "#007bff",
