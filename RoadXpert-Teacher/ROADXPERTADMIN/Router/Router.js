@@ -42,6 +42,10 @@ import PostPractice from '../Screens/Practices/post-practice.js';
 import Categories from '../Screens/StudentsSection/Categories.js';
 import SelectedCategory from '../Screens/StudentsSection/SelectedCategory.js';
 
+// OneRouteScreen
+import OneRouteScreen from '../Screens/StudentsSection/OneRouteScreen.js';
+
+
 
 /////////////////////////////////////// ADMIN ///////////////////////////////////////
 
@@ -75,7 +79,7 @@ export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="LoginScreen"
+        initialRouteName="NavBar"
         screenOptions={{
           headerShown: false,
         }}
@@ -102,6 +106,7 @@ export default function Router() {
         <Stack.Screen name="PostPractice" component={PostPractice} />
         <Stack.Screen name="Categories" component={Categories} />
         <Stack.Screen name="SelectedCategory" component={SelectedCategory} />
+        <Stack.Screen name="OneRouteScreen" component={OneRouteScreen} />
 
 
         {/*/////////////////////////////////// ADMIN ////////////////////////////////////  */}
