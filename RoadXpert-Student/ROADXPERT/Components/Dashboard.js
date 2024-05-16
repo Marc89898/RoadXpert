@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import CircleImage1 from "../assets/images/Dashboard/notification.png";
 import CircleImage2 from "../assets/images/Dashboard/settings.png";
@@ -52,12 +52,12 @@ const Dashboard = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.imageContainer}>
-        <ImageBackground source={TuImagen} style={styles.imageBackground}>
+        <View style={styles.imageBackground}>
           <View style={styles.overlay}>
             <Text style={styles.welcomeText}>Welcome Back,</Text>
             <Text style={styles.nameText}>{Config.Alumne.Nom}</Text>
           </View>
-        </ImageBackground>
+        </View>
       </View>
       <View style={styles.circleContainer}>
         <TouchableOpacity onPress={handleNotifications}>
@@ -74,26 +74,27 @@ const Dashboard = () => {
       </View>
 
       {nextEvent && (
-        <View style={styles.nextEventContainer}>
-          <Text style={styles.nextEventTitle}>Siguiente Practica:</Text>
-          <View style={styles.eventDetail}>
-            <Icon name="calendar" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Fecha: ${nextEvent.Data}`}</Text>
-          </View>
-          <View style={styles.eventDetail}>
-            <Icon name="clock" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Hora: ${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
-          </View>
-          <View style={styles.eventDetail}>
-            <Icon name="map-marker" size={20} color="black" />
-            <Text
-              style={styles.eventDetailText}
-            >{`Ruta: ${nextEvent.Ruta}`}</Text>
-          </View>
+        <View style={styles.cardContainer}>
+          <Card style={styles.card}>
+            <TouchableOpacity>
+              <Card.Content style={styles.cardContent}>
+                <View style={styles.textCenter}>
+                  <Text style={styles.nextEventTitle}>Siguiente Práctica</Text>
+                </View>
+
+                <View style={styles.eventDetail}>
+                  {/* <Icon name="calendar" size={20} color="black" /> */}
+                  <Text style={styles.eventDetailText}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
+                </View>
+
+                <View style={styles.eventDetail}>
+                  <Text
+                    style={styles.eventDetailText}
+                  >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+                </View>
+              </Card.Content>
+            </TouchableOpacity>
+          </Card>
         </View>
       )}
     </View>
@@ -114,9 +115,65 @@ const styles = StyleSheet.create({
   button: {
     margin: 5,
   },
+  textCenter: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  cardContainer: {
+    margin: 20,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
+    backgroundColor: "white",
+  },
+  eventDetail: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  eventDetailText: {
+    fontSize: 12,
+    marginLeft: 5,
+  },
+  card: {
+    elevation: 5,
+  },
+  overlay: {
+    position: "absolute",
+    flex: 1,
+    top: 50,
+    left: 10,
+    padding: 10,
+    borderRadius: 5,
+  },
+  imageContainer: {
+    overflow: "hidden",
+  },
+  imageBackground: {
+    height: 120,
+    width: "100%",
+    backgroundColor: "#1F41BB",
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  cardSubtitle: {
+    fontSize: 10,
+    color: "grey",
+  },
   imageContainer: {
     borderBottomRightRadius: 100,
     overflow: "hidden",
+  },
+  cardContent: {
+    padding: 10,
+  },
+  nextEventTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
   imageBackground: {
     height: 232,
@@ -185,6 +242,23 @@ const styles = StyleSheet.create({
   eventDetailText: {
     marginLeft: 10,
     fontSize: 16,
+  },
+  imageContainer: {
+    overflow: "hidden",
+  },
+  imageBackground: {
+    height: 120,
+    width: "100%",
+    backgroundColor: "#1F41BB",
+  },
+
+  overlay: {
+    position: "absolute",
+    flex: 1,
+    top: 50,
+    left: 10,
+    padding: 10,
+    borderRadius: 5,
   },
 });
 

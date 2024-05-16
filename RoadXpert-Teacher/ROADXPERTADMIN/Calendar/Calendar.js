@@ -163,7 +163,7 @@ export default function ProfessorCalendar() {
   const renderEmptyDate1 = () => {
     return (
       <Text style={[styles.emptyDateText]}>
-        <Text style={styles.boldText}>EMPTY DATE!</Text>
+        <Text style={[styles.boldText, styles.emptyDateText2]}>EMPTY DATE!</Text>
       </Text>
 
     );
@@ -173,6 +173,22 @@ export default function ProfessorCalendar() {
     <View style={{ flex: 1 }}>
       {events !== null ? (
         <Agenda
+          theme={
+            {
+              agendaTodayColor: 'blue',
+              agendaKnobColor: 'black',
+              selectedDayBackgroundColor: 'grey',
+              agendaDayNumColor: 'black',
+              agendaDayTextColor: 'black',
+              monthTextColor: 'blue',
+              textMonthFontSize: 40,
+              textMonthFontWeight: 'bold',
+              arrowColor: 'blue',
+              textSectionTitleColor: 'blue',
+              textDayFontWeight: 'bold',
+            }
+          }
+          style={styles.agenda}
           selected={selectedDate}
           items={events}
           onDayPress={handleDayPress}
@@ -182,30 +198,24 @@ export default function ProfessorCalendar() {
               style={styles.item}
               onPress={() => handleDeleteConfirmation(item)}>
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemText, { textAlign: 'center' }]}>
-                  <Text style={styles.boldText}>PRACTICE</Text>
-                </Text>
-                <Text style={[styles.itemText, { textAlign: 'center' }]}>
-                  <Text>--------------------------------------------------------------------</Text>
-                </Text>
+                <Text style={[styles.itemText, styles.boldText]}>PRACTICE</Text>
+                <View style={styles.separator} />
                 <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
                 <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
                 <Text style={styles.itemText}>
                   <Text style={styles.boldText}>State: </Text>
                   {item.Estat ? item.Estat : "Confirmada"}
                 </Text>
-
                 <Text style={styles.itemText}>
                   <Text style={styles.boldText}>Alumno: </Text>
                   {item.alumne ? item.alumne : selectedAlumn.name}
                 </Text>
-
               </View>
             </TouchableOpacity>
           )}
         />
       ) : (
-        <Text style={[styles.itemText, { textAlign: 'center' }, { textAlignVertical: 'center' }]}>
+        <Text style={[styles.itemText, styles.loadingText]}>
           <Text style={styles.boldText}>LOADING EVENTS...</Text>
         </Text>
       )}
@@ -280,28 +290,40 @@ export default function ProfessorCalendar() {
         </View>
       </Modal>
     </View>
-  );
+  );  
 }
 const styles = StyleSheet.create({
+  emptyDateText2: {
+    color: "black"
+  },
+  agenda: {
+    marginTop: 20,
+  },
   emptyDateText: {
     textAlignVertical: "center",
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    color: '#888',
+    color: 'black',
     fontSize: 16,
   },
   itemText: {
-    color: '#888',
+    color: '#fff',
     fontSize: 16,
   },
   item: {
+    marginTop: 15,
     margin: 5,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 10,
+    backgroundColor: '#007bff',
+    borderRadius: 20,
+    padding: 12,
     marginBottom: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 4,
+    elevation: 4,
   },
   addButton: {
     position: 'absolute',
@@ -309,8 +331,20 @@ const styles = StyleSheet.create({
     right: 20,
   },
   boldText: {
-    color: 'black',
+    color: '#fff',
     fontWeight: 'bold',
+  },
+  itemTextContainer: {
+    paddingHorizontal: 10,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: 'black',
+    marginVertical: 8,
+  },
+  loadingText: {
+    textAlign: 'center',
+    color: 'black',
   },
   modalContainer: {
     flex: 1,

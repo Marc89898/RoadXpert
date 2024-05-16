@@ -3,44 +3,47 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
-/////////////////////////////////////// PROFESSOR ///////////////////////////////////////
+
+/////////////////////////////////////// SHARED ///////////////////////////////////////
 
 // Principal Screens
-import SplashScreen from '../Screens/SplashScreen.js';
-import LoginScreen from '../Screens/LoginScreen.js';
+import SplashScreen from '../Screens/Shared/SplashScreen.js';
+import LoginScreen from '../Screens/Shared/LoginScreen.js';
 
-// Navigation Components
-import NavBar from '../Screens/Navigation/NavBar.js';
-import BackNavigation from '../Screens/Navigation/BackNavigation.js';
+// Navigation
+import NavBar from '../Components/Navigation/NavBar.js';
+import BackNavigation from '../Components/Navigation/BackNavigation.js';
 
-// Dashboard Components
-import Dashboard from '../Screens/DashboardSection/Dashboard.js';
-import NotificationsScreen from '../Screens/DashboardSection/NotificationsScreen.js';
-import Settings from '../Screens/DashboardSection/Settings.js';
-import UserProfile from '../Screens/DashboardSection/UserProfile.js';
-import ChatBot from '../Screens/DashboardSection/ChatBot.js';
+/////////////////////////////////////// PROFESSOR ///////////////////////////////////////
 
-// Students Components
-import MyStudents from '../Screens/StudentsSection/MyStudents.js';
-import AllStudents from '../Screens/StudentsSection/AllStudents.js';
-import StudentInfo from '../Screens/StudentsSection/StudentInfo.js';
-import StudentProfile from '../Screens/StudentsSection/StudentProfile.js';
+// Dashboard
+import Dashboard from '../Screens/Professor/DashboardSection/Dashboard.js';
+import NotificationsScreen from '../Screens/Professor/DashboardSection/NotificationsScreen.js';
+import Settings from '../Screens/Professor/DashboardSection/Settings/Settings.js';
+import UserProfile from '../Screens/Professor/DashboardSection/Settings/UserProfile.js';
+import ChatBot from '../Screens/Professor/DashboardSection/ChatBot.js';
 
-// Map Components
-import MapScreen from '../Screens/StudentsSection/MapScreen.js';
+// Students
+import MyStudents from '../Screens/Professor/StudentsSection/MyStudents.js';
+import AllStudents from '../Screens/Professor/StudentsSection/AllStudents.js';
+import StudentInfo from '../Screens/Professor/StudentsSection/StudentInfo.js';
+import StudentProfile from '../Screens/Professor/StudentsSection/StudentProfile.js';
 
-// Cars Components
-import MyCars from '../Screens/Cars/Cars.js';
-import CarInfo from '../Screens/Cars/CarInfo.js';
+// Map
+import MapScreen from '../Screens/Professor/StudentsSection/MapScreen.js';
 
-// Practice Components
-import prePractice from '../Screens/Practices/pre-practice.js';
-import StartRouteMap from '../Screens/Practices/StartRouteMap.js';
-import PostPractice from '../Screens/Practices/post-practice.js';
+// Cars
+import MyCars from '../Screens/Professor/Cars/Cars.js';
+import CarInfo from '../Screens/Professor/Cars/CarInfo.js';
 
-// Categories Components
-import Categories from '../Screens/StudentsSection/Categories.js';
-import SelectedCategory from '../Screens/StudentsSection/SelectedCategory.js';
+// Practice
+import PrePractice from '../Screens/Professor/Practices/pre-practice.js';
+import StartRouteMap from '../Screens/Professor/Practices/StartRouteMap.js';
+import PostPractice from '../Screens/Professor/Practices/post-practice.js';
+
+// Categories
+import Categories from '../Screens/Professor/StudentsSection/Categories.js';
+import SelectedCategory from '../Screens/Professor/StudentsSection/SelectedCategory.js';
 
 // OneRouteScreen
 import OneRouteScreen from '../Screens/StudentsSection/OneRouteScreen.js';
@@ -49,28 +52,49 @@ import OneRouteScreen from '../Screens/StudentsSection/OneRouteScreen.js';
 
 /////////////////////////////////////// ADMIN ///////////////////////////////////////
 
-// Create Welcome Page
-import WelcomePage from '../ScreensAdmin/WelcomePage.js'
+// Dashboard
+import AdminDashboard from '../Screens/Administrador/DashboardSection/AdminDashboard.js';
+import AdminNotificationsScreen from '../Screens/Administrador/DashboardSection/AdminNotificationsScreen.js';
+import AdminChatBot from '../Screens/Administrador/DashboardSection/AdminChatBot.js';
 
-// Schools
-import CreateSchool from '../ScreensAdmin/CreateSchool.js';
+// Settings
+import AdminSettings from '../Screens/Administrador/DashboardSection/Settings/AdminSettings.js';
+import AdminUserProfile from '../Screens/Administrador/DashboardSection/Settings/AdminUserProfile.js';
+import AdminAllStudent from '../Screens/Administrador/DashboardSection/Settings/Students/AdminAllStudent.js';
+import AdminRegisterStudent from '../Screens/Administrador/DashboardSection/Settings/Students/AdminRegisterStudent.js';
+import AdminAllWorkers from '../Screens/Administrador/DashboardSection/Settings/Workers/AdminAllWorkers.js';
+import AdminRegisterPerson from '../Screens/Administrador/DashboardSection/Settings/Workers/AdminRegisterPerson.js';
+import AdminAllRoles from '../Screens/Administrador/DashboardSection/Settings/Roles/AdminAllRoles.js';
+import AdminCreateRoles from '../Screens/Administrador/DashboardSection/Settings/Roles/AdminCreateRoles.js';
+import AdminAllVehicles from '../Screens/Administrador/DashboardSection/Settings/Vehicles/AdminAllVehicles.js';
+import AdminRegisterVehicle from '../Screens/Administrador/DashboardSection/Settings/Vehicles/AdminRegisterVehicle.js';
 
 // Students
-import AllStudent from '../ScreensAdmin/AllStudent.js';
-import RegisterStudent from '../ScreensAdmin/RegisterStudent.js';
+import AdminMyStudents from '../Screens/Administrador/StudentsSection/AdminMyStudents.js';
+import AdminAllStudents from '../Screens/Administrador/StudentsSection/AdminAllStudents.js';
+import AdminStudentInfo from '../Screens/Administrador/StudentsSection/AdminStudentInfo.js';
+import AdminStudentProfile from '../Screens/Administrador/StudentsSection/AdminStudentProfile.js';
 
-// Professors
-import AllWorkers from '../ScreensAdmin/AllWorkers.js';
-import RegisterPerson from '../ScreensAdmin/RegisterPerson.js';
+// Map
+import AdminMapScreen from '../Screens/Administrador/StudentsSection/AdminMapScreen.js';
 
-// Roles
-import AllRoles from '../ScreensAdmin/AllRoles.js';
-import CreateRoles from '../ScreensAdmin/CreateRoles.js';
+// Cars
+import AdminMyCars from '../Screens/Administrador/Cars/AdminCars.js';
+import AdminCarInfo from '../Screens/Administrador/Cars/AdminCarInfo.js';
 
-// Vehicles
-import AllVehicles from '../ScreensAdmin/AllVehicles.js';
-import RegisterVehicle from '../ScreensAdmin/RegisterVehicle.js';
-import NoPage from '../ScreensAdmin/NoPage.js';
+// Practice
+import AdminPrePractice from '../Screens/Administrador/Practices/pre-practice.js';
+import AdminStartRouteMap from '../Screens/Administrador/Practices/AdminStartRouteMap.js';
+import AdminPostPractice from '../Screens/Administrador/Practices/post-practice.js';
+
+// Categories
+import AdminCategories from '../Screens/Administrador/StudentsSection/AdminCategories.js';
+import AdminSelectedCategory from '../Screens/Administrador/StudentsSection/AdminSelectedCategory.js';
+
+// Schools
+import AdminCreateSchool from '../Screens/Administrador/DashboardSection/Settings/AdminCreateSchool.js';
+
+import AdminNoPage from '../Screens/Administrador/DashboardSection/Settings/AdminNoPage.js';
 
 
 /////////////////////////////////////// MAIN COMPONENET ///////////////////////////////////////
@@ -84,7 +108,7 @@ export default function Router() {
           headerShown: false,
         }}
       >
-        {/*/////////////////////////////////// PROFESSOR ///////////////////////////////////  */}
+        {/*/////////////////////////////////////// PROFESSOR ///////////////////////////////////////  */}
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="NavBar" component={NavBar} />
@@ -101,7 +125,7 @@ export default function Router() {
         <Stack.Screen name="MapScreen" component={MapScreen} />
         <Stack.Screen name="MyCars" component={MyCars} />
         <Stack.Screen name="CarInfo" component={CarInfo} />
-        <Stack.Screen name="prePractice" component={prePractice} />
+        <Stack.Screen name="prePractice" component={PrePractice} />
         <Stack.Screen name="StartRouteMap" component={StartRouteMap} />
         <Stack.Screen name="PostPractice" component={PostPractice} />
         <Stack.Screen name="Categories" component={Categories} />
@@ -109,19 +133,35 @@ export default function Router() {
         <Stack.Screen name="OneRouteScreen" component={OneRouteScreen} />
 
 
-        {/*/////////////////////////////////// ADMIN ////////////////////////////////////  */}
-        <Stack.Screen name="WelcomePage" component={WelcomePage} />
-        <Stack.Screen name="CreateSchool" component={CreateSchool} />
-        <Stack.Screen name="AllStudent" component={AllStudent} />
-        <Stack.Screen name="RegisterStudent" component={RegisterStudent} />
-        <Stack.Screen name="AllWorkers" component={AllWorkers} />
-        <Stack.Screen name="RegisterPerson" component={RegisterPerson} />
-        <Stack.Screen name="AllRoles" component={AllRoles} />
-        <Stack.Screen name="CreateRoles" component={CreateRoles} />
-        <Stack.Screen name="AllVehicles" component={AllVehicles} />
-        <Stack.Screen name="RegisterVehicle" component={RegisterVehicle} />
-        <Stack.Screen name="NoPage" component={NoPage} />
+        {/*/////////////////////////////////////// ADMIN ///////////////////////////////////////  */}
+        <Stack.Screen name="AdminCreateSchool" component={AdminCreateSchool} />
+        <Stack.Screen name="AdminNoPage" component={AdminNoPage} />
 
+        <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
+        <Stack.Screen name="AdminNotificationsScreen" component={AdminNotificationsScreen} />
+        <Stack.Screen name="AdminSettings" component={AdminSettings} />
+        <Stack.Screen name="AdminUserProfile" component={AdminUserProfile} />
+        <Stack.Screen name="AdminAllStudent" component={AdminAllStudent} />
+        <Stack.Screen name="AdminRegisterStudent" component={AdminRegisterStudent} />
+        <Stack.Screen name="AdminAllWorkers" component={AdminAllWorkers} />
+        <Stack.Screen name="AdminRegisterPerson" component={AdminRegisterPerson} />
+        <Stack.Screen name="AdminAllRoles" component={AdminAllRoles} />
+        <Stack.Screen name="AdminCreateRoles" component={AdminCreateRoles} />
+        <Stack.Screen name="AdminAllVehicles" component={AdminAllVehicles} />
+        <Stack.Screen name="AdminRegisterVehicle" component={AdminRegisterVehicle} />
+        <Stack.Screen name="AdminChatBot" component={AdminChatBot} />
+        <Stack.Screen name="AdminMyStudents" component={AdminMyStudents} />
+        <Stack.Screen name="AdminAllStudents" component={AdminAllStudents} />
+        <Stack.Screen name="AdminStudentInfo" component={AdminStudentInfo} />
+        <Stack.Screen name="AdminStudentProfile" component={AdminStudentProfile} />
+        <Stack.Screen name="AdminMapScreen" component={AdminMapScreen} />
+        <Stack.Screen name="AdminMyCars" component={AdminMyCars} />
+        <Stack.Screen name="AdminCarInfo" component={AdminCarInfo} />
+        <Stack.Screen name="AdminprePractice" component={AdminPrePractice} />
+        <Stack.Screen name="AdminStartRouteMap" component={AdminStartRouteMap} />
+        <Stack.Screen name="AdminPostPractice" component={AdminPostPractice} />
+        <Stack.Screen name="AdminCategories" component={AdminCategories} />
+        <Stack.Screen name="AdminSelectedCategory" component={AdminSelectedCategory} />
       </Stack.Navigator>
     </NavigationContainer>
   );

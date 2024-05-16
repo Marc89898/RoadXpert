@@ -161,6 +161,31 @@ class APIService {
       }
     }
     
+    static async postProfessor(newProfessorData) {
+      const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Treballador";
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newProfessorData)
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.text();
+          throw new Error(`Failed to add professor. Status: ${response.status}, Response: ${errorData}`);
+        }
+    
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        console.error('Error adding professor:', error.message);
+        throw error;
+      }
+    }
+    
     static async fetchAllRoles() {
       try {
         const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Rol"
@@ -177,6 +202,32 @@ class APIService {
         console.error("Error en la peticion de todos los Roles: " + error)
       }
     }
+
+    static async postRole(newRoleData) {
+      const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Rol";
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newRoleData)
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.text();
+          throw new Error(`Failed to add role. Status: ${response.status}, Response: ${errorData}`);
+        }
+    
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        console.error('Error adding role:', error.message);
+        throw error;
+      }
+    }
+    
     static async fetchEstatDescription(EstatHoraID) {
       try {
         const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/EstatHora/" + EstatHoraID
@@ -194,8 +245,47 @@ class APIService {
       
 
     }
-
-
+    static async postAlumn(newAlumnData) {
+      const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Alumne";
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newAlumnData)
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.text();
+          throw new Error(`Failed to add alumn. Status: ${response.status}, Response: ${errorData}`);
+        }
+    
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        console.error('Error adding alumn:', error.message);
+        throw error;
+      }
+    }
+    
+    static async getAllCars() {
+      try {
+        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Vehicle"
+        const response = await fetch(url);
+        let data = "";
+        console.log(response)
+        if (response.status != 500 && response.status != 404) {
+          data = await response.json();
+          return data;
+        } else {
+          console.error("Error en la petición de Roles: Status", response.status, response.statusText);
+        }
+      }catch(error) {
+        console.error("Error en la peticion de todos los Roles: " + error)
+      }
+    }
 
   
   }

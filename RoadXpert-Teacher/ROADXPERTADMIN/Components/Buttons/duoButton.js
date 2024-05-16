@@ -2,6 +2,7 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { APIService } from "../../ApiService";
 
 const DuoButton = ({ text }) => {
   const navigation = useNavigation();
@@ -9,16 +10,16 @@ const DuoButton = ({ text }) => {
     console.log("Delete");
   };
 
-  const onPressConfirm = () => {
-    console.log("Confirm");
-  };
+  // const onPressConfirm = () => {
+  //   console.log("Confirm");
+  // };
 
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity style={styles.buttonDelete} onPress={onPressDelete}>
         <MaterialCommunityIcons name="delete" size={24} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonConfirm} onPress={onPressConfirm}>
+      <TouchableOpacity style={styles.buttonConfirm}>
         <Text style={styles.buttonText}>{text}</Text>
       </TouchableOpacity>
     </View>

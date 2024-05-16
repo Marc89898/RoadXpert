@@ -13,47 +13,47 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
-  // const handleLogin = async () => {
-  //   try {
-  //     if (!isValidDNI(username)) {
-  //       console.error("El usuario no tiene el formato correcto");
-  //       return;
-  //     }
-  //     var passwordHashed = await sha256(password);
-  //     setPassword(passwordHashed);
-  //     if (!isValidPassword(passwordHashed)) {
-  //       console.error("La contraseña no es válida");
-  //       return;
-  //     }
-  //     const alumns = await APIService.fetchAllAlumns();
-  //     const foundAlumn = alumns.find(
-  //       (alumn) => {
-  //         if (alumn.DNI === username && alumn.Contrasenya === passwordHashed) {
-  //           Config.guardarAlumne(alumn);  
-  //           return true;
-  //         }
-  //       } 
-  //     );
-  //     console.log("Alumne: " + Config.Alumne.Nom)
-  //     if (foundAlumn) {
-  //       console.log("Inicio de sesión exitoso");
-  //       navigation.navigate("NavBar");
-  //     } else {
-  //       console.error("Usuario o contraseña incorrectos");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al iniciar sesión:", error.message);
-  //   }
-  // };
-
-  // Per poder accedir a la applicació sense haver de fer login
   const handleLogin = async () => {
-    if (username === "" && password === "") {
-      navigation.navigate("NavBar");
-    } else {
-      console.error("Usuario o contraseña incorrectos");
+    try {
+      if (!isValidDNI(username)) {
+        console.error("El usuario no tiene el formato correcto");
+        return;
+      }
+      var passwordHashed = await sha256(password);
+      setPassword(passwordHashed);
+      if (!isValidPassword(passwordHashed)) {
+        console.error("La contraseña no es válida");
+        return;
+      }
+      const alumns = await APIService.fetchAllAlumns();
+      const foundAlumn = alumns.find(
+        (alumn) => {
+          if (alumn.DNI === username && alumn.Contrasenya === passwordHashed) {
+            Config.guardarAlumne(alumn);  
+            return true;
+          }
+        } 
+      );
+      console.log("Alumne: " + Config.Alumne.Nom)
+      if (foundAlumn) {
+        console.log("Inicio de sesión exitoso");
+        navigation.navigate("NavBar");
+      } else {
+        console.error("Usuario o contraseña incorrectos");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error.message);
     }
   };
+
+  // // Per poder accedir a la applicació sense haver de fer login
+  // const handleLogin = async () => {
+  //   if (username === "" && password === "") {
+  //     navigation.navigate("NavBar");
+  //   } else {
+  //     console.error("Usuario o contraseña incorrectos");
+  //   }
+  // };
 
   return (
     <View style={styles.container}>

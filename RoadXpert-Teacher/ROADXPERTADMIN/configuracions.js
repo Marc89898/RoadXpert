@@ -3,6 +3,7 @@ class Config {
         this.ProfessorID = "Treballador_1";
         this.ApiIP = "10.0.2.2";
         this.ApiPort = "8888";
+        this.ApiPortMongo = "5010"
         this.Professor = ""
     }
 
