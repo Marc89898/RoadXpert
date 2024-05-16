@@ -85,6 +85,17 @@ def delete_Anotacio(Anotacio_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# @Anotacio_bp.route("/Anotacio/Alumne/<string:alumne_id>", methods=['GET'])
+# def get_Anotacions_by_alumne_id(alumne_id):
+#     try:
+#         with engine.connect() as conn:
+#             query = text("SELECT * FROM Anotacio WHERE AlumneID = :alumne_id")
+#             result = conn.execute(query, {"alumne_id": alumne_id})
+#             Anotacions = [dict(zip(result.keys(), row)) for row in result.fetchall()]
+#             return jsonify(Anotacions), 200
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+    
 @Anotacio_bp.route("/Anotacio/Alumne/<string:alumne_id>", methods=['GET'])
 def get_Anotacions_by_alumne_id(alumne_id):
     try:
@@ -92,6 +103,16 @@ def get_Anotacions_by_alumne_id(alumne_id):
             query = text("SELECT * FROM Anotacio WHERE AlumneID = :alumne_id")
             result = conn.execute(query, {"alumne_id": alumne_id})
             Anotacions = [dict(zip(result.keys(), row)) for row in result.fetchall()]
+
+            # Ahora añadimos los datos de cada Practica
+            for anotacion in Anotacions:
+                practica_id = anotacion['PracticaID']
+                practica_query = text("SELECT Data, Ruta FROM Practica WHERE ID = :practica_id")
+                practica_result = conn.execute(practica_query, {"practica_id": practica_id}).fetchone()
+                if practica_result:
+                    anotacion['Data'] = practica_result[0]  # Usa el índice 0 para obtener el valor de 'Data'
+                    anotacion['Ruta'] = practica_result[1]  # Usa el índice 0 para obtener el valor de 'Data'
+
             return jsonify(Anotacions), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
