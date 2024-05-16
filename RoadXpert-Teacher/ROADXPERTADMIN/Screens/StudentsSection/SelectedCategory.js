@@ -1,41 +1,74 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import BackNavigation from "../Navigation/BackNavigation";
-import MapView from "react-native-maps";
+import { useNavigation } from '@react-navigation/native';
+import MapView, { Marker } from "react-native-maps";
 
 const SelectedCategory = () => {
   const route = useRoute();
-  const { categoryText, subText, subTextInfo, imageSource } =
-    route.params || {};
+  const navigation = useNavigation();
+  const { category, subText, subTextInfo, imageSource, annotations } = route.params || {};
+  const [selectedAnnotation, setSelectedAnnotation] = useState(null);
+
+  const openRoute = (practiceRuta) => {
+    console.log('practiceRuta:', practiceRuta);
+    navigation.navigate("OneRouteScreen", { practiceRuta });
+  }
 
   return (
     <View style={{ flex: 1 }}>
       <BackNavigation />
       <View style={styles.container}>
-        <Text style={styles.headerText}>Señales de {categoryText}</Text>
+        <Text style={styles.headerText}>{category}</Text>
       </View>
-      <Card style={styles.card}>
-        <Card.Content style={styles.cardContent}>
-          <View style={styles.textContainer}>
-            <Title style={styles.title}>{"Señales de " + categoryText}</Title>
-            <Paragraph style={styles.paragraph}>{subText}</Paragraph>
-            <Paragraph style={styles.paragraphsubText}>{subTextInfo}</Paragraph>
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require("../../assets/images/Categories/StopSign.png")}
-              style={[styles.image, { resizeMode: "contain" }]}
-            />
-          </View>
-        </Card.Content>
-      </Card>
+      <ScrollView style={styles.scrollContainer}>
+        {annotations.map((annotation, index) => (
+          <Card key={index} style={styles.card}>
+            <Card.Content style={styles.cardContent}>
+              <View style={styles.textContainer}>
+                <Title style={styles.title}>{annotation.CategoriaEscrita}</Title>
+                <View style={styles.paragraphContainer}>
+                  <Paragraph style={styles.paragraph}>{annotation.CategoriaNumerica}</Paragraph>
+                  <Paragraph style={styles.paragraph}>{annotation.Gravedad}</Paragraph>
+                  <Paragraph style={styles.paragraph}>{new Date(annotation.Data).toLocaleDateString()}</Paragraph>
+                </View>
+                <TouchableOpacity style={styles.openRouteButton} onPress={() => openRoute(annotation)}>
+                  <Text style={styles.buttonText}>Ver Ruta</Text>
+                </TouchableOpacity>
+              </View>
+              {/* <View style={styles.imageContainer}>
+                <Image style={styles.image} source={{ uri: imageSource }} />
+              </View> */}
+            </Card.Content>
+          </Card>
+        ))}
+      </ScrollView>
       <View style={styles.mapTitleContainer}>
         <Text style={styles.mapTitle}>Mapa</Text>
       </View>
       <View style={styles.mapContainer}>
-        <MapView style={styles.map} />
+        <MapView style={styles.map}>
+          {annotations.map((annotation, index) => {
+            // Dividir las coordenadas en latitud y longitud
+            const [latitude, longitude] = annotation.Posicio.split(",").map(parseFloat);
+            // Crear el marcador con las coordenadas y la descripción
+            return (
+              <Marker
+                key={index}
+                coordinate={{ latitude, longitude }}
+                title={annotation.Descripcio}
+                onPress={() => setSelectedAnnotation(annotation)}
+              />
+            );
+          })}
+        </MapView>
+        {selectedAnnotation && (
+          <View style={styles.selectedAnnotationContainer}>
+            <Text style={styles.selectedAnnotationText}>{new Date(selectedAnnotation.Data).toLocaleDateString()}</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -45,52 +78,75 @@ const styles = StyleSheet.create({
   container: {
     width: "70%",
     paddingLeft: 24,
-    marginBottom: 20,
+    marginBottom: 0,
+    height: 100, 
+  },
+  scrollContainer: {
+    flex: 1,
   },
   headerText: {
     fontSize: 25,
   },
   card: {
     alignSelf: "center",
-    width: 345,
-    height: 146,
+    jusifyContent: "center",
+    width: '80%',
+    marginBottom: 10,
+    padding: 0,
     borderRadius: 10,
     elevation: 3,
   },
   cardContent: {
+    width: '100%',
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   textContainer: {
     flex: 1,
-    marginRight: 10,
+    marginRight: 0,
   },
   title: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: "bold",
   },
-  paragraph: {
-    fontSize: 10,
-    color: "gray",
+  paragraphContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    textAlign: "center",
+    justifyContent: "space-around",
   },
-  paragraphsubText: {
-    marginTop: 5,
-    backgroundColor: "#5D5D5D",
-    paddingHorizontal: 10,
-    color: "white",
-    paddingVertical: 3,
-    borderRadius: 50,
+  paragraph: {
+    width: "30%",
+    fontSize: 14,
+    color: "gray",
     textAlign: "center",
   },
-  image: {
+  openRouteButton: {
+    marginTop: 10,
+    backgroundColor: "grey",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    textAlign: "center",
+  },
+  imageContainer: {
     width: 100,
     height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 80,
+    height: 80,
     borderRadius: 10,
   },
   mapTitleContainer: {
-    marginTop: 20,
-    alignItems: "left",
+    marginTop: 0,
+    alignItems: "flex-start",
   },
   mapTitle: {
     paddingLeft: 24,
@@ -99,9 +155,22 @@ const styles = StyleSheet.create({
   mapContainer: {
     flex: 1,
     marginTop: 10,
+    height: 300,
   },
   map: {
     flex: 1,
+  },
+  selectedAnnotationContainer: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    borderRadius: 10,
+    padding: 10,
+    zIndex: 1000,
+  },
+  selectedAnnotationText: {
+    fontSize: 16,
   },
 });
 
