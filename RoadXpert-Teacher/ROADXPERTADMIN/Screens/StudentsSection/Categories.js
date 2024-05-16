@@ -124,14 +124,14 @@ const Categories = ({ route }) => {
     };
 
     // Función para manejar la selección de una categoría
-    const handleSelected = (annotations) => {
-        navigation.navigate('SelectedCategory', { annotations });
+    const handleSelected = (category, annotations) => {
+        navigation.navigate('SelectedCategory', { category, annotations });
     };    
 
     // Continúa con el código de tu componente Categories...
     const renderCard = (category, annotations, imageSource) => {
         return (
-            <TouchableOpacity onPress={() => handleSelected(annotations)}>
+            <TouchableOpacity onPress={() => handleSelected(category, annotations)}>
                 <Card style={styles.card}>
                     <Card.Content style={{ padding: 0 }}>
                         <Image
