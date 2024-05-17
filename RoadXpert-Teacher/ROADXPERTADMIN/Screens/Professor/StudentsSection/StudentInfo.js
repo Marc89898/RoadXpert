@@ -9,6 +9,7 @@ const StudentInfo = ({ route }) => {
   const navigation = useNavigation();
 
   const goToStudentProfile = () => {
+    console.log("StudentInfo.js:", student);
     navigation.navigate("StudentProfile", { student });
   };
 

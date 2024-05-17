@@ -14,6 +14,7 @@ import SelectedCategory from './Components/SelectedCategory.js';
 import PracticsScreen from './Components/PracticsScreen.js';
 import SelectedPractics from './Components/SelectedPractics.js';
 import notificationsScreen from './Components/notificationsScreen.js';
+import OneRouteScreen from './Components/OneRouteScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,8 @@ export default function App() {
         <Stack.Screen name="PracticsScreen" component={PracticsScreen} />
         <Stack.Screen name="SelectedPractics" component={SelectedPractics} />
         <Stack.Screen name="notificationsScreen" component={notificationsScreen} />
+        <Stack.Screen name="OneRouteScreen" component={OneRouteScreen} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
