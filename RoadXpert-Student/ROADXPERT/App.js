@@ -14,6 +14,9 @@ import SelectedCategory from './Components/SelectedCategory.js';
 import PracticsScreen from './Components/PracticsScreen.js';
 import SelectedPractics from './Components/SelectedPractics.js';
 import notificationsScreen from './Components/notificationsScreen.js';
+import UserProfile from './Components/Settings/UserProfile.js';
+import Settings from './Components/Settings/Settings.js';
+import OneRouteScreen from './Components/OneRouteScreen.js';
 
 const Stack = createNativeStackNavigator();
 
