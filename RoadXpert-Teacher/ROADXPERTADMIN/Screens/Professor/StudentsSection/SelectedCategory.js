@@ -1,20 +1,57 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
 import MapView, { Marker } from "react-native-maps";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 const SelectedCategory = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { category, subText, subTextInfo, imageSource, annotations } = route.params || {};
+  const { category, subText, subTextInfo, imageSource, annotations } =
+    route.params || {};
   const [selectedAnnotation, setSelectedAnnotation] = useState(null);
 
   const openRoute = (practicaRuta) => {
     navigation.navigate("OneRouteScreen", { practicaRuta });
-  }
+  };
+
+  // Obtener las coordenadas mínimas y máximas de los marcadores
+  const [minLatitude, minLongitude, maxLatitude, maxLongitude] =
+    annotations.reduce(
+      ([minLat, minLon, maxLat, maxLon], annotation) => {
+        const [latitude, longitude] =
+          annotation.Posicio.split(",").map(parseFloat);
+        return [
+          Math.min(minLat, latitude),
+          Math.min(minLon, longitude),
+          Math.max(maxLat, latitude),
+          Math.max(maxLon, longitude),
+        ];
+      },
+      [90, 180, -90, -180]
+    );
+
+  // Calcular la región del mapa
+  const { width, height } = Dimensions.get("window");
+  const LATITUDE_DELTA = 0.01;
+  const LONGITUDE_DELTA =
+    (maxLongitude - minLongitude) / (width / height) || LATITUDE_DELTA;
+
+  const region = {
+    latitude: (minLatitude + maxLatitude) / 2,
+    longitude: (minLongitude + maxLongitude) / 2,
+    latitudeDelta: maxLatitude - minLatitude + LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -27,22 +64,27 @@ const SelectedCategory = () => {
           <Card key={index} style={styles.card}>
             <Card.Content style={styles.cardContent}>
               <View style={styles.textContainer}>
-                <Title style={styles.title}>{annotation.CategoriaEscrita}</Title>
+                <Title style={styles.title}>
+                  {annotation.CategoriaEscrita}
+                </Title>
                 <View style={styles.paragraphContainer}>
-                  <Paragraph style={styles.paragraph}>Categoria Numerica: {annotation.CategoriaNumerica}</Paragraph>
-                  <Paragraph style={styles.paragraph}>Gravedad: {annotation.Gravedad}</Paragraph>
-                  <Paragraph style={styles.paragraph}>Fecha: {new Date(annotation.Data).toLocaleDateString()}</Paragraph>
+                  <Paragraph style={styles.paragraph}>
+                    Categoria Numerica: {annotation.CategoriaNumerica}
+                  </Paragraph>
+                  <Paragraph style={styles.paragraph}>
+                    Gravedad: {annotation.Gravedad}
+                  </Paragraph>
+                  <Paragraph style={styles.paragraph}>
+                    Fecha: {new Date(annotation.Data).toLocaleDateString()}
+                  </Paragraph>
                 </View>
-                <TouchableOpacity style={styles.openRouteButton} onPress={() => openRoute(annotation.Ruta)}>
+                <TouchableOpacity
+                  style={styles.openRouteButton}
+                  onPress={() => openRoute(annotation.Ruta)}
+                >
                   <Text style={styles.buttonText}>Ver Ruta</Text>
                 </TouchableOpacity>
               </View>
-              {/* <View style={styles.imageContainer}>
-                <Image
-                  source={imageSource}
-                  style={[styles.image, { resizeMode: "contain" }]}
-                />
-              </View> */}
             </Card.Content>
           </Card>
         ))}
@@ -51,11 +93,10 @@ const SelectedCategory = () => {
         <Text style={styles.mapTitle}>Mapa</Text>
       </View>
       <View style={styles.mapContainer}>
-        <MapView style={styles.map}>
+        <MapView style={styles.map} initialRegion={region}>
           {annotations.map((annotation, index) => {
-            // Dividir las coordenadas en latitud y longitud
-            const [latitude, longitude] = annotation.Posicio.split(",").map(parseFloat);
-            // Crear el marcador con las coordenadas y la descripción
+            const [latitude, longitude] =
+              annotation.Posicio.split(",").map(parseFloat);
             return (
               <Marker
                 key={index}
@@ -68,7 +109,9 @@ const SelectedCategory = () => {
         </MapView>
         {selectedAnnotation && (
           <View style={styles.selectedAnnotationContainer}>
-            <Text style={styles.selectedAnnotationText}>{new Date(selectedAnnotation.Data).toLocaleDateString()}</Text>
+            <Text style={styles.selectedAnnotationText}>
+              {new Date(selectedAnnotation.Data).toLocaleDateString()}
+            </Text>
           </View>
         )}
       </View>
@@ -78,11 +121,10 @@ const SelectedCategory = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "70%",
+    width: "90%",
     paddingLeft: 24,
     marginBottom: 20,
-    // Ajusta la altura de la parte superior aquí
-    height: 100, 
+    height: "auto",
   },
   scrollContainer: {
     flex: 1,
@@ -92,7 +134,7 @@ const styles = StyleSheet.create({
   },
   card: {
     alignSelf: "center",
-    width: '80%',
+    width: "80%",
     marginBottom: 10,
     borderRadius: 10,
     elevation: 3,
@@ -142,7 +184,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   mapTitleContainer: {
-    marginTop: 20,
+    marginTop: 0,
     alignItems: "flex-start",
   },
   mapTitle: {
@@ -152,7 +194,6 @@ const styles = StyleSheet.create({
   mapContainer: {
     flex: 1,
     marginTop: 10,
-    // Ajusta la altura del mapa aquí
     height: 300,
   },
   map: {

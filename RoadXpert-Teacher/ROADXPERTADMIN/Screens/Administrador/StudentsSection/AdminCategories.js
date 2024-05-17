@@ -43,8 +43,8 @@ const AdminCategories = () => {
                     <View style={styles.line}></View>
                     <View style={styles.cardsContainer}>
                         <View style={styles.row}>
-                            {renderCard("STOP", "Presta especial atención con las señales de STOP", "5 señales", require('../../../assets/images/Categories/StopSign.png'))}
-                            {renderCard("STOP", "Presta especial atención con las señales de STOP", "2 señales", require('../../../assets/images/Categories/StopSign.png'))}
+                            {renderCard("STOP", "Presta especial atención con las señales de STOP", "5 señales", require('../../../assets/images/Categories/StopParking.png'))}
+                            {renderCard("STOP", "Presta especial atención con las señales de STOP", "2 señales", require('../../../assets/images/Categories/StopParking.png'))}
                         </View>
                     </View>
                 </View>
@@ -55,7 +55,7 @@ const AdminCategories = () => {
                     <View style={styles.line}></View>
                     <View style={styles.cardsContainer}>
                         <View style={styles.row}>
-                            {renderCard("VELOCIDAD", "Tienes que fijar-te mas en el velocimetro", "7 señales", require('../../../assets/images/Categories/30Speed.png'))}
+                            {renderCard("VELOCIDAD", "Tienes que fijar-te mas en el velocimetro", "7 señales", require('../../../assets/images/Categories/StopParking.png'))}
                         </View>
                     </View>
                 </View>

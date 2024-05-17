@@ -1,6 +1,6 @@
 import { Audio } from 'expo-av';
 import axios from 'axios';
-import env from './env';
+// import env from './env';
 
 class AudioManager {
     static async startRecording() {

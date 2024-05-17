@@ -25,7 +25,7 @@ const AdminSelectedCategory = () => {
           </View>
           <View style={styles.imageContainer}>
             <Image
-              source={require("../../../assets/images/Categories/StopSign.png")}
+              source={require("../../../assets/images/Categories/StopParking.png")}
               style={[styles.image, { resizeMode: "contain" }]}
             />
           </View>
