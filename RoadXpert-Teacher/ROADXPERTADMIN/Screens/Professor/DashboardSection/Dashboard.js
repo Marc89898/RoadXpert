@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Card, Icon } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FloatingButton from "../../../Components/Buttons/floatingButton";
 
 import { APIService } from "../../../ApiService";
@@ -23,15 +24,10 @@ const Dashboard = () => {
   const handleSettings = () => {
     navigation.navigate("AdminSettings");
   };
-  const handleStartPractical = () => {
-    navigation.navigate("prePractice");
-  };
-
 
   useEffect(() => {
     const loadNextEvent = async () => {
       try {
-
         if (typeof Config.ProfessorID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
@@ -40,7 +36,6 @@ const Dashboard = () => {
 
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
         const currentDate = new Date();
-
 
         events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
 
@@ -68,7 +63,8 @@ const Dashboard = () => {
           <View style={styles.overlay}>
             <Text style={styles.welcomeText}>Welcome Back,</Text>
             <Text style={styles.nameText}>
-              {Config?.Professor?.Nom} {Config?.Professor?.Cognom} {Config?.Professor?.SegonCognom}
+              {Config?.Professor?.Nom} {Config?.Professor?.Cognom}{" "}
+              {Config?.Professor?.SegonCognom}
             </Text>
           </View>
         </View>
@@ -88,6 +84,65 @@ const Dashboard = () => {
       </View>
 
       <View style={styles.cardContainer}>
+        <TouchableOpacity>
+          <Card style={styles.card}>
+            <Card.Content style={styles.cardContent}>
+              <View>
+                <Text style={styles.cardTitle}>Siguiente Encuentro</Text>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <Image
+                  source={require("../../../assets/imgDefault.png")}
+                  style={styles.eventDetailImage}
+                />
+                <View style={styles.eventTextDetail}>
+                  <Text style={styles.eventDetailText}>Juan Alberto</Text>
+                  <Text style={styles.eventDetailTextOpacity}>5a Practica</Text>
+                  <Text style={styles.eventDetailTextOpacity}>
+                    Volkswagen GT
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <MaterialCommunityIcons
+                  name="calendar"
+                  size={20}
+                  color="black"
+                />
+                <Text style={styles.eventInfo}>Dia 25 de Marzo</Text>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <MaterialCommunityIcons name="clock" size={20} color="black" />
+                <Text style={styles.eventInfo}>13:00pm - 14:00pm</Text>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <MaterialCommunityIcons
+                  name="map-marker"
+                  size={20}
+                  color="black"
+                />
+                <Text style={styles.eventInfo}>
+                  Autoescuela Bosc de la Coma
+                </Text>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={[styles.button, styles.startButton]}>
+                  <Text style={styles.buttonText}>Empezar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.cancelButton]}>
+                  <Text style={styles.buttonText}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
+      </View>
+
+      {/* <View style={styles.cardContainer}>
         <TouchableOpacity onPress={handleStartPractical}>
           <Card style={styles.card}>
             <Card.Content>
@@ -96,7 +151,7 @@ const Dashboard = () => {
             </Card.Content>
           </Card>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       {nextEvent && (
         <View style={styles.cardContainer}>
@@ -109,7 +164,9 @@ const Dashboard = () => {
 
                 <View style={styles.eventDetail}>
                   <Icon name="calendar" size={20} color="black" />
-                  <Text style={styles.eventDetailText}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
+                  <Text
+                    style={styles.eventDetailText}
+                  >{`${nextEvent.Data.substring(0, 12)}`}</Text>
                 </View>
 
                 <View style={styles.eventDetail}>
@@ -123,7 +180,7 @@ const Dashboard = () => {
           </Card>
         </View>
       )}
-      {/* <FloatingButton /> */}
+      <FloatingButton />
     </View>
   );
 };
@@ -204,14 +261,42 @@ const styles = StyleSheet.create({
     color: "white",
   },
   cardContainer: {
-    margin: 20,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 10,
-    backgroundColor: "white",
+    marginVertical: 10,
+    marginHorizontal: 20,
   },
-  cardContent: {
-    padding: 10,
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "left",
+  },
+  eventDetail: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 6,
+  },
+  eventDetailImage: {
+    resizeMode: "cover",
+    width: 70,
+    height: 70,
+    borderRadius: 10,
+    marginRight: 12,
+  },
+  eventDetailText: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  eventInfo: {
+    fontSize: 12,
+    marginLeft: 5,
+  },
+  eventDetailTextOpacity: {
+    fontSize: 13,
+    color: "gray",
+  },
+  textCenter: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   nextEventTitle: {
     fontSize: 14,
@@ -223,25 +308,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 5,
   },
-  eventDetailText: {
-    fontSize: 12,
-    marginLeft: 5,
-  },
   card: {
     elevation: 5,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  cardSubtitle: {
-    fontSize: 10,
-    color: "grey",
-  },
-  contentContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 0,
   },
   nextEventContainer: {
     borderWidth: 1,
@@ -250,18 +318,28 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
   },
-  nextEventTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  eventDetail: {
+  buttonContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
+    justifyContent: "space-between",
+    marginTop: 16,
   },
-  eventDetailText: {
-    marginLeft: 10,
-    fontSize: 16,
+  button: {
+    backgroundColor: "#ccc",
+    paddingVertical: 10,
+    paddingHorizontal: 45,
+    alignItems: "center",
+    gap: 10,
+    borderRadius: 10,
+  },
+  startButton: {
+    backgroundColor: "#9884FF",
+  },
+  cancelButton: {
+    backgroundColor: "#1F41BB",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 

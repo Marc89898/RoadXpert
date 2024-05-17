@@ -2,12 +2,13 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import chatBotImg from "../../assets/images/Dashboard/chatBot.jpg";
+import chatBotImg from "../../assets/images/StartRouteMap/StartRouteicon.png";
 
 const floatingButton = () => {
   const navigation = useNavigation();
+  
   const handleOpen = () => {
-    navigation.navigate("ChatBot");
+    navigation.navigate("prePractice");
   };
   return (
     <TouchableOpacity style={styles.mainButton} onPress={handleOpen}>
@@ -18,7 +19,7 @@ const floatingButton = () => {
 
 const styles = StyleSheet.create({
   mainButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#6E89ED",
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
   },
   buttonImage: {
     width: 35,
+    resizeMode: "contain",
     height: 35,
   },
 });
