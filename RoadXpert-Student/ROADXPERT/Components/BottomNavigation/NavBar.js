@@ -85,7 +85,7 @@ export default function MyComponent() {
         name="Categories"
         component={Categories}
         options={{
-          tabBarLabel: "Calendar",
+          tabBarLabel: "Categories",
           tabBarIcon: ({ color, size }) => {
             return <Icon name="calendar-outline" size={size} color={color} />;
           },
