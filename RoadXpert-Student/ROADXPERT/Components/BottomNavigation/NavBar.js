@@ -71,23 +71,27 @@ export default function MyComponent() {
           },
         }}
       />
-      { <Tab.Screen
-        name="Calendar"
-        component={RouteInformation}
-        options={{
-          tabBarLabel: "Calendar",
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="calendar-outline" size={size} color={color} />;
-          },
-        }}
-      />}
+      {
+        <Tab.Screen
+          name="Calendar"
+          component={Calendar}
+          options={{
+            tabBarLabel: "Calendar",
+            tabBarIcon: ({ color, size }) => {
+              return <Icon name="calendar-outline" size={size} color={color} />;
+            },
+          }}
+        />
+      }
       <Tab.Screen
         name="Categories"
         component={Categories}
         options={{
-          tabBarLabel: "Categories",
+          tabBarLabel: "Categorías",
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="calendar-outline" size={size} color={color} />;
+            return (
+              <Icon name="format-list-bulleted" size={size} color={color} />
+            );
           },
         }}
       />
