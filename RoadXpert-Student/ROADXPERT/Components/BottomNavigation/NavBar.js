@@ -73,7 +73,7 @@ export default function MyComponent() {
       />
       { <Tab.Screen
         name="Calendar"
-        component={Calendar}
+        component={RouteInformation}
         options={{
           tabBarLabel: "Calendar",
           tabBarIcon: ({ color, size }) => {
@@ -81,7 +81,7 @@ export default function MyComponent() {
           },
         }}
       />}
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Categories"
         component={Categories}
         options={{
@@ -90,7 +90,7 @@ export default function MyComponent() {
             return <Icon name="calendar-outline" size={size} color={color} />;
           },
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Map"
         component={Map}
