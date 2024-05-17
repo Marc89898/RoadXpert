@@ -9,17 +9,20 @@ import {
 } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import CircleImage1 from "../assets/images/Dashboard/notification.png";
-import CircleImage2 from "../assets/images/Dashboard/settings.png";
-import TuImagen from "../assets/images/Dashboard/ProvaFoto.jpeg";
+import NotificationsImg from "../assets/images/Dashboard/notification.png";
+import SettingsImg from "../assets/images/Dashboard/settings.png";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { APIService } from "./ApiService";
 import Config from "../configuracions";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 const Dashboard = () => {
   const navigation = useNavigation();
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const handleSettings = () => {
+    navigation.navigate("Settings");
+  };
 
   const handleNotifications = () => {
     navigation.navigate("notificationsScreen");
@@ -62,15 +65,65 @@ const Dashboard = () => {
       <View style={styles.circleContainer}>
         <TouchableOpacity onPress={handleNotifications}>
           <View style={styles.circle}>
-            <Image source={CircleImage1} style={styles.circleImage} />
+            <Image source={NotificationsImg} style={styles.circleImage} />
           </View>
         </TouchableOpacity>
-        <View style={styles.circle}>
-          <Image source={CircleImage2} style={styles.circleImage} />
-        </View>
+        <TouchableOpacity onPress={handleSettings}>
+          <View style={styles.circle}>
+            <Image source={SettingsImg} style={styles.circleImage} />
+          </View>
+        </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <Text style={styles.text}>¡I'm, Dashboard Page!</Text>
+
+      <View style={styles.cardContainer}>
+        <TouchableOpacity>
+          <Card style={styles.card}>
+            <Card.Content style={styles.cardContent}>
+              <View>
+                <Text style={styles.cardTitle}>Siguiente Encuentro</Text>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <Image
+                  source={require("../assets/imgDefault.png")}
+                  style={styles.eventDetailImage}
+                />
+                <View style={styles.eventTextDetail}>
+                  <Text style={styles.eventDetailText}>Juan Alberto</Text>
+                  <Text style={styles.eventDetailTextOpacity}>5a Practica</Text>
+                  <Text style={styles.eventDetailTextOpacity}>
+                    Volkswagen GT
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <MaterialCommunityIcons
+                  name="calendar"
+                  size={20}
+                  color="black"
+                />
+                <Text style={styles.eventInfo}>Dia 25 de Marzo</Text>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <MaterialCommunityIcons name="clock" size={20} color="black" />
+                <Text style={styles.eventInfo}>13:00pm - 14:00pm</Text>
+              </View>
+
+              <View style={styles.eventDetail}>
+                <MaterialCommunityIcons
+                  name="map-marker"
+                  size={20}
+                  color="black"
+                />
+                <Text style={styles.eventInfo}>
+                  Autoescuela Bosc de la Coma
+                </Text>
+              </View>
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
       </View>
 
       {nextEvent && (
@@ -84,7 +137,9 @@ const Dashboard = () => {
 
                 <View style={styles.eventDetail}>
                   {/* <Icon name="calendar" size={20} color="black" /> */}
-                  <Text style={styles.eventDetailText}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
+                  <Text
+                    style={styles.eventDetailText}
+                  >{`${nextEvent.Data.substring(0, 12)}`}</Text>
                 </View>
 
                 <View style={styles.eventDetail}>
@@ -102,6 +157,11 @@ const Dashboard = () => {
 };
 
 const styles = StyleSheet.create({
+  textCenter: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -110,42 +170,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 20,
   },
   button: {
     margin: 5,
-  },
-  textCenter: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  cardContainer: {
-    margin: 20,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 10,
-    backgroundColor: "white",
-  },
-  eventDetail: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 5,
-  },
-  eventDetailText: {
-    fontSize: 12,
-    marginLeft: 5,
-  },
-  card: {
-    elevation: 5,
-  },
-  overlay: {
-    position: "absolute",
-    flex: 1,
-    top: 50,
-    left: 10,
-    padding: 10,
-    borderRadius: 5,
   },
   imageContainer: {
     overflow: "hidden",
@@ -155,30 +182,15 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#1F41BB",
   },
-  cardTitle: {
-    fontSize: 18,
+  title: {
+    fontSize: 80,
     fontWeight: "bold",
-  },
-  cardSubtitle: {
-    fontSize: 10,
-    color: "grey",
-  },
-  imageContainer: {
-    borderBottomRightRadius: 100,
-    overflow: "hidden",
-  },
-  cardContent: {
-    padding: 10,
-  },
-  nextEventTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  imageBackground: {
-    height: 232,
-    width: "100%",
-    resizeMode: "cover",
+    color: "white",
+    textAlign: "center",
+    alignContent: "center",
+    // paddingLeft: 10,
+    marginTop: 30,
+    opacity: 0.3,
   },
   circleContainer: {
     position: "absolute",
@@ -203,13 +215,14 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: "absolute",
-    bottom: 10,
+    flex: 1,
+    top: 50,
     left: 10,
-    backgroundColor: "rgba(0,0,0,0.5)",
     padding: 10,
     borderRadius: 5,
   },
   welcomeText: {
+    left: 2,
     fontSize: 8,
     color: "white",
   },
@@ -218,10 +231,56 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  contentContainer: {
-    justifyContent: "center",
+  cardContainer: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "left",
+  },
+  eventDetail: {
+    flexDirection: "row",
     alignItems: "center",
-    marginTop: 0,
+    marginVertical: 6,
+  },
+  eventDetailImage: {
+    resizeMode: "cover",
+    width: 70,
+    height: 70,
+    borderRadius: 10,
+    marginRight: 12,
+  },
+  eventDetailText: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  eventInfo: {
+    fontSize: 12,
+    marginLeft: 5,
+  },
+  eventDetailTextOpacity: {
+    fontSize: 13,
+    color: "gray",
+  },
+  textCenter: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  nextEventTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  eventDetail: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  card: {
+    elevation: 5,
   },
   nextEventContainer: {
     borderWidth: 1,
@@ -229,36 +288,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginTop: 20,
-  },
-  nextEventTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  eventDetail: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  eventDetailText: {
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  imageContainer: {
-    overflow: "hidden",
-  },
-  imageBackground: {
-    height: 120,
-    width: "100%",
-    backgroundColor: "#1F41BB",
-  },
-
-  overlay: {
-    position: "absolute",
-    flex: 1,
-    top: 50,
-    left: 10,
-    padding: 10,
-    borderRadius: 5,
   },
 });
 
