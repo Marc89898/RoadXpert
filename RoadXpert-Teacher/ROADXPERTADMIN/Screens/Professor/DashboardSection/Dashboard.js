@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   imageBackground: {
     height: 120,
     width: "100%",
-    backgroundColor: "#1F41BB",
+    backgroundColor: '#1F41BB',
   },
   title: {
     fontSize: 80,
@@ -332,10 +332,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   startButton: {
-    backgroundColor: "#9884FF",
+    backgroundColor: '#1F41BB',
   },
   cancelButton: {
-    backgroundColor: "#1F41BB",
+    backgroundColor: 'grey',
   },
   buttonText: {
     color: "#fff",
