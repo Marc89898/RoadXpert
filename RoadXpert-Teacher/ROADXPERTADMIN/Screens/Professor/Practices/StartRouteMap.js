@@ -44,7 +44,7 @@ const StartRouteMap = ({ route }) => {
     await generateRouteFile();
     practiceData.HoraFi = new Date().toLocaleTimeString('en-US', { hour12: false });
     // anadir atributo a la practica de TotalAnotacions
-    practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 2;
+    practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 0;
     // practiceData.Ruta = routeID;
 
     try {
