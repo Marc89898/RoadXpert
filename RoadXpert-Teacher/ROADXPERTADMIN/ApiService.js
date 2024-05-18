@@ -161,6 +161,31 @@ class APIService {
       }
     }
     
+    static async postVehicle(vehicle) {
+      const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Vehicle";
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(vehicle)
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.text();
+          throw new Error(`Failed to add professor. Status: ${response.status}, Response: ${errorData}`);
+        }
+    
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        console.error('Error adding professor:', error.message);
+        throw error;
+      }
+    }
+
     static async postProfessor(newProfessorData) {
       const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Treballador";
     

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"; // Importa useState y useEffect desde React
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
 import CarCard from "../../../../../Components/Cards/CarCard";
@@ -23,14 +23,14 @@ const AdminAllVehicles = () => {
   }, []);
 
   const handleOpen = () => {
-    navigation.navigate("RegisterVehicle");
+    navigation.navigate("AdminRegisterVehicle");
   };
-
+  
   return (
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>All Students</Text>
+        <Text style={styles.headerText}>Elefants</Text>
         <TouchableOpacity style={styles.button} onPress={handleOpen}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>

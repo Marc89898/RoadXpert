@@ -24,7 +24,7 @@ const AdminAllStudent = () => {
   };
 
   const handleOpen = () => {
-    navigation.navigate("RegisterStudent");
+    navigation.navigate("AdminRegisterStudent");
   };
 
   const filteredStudents = students.filter(

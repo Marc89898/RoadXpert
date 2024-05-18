@@ -1,73 +1,73 @@
-import React, { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Alert,
 } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
 import MainButton from "../../../../../Components/Buttons/mainButton.js";
-import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import CustomTextInput from "../../../../../Components/Inputs/CustomTextInput.js";
-
-// const newAlumnData = {
-//   Nom: "Nuevo Alumno",
-//   DNI: "12345678A",
-//   Adreca: "Calle Ejemplo, 123",
-//   Telefon: "123456789",
-//   Contrasenya: "contraseña123",
-//   ProfessorID: 1,
-// };
-
-// try {
-//   const response = await APIService.postAlumn(newAlumnData);
-//   console.log('Alumn added successfully:', response);
-// } catch (error) {
-//   console.error('Failed to add alumn:', error);
-// }
-
-
+import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
+import CustomSelectInputUnlocked from "../../../../../Components/Inputs/CustomSelectInputUnlocked.js"
+import { APIService } from "../../../../../ApiService.js";
 
 const AdminRegisterStudent = () => {
-  const navigation = useNavigation();
+  const [alumn, setAlumn] = useState({
+    nom: "",
+    dni: "",
+    adreca: "",
+    telefon: "",
+    contrsenya: "",
+    professorID: ""
+  });
+  const [professors, setProfessors] = useState([]);
+  const [selectedProfessor, setSelectedProfessor] = useState(null);
 
-  const opcionesVehicles = [{ label: "ROL OPTION", value: "OPTION" }];
-  const opcionesSexo = [
-    { label: "Hombre", value: "Hombre" },
-    { label: "Mujer", value: "Mujer" },
-  ];
+  useEffect(() => {
+    fetchProfessors();
+  }, []);
 
-  const [image, setImage] = useState(null);
-
-  const handleImageUpload = async () => {
+  const fetchProfessors = async () => {
     try {
-      const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (!permissionResult.granted) {
-        Alert.alert(
-          "Permission denied",
-          "You need to enable permission to access the library"
-        );
-        return;
-      }
+      const fetchedProfessors = await APIService.fetchAllProfessors();
+      console.log("Professors: " + fetchedProfessors[1].ID);
+      setProfessors(fetchedProfessors);
+    } catch (error) {
+      console.error("Error fetching professors:", error);
+    }
+  };
 
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      if (!pickerResult.cancelled) {
-        setImage(pickerResult.uri);
+  const handleSave = async () => {
+    try {
+      console.log("Alumne: ", alumn)
+      const response = await APIService.postAlumn(alumn);
+      if (response) {
+        showAlert("Alumno creado", "El alumno se ha creado correctamente.");
+      } else {
+        console.error("Error en el post de Alumno:", response);
       }
     } catch (error) {
-      console.log("Error selecting image:", error);
+      console.error("Error en el post de Alumno:", error);
     }
+  };
+
+  const showAlert = (title, message) => {
+    Alert.alert(
+      title,
+      message,
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
+  };
+
+  const handleProfessorChange = (professor) => {
+    setSelectedProfessor(professor);
+    setAlumn((prevAlumn) => ({ ...prevAlumn, ProfessorID: professor.value }));
+  };
+
+  const handleContrasenyaChange = (text) => {
+    setAlumn((prevAlumn) => ({ ...prevAlumn, Contrasenya: text }));
   };
 
   return (
@@ -79,22 +79,38 @@ const AdminRegisterStudent = () => {
         </View>
 
         <View style={styles.contentContainer}>
-          {/* <View style={styles.uploadContainer}>
-            <Text style={styles.uploadLabel}>Image:</Text>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={() => handleImageUpload(false)}
-            >
-              <MaterialIcons name="cloud-upload" size={24} color="black" />
-            </TouchableOpacity>
-          </View> */}
-          <CustomTextInput label="Nombre:" placeholder="Antonio" />
-          <CustomTextInput label="DNI:" placeholder="99999999Z" />
-          <CustomTextInput label="Adreça:" placeholder="Olot" />
-          <CustomTextInput label="Telefon:" placeholder="984353150" />
+          <CustomTextInputUnlocked
+            placeholder="Nombre"
+            onChangeText={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, nom: text }))}
+          />
+          <CustomTextInputUnlocked
+            placeholder="Dni"
+            onChangeText={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, dni: text }))}
+          />
+          <CustomTextInputUnlocked
+            placeholder="Adreca"
+            onChangeText={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, adreca: text }))}
+          />
+          <CustomTextInputUnlocked
+            placeholder="Numero"
+            onChangeText={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, telefon: text }))}
+          />
+          <CustomTextInputUnlocked
+            placeholder="Contrasenya"
+            onChangeText={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, contrasenya: text }))}
+          />
+          <CustomSelectInputUnlocked
+            options={professors.map((professor) => ({
+              label: professor.Nom,
+              value: professor.ID,
+            }))}
+            onSelect={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, professorID: text }))}
+            selectedValue={selectedProfessor}
+            placeholder="Professor"
+          />
         </View>
       </View>
-      <MainButton title="Guardar" />
+      <MainButton title="Guardar" onPress={handleSave} />
     </ScrollView>
   );
 };
@@ -105,6 +121,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    padding: 20,
   },
   header: {
     paddingLeft: 24,
@@ -113,48 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   contentContainer: {
-    padding: 20,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  colorpick: {
-    width: "100%",
-    borderRadius: 10,
-    height: 50,
-    backgroundColor: "lightgray",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  rectangleContainer: {
-    backgroundColor: "lightgray",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 30,
-    alignItems: "center",
-  },
-  rectangleText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  uploadContainer: {
-    alignItems: "left",
     marginTop: 20,
-  },
-  uploadLabel: {
-    fontSize: 13,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  icon: {
-    width: "100%",
-    borderRadius: 10,
-    height: 50,
-    backgroundColor: "lightgray",
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 
