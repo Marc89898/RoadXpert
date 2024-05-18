@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Card, Icon } from "react-native-paper";
+import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FloatingButton from "../../../Components/Buttons/floatingButton";
@@ -11,6 +11,7 @@ import Config from "../../../configuracions";
 // Importar imágenes
 import NotificationsIcon from "../../../assets/images/Dashboard/notification.png";
 import SettingsIcon from "../../../assets/images/Dashboard/settings.png";
+import CarIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Dashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
@@ -88,126 +89,63 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
 
-      { nextEvent && (<View style={styles.cardContainer}>
-        <TouchableOpacity>
-          <Card style={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <View>
+      {nextEvent && (
+        <View style={styles.cardContainer}>
+          <TouchableOpacity>
+            <Card style={styles.card}>
+              <Card.Content style={styles.cardContent}>
                 <Text style={styles.cardTitle}>Siguiente Encuentro</Text>
-              </View>
 
-              <View style={styles.eventDetail}>
-                <Image
-                  source={require("../../../assets/imgDefault.png")}
-                  style={styles.eventDetailImage}
-                />
-                <View style={styles.eventTextDetail}>
-                  <Text style={styles.eventDetailText}>{nextEventAlumn?.Nom}</Text>
-                  {/* <Text style={styles.eventDetailTextOpacity}>5a Practica</Text> */}
-                  <Text style={styles.eventDetailTextOpacity}>
-                  {`${nextEventCar?.Marca} ${nextEventCar?.Model}`}
+                <View style={styles.eventDetail}>
+                  <Image
+                    source={require("../../../assets/imgDefault.png")}
+                    style={styles.eventDetailImage}
+                  />
+                  <View style={styles.eventTextDetail}>
+                    <Text style={styles.eventDetailText}>{nextEventAlumn?.Nom}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.eventDetail}>
+                  <MaterialCommunityIcons
+                    name="calendar"
+                    size={20}
+                    color="black"
+                  />
+                  <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
+                </View>
+
+                <View style={styles.eventDetail}>
+                  <MaterialCommunityIcons name="clock" size={20} color="black" />
+                  <Text style={styles.eventInfo}>{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+                </View>
+                <View style={styles.eventDetail}>
+                <CarIcon name="car" size={20} color="black"/>
+                  <Text style={styles.eventDetail}>
+                    {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}`}
                   </Text>
                 </View>
-              </View>
 
-              <View style={styles.eventDetail}>
-                <MaterialCommunityIcons
-                  name="calendar"
-                  size={20}
-                  color="black"
-                />
-                <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
-              </View>
-
-              <View style={styles.eventDetail}>
-                <MaterialCommunityIcons name="clock" size={20} color="black" />
-                <Text style={styles.eventInfo}>{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
-              </View>
-
-              {/* <View style={styles.eventDetail}>
-                <MaterialCommunityIcons
-                  name="map-marker"
-                  size={20}
-                  color="black"
-                />
-                <Text style={styles.eventInfo}>
-                  Autoescuela Bosc de la Coma
-                </Text>
-              </View> */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.startButton]}>
-                  <Text style={styles.buttonText}>Empezar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.cancelButton]}>
-                  <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
-              </View>
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-      </View>)}
-
-      {/* <View style={styles.cardContainer}>
-        <TouchableOpacity onPress={handleStartPractical}>
-          <Card style={styles.card}>
-            <Card.Content>
-              <Text style={styles.cardTitle}>Empezar Practica</Text>
-              <Text style={styles.cardSubtitle}>Calentando motores ...</Text>
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-      </View> */}
-
-      {/* {nextEvent && (
-        <View style={styles.cardContainer}>
-          <Card style={styles.card}>
-            <TouchableOpacity>
-              <Card.Content style={styles.cardContent}>
-                <View style={styles.textCenter}>
-                  <Text style={styles.nextEventTitle}>Siguiente Práctica</Text>
-                </View>
-
-                <View style={styles.eventDetail}>
-                  <Icon name="calendar" size={20} color="black" />
-                  <Text
-                    style={styles.eventDetailText}
-                  >{`${nextEvent.Data.substring(0, 12)}`}</Text>
-                </View>
-
-                <View style={styles.eventDetail}>
-                  <Icon name="clock" size={20} color="black" />
-                  <Text
-                    style={styles.eventDetailText}
-                  >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={[styles.button, styles.startButton]}>
+                    <Text style={styles.buttonText}>Empezar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.button, styles.cancelButton]}>
+                    <Text style={styles.buttonText}>Cancelar</Text>
+                  </TouchableOpacity>
                 </View>
               </Card.Content>
-            </TouchableOpacity>
-          </Card>
+            </Card>
+          </TouchableOpacity>
         </View>
-      )} */}
+      )}
+
       <FloatingButton />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  textCenter: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  button: {
-    margin: 5,
-  },
   imageContainer: {
     overflow: "hidden",
   },
@@ -215,16 +153,6 @@ const styles = StyleSheet.create({
     height: 120,
     width: "100%",
     backgroundColor: '#1F41BB',
-  },
-  title: {
-    fontSize: 80,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
-    alignContent: "center",
-    // paddingLeft: 10,
-    marginTop: 30,
-    opacity: 0.3,
   },
   circleContainer: {
     position: "absolute",
@@ -275,16 +203,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "left",
   },
+  eventDetailTextOpacity: {
+    fontSize: 13,
+    color: "gray",
+  },
   eventDetail: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 6,
+    marginBottom: 5,
   },
   eventDetailImage: {
     resizeMode: "cover",
     width: 70,
     height: 70,
-    borderRadius: 10,
+    borderRadius:
+    10,
     marginRight: 12,
   },
   eventDetailText: {
@@ -298,6 +231,11 @@ const styles = StyleSheet.create({
   eventDetailTextOpacity: {
     fontSize: 13,
     color: "gray",
+  },
+  eventDetail: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
   },
   textCenter: {
     alignItems: "center",
