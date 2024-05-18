@@ -6,7 +6,7 @@ class DataAdapter {
     const adaptedData = {};
     jsonData.forEach(async (item) => {
       const date = new Date(item.Data).toISOString().split('T')[0];
-      const fetchALUMN = await APIService.fetchAlumn(item.AlumneID)
+      var fetchALUMN = await APIService.fetchAlumn(item.AlumneID)
       var EstatModificat = await APIService.fetchEstatDescription(item.EstatHoraID)
       const event = {
         id: item.ID,

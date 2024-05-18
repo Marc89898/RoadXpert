@@ -1,32 +1,29 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'react-native';
-import { Agenda, Calendar } from 'react-native-calendars';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, Modal } from 'react-native';
+import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
-import { Alert } from 'react-native';
 import Config from "../configuracions"
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from "@react-navigation/native";
 
-
-
 export default function ProfessorCalendar() {
   const [events, setEvents] = useState();
+  const [eventToManage, setEventToManage] = useState(null);
+  const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [availableHours, setAvailableHours] = useState(['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM']);
   const [selectedAlumn, setSelectedAlumn] = useState('');
-  const [eventName, setEventName] = useState('');
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-  const [eventToDelete, setEventToDelete] = useState(null);
   const [selectedHour, setSelectedHour] = useState(availableHours[0]);
   const [students, setStudents] = useState([]);
   const navigation = useNavigation();
 
-  fetchData = async () => {
+  const fetchData = async () => {
     try {
       const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
       const adaptedData = DataAdapter.adaptPracticaToAgenda(result);
@@ -36,7 +33,12 @@ export default function ProfessorCalendar() {
       console.error('ERROR IN THE DATABASE: ' + error);
     }
   };
-  
+
+  const handleOptionsPress = (item) => {
+    setEventToManage(item);
+    setOptionsModalVisible(true);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -54,18 +56,14 @@ export default function ProfessorCalendar() {
     }
   };
 
-
-  const handleDeleteConfirmation = (item) => {
-    setEventToDelete(item);
-    setDeleteConfirmationVisible(true);
-  };
-
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
 
-  const handleDeleteEvent = async () => {
-    const eventId = eventToDelete.id;
+  const handleDeleteConfirmation = async (item) => {
+    setEventToManage(item);
+    setDeleteConfirmationVisible(true);
+    const eventId = eventToManage.id;
     try {
       await APIService.deleteEventCalendar(eventId);
       console.log('Event deleted successfully:', eventId);
@@ -77,7 +75,7 @@ export default function ProfessorCalendar() {
           {
             text: 'OK', onPress: async () => {
               setDeleteConfirmationVisible(false);
-              fetchData()
+              fetchData();
             }
           }
         ],
@@ -88,10 +86,21 @@ export default function ProfessorCalendar() {
     }
   };
 
+  const handleAcceptEvent = async () => {
+    try {
+      await APIService.modifyEventEstat(eventToManage.id, "EstatHora_2");
+      console.log('Event accepted successfully:', eventToManage.id);
+      Alert.alert('Evento Aceptado', 'El evento se ha aceptado correctamente.');
+      fetchData();
+      setEventToManage(null);
+    } catch (error) {
+      console.error("Error in the accept petition: " + error.message);
+    }
+  };
 
   const handleAddEvent = () => {
     const eventId = uuidv4();
-    Horas = selectedHour.split(" ")
+    const Horas = selectedHour.split(" ");
     const event = {
       id: eventId,
       name: "Practica",
@@ -112,8 +121,8 @@ export default function ProfessorCalendar() {
       } else {
         updatedEvents[selectedDate] = [event];
       }
-      eventAdapted = DataAdapter.adaptJsonToDatabase(event)
-      APIService.addEventCalendar(eventAdapted)
+      const eventAdapted = DataAdapter.adaptJsonToDatabase(event);
+      APIService.addEventCalendar(eventAdapted);
       return updatedEvents;
     });
   };
@@ -121,7 +130,7 @@ export default function ProfessorCalendar() {
   const addPractica = async () => {
     try {
       const fetchedHours = await APIService.fetchAvailableHours(Config.ProfessorID, selectedDate);
-      loadStudents()
+      loadStudents();
       if (fetchedHours) {
         setAvailableHours(fetchedHours);
         setModalVisible(true);
@@ -165,29 +174,26 @@ export default function ProfessorCalendar() {
       <Text style={[styles.emptyDateText]}>
         <Text style={[styles.boldText, styles.emptyDateText2]}>EMPTY DATE!</Text>
       </Text>
-
     );
-  }
+  };
 
   return (
     <View style={{ flex: 1 }}>
       {events !== null ? (
         <Agenda
-          theme={
-            {
-              agendaTodayColor: 'blue',
-              agendaKnobColor: 'black',
-              selectedDayBackgroundColor: 'grey',
-              agendaDayNumColor: 'black',
-              agendaDayTextColor: 'black',
-              monthTextColor: 'blue',
-              textMonthFontSize: 40,
-              textMonthFontWeight: 'bold',
-              arrowColor: 'blue',
-              textSectionTitleColor: 'blue',
-              textDayFontWeight: 'bold',
-            }
-          }
+          theme={{
+            agendaTodayColor: 'blue',
+            agendaKnobColor: 'black',
+            selectedDayBackgroundColor: 'grey',
+            agendaDayNumColor: 'black',
+            agendaDayTextColor: 'black',
+            monthTextColor: 'blue',
+            textMonthFontSize: 40,
+            textMonthFontWeight: 'bold',
+            arrowColor: 'blue',
+            textSectionTitleColor: 'blue',
+            textDayFontWeight: 'bold',
+          }}
           style={styles.agenda}
           selected={selectedDate}
           items={events}
@@ -196,7 +202,8 @@ export default function ProfessorCalendar() {
           renderItem={(item) => (
             <TouchableOpacity
               style={styles.item}
-              onPress={() => handleDeleteConfirmation(item)}>
+              onPress={() => handleOptionsPress(item)}
+            >
               <View style={styles.itemTextContainer}>
                 <Text style={[styles.itemText, styles.boldText]}>PRACTICE</Text>
                 <View style={styles.separator} />
@@ -219,6 +226,26 @@ export default function ProfessorCalendar() {
           <Text style={styles.boldText}>LOADING EVENTS...</Text>
         </Text>
       )}
+      <View style={styles.optionsContainer}>
+        {eventToManage && (
+          <View style={styles.optionsContent}>
+            <Text style={styles.modalTitle}>¿Qué acción deseas realizar?</Text>
+            <TouchableOpacity style={styles.optionButton} onPress={handleAcceptEvent}>
+              <Text style={styles.optionButtonText}>Aceptar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#ff6961' }]} onPress={() => handleDeleteConfirmation(eventToManage)}>
+              <Text style={styles.optionButtonText}>Eliminar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#bdbdbd' }]} onPress={() => setEventToManage(null)}>
+              <Text style={styles.optionButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+      <TouchableOpacity style={styles.addButton}>
+        <Ionicons onPress={addPractica} name="add-circle" size={70} color="black" />
+      </TouchableOpacity>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -250,39 +277,11 @@ export default function ProfessorCalendar() {
                 <Picker.Item label={student.name} value={student} key={index} />
               ))}
             </Picker>
-
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
-                <Text style={styles.buttonText}>Cancelar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalSubmit}>
+              <TouchableOpacity style={[styles.button, { backgroundColor: 'green' }]} onPress={handleModalSubmit}>
                 <Text style={styles.buttonText}>Agregar</Text>
               </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-      <TouchableOpacity style={styles.addButton}>
-        <Ionicons onPress={addPractica} name="add-circle" size={70} color="black" />
-      </TouchableOpacity>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={deleteConfirmationVisible}
-        onRequestClose={() => {
-          setDeleteConfirmationVisible(false);
-        }}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text>Vas a borrar una practica estas seguro ? </Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={handleDeleteEvent}>
-                <Text style={styles.buttonText}>Eliminar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleCancelDelete}>
+              <TouchableOpacity style={[styles.button, { backgroundColor: 'grey' }]} onPress={handleModalCancel}>
                 <Text style={styles.buttonText}>Cancelar</Text>
               </TouchableOpacity>
             </View>
@@ -290,8 +289,9 @@ export default function ProfessorCalendar() {
         </View>
       </Modal>
     </View>
-  );  
+  );
 }
+
 const styles = StyleSheet.create({
   emptyDateText2: {
     color: "black"
@@ -395,5 +395,41 @@ const styles = StyleSheet.create({
   },
   hourButtonText: {
     color: 'black',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  optionButton: {
+    backgroundColor: '#90caf9',
+    borderRadius: 5,
+    paddingVertical: 12,
+    marginBottom: 10,
+  },
+  optionButtonText: {
+    padding: 5,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  optionsContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  optionsContent: {
+    alignItems: 'center',
   },
 });
