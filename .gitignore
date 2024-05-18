@@ -78,7 +78,7 @@ Ia/docs/_build/
 
 Database/Docker-MSSQL/DB
 Database/Docker-Mongo/DB
-Database/Docker7/*
+Database/Docker/*
 Entitat-Relacio/DB
 RoadXpert-Teacher/ProvesApart/ProvaAudios/Audio2Text/node_modules/*
 RoadXpert-Teacher/ProvesApart/ProvaAudios/Audio2Text/.expo/*
