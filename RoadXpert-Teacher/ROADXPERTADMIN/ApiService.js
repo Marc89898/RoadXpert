@@ -124,7 +124,7 @@ static async fetchEventsCalendar(idProfessor) {
         data = await response.json();
         return data;
       } else {
-        console.error("Error en la petición de alumnos: Status", response.status, response.statusText);
+        console.error("Error en la petición de todos los alumnos: Status", response.status, response.statusText);
       }
     }catch(error) {
       console.error("Error en la peticion de todos los alumnos" + error)
@@ -135,24 +135,58 @@ static async fetchEventsCalendar(idProfessor) {
      * @returns object alumn
      */
     static async fetchAlumn(alumnID) {
+      if (alumnID == null) {
+        console.error("Error: alumnID es null");
+        return null;
+      }
+    
       try {
-        const url = "http://" + Config.ApiIP + ":" +Config.ApiPort + "/Alumne/" + alumnID
+        const url = `http://${Config.ApiIP}:${Config.ApiPort}/Alumne/${alumnID}`;
         const response = await fetch(url);
         let data = "";
-        console.log(response)
-        if (response.status != 500 && response.status != 404) {
+    
+        if (response.status !== 500 && response.status !== 404) {
           data = await response.json();
           return data;
         } else {
-          console.error("Error en la petición de alumnos: Status", response.status, response.statusText);
+          console.error("Error en la petición de un alumno: Status", response.status, response.statusText);
+          return null;
         }
-      }catch(error) {
-        console.error("Error en la peticion de todos los alumnos" + error)
+      } catch (error) {
+        console.error("Error en la petición de todos los alumnos: " + error);
+        return null;
       }
+    }
+
+    /**
+     * Function to fetch a car with id
+     */
+    static async fetchCar(CarID) {
+      if (CarID == null) {
+        console.error("Error: aluCarID es null");
+        return null;
       }
+      try {
+        const url = `http://${Config.ApiIP}:${Config.ApiPort}/Vehicle/${CarID}`;
+        const response = await fetch(url);
+        let data = "";
+    
+        if (response.status !== 500 && response.status !== 404) {
+          data = await response.json();
+          return data;
+        } else {
+          console.error("Error en la petición de un coche: Status", response.status, response.statusText);
+          return null;
+        }
+      } catch (error) {
+        console.error("Error en la petición de todos los alumnos: " + error);
+        return null;
+      }
+    }
+    
 
       /**
-       * 
+       * Function to modify Practica state
        */
       static async modifyEventEstat(eventId, newEstatHoraID) {
         try {

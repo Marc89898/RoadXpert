@@ -16,8 +16,9 @@ const Dashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-
-  // Función para navegar entre pantallas
+  const [nextEventAlumn, setNextEventAlumn] = useState();
+  const [nextEventCar, setNextEventCar] = useState();
+  
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
   };
@@ -33,7 +34,6 @@ const Dashboard = () => {
           setLoading(false);
           return;
         }
-
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
         const currentDate = new Date();
 
@@ -45,6 +45,11 @@ const Dashboard = () => {
         if (nextEvent) {
           console.log("Next Event: ", nextEvent);
           setNextEvent(nextEvent);
+          console.log("AlumneID: ", nextEvent.AlumneID)
+          var result = await APIService.fetchAlumn(nextEvent.AlumneID)
+          setNextEventAlumn(result)
+          var resultCoche = await APIService.fetchCar(nextEvent.VehicleID)
+          setNextEventCar(resultCoche)
         } else {
           console.log("No upcoming events found.");
         }
@@ -83,7 +88,7 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.cardContainer}>
+      { nextEvent && (<View style={styles.cardContainer}>
         <TouchableOpacity>
           <Card style={styles.card}>
             <Card.Content style={styles.cardContent}>
@@ -97,10 +102,10 @@ const Dashboard = () => {
                   style={styles.eventDetailImage}
                 />
                 <View style={styles.eventTextDetail}>
-                  <Text style={styles.eventDetailText}>Juan Alberto</Text>
-                  <Text style={styles.eventDetailTextOpacity}>5a Practica</Text>
+                  <Text style={styles.eventDetailText}>{nextEventAlumn?.Nom}</Text>
+                  {/* <Text style={styles.eventDetailTextOpacity}>5a Practica</Text> */}
                   <Text style={styles.eventDetailTextOpacity}>
-                    Volkswagen GT
+                  {`${nextEventCar?.Marca} ${nextEventCar?.Model}`}
                   </Text>
                 </View>
               </View>
@@ -111,15 +116,15 @@ const Dashboard = () => {
                   size={20}
                   color="black"
                 />
-                <Text style={styles.eventInfo}>Dia 25 de Marzo</Text>
+                <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
               </View>
 
               <View style={styles.eventDetail}>
                 <MaterialCommunityIcons name="clock" size={20} color="black" />
-                <Text style={styles.eventInfo}>13:00pm - 14:00pm</Text>
+                <Text style={styles.eventInfo}>{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
               </View>
 
-              <View style={styles.eventDetail}>
+              {/* <View style={styles.eventDetail}>
                 <MaterialCommunityIcons
                   name="map-marker"
                   size={20}
@@ -128,7 +133,7 @@ const Dashboard = () => {
                 <Text style={styles.eventInfo}>
                   Autoescuela Bosc de la Coma
                 </Text>
-              </View>
+              </View> */}
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={[styles.button, styles.startButton]}>
                   <Text style={styles.buttonText}>Empezar</Text>
@@ -140,7 +145,7 @@ const Dashboard = () => {
             </Card.Content>
           </Card>
         </TouchableOpacity>
-      </View>
+      </View>)}
 
       {/* <View style={styles.cardContainer}>
         <TouchableOpacity onPress={handleStartPractical}>
@@ -153,7 +158,7 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View> */}
 
-      {nextEvent && (
+      {/* {nextEvent && (
         <View style={styles.cardContainer}>
           <Card style={styles.card}>
             <TouchableOpacity>
@@ -179,7 +184,7 @@ const Dashboard = () => {
             </TouchableOpacity>
           </Card>
         </View>
-      )}
+      )} */}
       <FloatingButton />
     </View>
   );

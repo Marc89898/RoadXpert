@@ -25,7 +25,7 @@ const WorkersCard = ({ name, desc, image }) => {
   };
 
   const handleOpen = () => {
-    navigation.navigate("CreateRoles", { name, desc });
+    navigation.navigate("AdminCreateRoles", { name, desc });
   };
 
   return (

@@ -7,7 +7,7 @@ const WorkersCard = ({ name, desc, image }) => {
   const navigation = useNavigation();
 
   const handleOpen = () => {
-    navigation.navigate("RegisterPerson", { name, desc });
+    navigation.navigate("AdminRegisterPerson", { name, desc });
   };
 
   return (

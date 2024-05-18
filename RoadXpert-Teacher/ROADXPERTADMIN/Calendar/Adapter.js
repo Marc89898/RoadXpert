@@ -2,30 +2,40 @@ import { APIService } from "../ApiService";
 
 class DataAdapter {
 
-  static adaptPracticaToAgenda(jsonData) {
+  static async adaptPracticaToAgenda(jsonData) {
     const adaptedData = {};
-    jsonData.forEach(async (item) => {
+    for (const item of jsonData) {
       const date = new Date(item.Data).toISOString().split('T')[0];
-      var fetchALUMN = await APIService.fetchAlumn(item.AlumneID)
-      var EstatModificat = await APIService.fetchEstatDescription(item.EstatHoraID)
-      const event = {
-        id: item.ID,
-        name: "Practica",
-        horaInicial: item.HoraInici,
-        horaFinal: item.HoraFi,
-        Ruta: item.Ruta,
-        Coche: item.VehicleID,
-        Estat: EstatModificat.Nom,
-        alumne: fetchALUMN.Nom
-      };
-      if (adaptedData[date]) {
-        adaptedData[date].push(event);
-      } else {
-        adaptedData[date] = [event];
+      
+      if (item.AlumneID) {
+        try {
+          const fetchALUMN = await APIService.fetchAlumn(item.AlumneID);
+          const EstatModificat = await APIService.fetchEstatDescription(item.EstatHoraID);
+          
+          const event = {
+            id: item.ID,
+            name: "Practica",
+            horaInicial: item.HoraInici,
+            horaFinal: item.HoraFi,
+            Ruta: item.Ruta,
+            Coche: item.VehicleID,
+            Estat: EstatModificat.Nom,
+            alumne: fetchALUMN.Nom,
+          };
+          
+          if (adaptedData[date]) {
+            adaptedData[date].push(event);
+          } else {
+            adaptedData[date] = [event];
+          }
+        } catch (error) {
+          console.error('Error fetching Alumne or Estat description:', error);
+        }
       }
-    });
+    }
     return adaptedData;
   }
+  
   static adaptDataDelete(jsonData) {
     const adaptedData = {};
     jsonData.forEach(async (item) => {
