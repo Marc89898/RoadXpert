@@ -14,6 +14,7 @@ import SettingsImg from "../assets/images/Dashboard/settings.png";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { APIService } from "./ApiService";
 import Config from "../configuracions";
+import FloatingButton from "./Components/Buttons/floatingButton";
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -152,6 +153,7 @@ const Dashboard = () => {
           </Card>
         </View>
       )}
+      <FloatingButton />
     </View>
   );
 };
