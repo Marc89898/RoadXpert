@@ -1,31 +1,31 @@
 class Config {
-    constructor() {
-        this.IDALUMNE = "Alumne_4";
-        this.ProfesorID = "Treballador_1";
-        this.ApiIP = "172.23.3.204";
-        this.ApiPort = "8888";
-        this.ApiPortMongo = "5010"
-        this.Alumne = {
-          ID: "",
-          Nom: "",
-          DNI: "",
-          Adreca: "",
-          Telefon: "",
-          Contrasenya: "",
-          ProfessorID: ""
-      };
-    }
+  constructor() {
+    this.IDALUMNE = "Alumne_4";
+    this.ProfesorID = "Treballador_1";
+    this.ApiIP = "172.23.3.204";
+    this.ApiPort = "8888";
+    this.ApiPortMongo = "5010"
+    this.Alumne = {
+      ID: "Alumne_1",
+      Nom: "Jordi Sánchez",
+      DNI: "12345678A",
+      Adreca: "Carrer Major, 123",
+      Telefon: "612345678",
+      Contrasenya: "",
+      ProfessorID: "Treballador_1",
+    };
+  }
 
-    static getInstance() {
-        if (!Config.instance) {
-          Config.instance = new Config();
-        }
-        return Config.instance;
-      }
-    guardarAlumne(alumn) {
-      this.Alumne = alumn;
+  static getInstance() {
+    if (!Config.instance) {
+      Config.instance = new Config();
     }
-    
+    return Config.instance;
+  }
+  guardarAlumne(alumn) {
+    this.Alumne = alumn;
+  }
+
 }
 
 export default Config.getInstance();

@@ -6,7 +6,7 @@ import { Text, BottomNavigation } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Dashboard from "../Dashboard";
 import Categories from "../Categories";
-import Map from "../ViewRoutesMap";
+import ViewRoutesMap from "../ViewRoutesMap";
 import Calendar from "../Calendar/Calendar";
 
 const Tab = createBottomTabNavigator();
@@ -97,7 +97,7 @@ export default function MyComponent() {
       />
       <Tab.Screen
         name="Map"
-        component={Map}
+        component={ViewRoutesMap}
         options={{
           tabBarLabel: "Map",
           tabBarIcon: ({ color, size }) => {

@@ -22,7 +22,6 @@ class DataAdapter {
             Estat: EstatModificat.Nom,
             alumne: fetchALUMN.Nom,
           };
-          
           if (adaptedData[date]) {
             adaptedData[date].push(event);
           } else {

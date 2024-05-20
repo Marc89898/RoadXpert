@@ -10,7 +10,7 @@ import {
 import { Card, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-const WorkersCard = ({ name, desc, image }) => {
+const RolesCard = ({ name, desc, image, onPress }) => {
   const navigation = useNavigation();
   const [showOptions, setShowOptions] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -24,13 +24,10 @@ const WorkersCard = ({ name, desc, image }) => {
     setShowOptions(false);
   };
 
-  const handleOpen = () => {
-    navigation.navigate("AdminCreateRoles", { name, desc });
-  };
 
   return (
     <View>
-      <TouchableOpacity onPress={handleOpen}>
+      <TouchableOpacity onPress={onPress}>
         <Card style={styles.card}>
           <Card.Content style={styles.cardContent}>
             <View style={styles.leftContent}>
@@ -40,40 +37,8 @@ const WorkersCard = ({ name, desc, image }) => {
                 <Text style={styles.descText}>{desc}</Text>
               </View>
             </View>
-            <IconButton
-              icon="cog"
-              color="#007bff"
-              size={24}
-              onPress={() => toggleOptions(name)}
-              style={styles.filterIcon}
-            />
           </Card.Content>
         </Card>
-
-        <Modal
-          visible={showOptions}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={closeModal}
-        >
-          <TouchableOpacity style={styles.modalBackground} onPress={closeModal}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalHeaderText}>OPCIONES</Text>
-                <Text style={styles.modalSubHeaderText}>
-                  {selectedStudent ? selectedStudent : ""}
-                </Text>
-              </View>
-              <TouchableOpacity style={styles.optionItem}>
-                <Text>Editar</Text>
-              </TouchableOpacity>
-              <View style={styles.separator} />
-              <TouchableOpacity style={styles.optionItem}>
-                <Text>Eliminar</Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        </Modal>
       </TouchableOpacity>
     </View>
   );
@@ -153,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorkersCard;
+export default RolesCard;
