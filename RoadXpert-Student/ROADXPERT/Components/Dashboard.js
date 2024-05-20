@@ -104,22 +104,28 @@ const Dashboard = () => {
                   size={20}
                   color="black"
                 />
-                <Text style={styles.eventInfo}>Dia 25 de Marzo</Text>
+                {/* <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(
+                  0,
+                  12
+                )}`}</Text> */}
               </View>
 
               <View style={styles.eventDetail}>
                 <MaterialCommunityIcons name="clock" size={20} color="black" />
-                <Text style={styles.eventInfo}>13:00pm - 14:00pm</Text>
+                {/* <Text
+                  style={styles.eventInfo}
+                >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text> */}
               </View>
 
               <View style={styles.eventDetail}>
                 <MaterialCommunityIcons
-                  name="map-marker"
+                  name="car-sports"
                   size={20}
                   color="black"
                 />
                 <Text style={styles.eventInfo}>
-                  Autoescuela Bosc de la Coma
+                  {/* {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}` ||
+                    "Not assigned"} */}
                 </Text>
               </View>
             </Card.Content>
