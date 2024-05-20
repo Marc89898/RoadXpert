@@ -157,6 +157,55 @@ class APIService {
       return null;
     }
   }
+  /**
+   * Function fetchRoles
+   */
+  static async fetchRoleById(roleId) {
+    try {
+        const url = `http://${Config.ApiIP}:${Config.ApiPort}/Rol/${roleId}`;
+        const response = await fetch(url);
+        let data = "";
+
+        if (response.status !== 500 && response.status !== 404) {
+            data = await response.json();
+            return data;
+        } else {
+            console.error("Error en la petición de un rol: Status", response.status, response.statusText);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error en la petición de un rol:", error);
+        throw error;
+    }
+}
+
+  /**
+   * Function updateRole
+   */
+  static async updateRole(updatedRole) {
+    const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Rol/" + updatedRole.ID;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedRole)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`Failed to update role. Status: ${response.status}, Response: ${errorData}`);
+        }
+
+        const responseData = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error('Error updating role:', error.message);
+        throw error;
+    }
+}
 
   /**
    * Function to fetch a car with id
@@ -394,6 +443,29 @@ class APIService {
       throw error;
     }
   }
+
+  static async deleteRole(roleId) {
+    try {
+        const url = `http://${Config.ApiIP}:${Config.ApiPort}/Rol/${roleId}`;
+        const deleteResponse = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!deleteResponse.ok) {
+            const errorResponseData = await deleteResponse.json();
+            throw new Error(`Failed to delete role. HTTP status code: ${deleteResponse.status}. Error details: ${JSON.stringify(errorResponseData)}`);
+        }
+
+        const deletedRoleData = await deleteResponse.json();
+        return deletedRoleData;
+    } catch (error) {
+        console.error('Error deleting role:', error.message);
+        throw error;
+    }
+}
 
   static async fetchEstatDescription(EstatHoraID) {
     try {

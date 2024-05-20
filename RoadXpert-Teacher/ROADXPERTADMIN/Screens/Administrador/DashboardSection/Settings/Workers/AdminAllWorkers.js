@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Animated, TextInput } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import WorkersCard from "../../../../../Components/Cards/WorkersCard";
 import { useNavigation } from "@react-navigation/native";
@@ -8,38 +8,63 @@ import { APIService } from "../../../../../ApiService";
 const AdminAllWorkers = () => {
   const navigation = useNavigation();
   const [Professors, setProfessors] = useState([]);
+  const [filteredProfessors, setFilteredProfessors] = useState([]);
   const [selectedProfessor, setSelectedProfessor] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const slideAnim = useRef(new Animated.Value(300)).current;
 
   useEffect(() => {
     getWorkers();
   }, []);
 
-  const handleOpen = (professor) => {
-    setSelectedProfessor(professor);
-    setIsModalVisible(true);
-  };
-
   const getWorkers = async () => {
     const professorsFromApi = await APIService.fetchAllProfessors();
     setProfessors(professorsFromApi);
+    setFilteredProfessors(professorsFromApi);
+  };
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+    const filtered = Professors.filter((professor) =>
+      professor.Nom.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredProfessors(filtered);
+  };
+
+  const handleOpen = (professor) => {
+    setSelectedProfessor(professor);
+    setIsOptionsVisible(true);
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   };
 
   const handleEdit = () => {
-    setIsModalVisible(true);
     navigation.navigate("AdminViewWorker", { professor: selectedProfessor });
+    handleClose();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (selectedProfessor) {
       const professorID = selectedProfessor.ID;
-      APIService.deleteProfessor(professorID);
+      await APIService.deleteProfessor(professorID);
+      getWorkers();
     }
-    setIsModalVisible(false);
+    handleClose();
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  const handleClose = () => {
+    Animated.timing(slideAnim, {
+      toValue: 300,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsOptionsVisible(false);
+      setSelectedProfessor(null);
+    });
   };
 
   return (
@@ -47,12 +72,18 @@ const AdminAllWorkers = () => {
       <BackNavigation />
       <View style={styles.header}>
         <Text style={styles.headerText}>Workers</Text>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("AdminCreateWorker")}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("AdminRegisterPerson")}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>
       </View>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search..."
+        value={searchText}
+        onChangeText={handleSearch}
+      />
       <View style={styles.cardContainer}>
-        {Professors.map((professor, index) => (
+        {filteredProfessors.map((professor, index) => (
           <WorkersCard
             key={index}
             name={professor.Nom}
@@ -61,19 +92,19 @@ const AdminAllWorkers = () => {
           />
         ))}
       </View>
-      <Modal visible={isModalVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.modalButton} onPress={handleEdit}>
-            <Text style={styles.modalButtonText}>Edit</Text>
+      {isOptionsVisible && (
+        <Animated.View style={[styles.optionsContainer, { transform: [{ translateY: slideAnim }] }]}>
+          <TouchableOpacity style={styles.optionButton} onPress={handleEdit}>
+            <Text style={styles.optionButtonText}>Edit</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton} onPress={handleDelete}>
-            <Text style={styles.modalButtonText}>Delete</Text>
+          <TouchableOpacity style={styles.optionButton} onPress={handleDelete}>
+            <Text style={styles.optionButtonText}>Delete</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton} onPress={handleCancel}>
-            <Text style={styles.modalButtonText}>Cancel</Text>
+          <TouchableOpacity style={styles.optionButton} onPress={handleClose}>
+            <Text style={styles.optionButtonText}>Cancel</Text>
           </TouchableOpacity>
-        </View>
-      </Modal>
+        </Animated.View>
+      )}
     </View>
   );
 };
@@ -102,25 +133,45 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
+  searchBar: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    marginHorizontal: 24,
+    marginBottom: 10,
+  },
   cardContainer: {
     marginTop: 16,
     paddingHorizontal: 24,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalButton: {
+  optionsContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: "white",
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  optionButton: {
+    backgroundColor: "#007bff",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
     marginVertical: 8,
   },
-  modalButtonText: {
+  optionButtonText: {
+    color: "white",
     fontSize: 18,
+    textAlign: "center",
   },
 });
 

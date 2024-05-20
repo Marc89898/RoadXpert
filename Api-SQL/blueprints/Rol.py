@@ -64,23 +64,23 @@ def post_new_Rol():
 def put_update_Rol(Rol_id):
     """PUT para actualizar un registro de Rol por su ID"""
     data = request.json
-    nom = data.get('nom')
-    descripcio = data.get('descripcio')
+    nom = data.get('Nom')
+    descripcio = data.get('Descripcio')
     try:
         with engine.connect() as connection:
-            query_check = text("SELECT * FROM Rol WHERE id = :id")
-            result_check = connection.execute(query_check, {"id": Rol_id})
-            connection.commit()
+            query_check = text("SELECT * FROM Rol WHERE ID = :ID")
+            result_check = connection.execute(query_check, {"ID": Rol_id})
             Rol = result_check.fetchone()
             if Rol:
-                sql = text("UPDATE Rol SET nom = :nom, descripcio = :descripcio WHERE id = :id")
-                connection.execute(sql, {"nom":nom, "descripcio":descripcio, "id":Rol_id})
+                sql = text("UPDATE Rol SET Nom = :Nom, Descripcio = :Descripcio WHERE ID = :ID")
+                connection.execute(sql, {"Nom": nom, "Descripcio": descripcio, "ID": Rol_id})
                 connection.commit()
                 return jsonify({"message": f"Rol with ID {Rol_id} updated successfully"}), 200
             else:
                 return jsonify({"message": f"No Rol found with ID {Rol_id}"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @Rol_bp.route("/Rol/<string:Rol_id>", methods=['DELETE'])
 def delete_Rol(Rol_id):

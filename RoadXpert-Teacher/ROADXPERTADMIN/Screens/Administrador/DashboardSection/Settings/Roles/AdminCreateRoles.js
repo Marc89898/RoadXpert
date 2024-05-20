@@ -6,14 +6,17 @@ import MainButton from "../../../../../Components/Buttons/mainButton.js";
 import { APIService } from "../../../../../ApiService.js";
 
 const AdminCreateRoles = () => {
-  const [rol, setRole] = useState({
-    nom: "",
-    descripcio: ""
-  });
+  const [rol, setRole] = useState({ nom: "", descripcio: "" });
 
   const handleSave = async () => {
     try {
-      console.log("Rol: ", rol)
+      console.log("Rol: ", rol);
+      // Validar que los campos obligatorios no estén vacíos
+      if (!rol.nom || !rol.descripcio) {
+        console.error("Los campos 'Nom' y 'Descripcio' son obligatorios.");
+        return;
+      }
+  
       const response = await APIService.postRole(rol);
       if (response) {
         console.log("Rol creado:", response);
@@ -24,6 +27,7 @@ const AdminCreateRoles = () => {
       console.error("Error al enviar la solicitud:", error);
     }
   };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -32,14 +36,14 @@ const AdminCreateRoles = () => {
       <View style={styles.inputContainer}>
         <CustomTextInputUnlocked
           placeholder="Rol"
-          onChangeText={text => setRole(prevState => ({ ...prevState, Nom: text }))}
+          onChangeText={text => setRole(prevState => ({ ...prevState, nom: text }))}
         />
         <CustomTextInputUnlocked
           placeholder="Descripción"
-          onChangeText={text => setRole(prevState => ({ ...prevState, Descripcio: text }))}
+          onChangeText={text => setRole(prevState => ({ ...prevState, descripcio: text }))}
         />
       </View>
-      <MainButton title="Guardar" onPress={handleSave} />
+      <MainButton title="Guardar" onPress={() => {handleSave()}} />
     </ScrollView>
   );
 };

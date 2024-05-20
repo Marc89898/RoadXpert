@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
 import CarCard from "../../../../../Components/Cards/CarCard";
@@ -8,6 +8,9 @@ import { APIService } from "../../../../../ApiService";
 const AdminAllVehicles = () => {
   const navigation = useNavigation();
   const [cars, setCars] = useState([]);
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
+  const slideAnim = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
     async function fetchCars() {
@@ -25,7 +28,44 @@ const AdminAllVehicles = () => {
   const handleOpen = () => {
     navigation.navigate("AdminRegisterVehicle");
   };
-  
+
+  const handleEdit = () => {
+    navigation.navigate("VehicleProfile", { car: selectedCar });
+    handleClose();
+  };
+
+  const handleDelete = async () => {
+    if (selectedCar) {
+      const carID = selectedCar.ID;
+      // Implement delete car functionality
+      // await APIService.deleteCar(carID);
+      // Fetch updated cars data
+      // fetchCars();
+    }
+    handleClose();
+  };
+
+  const handleClose = () => {
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsOptionsVisible(false);
+      setSelectedCar(null);
+    });
+  };
+
+  const handleOpenOptions = (car) => {
+    setSelectedCar(car);
+    setIsOptionsVisible(true);
+    Animated.timing(slideAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <View style={styles.container}>
       <BackNavigation />
@@ -37,19 +77,31 @@ const AdminAllVehicles = () => {
       </View>
       <ScrollView style={styles.scrollContainer}>
         {cars.map((car, index) => (
-          <CarCard
-            key={index}
-            cardTitle={car.Marca + " " + car.Model}
-            cardSubtitle={
-              car.Tipus === "Disponible" ? "Disponible" : "No Disponible"
-            }
-            circleColor={car.Tipus === "Disponible" ? "red" : "green"}
-            iconName="arrow-right"
-            imagePath={require("../../../../../assets/images/CarsScreen/VolkswagenGolf.png")}
-            onPress={() => handleOpen(car)}
-          />
+          <TouchableOpacity key={index} onPress={() => handleOpenOptions(car)}>
+            <CarCard
+              cardTitle={car.Marca + " " + car.Model}
+              cardSubtitle={car.Tipus === "Disponible" ? "Disponible" : "No Disponible"}
+              circleColor={car.Tipus === "Disponible" ? "red" : "green"}
+              iconName="arrow-right"
+              imagePath={require("../../../../../assets/images/CarsScreen/VolkswagenGolf.png")}
+              onPress={() => handleOpenOptions(car)}
+            />
+          </TouchableOpacity>
         ))}
       </ScrollView>
+      {isOptionsVisible && (
+        <Animated.View style={[styles.optionsContainer, { transform: [{ translateY: slideAnim.interpolate({ inputRange: [0, 1], outputRange: [300, 0] }) }] }]}>
+          <TouchableOpacity style={styles.optionButton} onPress={handleEdit}>
+            <Text style={styles.optionButtonText}>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.optionButton} onPress={handleDelete}>
+            <Text style={styles.optionButtonText}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.optionButton} onPress={handleClose}>
+            <Text style={styles.optionButtonText}>Cancel</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
     </View>
   );
 };
@@ -78,19 +130,35 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
-  button: {
+  scrollContainer: {
+    flex: 1,
+  },
+  optionsContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  optionButton: {
     backgroundColor: "#007bff",
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 50,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-  },
-  cardContainer: {
-    marginTop: 16,
+    paddingVertical: 12,
     paddingHorizontal: 24,
+    borderRadius: 8,
+    marginVertical: 8,
+  },
+  optionButtonText: {
+    color: "white",
+    fontSize: 18,
+    textAlign: "center",
   },
 });
 

@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Card } from "react-native-paper";
 
-const AllStudentsCard = ({ student, handleNavigate }) => {
+const AllStudentsCard = ({ student, onPress }) => {
   return (
-    <TouchableOpacity onPress={handleNavigate} style={styles.card}>
+    <TouchableOpacity onPress={onPress} style={styles.card}>
       <Card>
         <Card.Content style={styles.cardContent}>
           <View style={styles.leftContent}>
