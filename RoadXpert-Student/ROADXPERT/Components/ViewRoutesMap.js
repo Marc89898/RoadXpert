@@ -15,17 +15,10 @@ import { Button } from "react-native-paper";
 import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
 import ApiHelper from "../data/ApiHelper";
+import Config from '../configuracions';
 
 const ViewRoutesMap = () => {
-  const student = {
-    Adreca: "Carrer Major, 123",
-    Contrasenya: " ",
-    DNI: "12345678A",
-    ID: "Alumne_1",
-    Nom: "Jordi Sánchez",
-    ProfessorID: "Treballador_1",
-    Telefon: "612345678"
-  };
+  const student = Config.Alumne;
 
   const alumnoId = student.ID;
   const [modalVisible, setModalVisible] = useState(false);
