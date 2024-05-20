@@ -3,17 +3,12 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-const WorkersCard = ({ name, desc, image }) => {
+const WorkersCard = ({ name, desc, onPress }) => {
   const navigation = useNavigation();
-
-  const handleOpen = () => {
-    navigation.navigate("AdminRegisterPerson", { name, desc });
-  };
-
   return (
     <View>
-      <TouchableOpacity onPress={handleOpen}>
-        <Card style={styles.card}>
+      <TouchableOpacity>
+        <Card style={styles.card} onPress={onPress}>
           <Card.Content style={styles.cardContent}>
             <View style={styles.leftContent}>
               <Image source={require("../../assets/defaultImg.png")} style={styles.profileImage} />

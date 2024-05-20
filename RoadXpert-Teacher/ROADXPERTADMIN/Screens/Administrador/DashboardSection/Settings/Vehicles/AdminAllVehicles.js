@@ -30,7 +30,7 @@ const AdminAllVehicles = () => {
     <View style={styles.container}>
       <BackNavigation />
       <View style={styles.header}>
-        <Text style={styles.headerText}>Elefants</Text>
+        <Text style={styles.headerText}>Vehicles</Text>
         <TouchableOpacity style={styles.button} onPress={handleOpen}>
           <Text style={styles.buttonText}>Create new</Text>
         </TouchableOpacity>

@@ -122,7 +122,7 @@ const Dashboard = () => {
                 <View style={styles.eventDetail}>
                 <CarIcon name="car" size={20} color="black"/>
                   <Text style={styles.eventDetail}>
-                    {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}`}
+                    {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}` || "Not assigned"}
                   </Text>
                 </View>
 

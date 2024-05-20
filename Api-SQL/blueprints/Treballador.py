@@ -73,40 +73,56 @@ def post_new_Treballador():
 def put_update_Treballador(Treballador_id):
     """PUT para actualizar un registro de Treballador por su ID"""
     data = request.json
-    nom = data.get('nom')
-    cognom = data.get('cognom')
-    segonCognom = data.get('segonCognom')
-    dni = data.get('dni')
-    adreca = data.get('adreca')
-    sexe = data.get('sexe')
-    carnetConduirFrontal = data.get('carnetConduirFrontal')
-    carnetConduirDerrera = data.get('carnetConduirDerrera')
-    rol = data.get('rol')
-    horariID = data.get('horariID')
+    nom = data.get('Nom')
+    cognom = data.get('Cognom')
+    segonCognom = data.get('SegonCognom')
+    dni = data.get('DNI')
+    adreca = data.get('Adreca')
+    sexe = data.get('Sexe')
+    carnetConduirFrontal = data.get('CarnetConduirFront')
+    carnetConduirDerrera = data.get('CarnetConduirDarrera')
+    horariID = data.get('HorariID')
+    password = data.get('Password')
+    
     try:
         with engine.connect() as connection:
-            query_check = text("SELECT * FROM Treballador WHERE id = :id")
+            query_check = text("SELECT * FROM Treballador WHERE ID = :id")
             result_check = connection.execute(query_check, {"id": Treballador_id})
             Treballador = result_check.fetchone()
             if Treballador:
-                sql = text("UPDATE Treballador SET nom = :nom, cognom = :cognom, segonCognom = :segonCognom, dni = :dni, adreca = :adreca, sexe = :sexe, carnetConduirFrontal = :carnetConduirFrontal, carnetConduirDerrera = :carnetConduirDerrera, rol = :rol, horariID = :horariID WHERE id = :id")
-                connection.execute(sql, nom=nom, cognom=cognom, segonCognom=segonCognom, dni=dni, adreca=adreca, sexe=sexe, carnetConduirFrontal=carnetConduirFrontal, carnetConduirDerrera=carnetConduirDerrera, rol=rol, horariID=horariID, id=Treballador_id)
+                sql = text("UPDATE Treballador SET Nom = :Nom, Cognom = :Cognom, SegonCognom = :SegonCognom, DNI = :DNI, Adreca = :Adreca, Sexe = :Sexe, CarnetConduirFront = :CarnetConduirFrontal, CarnetConduirDarrera = :CarnetConduirDerrera, HorariID = :HorariID, Password = :Password WHERE ID = :ID")
+                connection.execute(sql, { "Nom": nom, "Cognom": cognom, "SegonCognom":segonCognom, "DNI":dni, "Adreca":adreca, "Sexe":sexe, "CarnetConduirFrontal":carnetConduirFrontal, "CarnetConduirDerrera":carnetConduirDerrera, "HorariID":horariID, "Password":password, "ID":Treballador_id })
+                connection.commit()
                 return jsonify({"message": f"Treballador with ID {Treballador_id} updated successfully"}), 200
             else:
                 return jsonify({"message": f"No Treballador found with ID {Treballador_id}"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @Treballador_bp.route("/Treballador/<string:Treballador_id>", methods=['DELETE'])
 def delete_Treballador(Treballador_id):
     try:
         with engine.connect() as conn:
-            query = text("DELETE FROM Treballador WHERE id = :id")
-            result = conn.execute(query, {"id": Treballador_id})
+            query = text("DELETE FROM Treballador WHERE ID = :ID")
+            result = conn.execute(query, {"ID": Treballador_id})
             conn.commit()
             if result.rowcount > 0:
                 return jsonify({"message": f"Treballador with ID {Treballador_id} deleted successfully"}), 200
             else:
                 return jsonify({"message": f"No Treballador found with ID {Treballador_id}"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def delete_TreballadorTeIncidencia(TreballadorTeIncidencia_id):
+    try:
+        with engine.connect() as conn:
+            query = text("DELETE FROM TreballadorTeIncidencia WHERE id = :id")
+            result = conn.execute(query, {"id": TreballadorTeIncidencia_id})
+            conn.commit()
+            if result.rowcount > 0:
+                return jsonify({"message": f"TreballadorTeIncidencia with ID {TreballadorTeIncidencia_id} deleted successfully"}), 200
+            else:
+                return jsonify({"message": f"No TreballadorTeIncidencia found with ID {TreballadorTeIncidencia_id}"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500

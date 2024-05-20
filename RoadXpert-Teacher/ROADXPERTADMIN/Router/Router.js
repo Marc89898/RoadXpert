@@ -59,7 +59,6 @@ import AdminChatBot from '../Screens/Administrador/DashboardSection/AdminChatBot
 
 // Settings
 import AdminSettings from '../Screens/Administrador/DashboardSection/Settings/AdminSettings.js';
-import AdminUserProfile from '../Screens/Administrador/DashboardSection/Settings/AdminUserProfile.js';
 import AdminAllStudent from '../Screens/Administrador/DashboardSection/Settings/Students/AdminAllStudent.js';
 import AdminRegisterStudent from '../Screens/Administrador/DashboardSection/Settings/Students/AdminRegisterStudent.js';
 import AdminAllWorkers from '../Screens/Administrador/DashboardSection/Settings/Workers/AdminAllWorkers.js';
@@ -86,7 +85,7 @@ import AdminCarInfo from '../Screens/Administrador/Cars/AdminCarInfo.js';
 import AdminPrePractice from '../Screens/Administrador/Practices/pre-practice.js';
 import AdminStartRouteMap from '../Screens/Administrador/Practices/AdminStartRouteMap.js';
 import AdminPostPractice from '../Screens/Administrador/Practices/post-practice.js';
-
+import AdminViewWorker from '../Screens/Administrador/DashboardSection/Settings/Workers/AdminViewWorker.js'
 // Categories
 import AdminCategories from '../Screens/Administrador/StudentsSection/AdminCategories.js';
 import AdminSelectedCategory from '../Screens/Administrador/StudentsSection/AdminSelectedCategory.js';
@@ -103,7 +102,7 @@ export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="NavBar"
+        initialRouteName="DashBoard"
         screenOptions={{
           headerShown: false,
         }}
@@ -139,8 +138,8 @@ export default function Router() {
 
         <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
         <Stack.Screen name="AdminNotificationsScreen" component={AdminNotificationsScreen} />
+        <Stack.Screen name="AdminViewWorker" component={AdminViewWorker} />
         <Stack.Screen name="AdminSettings" component={AdminSettings} />
-        <Stack.Screen name="AdminUserProfile" component={AdminUserProfile} />
         <Stack.Screen name="AdminAllStudent" component={AdminAllStudent} />
         <Stack.Screen name="AdminRegisterStudent" component={AdminRegisterStudent} />
         <Stack.Screen name="AdminAllWorkers" component={AdminAllWorkers} />
