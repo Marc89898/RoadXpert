@@ -1,6 +1,6 @@
 import { APIService } from "../ApiService";
 class DataAdapter {
-    static adaptDataDelete(jsonData) {
+    static async adaptDataDelete(jsonData) {
       const adaptedData = {};
   
       jsonData.forEach(async (item) => {

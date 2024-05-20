@@ -29,7 +29,7 @@ export default function Calendar() {
     const fetchData = async () => {
       try {
         const result = await APIService.fetchEventsCalendar(Config.IDALUMNE);
-        const adaptedData = DataAdapter.adaptDataDelete(result);
+        const adaptedData = await DataAdapter.adaptDataDelete(result);
         setData(adaptedData);
         setEvents(adaptedData);
       } catch (error) {

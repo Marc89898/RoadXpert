@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
 } from "react-native";
 import BackNavigation from "../BottomNavigation/BackNavigation";
-import { MaterialIcons } from "@expo/vector-icons";
 import CustomTextInput from "../Components/Inputs/CustomTextInput";
-import CustomSelectInput from "../Components/Inputs/CustomSelectInput";
-import MainButton from "../Components/Buttons/mainButton";
-// import Config from "../configuracions";
+import Config from "../../configuracions";
 
 const UserProfile = () => {
   return (
