@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, Modal } from 'react-native';
+import React, { useState, useEffect, useRef  } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, Modal, Animated } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
@@ -22,8 +22,10 @@ export default function ProfessorCalendar() {
   const [selectedHour, setSelectedHour] = useState(availableHours[0]);
   const [students, setStudents] = useState([]);
   const navigation = useNavigation();
+  const optionsAnimation = useRef(new Animated.Value(0)).current;
 
   const fetchData = async () => {
+
     try {
       const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
       const adaptedData = await DataAdapter.adaptPracticaToAgenda(result);
@@ -36,8 +38,14 @@ export default function ProfessorCalendar() {
   const handleOptionsPress = (item) => {
     setEventToManage(item);
     setOptionsModalVisible(true);
+  
+    Animated.timing(optionsAnimation, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   };
-
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -80,6 +88,7 @@ export default function ProfessorCalendar() {
         ],
         { cancelable: false }
       );
+      fetchData();
     } catch (error) {
       console.error("Error in the delete petition: " + error.message)
     }
@@ -90,8 +99,8 @@ export default function ProfessorCalendar() {
       await APIService.modifyEventEstat(eventToManage.id, "EstatHora_2");
       console.log('Event accepted successfully:', eventToManage.id);
       Alert.alert('Evento Aceptado', 'El evento se ha aceptado correctamente.');
-      fetchData();
       setEventToManage(null);
+      fetchData();
     } catch (error) {
       console.error("Error in the accept petition: " + error.message);
     }
@@ -164,8 +173,18 @@ export default function ProfessorCalendar() {
     ));
   };
 
-  const handleCancelDelete = () => {
-    setDeleteConfirmationVisible(false);
+  const optionsTranslateY = optionsAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [300, 0],
+  });
+
+
+  const handleCloseOptions = () => {
+    Animated.timing(optionsAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setOptionsModalVisible(false));
   };
 
   const renderEmptyDate1 = () => {
@@ -219,22 +238,23 @@ export default function ProfessorCalendar() {
             </TouchableOpacity>
           )}
         />
-      <View style={styles.optionsContainer}>
-        {eventToManage && (
-          <View style={styles.optionsContent}>
-            <Text style={styles.modalTitle}>¿Qué acción deseas realizar?</Text>
-            <TouchableOpacity style={styles.optionButton} onPress={handleAcceptEvent}>
-              <Text style={styles.optionButtonText}>Aceptar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#ff6961' }]} onPress={() => handleDeleteConfirmation(eventToManage)}>
-              <Text style={styles.optionButtonText}>Eliminar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#bdbdbd' }]} onPress={() => setEventToManage(null)}>
-              <Text style={styles.optionButtonText}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+      <Animated.View style={[styles.optionsContainer, { transform: [{ translateY: optionsTranslateY }] }]}>
+  {eventToManage && (
+    <View style={styles.optionsContent}>
+      <Text style={styles.modalTitle}>¿Qué acción deseas realizar?</Text>
+      <TouchableOpacity style={styles.optionButton} onPress={handleAcceptEvent}>
+        <Text style={styles.optionButtonText}>Aceptar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#ff6961' }]} onPress={() => handleDeleteConfirmation(eventToManage)}>
+        <Text style={styles.optionButtonText}>Eliminar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#bdbdbd' }]} onPress={handleCloseOptions}>
+        <Text style={styles.optionButtonText}>Cancelar</Text>
+      </TouchableOpacity>
+    </View>
+  )}
+</Animated.View>
+
       <TouchableOpacity style={styles.addButton}>
         <Ionicons onPress={addPractica} name="add-circle" size={70} color="black" />
       </TouchableOpacity>
