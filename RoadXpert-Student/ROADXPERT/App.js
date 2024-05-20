@@ -17,6 +17,7 @@ import notificationsScreen from './Components/notificationsScreen.js';
 import UserProfile from './Components/Settings/UserProfile.js';
 import Settings from './Components/Settings/Settings.js';
 import OneRouteScreen from './Components/OneRouteScreen.js';
+import ChatBot from './Components/ChatBot.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,7 @@ export default function App() {
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
         <Stack.Screen name="OneRouteScreen" component={OneRouteScreen} />
+        <Stack.Screen name="ChatBot" component={ChatBot} />
         
       </Stack.Navigator>
     </NavigationContainer>
