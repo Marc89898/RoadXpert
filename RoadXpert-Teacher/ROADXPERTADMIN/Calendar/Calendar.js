@@ -26,8 +26,7 @@ export default function ProfessorCalendar() {
   const fetchData = async () => {
     try {
       const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
-      const adaptedData = DataAdapter.adaptPracticaToAgenda(result);
-      setSelectedDate(selectedDate.toString());
+      const adaptedData = await DataAdapter.adaptPracticaToAgenda(result);
       setEvents(adaptedData);
     } catch (error) {
       console.error('ERROR IN THE DATABASE: ' + error);
@@ -179,7 +178,6 @@ export default function ProfessorCalendar() {
 
   return (
     <View style={{ flex: 1 }}>
-      {events !== null ? (
         <Agenda
           theme={{
             agendaTodayColor: 'blue',
@@ -221,11 +219,6 @@ export default function ProfessorCalendar() {
             </TouchableOpacity>
           )}
         />
-      ) : (
-        <Text style={[styles.itemText, styles.loadingText]}>
-          <Text style={styles.boldText}>LOADING EVENTS...</Text>
-        </Text>
-      )}
       <View style={styles.optionsContainer}>
         {eventToManage && (
           <View style={styles.optionsContent}>

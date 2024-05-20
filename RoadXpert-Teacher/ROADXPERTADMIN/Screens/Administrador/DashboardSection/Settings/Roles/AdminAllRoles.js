@@ -36,6 +36,9 @@ const AdminAllRoles = () => {
           <RolesCard
             key={index}
             name={role.Nom}
+            onPress={() => {
+              
+            }}
           />
         ))}
       </View>

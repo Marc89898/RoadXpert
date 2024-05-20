@@ -22,7 +22,7 @@ class DataAdapter {
             Estat: EstatModificat.Nom,
             alumne: fetchALUMN.Nom,
           };
-          
+          console.log("Event: ", event)
           if (adaptedData[date]) {
             adaptedData[date].push(event);
           } else {
@@ -33,6 +33,7 @@ class DataAdapter {
         }
       }
     }
+    console.log("AdaptedData2: ", adaptedData)
     return adaptedData;
   }
   
