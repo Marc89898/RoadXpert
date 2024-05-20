@@ -5,17 +5,10 @@ import { Card } from 'react-native-paper';
 import BackNavigation from './BottomNavigation/BackNavigation';
 import { useNavigation } from '@react-navigation/native';
 import ApiHelper from '../data/ApiHelper';
+import Config from '../configuracions';
 
 const Categories = () => {
-    const student = {
-        Adreca: "Carrer Major, 123",
-        Contrasenya: " ",
-        DNI: "12345678A",
-        ID: "Alumne_1",
-        Nom: "Jordi Sánchez",
-        ProfessorID: "Treballador_1",
-        Telefon: "612345678"
-    };
+    const student = Config.Alumne;
 
     const navigation = useNavigation();
     const [annotations, setAnnotations] = useState([]);
