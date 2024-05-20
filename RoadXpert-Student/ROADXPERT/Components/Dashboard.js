@@ -29,28 +29,27 @@ const Dashboard = () => {
     navigation.navigate("notificationsScreen");
   };
 
-  useEffect(() => {
-    const loadNextEvent = async () => {
-      try {
-        const events = await APIService.fetchEventsCalendar(Config.IDALUMNE);
-        const currentDate = new Date();
-        events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
-        const nextEvent1 = events.find(
-          (event) => new Date(event.Data) > currentDate
-        );
-        if (nextEvent1) {
-          console.log("Next Event: ", nextEvent1);
-          setNextEvent(nextEvent1);
-        } else {
-          console.log("No upcoming events found.");
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      }
-    };
+  const loadNextEvent = async () => {
+    try {
+      const events = await APIService.fetchEventsCalendar(Config.IDALUMNE);
+      const currentDate = new Date();
+      events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
+      const upcomingEvent = events.find(
+        (event) => new Date(event.Data) > currentDate
+      );
+      setNextEvent(upcomingEvent || null);
+      console.log("Next event:", upcomingEvent);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
 
+  useEffect(() => {
     loadNextEvent();
+    const intervalId = setInterval(loadNextEvent, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -76,87 +75,62 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.cardContainer}>
-        <TouchableOpacity>
-          <Card style={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <View>
-                <Text style={styles.cardTitle}>Siguiente Encuentro</Text>
-              </View>
 
-              <View style={styles.eventDetail}>
-                <Image
-                  source={require("../assets/imgDefault.png")}
-                  style={styles.eventDetailImage}
-                />
-                <View style={styles.eventTextDetail}>
-                  <Text style={styles.eventDetailText}>Juan Alberto</Text>
-                  <Text style={styles.eventDetailTextOpacity}>5a Practica</Text>
-                  <Text style={styles.eventDetailTextOpacity}>
-                    Volkswagen GT
-                  </Text>
+      {!loading && nextEvent && (
+        <View style={styles.cardContainer}>
+          <TouchableOpacity>
+            <Card style={styles.card}>
+              <Card.Content style={styles.cardContent}>
+                <View>
+                  <Text style={styles.cardTitle}>Siguiente Encuentro</Text>
                 </View>
-              </View>
 
-              <View style={styles.eventDetail}>
-                <MaterialCommunityIcons
-                  name="calendar"
-                  size={20}
-                  color="black"
-                />
-                {/* <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(
+                <View style={styles.eventDetail}>
+                  <Image
+                    source={require("../assets/imgDefault.png")}
+                    style={styles.eventDetailImage}
+                  />
+                  <View style={styles.eventTextDetail}>
+                    <Text style={styles.eventDetailText}>Juan Alberto</Text>
+                    <Text style={styles.eventDetailTextOpacity}>5a Practica</Text>
+                    <Text style={styles.eventDetailTextOpacity}>
+                      Volkswagen GT
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.eventDetail}>
+                  <MaterialCommunityIcons
+                    name="calendar"
+                    size={20}
+                    color="black"
+                  />
+                  <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(
                   0,
                   12
-                )}`}</Text> */}
-              </View>
+                )}`}</Text>
+                </View>
 
-              <View style={styles.eventDetail}>
-                <MaterialCommunityIcons name="clock" size={20} color="black" />
-                {/* <Text
+                <View style={styles.eventDetail}>
+                  <MaterialCommunityIcons name="clock" size={20} color="black" />
+                  <Text
                   style={styles.eventInfo}
-                >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text> */}
-              </View>
-
-              <View style={styles.eventDetail}>
-                <MaterialCommunityIcons
-                  name="car-sports"
-                  size={20}
-                  color="black"
-                />
-                <Text style={styles.eventInfo}>
-                  {/* {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}` ||
-                    "Not assigned"} */}
-                </Text>
-              </View>
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-      </View>
-
-      {nextEvent && (
-        <View style={styles.cardContainer}>
-          <Card style={styles.card}>
-            <TouchableOpacity>
-              <Card.Content style={styles.cardContent}>
-                <View style={styles.textCenter}>
-                  <Text style={styles.nextEventTitle}>Siguiente Práctica</Text>
+                >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
                 </View>
 
                 <View style={styles.eventDetail}>
-                  {/* <Icon name="calendar" size={20} color="black" /> */}
-                  <Text
-                    style={styles.eventDetailText}
-                  >{`${nextEvent.Data.substring(0, 12)}`}</Text>
-                </View>
-
-                <View style={styles.eventDetail}>
-                  <Text
-                    style={styles.eventDetailText}
-                  >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+                  <MaterialCommunityIcons
+                    name="car-sports"
+                    size={20}
+                    color="black"
+                  />
+                  <Text style={styles.eventInfo}>
+                  {`${nextEvent.VehicleID}`}
+                  </Text>
                 </View>
               </Card.Content>
-            </TouchableOpacity>
-          </Card>
+            </Card>
+          </TouchableOpacity>
         </View>
       )}
       <FloatingButton />
@@ -196,7 +170,6 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     alignContent: "center",
-    // paddingLeft: 10,
     marginTop: 30,
     opacity: 0.3,
   },
@@ -280,11 +253,6 @@ const styles = StyleSheet.create({
   nextEventTitle: {
     fontSize: 14,
     fontWeight: "bold",
-    marginBottom: 5,
-  },
-  eventDetail: {
-    flexDirection: "row",
-    alignItems: "center",
     marginBottom: 5,
   },
   card: {
