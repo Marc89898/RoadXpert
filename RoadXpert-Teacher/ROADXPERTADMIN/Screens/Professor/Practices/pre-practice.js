@@ -14,23 +14,36 @@ import SignatureCanvas from "react-native-signature-canvas";
 import MainButton from "../../../Components/Buttons/mainButton.js";
 import CustomTextInput from "../../../Components/Inputs/CustomTextInput.js";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import ApiHelper from "../../../data/ApiHelper.js";
 import Config from "../../../configuracions.js";
 
 const PrePractice = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const signatureRef = useRef();
   const [showModal, setShowModal] = useState(false);
   const [alumnos, setAlumnos] = useState([]);
   const [selectedAlumno, setSelectedAlumno] = useState(null); // Almacena el ID del alumno seleccionado
   const [cotxes, setCotxes] = useState([]);
   const [selectedCotxe, setSelectedCotxe] = useState(null); // Almacena la matrícula del vehículo seleccionado
+  const practicaData = route.params?.practicaData || null;
 
   useEffect(() => {
     fetchAlumnosData();
     fetchCotxesData();
   }, []);
+
+  useEffect(() => {
+    if (practicaData) {
+      
+      setSelectedAlumno(practicaData.AlumneID);
+      console.log('practicaData:', practicaData.AlumneID);
+      setSelectedCotxe(practicaData.VehicleID);
+    } else {
+      console.log('Error fetching practicaData');
+    }
+  }, [practicaData]);
 
   // Llamada a la función fetchAlumnos para obtener la lista de alumnos
   const fetchAlumnosData = async () => {
@@ -61,18 +74,15 @@ const PrePractice = () => {
   };
 
   const handleStartButtonPress = () => {
-    // Verificar si se ha seleccionado un alumno
-    if (!selectedAlumno) {
-      return;
-    }
-    if (!selectedCotxe) {
+    // Verificar si se ha seleccionado un alumno y un coche
+    if (!selectedAlumno || !selectedCotxe) {
       return;
     }
 
     // Data actual formato 'YYYY-MM-DD'
     const today = new Date();
 
-    // Crear el objeto practicaDataObj con los datos seleccionados
+    // Crear el objeto practiceDataObj con los datos seleccionados
     const practiceDataObj = {
       ID: '',
       AlumneID: selectedAlumno, // ID del alumno seleccionado
@@ -87,7 +97,6 @@ const PrePractice = () => {
       NumPracticas: selectedAlumno && alumnos.find(alumno => alumno.ID === selectedAlumno)?.NumPracticas,
       TotalAnotacions: 0,
       NombreAlumno: selectedAlumno && alumnos.find(alumno => alumno.ID === selectedAlumno)?.Nom,
-      // NombrePractica: 'Práctica de conducción',
     };
     navigation.navigate("StartRouteMap", { practiceData: practiceDataObj });
   };

@@ -40,7 +40,6 @@ const Dashboard = () => {
         }
 
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
-        console.log("Fetched Events: ", events);
 
         if (!Array.isArray(events)) {
           console.log("Fetched data is not an array.");
@@ -56,7 +55,6 @@ const Dashboard = () => {
           .sort((a, b) => new Date(a.Data) - new Date(b.Data))[0];
 
         if (firstUpcomingEvent) {
-          console.log("Next Event: ", firstUpcomingEvent);
           setNextEvent(firstUpcomingEvent);
 
           const firstEventAlumn = await APIService.fetchAlumn(firstUpcomingEvent.AlumneID);
@@ -74,7 +72,6 @@ const Dashboard = () => {
           .find(event => new Date(event.Data) > new Date(firstUpcomingEvent.Data));
 
         if (secondUpcomingEvent) {
-          console.log("Second Next Event: ", secondUpcomingEvent);
           setSecondNextEvent(secondUpcomingEvent);
 
           const secondEventAlumn = await APIService.fetchAlumn(secondUpcomingEvent.AlumneID);
@@ -88,7 +85,7 @@ const Dashboard = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching events:", error);
-        setLoading(false); // Set loading to false in case of error
+        setLoading(false);
       }
     };
 
@@ -128,7 +125,7 @@ const Dashboard = () => {
           <TouchableOpacity>
             <Card style={styles.card}>
               <Card.Content style={styles.cardContent}>
-                <Text style={styles.cardTitle}>Primer Encuentro</Text>
+                {/* <Text style={styles.cardTitle}>Primer Encuentro</Text> */}
 
                 <View style={styles.eventDetail}>
                   <Image
@@ -161,7 +158,7 @@ const Dashboard = () => {
                 </View>
 
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={[styles.button, styles.startButton]}>
+                  <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(nextEvent); navigation.navigate("prePractice", { practicaData: nextEvent }) }}>
                     <Text style={styles.buttonText}>Empezar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.button, styles.cancelButton]}>
@@ -179,7 +176,7 @@ const Dashboard = () => {
           <TouchableOpacity>
             <Card style={styles.card}>
               <Card.Content style={styles.cardContent}>
-                <Text style={styles.cardTitle}>Segundo Encuentro</Text>
+                {/* <Text style={styles.cardTitle}>Segundo Encuentro</Text> */}
 
                 <View style={styles.eventDetail}>
                   <Image
@@ -212,7 +209,7 @@ const Dashboard = () => {
                 </View>
 
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={[styles.button, styles.startButton]}>
+                <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(secondNextEvent); navigation.navigate("prePractice", { practicaData: secondNextEvent }) }}>
                     <Text style={styles.buttonText}>Empezar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.button, styles.cancelButton]}>

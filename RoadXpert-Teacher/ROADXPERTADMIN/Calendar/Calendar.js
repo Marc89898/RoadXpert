@@ -243,7 +243,7 @@ export default function ProfessorCalendar() {
     <View style={styles.optionsContent}>
       <Text style={styles.modalTitle}>¿Qué acción deseas realizar?</Text>
       <TouchableOpacity style={styles.optionButton} onPress={handleAcceptEvent}>
-        <Text style={styles.optionButtonText}>Aceptar</Text>
+        <Text style={styles.optionButtonText}>Confirmar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#ff6961' }]} onPress={() => handleDeleteConfirmation(eventToManage)}>
         <Text style={styles.optionButtonText}>Eliminar</Text>
@@ -416,9 +416,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   optionButton: {
-    backgroundColor: '#90caf9',
-    borderRadius: 5,
+    backgroundColor: 'green',
+    borderRadius: 20,
     paddingVertical: 12,
+    width: 200,
     marginBottom: 10,
   },
   optionButtonText: {
