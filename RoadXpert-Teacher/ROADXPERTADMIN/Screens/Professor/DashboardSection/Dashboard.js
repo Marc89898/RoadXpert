@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -15,52 +15,86 @@ import CarIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Dashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
+  const [secondNextEvent, setSecondNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const [nextEventAlumn, setNextEventAlumn] = useState();
+  const [secondNextEventAlumn, setSecondNextEventAlumn] = useState();
   const [nextEventCar, setNextEventCar] = useState();
-  
+  const [secondNextEventCar, setSecondNextEventCar] = useState();
+
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
   };
+
   const handleSettings = () => {
     navigation.navigate("AdminSettings");
   };
-
   useEffect(() => {
-    const loadNextEvent = async () => {
+    const loadNextEvents = async () => {
       try {
         if (typeof Config.ProfessorID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
           return;
         }
+
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
+        console.log("Fetched Events: ", events);
+
+        if (!Array.isArray(events)) {
+          console.log("Fetched data is not an array.");
+          setLoading(false);
+          return;
+        }
+
         const currentDate = new Date();
 
-        events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
+        // Obtener el primer próximo evento
+        const firstUpcomingEvent = events
+          .filter(event => new Date(event.Data) >= currentDate)
+          .sort((a, b) => new Date(a.Data) - new Date(b.Data))[0];
 
-        const nextEvent = events.find(
-          (event) => new Date(event.Data) > currentDate
-        );
-        if (nextEvent) {
-          console.log("Next Event: ", nextEvent);
-          setNextEvent(nextEvent);
-          console.log("AlumneID: ", nextEvent.AlumneID)
-          var result = await APIService.fetchAlumn(nextEvent.AlumneID)
-          setNextEventAlumn(result)
-          var resultCoche = await APIService.fetchCar(nextEvent.VehicleID)
-          setNextEventCar(resultCoche)
+        if (firstUpcomingEvent) {
+          console.log("Next Event: ", firstUpcomingEvent);
+          setNextEvent(firstUpcomingEvent);
+
+          const firstEventAlumn = await APIService.fetchAlumn(firstUpcomingEvent.AlumneID);
+          setNextEventAlumn(firstEventAlumn);
+          const firstEventCar = await APIService.fetchCar(firstUpcomingEvent.VehicleID);
+          setNextEventCar(firstEventCar);
         } else {
           console.log("No upcoming events found.");
         }
+
+        // Obtener el segundo próximo evento
+        const secondUpcomingEvent = events
+          .filter(event => new Date(event.Data) > (firstUpcomingEvent ? new Date(firstUpcomingEvent.Data) : currentDate))
+          .sort((a, b) => new Date(a.Data) - new Date(b.Data))
+          .find(event => new Date(event.Data) > new Date(firstUpcomingEvent.Data));
+
+        if (secondUpcomingEvent) {
+          console.log("Second Next Event: ", secondUpcomingEvent);
+          setSecondNextEvent(secondUpcomingEvent);
+
+          const secondEventAlumn = await APIService.fetchAlumn(secondUpcomingEvent.AlumneID);
+          setSecondNextEventAlumn(secondEventAlumn);
+          const secondEventCar = await APIService.fetchCar(secondUpcomingEvent.VehicleID);
+          setSecondNextEventCar(secondEventCar);
+        } else {
+          console.log("No second upcoming event found.");
+        }
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching events:", error);
+        setLoading(false); // Set loading to false in case of error
       }
     };
-    loadNextEvent();
-  }, []);
+
+    loadNextEvents();
+  }, []);    
+  
 
   return (
     <View style={{ flex: 1 }}>
@@ -88,13 +122,13 @@ const Dashboard = () => {
           </View>
         </TouchableOpacity>
       </View>
-
+      <ScrollView>
       {nextEvent && (
         <View style={styles.cardContainer}>
           <TouchableOpacity>
             <Card style={styles.card}>
               <Card.Content style={styles.cardContent}>
-                <Text style={styles.cardTitle}>Siguiente Encuentro</Text>
+                <Text style={styles.cardTitle}>Primer Encuentro</Text>
 
                 <View style={styles.eventDetail}>
                   <Image
@@ -120,7 +154,7 @@ const Dashboard = () => {
                   <Text style={styles.eventInfo}>{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
                 </View>
                 <View style={styles.eventDetail}>
-                <CarIcon name="car" size={20} color="black"/>
+                  <CarIcon name="car" size={20} color="black"/>
                   <Text style={styles.eventDetail}>
                     {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}` || "Not assigned"}
                   </Text>
@@ -140,6 +174,58 @@ const Dashboard = () => {
         </View>
       )}
 
+      {secondNextEvent && (
+        <View style={styles.cardContainer}>
+          <TouchableOpacity>
+            <Card style={styles.card}>
+              <Card.Content style={styles.cardContent}>
+                <Text style={styles.cardTitle}>Segundo Encuentro</Text>
+
+                <View style={styles.eventDetail}>
+                  <Image
+                    source={require("../../../assets/imgDefault.png")}
+                    style={styles.eventDetailImage}
+                  />
+                  <View style={styles.eventTextDetail}>
+                    <Text style={styles.eventDetailText}>{secondNextEventAlumn?.Nom}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.eventDetail}>
+                  <MaterialCommunityIcons
+                    name="calendar"
+                    size={20}
+                    color="black"
+                  />
+                  <Text style={styles.eventInfo}>{`${secondNextEvent.Data.substring(0, 12)}`}</Text>
+                </View>
+
+                <View style={styles.eventDetail}>
+                  <MaterialCommunityIcons name="clock" size={20} color="black" />
+                  <Text style={styles.eventInfo}>{`${secondNextEvent.HoraInici} - ${secondNextEvent.HoraFi}`}</Text>
+                </View>
+                <View style={styles.eventDetail}>
+                  <CarIcon name="car" size={20} color="black"/>
+                  <Text style={styles.eventDetail}>
+                    {`  ${secondNextEventCar?.Marca} ${secondNextEventCar?.Model}` || "Not assigned"}
+                  </Text>
+                </View>
+
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={[styles.button, styles.startButton]}>
+                    <Text style={styles.buttonText}>Empezar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.button, styles.cancelButton]}>
+                    <Text style={styles.buttonText}>Cancelar</Text>
+                  </TouchableOpacity>
+                </View>
+              </Card.Content>
+            </Card>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      </ScrollView>
       <FloatingButton />
     </View>
   );
