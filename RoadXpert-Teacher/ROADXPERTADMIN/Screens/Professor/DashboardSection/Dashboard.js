@@ -125,7 +125,7 @@ const Dashboard = () => {
           <TouchableOpacity>
             <Card style={styles.card}>
               <Card.Content style={styles.cardContent}>
-                <Text style={styles.cardTitle}>Primer Encuentro</Text>
+                {/* <Text style={styles.cardTitle}>Primer Encuentro</Text> */}
 
                 <View style={styles.eventDetail}>
                   <Image
@@ -158,7 +158,7 @@ const Dashboard = () => {
                 </View>
 
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={[styles.button, styles.startButton]}>
+                  <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(nextEvent); navigation.navigate("prePractice", { practicaData: nextEvent }) }}>
                     <Text style={styles.buttonText}>Empezar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.button, styles.cancelButton]}>
@@ -176,7 +176,7 @@ const Dashboard = () => {
           <TouchableOpacity>
             <Card style={styles.card}>
               <Card.Content style={styles.cardContent}>
-                <Text style={styles.cardTitle}>Segundo Encuentro</Text>
+                {/* <Text style={styles.cardTitle}>Segundo Encuentro</Text> */}
 
                 <View style={styles.eventDetail}>
                   <Image
@@ -209,7 +209,7 @@ const Dashboard = () => {
                 </View>
 
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={[styles.button, styles.startButton]}>
+                <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(secondNextEvent); navigation.navigate("prePractice", { practicaData: secondNextEvent }) }}>
                     <Text style={styles.buttonText}>Empezar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.button, styles.cancelButton]}>
