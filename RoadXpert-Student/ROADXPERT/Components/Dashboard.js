@@ -96,7 +96,7 @@ const Dashboard = () => {
       const currentDate = new Date();
 
       const estatHora2Events = events.filter(
-        (event) => event.EstatHoraID === "EstatHora_1"
+        (event) => event.EstatHoraID === "EstatHora_2"
       );
 
       estatHora2Events.sort((a, b) => new Date(a.Data) - new Date(b.Data));

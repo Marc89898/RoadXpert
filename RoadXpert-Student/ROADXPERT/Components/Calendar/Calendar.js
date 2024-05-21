@@ -45,12 +45,12 @@ export default function Calendar() {
     const handleDeleteConfirmation = (item) => {
       setEventToDelete(item);
       setDeleteConfirmationVisible(true);
-      fetchData();
     };
   
       
     const handleDayPress = (day) => {
       setSelectedDate(day.dateString);
+      // fetchData()
     };
 
     const handleDeleteEvent = async () => {
@@ -74,6 +74,7 @@ export default function Calendar() {
       } catch(error) {
         console.error("Error in the delete petition: " + error.message)
       }
+      fetchData()
     };
   
     const handleAddEvent = () => {

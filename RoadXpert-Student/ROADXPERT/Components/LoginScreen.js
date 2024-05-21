@@ -20,6 +20,7 @@ const LoginScreen = () => {
         return;
       }
       const alumns = await APIService.fetchAllAlumns();
+      
       const foundAlumn = alumns.find(
         (alumn) => {
           if (alumn.DNI === username && alumn.Contrasenya === password) {
@@ -28,7 +29,6 @@ const LoginScreen = () => {
           }
         } 
       );
-      console.log("Alumne: " + Config.Alumne.Nom)
       if (foundAlumn) {
         console.log("Inicio de sesión exitoso");
         navigation.navigate("NavBar");
