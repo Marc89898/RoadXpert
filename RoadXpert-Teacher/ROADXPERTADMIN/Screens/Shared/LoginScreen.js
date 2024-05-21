@@ -21,8 +21,7 @@ const LoginScreen = () => {
     const professor = professors.find((prof) => prof.DNI === username);
 
     if (professor) {
-      const hashedPassword = await sha256(password);
-      if (hashedPassword.trim() === professor.HashedPassword.trim()) {
+      if (password.trim() === professor.Password.trim()) {
         Config.Professor = professor;
         navigation.navigate("NavBar");
       } else {

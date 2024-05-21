@@ -416,9 +416,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   optionButton: {
-    backgroundColor: '#90caf9',
-    borderRadius: 5,
+    backgroundColor: 'green',
+    borderRadius: 20,
     paddingVertical: 12,
+    width: 200,
     marginBottom: 10,
   },
   optionButtonText: {

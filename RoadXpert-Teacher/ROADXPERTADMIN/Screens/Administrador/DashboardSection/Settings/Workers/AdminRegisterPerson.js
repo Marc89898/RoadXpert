@@ -51,8 +51,6 @@ const AdminRegisterPerson = () => {
 
   const handleSave = async () => {
     try {
-      const hashedPassword = await sha256(professor.password);
-      setProfessor(prevState => ({ ...prevState, password: hashedPassword }));
       await APIService.postProfessor(professor);
       Alert.alert("Éxito", "Profesor guardado correctamente");
       navigation.goBack()
