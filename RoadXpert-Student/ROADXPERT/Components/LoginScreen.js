@@ -19,16 +19,10 @@ const LoginScreen = () => {
         console.error("El usuario no tiene el formato correcto");
         return;
       }
-      var passwordHashed = await sha256(password);
-      setPassword(passwordHashed);
-      if (!isValidPassword(passwordHashed)) {
-        console.error("La contraseña no es válida");
-        return;
-      }
       const alumns = await APIService.fetchAllAlumns();
       const foundAlumn = alumns.find(
         (alumn) => {
-          if (alumn.DNI === username && alumn.Contrasenya === passwordHashed) {
+          if (alumn.DNI === username && alumn.Contrasenya === password) {
             Config.guardarAlumne(alumn);  
             return true;
           }
