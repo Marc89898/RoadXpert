@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -20,12 +20,10 @@ const UserProfile = () => {
 
         <View style={styles.contentContainer}>
           <CustomTextInput label="Nombre:" placeholder={Config.Alumne.Nom} readOnly/>
-          <CustomTextInput label="Apellido:" placeholder={Config.Alumne.Cognom}  readOnly/>
-          <CustomTextInput label="Segundo Apellido:" placeholder={Config.Alumne.SegonCognom} readOnly/>
-          <CustomTextInput label="Sex:" placeholder={Config.Alumne.Sexe} readOnly/>
           <CustomTextInput label="DNI:" placeholder={Config.Alumne.DNI} readOnly/>
-          <CustomTextInput label="Carnet:" placeholder={Config.Alumne.CarnetConduirFront} readOnly/>
-          <CustomTextInput label="Direccion:" placeholder={Config.Alumne.Adreca} readOnly/>
+          <CustomTextInput label="Dirección:" placeholder={Config.Alumne.Adreca} readOnly/>
+          <CustomTextInput label="Teléfono:" placeholder={Config.Alumne.Telefon} readOnly/>
+          <CustomTextInput label="ID del Profesor:" placeholder={Config.Alumne.ProfessorID} readOnly/>
         </View>
       </View>
     </ScrollView>

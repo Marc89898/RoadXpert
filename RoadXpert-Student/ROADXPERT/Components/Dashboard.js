@@ -119,10 +119,6 @@ const Dashboard = () => {
                   />
                   <View style={styles.eventTextDetail}>
                     <Text style={styles.eventDetailText}>Juan Alberto</Text>
-                    <Text style={styles.eventDetailTextOpacity}>5a Practica</Text>
-                    <Text style={styles.eventDetailTextOpacity}>
-                      Volkswagen GT
-                    </Text>
                   </View>
                 </View>
 
