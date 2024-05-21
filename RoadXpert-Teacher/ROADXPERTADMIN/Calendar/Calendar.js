@@ -243,7 +243,7 @@ export default function ProfessorCalendar() {
     <View style={styles.optionsContent}>
       <Text style={styles.modalTitle}>¿Qué acción deseas realizar?</Text>
       <TouchableOpacity style={styles.optionButton} onPress={handleAcceptEvent}>
-        <Text style={styles.optionButtonText}>Aceptar</Text>
+        <Text style={styles.optionButtonText}>Confirmar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#ff6961' }]} onPress={() => handleDeleteConfirmation(eventToManage)}>
         <Text style={styles.optionButtonText}>Eliminar</Text>

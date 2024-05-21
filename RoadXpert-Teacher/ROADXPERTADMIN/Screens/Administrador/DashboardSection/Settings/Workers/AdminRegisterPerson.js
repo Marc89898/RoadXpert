@@ -60,6 +60,7 @@ const AdminRegisterPerson = () => {
       console.error("Error en guardar el profesor: ", error);
     }
   };
+  
   const handleImageUpload = async () => {
     try {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
