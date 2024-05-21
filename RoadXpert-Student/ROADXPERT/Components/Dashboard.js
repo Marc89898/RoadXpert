@@ -33,17 +33,29 @@ const Dashboard = () => {
     try {
       const events = await APIService.fetchEventsCalendar(Config.IDALUMNE);
       const currentDate = new Date();
-      events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
-      const upcomingEvent = events.find(
-        (event) => new Date(event.Data) > currentDate
+      // console.log("Events:", events);
+      
+      // Filtrar los eventos por el tipo "EstatHora_2"
+      const estatHora2Events = events.filter(event => event.EstatHoraID === "EstatHora_1");
+      // console.log("EstatHora2 events:", estatHora2Events);
+      
+      // Ordenar los eventos por fecha
+      estatHora2Events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
+      
+      // Encontrar el próximo evento después de la hora actual
+      const upcomingEvent = estatHora2Events.find(
+        (event) => Date.parse(event.Data) >= currentDate.getTime()
       );
+
+      
       setNextEvent(upcomingEvent || null);
-      console.log("Next event:", upcomingEvent);
+      // console.log("Next event:", upcomingEvent);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   };
+  
 
   useEffect(() => {
     loadNextEvent();
@@ -74,7 +86,6 @@ const Dashboard = () => {
           </View>
         </TouchableOpacity>
       </View>
-
 
       {!loading && nextEvent && (
         <View style={styles.cardContainer}>
