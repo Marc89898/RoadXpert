@@ -6,8 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
 import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
-import DuoButton from "../../../../../Components/Buttons/duoButton.js";
 import { APIService } from "../../../../../ApiService.js";
+import { sha256 } from "../../../../../utils";
 
 const AdminRegisterPerson = () => {
   const navigation = useNavigation();
@@ -51,12 +51,15 @@ const AdminRegisterPerson = () => {
 
   const handleSave = async () => {
     try {
+      const hashedPassword = await sha256(professor.password);
+      setProfessor(prevState => ({ ...prevState, password: hashedPassword }));
       await APIService.postProfessor(professor);
+      Alert.alert("Éxito", "Profesor guardado correctamente");
+      navigation.goBack()
     } catch(error) {
       console.error("Error en guardar el profesor: ", error);
     }
   };
-
   const handleImageUpload = async () => {
     try {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -88,9 +91,9 @@ const AdminRegisterPerson = () => {
   };
 
   const handleSelectSexo = (value) => {
-    handleInputChange("sexe", value);
+    setProfessor(prevState => ({ ...prevState, sexe: value }));
   };
-  
+    
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <BackNavigation />
@@ -132,6 +135,10 @@ const AdminRegisterPerson = () => {
         <CustomTextInputUnlocked
           placeholder="Contraseña"
           onChangeText={text => handleInputChange("password", text)}
+        />
+        <CustomTextInputUnlocked
+          placeholder="Horario"
+          onChangeText={text => handleInputChange("horariID", text)}
         />
         <CustomSelectInput options={opcionesSexo}  onSelect={handleSelectSexo}/>
         <View style={styles.uploadContainer}>

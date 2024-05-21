@@ -45,6 +45,7 @@ def get_Treballador_by_id(Treballador_id):
         return jsonify({"error": str(e)}), 500
 
 
+# Define la función para manejar la solicitud POST para agregar un nuevo trabajador
 @Treballador_bp.route("/Treballador", methods=['POST'])
 def post_new_Treballador():
     """POST of a driving school"""
@@ -57,12 +58,12 @@ def post_new_Treballador():
     sexe = data.get('sexe')
     carnetConduirFront = data.get('carnetConduirFront')
     carnetConduirDarrera = data.get('carnetConduirDarrera')
-    rol = data.get('rol')
     horariID = data.get('horariID')
+    password = data.get('password')  # Agrega la obtención de la contraseña desde los datos JSON
     try:
         with engine.connect() as connection:
-            sql = text("INSERT INTO Treballador (ID, nom, cognom, segonCognom, dni, adreca, sexe, carnetConduirFront, carnetConduirDarrera, horariID) VALUES (:ID, :nom, :cognom, :segonCognom, :dni, :adreca, :sexe, :carnetConduirFront, :carnetConduirDarrera, :horariID)")
-            connection.execute(sql, {"ID": generate_uuid(), "nom":nom, "cognom":cognom, "segonCognom":segonCognom, "dni":dni, "adreca":adreca, "sexe":sexe, "carnetConduirFront":carnetConduirFront, "carnetConduirDarrera":carnetConduirDarrera, "horariID":horariID})
+            sql = text("INSERT INTO Treballador (ID, nom, cognom, segonCognom, dni, adreca, sexe, carnetConduirFront, carnetConduirDarrera, horariID, Password) VALUES (:ID, :nom, :cognom, :segonCognom, :dni, :adreca, :sexe, :carnetConduirFront, :carnetConduirDarrera, :horariID, :password)")  # Agrega el parámetro de contraseña a la consulta SQL
+            connection.execute(sql, {"ID": generate_uuid(), "nom":nom, "cognom":cognom, "segonCognom":segonCognom, "dni":dni, "adreca":adreca, "sexe":sexe, "carnetConduirFront":carnetConduirFront, "carnetConduirDarrera":carnetConduirDarrera, "horariID":horariID, "password": password})  # Pasa la contraseña como parte de los parámetros
             connection.commit()
             return jsonify({"message": "Treballador added successfully"}), 201
     except Exception as e:

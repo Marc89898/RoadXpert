@@ -40,7 +40,6 @@ const Dashboard = () => {
         }
 
         const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
-        console.log("Fetched Events: ", events);
 
         if (!Array.isArray(events)) {
           console.log("Fetched data is not an array.");
@@ -56,7 +55,6 @@ const Dashboard = () => {
           .sort((a, b) => new Date(a.Data) - new Date(b.Data))[0];
 
         if (firstUpcomingEvent) {
-          console.log("Next Event: ", firstUpcomingEvent);
           setNextEvent(firstUpcomingEvent);
 
           const firstEventAlumn = await APIService.fetchAlumn(firstUpcomingEvent.AlumneID);
@@ -74,7 +72,6 @@ const Dashboard = () => {
           .find(event => new Date(event.Data) > new Date(firstUpcomingEvent.Data));
 
         if (secondUpcomingEvent) {
-          console.log("Second Next Event: ", secondUpcomingEvent);
           setSecondNextEvent(secondUpcomingEvent);
 
           const secondEventAlumn = await APIService.fetchAlumn(secondUpcomingEvent.AlumneID);
@@ -88,7 +85,7 @@ const Dashboard = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching events:", error);
-        setLoading(false); // Set loading to false in case of error
+        setLoading(false);
       }
     };
 

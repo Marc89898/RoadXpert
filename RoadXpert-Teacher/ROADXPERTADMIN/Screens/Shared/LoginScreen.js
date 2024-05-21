@@ -6,8 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { APIService } from "../../ApiService";
 import { sha256, isValidDNI } from "../../utils";
 import Config from "../../configuracions";
-
-const LoginScreen = () => { 
+const LoginScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -19,12 +18,11 @@ const LoginScreen = () => {
       return;
     }
     const professors = await APIService.fetchAllProfessors();
-    const professor = professors.find(
-      (prof) => prof.DNI === username
-    );
+    const professor = professors.find((prof) => prof.DNI === username);
 
     if (professor) {
-      if (password.trim() === professor.Password.trim()){
+      const hashedPassword = await sha256(password);
+      if (hashedPassword.trim() === professor.HashedPassword.trim()) {
         Config.Professor = professor;
         navigation.navigate("NavBar");
       } else {
@@ -55,11 +53,7 @@ const LoginScreen = () => {
               value={username}
               onChangeText={(val) => setUsername(val)}
             />
-            <Ionicons
-              name="person"
-              size={18}
-              style={styles.icon}
-            />
+            <Ionicons name="person" size={18} style={styles.icon} />
           </View>
           <View style={styles.inputContainer}>
             <TextInput
@@ -84,7 +78,6 @@ const LoginScreen = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

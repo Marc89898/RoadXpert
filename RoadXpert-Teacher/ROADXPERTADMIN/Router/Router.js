@@ -105,7 +105,7 @@ export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="DashBoard"
+        initialRouteName="NavBar"
         screenOptions={{
           headerShown: false,
         }}
