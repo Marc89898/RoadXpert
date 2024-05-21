@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   Image,
   TouchableOpacity,
 } from "react-native";
@@ -15,11 +14,15 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { APIService } from "./ApiService";
 import Config from "../configuracions";
 import FloatingButton from "./Components/Buttons/floatingButton";
+import ApiHelper from "../data/ApiHelper";
 
 const Dashboard = () => {
+  const student = Config.Alumne;
+
   const navigation = useNavigation();
   const [nextEvent, setNextEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [annotations, setAnnotations] = useState([]);
 
   const handleSettings = () => {
     navigation.navigate("Settings");
@@ -33,36 +36,49 @@ const Dashboard = () => {
     try {
       const events = await APIService.fetchEventsCalendar(Config.IDALUMNE);
       const currentDate = new Date();
-      // console.log("Events:", events);
-      
-      // Filtrar los eventos por el tipo "EstatHora_2"
+
       const estatHora2Events = events.filter(event => event.EstatHoraID === "EstatHora_1");
-      // console.log("EstatHora2 events:", estatHora2Events);
-      
-      // Ordenar los eventos por fecha
+
       estatHora2Events.sort((a, b) => new Date(a.Data) - new Date(b.Data));
-      
-      // Encontrar el próximo evento después de la hora actual
+
       const upcomingEvent = estatHora2Events.find(
         (event) => Date.parse(event.Data) >= currentDate.getTime()
       );
 
-      
       setNextEvent(upcomingEvent || null);
-      // console.log("Next event:", upcomingEvent);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   };
-  
 
   useEffect(() => {
+    const fetchRecentAnnotations = async () => {
+      try {
+        const recentAnnotationsData = await ApiHelper.fetchAnotacionesPorAlumno(student.ID);
+        setAnnotations(recentAnnotationsData || []);
+      } catch (error) {
+        console.error('Error fetching recent annotations:', error);
+      }
+    };
+
+    const anotacionsInterval = setInterval(fetchRecentAnnotations, 5000);
     loadNextEvent();
     const intervalId = setInterval(loadNextEvent, 5000);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+      clearInterval(anotacionsInterval);
+    };
   }, []);
+
+  const handleViewMoreAnnotations = () => {
+    // Implementar navegación a la pantalla de más anotaciones
+  };
+
+  const handleAnnotationPress = (annotation) => {
+    // Implementar navegación o acción al presionar una anotación
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -117,16 +133,16 @@ const Dashboard = () => {
                     color="black"
                   />
                   <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(
-                  0,
-                  12
-                )}`}</Text>
+                    0,
+                    12
+                  )}`}</Text>
                 </View>
 
                 <View style={styles.eventDetail}>
                   <MaterialCommunityIcons name="clock" size={20} color="black" />
                   <Text
-                  style={styles.eventInfo}
-                >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+                    style={styles.eventInfo}
+                  >{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
                 </View>
 
                 <View style={styles.eventDetail}>
@@ -136,7 +152,7 @@ const Dashboard = () => {
                     color="black"
                   />
                   <Text style={styles.eventInfo}>
-                  {`${nextEvent.VehicleID}`}
+                    {`${nextEvent.VehicleID}`}
                   </Text>
                 </View>
               </Card.Content>
@@ -144,6 +160,30 @@ const Dashboard = () => {
           </TouchableOpacity>
         </View>
       )}
+
+      <View style={styles.recentAnnotationsContainer}>
+        <Text style={styles.recentAnnotationsTitle}>Últimas Anotaciones</Text>
+        <Button mode="outlined" onPress={handleViewMoreAnnotations}>
+          Ver más
+        </Button>
+
+        {annotations && annotations.length > 0 ? (
+          annotations.slice(0, 3).map((annotation, index) => (
+            <TouchableOpacity key={index} onPress={() => handleAnnotationPress(annotation)}>
+              <Card style={styles.annotationCard}>
+                <Card.Content>
+                  <Text style={styles.annotationTitle}>{annotation.CategoriaEscrita}</Text>
+                  <Text style={styles.annotationDescription}>{annotation.Descripcio}</Text>
+                  <Text style={styles.annotationDate}>{new Date(annotation.Data).toLocaleDateString()}</Text>
+                </Card.Content>
+              </Card>
+            </TouchableOpacity>
+          ))
+        ) : (
+          <Text>No hay anotaciones disponibles</Text>
+        )}
+      </View>
+
       <FloatingButton />
     </View>
   );
@@ -270,12 +310,36 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   nextEventContainer: {
-    borderWidth: 1,
-    borderColor: "black",
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  recentAnnotationsContainer: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
+  recentAnnotationsTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  annotationCard: {
+    marginBottom: 10,
+    elevation: 3,
+  },
+  annotationTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  annotationDescription: {
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  annotationDate: {
+    fontSize: 12,
+    color: "gray",
   },
 });
 
 export default Dashboard;
+
