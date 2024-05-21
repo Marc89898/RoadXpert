@@ -18,24 +18,33 @@ import { useNavigation } from "@react-navigation/native";
 import ApiHelper from "../../../data/ApiHelper.js";
 import Config from "../../../configuracions.js";
 
-const AdminPrePractice = () => {
+const AdminPrePractice = ({ route }) => {
   const navigation = useNavigation();
   const signatureRef = useRef();
   const [showModal, setShowModal] = useState(false);
   const [alumnos, setAlumnos] = useState([]);
-  const [selectedAlumno, setSelectedAlumno] = useState(null); // Almacena el ID del alumno seleccionado
+  const [selectedAlumno, setSelectedAlumno] = useState(null);
   const [carnets, setCarnets] = useState([]);
-  const [selectedCarnet, setSelectedCarnet] = useState(null); // Almacena el ID del carnet seleccionado
+  const [selectedCarnet, setSelectedCarnet] = useState(null);
   const [cotxes, setCotxes] = useState([]);
-  const [selectedCotxe, setSelectedCotxe] = useState(null); // Almacena la matrícula del vehículo seleccionado
+  const [selectedCotxe, setSelectedCotxe] = useState(null);
 
   useEffect(() => {
     fetchAlumnosData();
     fetchCarnetsData();
     fetchCotxesData();
+    if (route.params?.practiceData) {
+      console.log(route.params.practiceData);
+      // Si se pasa información de práctica predeterminada, establece los valores correspondientes
+      const { AlumneID, VehicleID } = route.params.practiceData;
+      setSelectedAlumno(AlumneID);
+      setSelectedCotxe(VehicleID);
+    } else {
+      console.log('No practice data passed');
+    }
+    console.log('AdminPrePractice mounted');
   }, []);
 
-  // Llamada a la función fetchAlumnos para obtener la lista de alumnos
   const fetchAlumnosData = async () => {
     try {
       const alumnosData = await ApiHelper.fetchAlumnos();
@@ -45,7 +54,6 @@ const AdminPrePractice = () => {
     }
   };
 
-  // Llamada a la función fetchCarnets para obtener la lista de carnets
   const fetchCarnetsData = async () => {
     try {
       const carnetsData = await ApiHelper.fetchCarnets();
@@ -55,7 +63,6 @@ const AdminPrePractice = () => {
     }
   };
 
-  // Llamada a la función fetchCotxes para obtener la lista de vehículos
   const fetchCotxesData = async () => {
     try {
       const cotxesData = await ApiHelper.fetchCotxes();
@@ -74,34 +81,24 @@ const AdminPrePractice = () => {
   };
 
   const handleStartButtonPress = () => {
-    // Verificar si se ha seleccionado un alumno
     if (!selectedAlumno) {
-      // console.error('Debe seleccionar un alumno antes de continuar.');
       return;
     }
-    // if (!selectedCarnet) {
-    //   console.error('Debe seleccionar un tipo de carnet antes de continuar.');
-    //   return;
-    // }
     if (!selectedCotxe) {
-      // console.error('Debe seleccionar un vehículo antes de continuar.');
       return;
     }
 
-    // Data actual formato 'YYYY-MM-DD'
     const today = new Date();
-
-    // Crear el objeto practicaDataObj con los datos seleccionados
     const practiceDataObj = {
-      AlumneID: selectedAlumno, // ID del alumno seleccionado
+      AlumneID: selectedAlumno,
       Ruta: '6627d530f53b02fe8d5bed5c',
       Km: 0,
-      HoraInici: '10:00:00', // Formato 'HH:mm:ss
-      HoraFi: '11:00:00', // Formato 'HH:mm:ss
+      HoraInici: '',
+      HoraFi: '',
       ProfessorID: Config.ProfessorID,
-      VehicleID: selectedCotxe, // Matrícula del vehículo seleccionado
+      VehicleID: selectedCotxe,
       EstatHoraID: 'EstatHora_1',
-      Data: today.toISOString().split('T')[0] // Formato 'YYYY-MM-DD' 
+      Data: today.toISOString().split('T')[0],
     };
     navigation.navigate("StartRouteMap", { practiceData: practiceDataObj });
   };

@@ -20,11 +20,15 @@ const ChatBot = () => {
       setMessages([
         ...messages,
         { text: message, isUser: true },
-        { text: "Has visto los carteles? \n Los que dicen que me la peles", isUser: false },
+        { text: "Has visto los carteles? \nLos que dicen que me la peles", isUser: false },
         { text: "Vaya pavu caus per tot", isUser: false },
       ]);
       setMessage("");
     }
+  };
+
+  const handleNewChat = () => {
+    setMessages([]); // Borrar los mensajes existentes
   };
 
   return (
@@ -35,7 +39,7 @@ const ChatBot = () => {
           <Text style={styles.headerText}>ChatBot</Text>
           <Image source={chatBotImg} style={styles.chatBotImage} />
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleNewChat}>
           <Text style={styles.buttonText}>New Chat</Text>
         </TouchableOpacity>
       </View>
@@ -123,7 +127,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   messageText: {
-    color: "white",
+    color: "black",
     fontSize: 16,
   },
   inputContainer: {
