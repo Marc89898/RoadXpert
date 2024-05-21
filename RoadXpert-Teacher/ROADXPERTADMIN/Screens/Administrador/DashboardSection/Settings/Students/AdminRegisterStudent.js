@@ -18,7 +18,7 @@ const AdminRegisterStudent = () => {
     dni: "",
     adreca: "",
     telefon: "",
-    contrsenya: "",
+    contrasenya: "",
     professorID: ""
   });
   const [professors, setProfessors] = useState([]);
@@ -60,16 +60,7 @@ const AdminRegisterStudent = () => {
       { cancelable: false }
     );
   };
-
-  const handleProfessorChange = (professor) => {
-    setSelectedProfessor(professor);
-    setAlumn((prevAlumn) => ({ ...prevAlumn, ProfessorID: professor.value }));
-  };
-
-  const handleContrasenyaChange = (text) => {
-    setAlumn((prevAlumn) => ({ ...prevAlumn, Contrasenya: text }));
-  };
-
+  
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>

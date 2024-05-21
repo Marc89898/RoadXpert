@@ -401,6 +401,33 @@ class APIService {
       throw error;
     }
   }
+  /**
+   * Put alumn
+   */
+  static async putAlumn(updatedAlumn) {
+    const url = `http://${Config.ApiIP}:${Config.ApiPort}/Alumne/Actualizar/${updatedAlumn.ID}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedAlumn)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Failed to update alumn. Status: ${response.status}, Response: ${errorData}`);
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error updating alumn:', error.message);
+      throw error;
+    }
+  }
 
   static async fetchAllRoles() {
     try {
@@ -526,7 +553,28 @@ class APIService {
     }
   }
 
+  static async deleteAlumn(alumnID) {
+    try {
+      const url = `http://${Config.ApiIP}:${Config.ApiPort}/Alumne/${alumnID}`;
+      const deleteResponse = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
+      if (!deleteResponse.ok) {
+        const errorResponseData = await deleteResponse.json();
+        throw new Error(`Failed to delete alumn. HTTP status code: ${deleteResponse.status}. Error details: ${JSON.stringify(errorResponseData)}`);
+      }
+
+      const deletedAlumnData = await deleteResponse.json();
+      return deletedAlumnData;
+    } catch (error) {
+      console.error('Error deleting alumn:', error.message);
+      throw error;
+    }
+  }
 }
 
 export { APIService };

@@ -70,16 +70,34 @@ def update_Alumne(Alumne_id):
 
 @Alumne_bp.route("/Alumne", methods=['POST'])
 def post_new_Alumne():
-    """POST of a driving school"""
+    """POST a new Alumne"""
     data = request.json
     nom = data.get('nom')
     dni = data.get('dni')
     adreca = data.get('adreca')
     telefon = data.get('telefon')
+    contrasenya = data.get('contrasenya')
+    professor_id = data.get('professorID') 
+
+    # Verificar que todos los campos requeridos estén presentes
+    if not nom or not dni or not adreca or not telefon or not contrasenya or not professor_id:
+        return jsonify({"error": "Todos los campos son requeridos"}), 400
+
     try:
         with engine.connect() as connection:
-            sql = text("INSERT INTO Alumne (ID, nom, dni, adreca, telefon) VALUES (:ID, :nom, :dni, :adreca, :telefon)")
-            connection.execute(sql, {"ID":generate_uuid(), "nom":nom, "dni":dni, "adreca":adreca, "telefon":telefon})
+            sql = text("""
+                INSERT INTO Alumne (ID, Nom, DNI, Adreca, Telefon, Contrasenya, professorID)
+                VALUES (:ID, :nom, :dni, :adreca, :telefon, :contrasenya, :professorID)
+            """)
+            connection.execute(sql, {
+                "ID": generate_uuid(),
+                "nom": nom,
+                "dni": dni,
+                "adreca": adreca,
+                "telefon": telefon,
+                "contrasenya": contrasenya,
+                "professorID": professor_id 
+            })
             connection.commit()
             return jsonify({"message": "Alumne added successfully"}), 201
     except Exception as e:
@@ -127,42 +145,38 @@ def get_alumnos_de_profesor(professor_id):
         return jsonify({"error": str(e)}), 500
 
 
-@Alumne_bp.route("/Alumno/AsignarProfesor", methods=['PUT'])
-def asignar_profesor_a_alumno():
-    """PUT to assign a teacher to a student"""
+@Alumne_bp.route("/Alumne/Actualizar/<string:alumne_id>", methods=['PUT'])
+def actualizar_alumno(alumne_id):
+    """PUT para actualizar cualquier atributo de un alumno"""
     try:
         # Obtener los datos del cuerpo de la solicitud
         data = request.json
-        alumno_id = data.get('alumno_id')
-        profesor_id = data.get('profesor_id')
 
-        # Verificar que se proporcionaron ambos IDs
-        if not alumno_id or not profesor_id:
-            return jsonify({"error": "Se requiere el ID del alumno y del profesor"}), 400
+        # Verificar que los datos no estén vacíos
+        if not data:
+            return jsonify({"error": "No se proporcionaron datos para actualizar"}), 400
 
         # Verificar si el alumno existe en la base de datos
         with engine.connect() as conn:
-            query_alumno = text("SELECT ID FROM Alumne WHERE ID = :alumno_id")
-            result_alumno = conn.execute(query_alumno, {"alumno_id": alumno_id})
+            query_alumno = text("SELECT ID FROM Alumne WHERE ID = :alumne_id")
+            result_alumno = conn.execute(query_alumno, {"alumne_id": alumne_id})
             alumno_existente = result_alumno.fetchone()
 
             if not alumno_existente:
-                return jsonify({"error": f"No se encontró ningún alumno con el ID {alumno_id}"}), 404
+                return jsonify({"error": f"No se encontró ningún alumno con el ID {alumne_id}"}), 404
 
-            # Verificar si el profesor existe en la base de datos
-            query_profesor = text("SELECT ID FROM Treballador WHERE ID = :profesor_id")
-            result_profesor = conn.execute(query_profesor, {"profesor_id": profesor_id})
-            profesor_existente = result_profesor.fetchone()
+            # Construir la consulta de actualización dinámicamente
+            set_clause = ", ".join([f"{key} = :{key}" for key in data.keys()])
+            query_update = text(f"UPDATE Alumne SET {set_clause} WHERE ID = :alumne_id")
 
-            if not profesor_existente:
-                return jsonify({"error": f"No se encontró ningún profesor con el ID {profesor_id}"}), 404
+            # Agregar el ID del alumno a los datos
+            data['alumne_id'] = alumne_id
 
-            # Realizar la actualización en la base de datos
-            query_update = text("UPDATE Alumne SET ProfessorID = :profesor_id WHERE ID = :alumno_id")
-            conn.execute(query_update, {"profesor_id": profesor_id, "alumno_id": alumno_id})
+            # Ejecutar la actualización
+            conn.execute(query_update, data)
+            conn.commit()
 
-        return jsonify({"message": f"Profesor asignado correctamente al alumno {alumno_id}"}), 200
+        return jsonify({"message": f"Alumno {alumne_id} actualizado correctamente"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-

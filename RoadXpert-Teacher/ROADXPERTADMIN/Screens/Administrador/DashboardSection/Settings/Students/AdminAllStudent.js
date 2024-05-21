@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated, TextInput, FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Animated, TextInput, FlatList, Alert } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
 import ApiHelper from "../../../../../data/ApiHelper.js";
 import { useNavigation } from "@react-navigation/native";
 import AllStudentsCard from "../../../../../Components/Cards/AllStudentsCard.js";
+import { APIService } from "../../../../../ApiService.js";
 
 const AdminAllStudent = () => {
   const navigation = useNavigation();
@@ -31,15 +32,19 @@ const AdminAllStudent = () => {
   };
 
   const handleEdit = () => {
-    navigation.navigate("StudentProfile", { student: selectedStudent });
+    if (selectedStudent) {
+        navigation.navigate("AdminEditStudent", { alumn: selectedStudent });
+    }
     handleClose();
-  };
+};
+
 
   const handleDelete = async () => {
     if (selectedStudent) {
       const studentID = selectedStudent.ID;
-      await ApiHelper.deleteStudent(studentID);
+      await APIService.deleteAlumn(studentID);
       fetchStudents();
+      Alert.alert("Alumno Borrado!", "Se ha borrado el alumno con exito!")
     }
     handleClose();
   };
@@ -93,7 +98,7 @@ const AdminAllStudent = () => {
           <AllStudentsCard
             key={index}
             student={student}
-            onPress={() => handleOpenOptions(student)} // Pass handleOpenOptions directly
+            onPress={() => handleOpenOptions(student)}
           />
         ))}
       </View>

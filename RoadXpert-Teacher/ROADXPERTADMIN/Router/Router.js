@@ -74,6 +74,7 @@ import AdminMyStudents from '../Screens/Administrador/StudentsSection/AdminMyStu
 import AdminAllStudents from '../Screens/Administrador/StudentsSection/AdminAllStudents.js';
 import AdminStudentInfo from '../Screens/Administrador/StudentsSection/AdminStudentInfo.js';
 import AdminStudentProfile from '../Screens/Administrador/StudentsSection/AdminStudentProfile.js';
+import AdminEditStudent from '../Screens/Administrador/DashboardSection/Settings/Students/AdminEditStudent.js';
 
 // Map
 import AdminMapScreen from '../Screens/Administrador/StudentsSection/AdminMapScreen.js';
@@ -142,6 +143,7 @@ export default function Router() {
         <Stack.Screen name="AdminViewWorker" component={AdminViewWorker} />
         <Stack.Screen name="AdminSettings" component={AdminSettings} />
         <Stack.Screen name="AdminAllStudent" component={AdminAllStudent} />
+        <Stack.Screen name="AdminEditStudent" component={AdminEditStudent} />
         <Stack.Screen name="AdminRegisterStudent" component={AdminRegisterStudent} />
         <Stack.Screen name="AdminAllWorkers" component={AdminAllWorkers} />
         <Stack.Screen name="AdminRegisterPerson" component={AdminRegisterPerson} />
