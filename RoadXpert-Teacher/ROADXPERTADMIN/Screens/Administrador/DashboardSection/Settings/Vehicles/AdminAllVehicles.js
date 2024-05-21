@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Alert } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import { useNavigation } from "@react-navigation/native";
 import CarCard from "../../../../../Components/Cards/CarCard";
@@ -8,6 +8,7 @@ import { APIService } from "../../../../../ApiService";
 const AdminAllVehicles = () => {
   const navigation = useNavigation();
   const [cars, setCars] = useState([]);
+  const [selectedCarIndex, setSelectedCarIndex] = useState(null);
   const [selectedCar, setSelectedCar] = useState(null);
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
   const slideAnim = useState(new Animated.Value(0))[0];
@@ -30,17 +31,17 @@ const AdminAllVehicles = () => {
   };
 
   const handleEdit = () => {
-    navigation.navigate("VehicleProfile", { car: selectedCar });
+    const selectedCar = cars[selectedCarIndex];
+    navigation.navigate("AdminEditVehicle", { car: selectedCar });
     handleClose();
   };
 
   const handleDelete = async () => {
     if (selectedCar) {
-      const carID = selectedCar.ID;
+      const carID = selectedCar.Matricula;
       // Implement delete car functionality
-      // await APIService.deleteCar(carID);
-      // Fetch updated cars data
-      // fetchCars();
+      await APIService.deleteCar(carID);
+      Alert.alert("Coche Eliminado!", "Se ha eliminado el coche!");
     }
     handleClose();
   };
@@ -57,6 +58,8 @@ const AdminAllVehicles = () => {
   };
 
   const handleOpenOptions = (car) => {
+    const index = cars.indexOf(car);
+    setSelectedCarIndex(index);
     setSelectedCar(car);
     setIsOptionsVisible(true);
     Animated.timing(slideAnim, {

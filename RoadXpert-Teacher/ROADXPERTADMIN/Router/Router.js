@@ -68,6 +68,7 @@ import AdminEditRole from '../Screens/Administrador/DashboardSection/Settings/Ro
 import AdminCreateRoles from '../Screens/Administrador/DashboardSection/Settings/Roles/AdminCreateRoles.js';
 import AdminAllVehicles from '../Screens/Administrador/DashboardSection/Settings/Vehicles/AdminAllVehicles.js';
 import AdminRegisterVehicle from '../Screens/Administrador/DashboardSection/Settings/Vehicles/AdminRegisterVehicle.js';
+import AdminEditVehicle from '../Screens/Administrador/DashboardSection/Settings/Vehicles/AdminEditVehicle.js';
 
 // Students
 import AdminMyStudents from '../Screens/Administrador/StudentsSection/AdminMyStudents.js';
@@ -148,6 +149,7 @@ export default function Router() {
         <Stack.Screen name="AdminAllWorkers" component={AdminAllWorkers} />
         <Stack.Screen name="AdminRegisterPerson" component={AdminRegisterPerson} />
         <Stack.Screen name="AdminAllRoles" component={AdminAllRoles} />
+        <Stack.Screen name="AdminEditVehicle" component={AdminEditVehicle} />
         <Stack.Screen name="AdminEditRole" component={AdminEditRole} />
         <Stack.Screen name="AdminCreateRoles" component={AdminCreateRoles} />
         <Stack.Screen name="AdminAllVehicles" component={AdminAllVehicles} />

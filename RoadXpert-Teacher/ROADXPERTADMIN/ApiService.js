@@ -552,6 +552,79 @@ class APIService {
       console.error("Error en la peticion de todos los Roles: " + error)
     }
   }
+  static async deleteCar(carID) {
+    try {
+      const url = `http://${Config.ApiIP}:${Config.ApiPort}/Vehicle/${carID}`;
+      const deleteResponse = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!deleteResponse.ok) {
+        const errorResponseData = await deleteResponse.json();
+        throw new Error(`Failed to delete car. HTTP status code: ${deleteResponse.status}. Error details: ${JSON.stringify(errorResponseData)}`);
+      }
+
+      const deletedCarData = await deleteResponse.json();
+      return deletedCarData;
+    } catch (error) {
+      console.error('Error deleting car:', error.message);
+      throw error;
+    }
+  }
+
+  static async postCar(car) {
+    const url = "http://" + Config.ApiIP + ":" + Config.ApiPort + "/Vehicle";
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(car)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Failed to add car. Status: ${response.status}, Response: ${errorData}`);
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error adding car:', error.message);
+      throw error;
+    }
+  }
+
+  static async putCar(updatedCar) {
+    const url = `http://${Config.ApiIP}:${Config.ApiPort}/Vehicle/${updatedCar.ID}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedCar)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Failed to update car. Status: ${response.status}, Response: ${errorData}`);
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error updating car:', error.message);
+      throw error;
+    }
+  }
+
 
   static async deleteAlumn(alumnID) {
     try {

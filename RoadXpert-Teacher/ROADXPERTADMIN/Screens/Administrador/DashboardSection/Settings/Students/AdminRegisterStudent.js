@@ -31,7 +31,6 @@ const AdminRegisterStudent = () => {
   const fetchProfessors = async () => {
     try {
       const fetchedProfessors = await APIService.fetchAllProfessors();
-      console.log("Professors: " + fetchedProfessors[1].ID);
       setProfessors(fetchedProfessors);
     } catch (error) {
       console.error("Error fetching professors:", error);
@@ -95,7 +94,10 @@ const AdminRegisterStudent = () => {
               label: professor.Nom,
               value: professor.ID,
             }))}
-            onSelect={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, professorID: text }))}
+            onSelect={(professorID) => {
+              setSelectedProfessor(professorID);
+              setAlumn((prevAlumn) => ({ ...prevAlumn, professorID }));
+            }}
             selectedValue={selectedProfessor}
             placeholder="Professor"
           />
