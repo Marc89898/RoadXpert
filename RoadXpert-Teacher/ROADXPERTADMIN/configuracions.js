@@ -1,10 +1,21 @@
 class Config {
     constructor() {
-        this.ProfessorID = "Treballador_1";
         this.ApiIP = "10.0.2.2";
         this.ApiPort = "8888";
         this.ApiPortMongo = "5010"
-        this.Professor = ""
+        this.Professor = {
+          ID: "Treballador_1",
+          Nom: "defaultNom",
+          Cognom: "defaultCognom",
+          SegonCognom: "defaultSegonCognom",
+          DNI: "defaultDNI",
+          Adreca: "defaultAdreca",
+          Sexe: "defaultSexe",
+          CarnetConduirFront: "defaultCarnetConduirFront",
+          CarnetConduirDarrera: "defaultCarnetConduirDarrera",
+          HorariID: "defaultHorariID",
+          Password: "defaultPassword"
+        };
     }
 
     static getInstance() {

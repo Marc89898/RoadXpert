@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
-import CustomSelectInput from "../../../../../Components/Inputs/CustomSelectInput.js";
+import CustomSelectInputUnlocked from "../../../../../Components/Inputs/CustomSelectInputUnlocked.js";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
 import { APIService } from "../../../../../ApiService.js";
 import { sha256 } from "../../../../../utils";
@@ -15,8 +15,8 @@ const AdminRegisterPerson = () => {
   const [opcionesRoles, setOpcionesRoles] = useState([]);
   const [loadingRoles, setLoadingRoles] = useState(true);
   const opcionesSexo = [
-    { label: "Hombre", value: "Hombre" },
-    { label: "Mujer", value: "Mujer" },
+    { label: "Home", value: "Home" },
+    { label: "Dona", value: "Dona" },
   ];
   
   const [professor, setProfessor] = useState({
@@ -51,6 +51,7 @@ const AdminRegisterPerson = () => {
 
   const handleSave = async () => {
     try {
+      console.log("Sexe: ", professor)
       await APIService.postProfessor(professor);
       Alert.alert("Éxito", "Profesor guardado correctamente");
       navigation.goBack()
@@ -103,7 +104,7 @@ const AdminRegisterPerson = () => {
         ) : (
           <>
             {opcionesRoles.length > 0 ? (
-              <CustomSelectInput options={opcionesRoles} />
+              <CustomSelectInputUnlocked options={opcionesRoles} />
             ) : (
               <View style={styles.placeholder}>
                 <Text style={styles.placeholderText}>Rol</Text>
@@ -139,7 +140,7 @@ const AdminRegisterPerson = () => {
           placeholder="Horario"
           onChangeText={text => handleInputChange("horariID", text)}
         />
-        <CustomSelectInput options={opcionesSexo}  onSelect={handleSelectSexo}/>
+        <CustomSelectInputUnlocked options={opcionesSexo}  onSelect={handleSelectSexo}/>
         <View style={styles.uploadContainer}>
           <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
           <TouchableOpacity

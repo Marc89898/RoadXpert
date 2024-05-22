@@ -14,7 +14,7 @@ const AdminMyStudents = () => {
   useEffect(() => {
     const fetchAlumnos = async () => {
       try {
-        const alumnosData = await ApiHelper.fetchAlumnosPorProfesor(Config.ProfessorID);
+        const alumnosData = await ApiHelper.fetchAlumnosPorProfesor(Config.Professor.ID);
         setAlumnos(alumnosData);
       } catch (error) {
         console.error("Error fetching alumnos:", error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
@@ -11,7 +11,7 @@ const CustomSelectInputUnlocked = ({ label, options, onSelect, selectedValue }) 
           selectedValue={selectedValue}
           style={styles.picker}
           itemStyle={styles.itemStyle}
-          onValueChange={(itemValue, itemIndex) => onSelect(itemValue)}
+          onValueChange={(itemValue) => onSelect(itemValue)}
         >
           {options &&
             Array.isArray(options) &&
@@ -28,7 +28,6 @@ const CustomSelectInputUnlocked = ({ label, options, onSelect, selectedValue }) 
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   greatContainer: {

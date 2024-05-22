@@ -33,13 +33,13 @@ const Dashboard = () => {
   useEffect(() => {
     const loadNextEvents = async () => {
       try {
-        if (typeof Config.ProfessorID === "undefined") {
+        if (typeof Config.Professor.ID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
           return;
         }
 
-        const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
+        const events = await APIService.fetchEventsCalendar(Config.Professor.ID);
 
         if (!Array.isArray(events)) {
           console.log("Fetched data is not an array.");

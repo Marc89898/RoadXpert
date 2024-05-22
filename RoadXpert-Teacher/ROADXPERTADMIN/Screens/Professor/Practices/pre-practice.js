@@ -90,7 +90,7 @@ const PrePractice = () => {
       Km: 0,
       HoraInici: new Date().toLocaleTimeString('en-US', { hour12: false }),
       HoraFi: '00:00:00',
-      ProfessorID: Config.ProfessorID,
+      ProfessorID: Config.Professor.ID,
       VehicleID: selectedCotxe, // Matrícula del vehículo seleccionado
       EstatHoraID: 'EstatHora_1',
       Data: today.toISOString().split('T')[0], // Formato 'YYYY-MM-DD' 

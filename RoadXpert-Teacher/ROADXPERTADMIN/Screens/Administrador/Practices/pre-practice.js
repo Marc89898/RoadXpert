@@ -95,7 +95,7 @@ const AdminPrePractice = ({ route }) => {
       Km: 0,
       HoraInici: '',
       HoraFi: '',
-      ProfessorID: Config.ProfessorID,
+      ProfessorID: Config.Professor.ID,
       VehicleID: selectedCotxe,
       EstatHoraID: 'EstatHora_1',
       Data: today.toISOString().split('T')[0],
