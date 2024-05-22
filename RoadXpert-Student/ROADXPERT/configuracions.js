@@ -1,6 +1,6 @@
 class Config {
   constructor() {
-    this.ApiIP = "10.0.2.2";
+    this.ApiIP = "172.23.3.204";
     this.ApiPort = "8888";
     this.ApiPortMongo = "5010"
     this.Alumne = {

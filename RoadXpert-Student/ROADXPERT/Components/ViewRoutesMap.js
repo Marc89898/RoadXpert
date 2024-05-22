@@ -57,7 +57,10 @@ const ViewRoutesMap = () => {
   const fetchPracticas = async () => {
     try {
       const fetchedPracticas = await ApiHelper.fetchPracticasPorAlumno(alumnoId);
-      const filters = fetchedPracticas.map(practica => ({
+      // Filtrar las prácticas con 'ruta' vacío o nulo
+      const validPracticas = fetchedPracticas.filter(practica => practica.ruta);
+
+      const filters = validPracticas.map(practica => ({
         id: practica.id,
         url: practica.ruta,
         showing: false,

@@ -10,23 +10,21 @@ class APIService {
       const response = await fetch(url);
       let data = "";
 
-      if (response.status !== 500 && response.status !== 404) {
+      if (response.status == 200) {
         data = await response.json();
       } else {
         const errorText = await response.text();
-        console.error(`Error fetching events: ${response.status} - ${response.statusText}. Details: ${errorText}`);
-        throw new Error(`API responded with status ${response.status}: ${response.statusText}`);
+        console.log(`Error fetching events: ${response.status} - ${response.statusText}. Details: ${errorText}`);
       }
 
       if (data == null) {
-        console.error("La petición no funciona correctamente, comprueba la API y la base de datos");
+        console.log("La petición no funciona correctamente, comprueba la API y la base de datos");
       }
 
       return data;
     } catch (error) {
-      console.error('Error fetching events:', error.message);
-      console.error('Error details:', error);
-      throw error;
+      console.log('Error fetching events:', error.message);
+      console.log('Error details:', error);
     }
   }
 

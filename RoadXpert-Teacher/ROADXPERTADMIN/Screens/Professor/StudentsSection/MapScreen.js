@@ -55,19 +55,25 @@ const MapScreen = ({ route }) => {
   const fetchPracticas = async () => {
     try {
       const fetchedPracticas = await ApiHelper.fetchPracticasPorAlumno(alumnoId);
-      const filters = fetchedPracticas.map(practica => ({
+      console.log("fetchedPracticas:", fetchedPracticas);
+      // Filtrar las prácticas con 'ruta' vacío o nulo
+      const validPracticas = fetchedPracticas.filter(practica => practica.ruta);
+
+      const filters = validPracticas.map(practica => ({
         id: practica.id,
         url: practica.ruta,
         showing: false,
         data: practica.data // Asegúrate de incluir la propiedad 'data' en cada filtro
       }));
-  
+      console.log("filters:", filters);
+
       // Ordenar los filtros por la propiedad 'data' de manera descendente (de más reciente a más antiguo)
       filters.sort((a, b) => new Date(b.data) - new Date(a.data));
 
       // console log del numero de las practicas que hay
       setPracticas(fetchedPracticas);
       setPracticeRouteFilters(filters);
+      console.log("practiceRouteFilters:", practiceRouteFilters);
     } catch (error) {
       console.error("Error fetching practicas:", error);
     }
@@ -85,6 +91,7 @@ const MapScreen = ({ route }) => {
     const routes = [];
     for (const filter of practiceRouteFilters) {
       if (filter.showing) {
+        console.log("filter.url:", filter.url);
         const coordinates = await getPracticeRouteCoordinates(filter.url);
         routes.push(coordinates);
       }
@@ -105,6 +112,7 @@ const MapScreen = ({ route }) => {
 
   const getPracticeRouteCoordinates = async (rutaId) => {
     try {
+      console.log("ruta id:", rutaId);
       const fileUri = await ApiHelper.downloadFileFromMongo(rutaId);
       const routeData = await FileSystem.readAsStringAsync(fileUri);
       const routeGeoJSON = JSON.parse(routeData);

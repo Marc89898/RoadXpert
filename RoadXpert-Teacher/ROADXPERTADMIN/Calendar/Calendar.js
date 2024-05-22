@@ -30,7 +30,7 @@ export default function ProfessorCalendar() {
       const adaptedData = await DataAdapter.adaptPracticaToAgenda(result);
       setEvents(adaptedData);
     } catch (error) {
-      console.error('ERROR IN THE DATABASE: ' + error);
+      console.log('ERROR IN THE DATABASE: ' + error);
     }
   };
 

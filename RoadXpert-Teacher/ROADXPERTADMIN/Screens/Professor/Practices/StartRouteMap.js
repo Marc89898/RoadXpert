@@ -326,7 +326,7 @@ const StartRouteMap = ({ route }) => {
 
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.headerText}>Práctica 8</Text>
+          <Text style={styles.headerText}>{practiceData.NombreAlumno}</Text>
           <TouchableOpacity style={styles.infoIconContainer}>
             <Icon name="info-circle" size={26} color="black" />
           </TouchableOpacity>

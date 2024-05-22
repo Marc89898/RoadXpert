@@ -12,6 +12,7 @@ import Config from "../../../configuracions";
 import NotificationsIcon from "../../../assets/images/Dashboard/notification.png";
 import SettingsIcon from "../../../assets/images/Dashboard/settings.png";
 import CarIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import { set } from "lodash";
 
 const Dashboard = () => {
   const [nextEvent, setNextEvent] = useState(null);
@@ -22,6 +23,7 @@ const Dashboard = () => {
   const [secondNextEventAlumn, setSecondNextEventAlumn] = useState();
   const [nextEventCar, setNextEventCar] = useState();
   const [secondNextEventCar, setSecondNextEventCar] = useState();
+  const [notEvents, setNotEvents] = useState();
 
   const handleNotifications = () => {
     navigation.navigate("NotificationsScreen");
@@ -30,68 +32,79 @@ const Dashboard = () => {
   const handleSettings = () => {
     navigation.navigate("AdminSettings");
   };
+
   useEffect(() => {
     const loadNextEvents = async () => {
+      // console.log("Loading events...");
       try {
         if (typeof Config.Professor.ID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
           return;
         }
-  
+
         const events = await APIService.fetchEventsCalendar(Config.Professor.ID);
-  
+
         if (!Array.isArray(events)) {
           console.log("Fetched data is not an array.");
+          console.log("events:", events);
+          setNotEvents("No hay eventos próximos");
           setLoading(false);
           return;
         }
-  
+        // console.log("events:", events);
+
         const currentDate = new Date();
-  
+
         // Obtener el primer próximo evento
         const firstUpcomingEvent = events
           .filter(event => new Date(event.Data) >= currentDate && event.ProfessorID === Config.Professor.ID)
           .sort((a, b) => new Date(a.Data) - new Date(b.Data))[0];
-  
+
         if (firstUpcomingEvent) {
           setNextEvent(firstUpcomingEvent);
-  
+          console.log("firstUpcomingEvent:", firstUpcomingEvent);
+
           const firstEventAlumn = await APIService.fetchAlumn(firstUpcomingEvent.AlumneID);
           setNextEventAlumn(firstEventAlumn);
           const firstEventCar = await APIService.fetchCar(firstUpcomingEvent.VehicleID);
           setNextEventCar(firstEventCar);
+          setNotEvents(null);
         } else {
-          console.log("No upcoming events found.");
+          // console.log("No hay eventos próximos");
+          setNotEvents("No hay eventos próximos");
         }
-  
+
         // Obtener el segundo próximo evento
         const secondUpcomingEvent = events
           .filter(event => new Date(event.Data) > (firstUpcomingEvent ? new Date(firstUpcomingEvent.Data) : currentDate) && event.ProfessorID === Config.Professor.ID)
           .sort((a, b) => new Date(a.Data) - new Date(b.Data))
           .find(event => new Date(event.Data) > new Date(firstUpcomingEvent.Data));
-  
+
         if (secondUpcomingEvent) {
           setSecondNextEvent(secondUpcomingEvent);
-  
+
           const secondEventAlumn = await APIService.fetchAlumn(secondUpcomingEvent.AlumneID);
           setSecondNextEventAlumn(secondEventAlumn);
           const secondEventCar = await APIService.fetchCar(secondUpcomingEvent.VehicleID);
           setSecondNextEventCar(secondEventCar);
         } else {
-          console.log("No second upcoming event found.");
+          // console.log("No second upcoming event found.");
         }
-  
+
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching events:", error);
+        console.log("Error fetching events:", error);
         setLoading(false);
       }
     };
-  
-    loadNextEvents();
+
+    const intervalId = setInterval(loadNextEvents, 5000);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
-  
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -120,107 +133,117 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-      {nextEvent && (
-        <View style={styles.cardContainer}>
-          <TouchableOpacity>
+        {nextEvent && notEvents === null && (
+          <View style={styles.cardContainer}>
+            <TouchableOpacity>
+              <Card style={styles.card}>
+                <Card.Content style={styles.cardContent}>
+                  {/* <Text style={styles.cardTitle}>Primer Encuentro</Text> */}
+
+                  <View style={styles.eventDetail}>
+                    <Image
+                      source={require("../../../assets/imgDefault.png")}
+                      style={styles.eventDetailImage}
+                    />
+                    <View style={styles.eventTextDetail}>
+                      <Text style={styles.eventDetailText}>{nextEventAlumn?.Nom}</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.eventDetail}>
+                    <MaterialCommunityIcons
+                      name="calendar"
+                      size={20}
+                      color="black"
+                    />
+                    <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
+                  </View>
+
+                  <View style={styles.eventDetail}>
+                    <MaterialCommunityIcons name="clock" size={20} color="black" />
+                    <Text style={styles.eventInfo}>{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
+                  </View>
+                  <View style={styles.eventDetail}>
+                    <CarIcon name="car" size={20} color="black" />
+                    <Text style={styles.eventDetail}>
+                      {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}` || "Not assigned"}
+                    </Text>
+                  </View>
+
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(nextEvent); navigation.navigate("prePractice", { practicaData: nextEvent }) }}>
+                      <Text style={styles.buttonText}>Empezar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.button, styles.cancelButton]}>
+                      <Text style={styles.buttonText}>Cancelar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Card.Content>
+              </Card>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {secondNextEvent && (
+          <View style={styles.cardContainer}>
+            <TouchableOpacity>
+              <Card style={styles.card}>
+                <Card.Content style={styles.cardContent}>
+                  {/* <Text style={styles.cardTitle}>Segundo Encuentro</Text> */}
+
+                  <View style={styles.eventDetail}>
+                    <Image
+                      source={require("../../../assets/imgDefault.png")}
+                      style={styles.eventDetailImage}
+                    />
+                    <View style={styles.eventTextDetail}>
+                      <Text style={styles.eventDetailText}>{secondNextEventAlumn?.Nom}</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.eventDetail}>
+                    <MaterialCommunityIcons
+                      name="calendar"
+                      size={20}
+                      color="black"
+                    />
+                    <Text style={styles.eventInfo}>{`${secondNextEvent.Data.substring(0, 12)}`}</Text>
+                  </View>
+
+                  <View style={styles.eventDetail}>
+                    <MaterialCommunityIcons name="clock" size={20} color="black" />
+                    <Text style={styles.eventInfo}>{`${secondNextEvent.HoraInici} - ${secondNextEvent.HoraFi}`}</Text>
+                  </View>
+                  <View style={styles.eventDetail}>
+                    <CarIcon name="car" size={20} color="black" />
+                    <Text style={styles.eventDetail}>
+                      {`  ${secondNextEventCar?.Marca} ${secondNextEventCar?.Model}` || "Not assigned"}
+                    </Text>
+                  </View>
+
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(secondNextEvent); navigation.navigate("prePractice", { practicaData: secondNextEvent }) }}>
+                      <Text style={styles.buttonText}>Empezar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.button, styles.cancelButton]}>
+                      <Text style={styles.buttonText}>Cancelar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Card.Content>
+              </Card>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {notEvents && (
+          <View style={styles.cardContainer}>
             <Card style={styles.card}>
               <Card.Content style={styles.cardContent}>
-                {/* <Text style={styles.cardTitle}>Primer Encuentro</Text> */}
-
-                <View style={styles.eventDetail}>
-                  <Image
-                    source={require("../../../assets/imgDefault.png")}
-                    style={styles.eventDetailImage}
-                  />
-                  <View style={styles.eventTextDetail}>
-                    <Text style={styles.eventDetailText}>{nextEventAlumn?.Nom}</Text>
-                  </View>
-                </View>
-
-                <View style={styles.eventDetail}>
-                  <MaterialCommunityIcons
-                    name="calendar"
-                    size={20}
-                    color="black"
-                  />
-                  <Text style={styles.eventInfo}>{`${nextEvent.Data.substring(0, 12)}`}</Text>
-                </View>
-
-                <View style={styles.eventDetail}>
-                  <MaterialCommunityIcons name="clock" size={20} color="black" />
-                  <Text style={styles.eventInfo}>{`${nextEvent.HoraInici} - ${nextEvent.HoraFi}`}</Text>
-                </View>
-                <View style={styles.eventDetail}>
-                  <CarIcon name="car" size={20} color="black"/>
-                  <Text style={styles.eventDetail}>
-                    {`  ${nextEventCar?.Marca} ${nextEventCar?.Model}` || "Not assigned"}
-                  </Text>
-                </View>
-
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(nextEvent); navigation.navigate("prePractice", { practicaData: nextEvent }) }}>
-                    <Text style={styles.buttonText}>Empezar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.button, styles.cancelButton]}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                  </TouchableOpacity>
-                </View>
+                <Text style={styles.cardTitle}>{notEvents}</Text>
               </Card.Content>
             </Card>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {secondNextEvent && (
-        <View style={styles.cardContainer}>
-          <TouchableOpacity>
-            <Card style={styles.card}>
-              <Card.Content style={styles.cardContent}>
-                {/* <Text style={styles.cardTitle}>Segundo Encuentro</Text> */}
-
-                <View style={styles.eventDetail}>
-                  <Image
-                    source={require("../../../assets/imgDefault.png")}
-                    style={styles.eventDetailImage}
-                  />
-                  <View style={styles.eventTextDetail}>
-                    <Text style={styles.eventDetailText}>{secondNextEventAlumn?.Nom}</Text>
-                  </View>
-                </View>
-
-                <View style={styles.eventDetail}>
-                  <MaterialCommunityIcons
-                    name="calendar"
-                    size={20}
-                    color="black"
-                  />
-                  <Text style={styles.eventInfo}>{`${secondNextEvent.Data.substring(0, 12)}`}</Text>
-                </View>
-
-                <View style={styles.eventDetail}>
-                  <MaterialCommunityIcons name="clock" size={20} color="black" />
-                  <Text style={styles.eventInfo}>{`${secondNextEvent.HoraInici} - ${secondNextEvent.HoraFi}`}</Text>
-                </View>
-                <View style={styles.eventDetail}>
-                  <CarIcon name="car" size={20} color="black"/>
-                  <Text style={styles.eventDetail}>
-                    {`  ${secondNextEventCar?.Marca} ${secondNextEventCar?.Model}` || "Not assigned"}
-                  </Text>
-                </View>
-
-                <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.startButton]} onPress={() => { console.log(secondNextEvent); navigation.navigate("prePractice", { practicaData: secondNextEvent }) }}>
-                    <Text style={styles.buttonText}>Empezar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.button, styles.cancelButton]}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                  </TouchableOpacity>
-                </View>
-              </Card.Content>
-            </Card>
-          </TouchableOpacity>
-        </View>
-      )}
+          </View>
+        )}
 
       </ScrollView>
       <FloatingButton />
@@ -300,7 +323,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius:
-    10,
+      10,
     marginRight: 12,
   },
   eventDetailText: {

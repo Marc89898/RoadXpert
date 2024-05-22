@@ -128,7 +128,7 @@ const PrePractice = () => {
             <Picker.Item key={cotxe.Matricula} label={`${cotxe.Marca} - ${cotxe.Model} - ${cotxe.Matricula}`} value={cotxe.Matricula} />
           ))}
         </Picker>
-        <CustomTextInput
+        {/* <CustomTextInput
           label="Nombre de la práctica:"
           placeholder="Escriba aquí ..."
           style={styles.textInput}
@@ -142,7 +142,7 @@ const PrePractice = () => {
             <Icon name="pencil" size={20} color="black" />
             <Text style={styles.signatureButtonText}>Firmar</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <MainButton onPress={handleStartButtonPress} title="Arranquemos!!" style={styles.startButton} />
       </View>
       <Modal

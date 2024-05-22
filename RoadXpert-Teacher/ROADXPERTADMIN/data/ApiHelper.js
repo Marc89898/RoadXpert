@@ -216,7 +216,7 @@ class ApiHelper {
                 ruta: practica.Ruta,
                 vehicleId: practica.VehicleID
             }));
-            // console.log('Practicas:', practicas);
+            console.log('Practicas:', practicas);
             return practicas;
         } catch (error) {
             console.error('Error fetching practicas:', error);

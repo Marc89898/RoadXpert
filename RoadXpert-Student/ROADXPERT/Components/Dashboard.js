@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [annotations, setAnnotations] = useState([]);
   const [showAllAnnotations, setShowAllAnnotations] = useState(false);
+  const [notEvents, setNotEvents] = useState();
 
   const getCategoryGeneral = (categoryNumeric) => {
     let objToReturn = {
@@ -105,6 +106,12 @@ const Dashboard = () => {
         (event) => Date.parse(event.Data) >= currentDate.getTime()
       );
 
+      if (!upcomingEvent) {
+        setNotEvents("No hay eventos próximos");
+      } else {
+        setNotEvents(null);
+      }
+
       setNextEvent(upcomingEvent || null);
       setLoading(false);
     } catch (error) {
@@ -172,7 +179,7 @@ const Dashboard = () => {
       </View>
 
       <ScrollView>
-        {!loading && nextEvent && (
+        {!loading && nextEvent && notEvents == null && (
           <View style={styles.cardContainer}>
             {/* <TouchableOpacity> */}
             <Card style={styles.card}>
@@ -227,6 +234,16 @@ const Dashboard = () => {
               </Card.Content>
             </Card>
             {/* </TouchableOpacity> */}
+          </View>
+        )}
+
+        {notEvents !== null && (
+          <View style={styles.cardContainer}>
+            <Card style={styles.card}>
+              <Card.Content style={styles.cardContent}>
+                <Text style={styles.cardTitle}>{notEvents}</Text>
+              </Card.Content>
+            </Card>
           </View>
         )}
 
