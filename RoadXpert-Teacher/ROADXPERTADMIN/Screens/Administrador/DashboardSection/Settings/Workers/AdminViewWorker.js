@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, Alert, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Button, Alert, ScrollView, ActivityIndicator } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked";
 import { APIService } from "../../../../../ApiService";
 import { sha256 } from "../../../../../utils";
+import CustomSelectInputUnlocked2 from "../../../../../Components/Inputs/CustomSelectInputUnlocked2";
 
 const AdminViewWorker = ({ route, navigation }) => {
     const { professor } = route.params;
@@ -17,6 +18,13 @@ const AdminViewWorker = ({ route, navigation }) => {
     const [horariID, setHorariID] = useState(professor.HorariID || '');
     const [password, setPassword] = useState(professor.Password || '');
 
+    const [opcionesHorario, setOpcionesHorario] = useState([]);
+    const [loadingHorarios, setLoadingHorarios] = useState(true);
+    const opcionesSexo = [
+        { label: "Home", value: "Home" },
+        { label: "Dona", value: "Dona" },
+    ];
+
     useEffect(() => {
         if (professor) {
             setNom(professor.Nom);
@@ -28,6 +36,20 @@ const AdminViewWorker = ({ route, navigation }) => {
             setHorariID(professor.HorariID);
             setPassword(professor.Password);
         }
+        
+        const fetchHorarios = async () => {
+            try {
+                const horarios = await APIService.fetchHoraris();
+                const opcionesHorario = horarios.map(horario => ({ label: horario.Nom, value: horario.ID }));
+                setOpcionesHorario(opcionesHorario);
+                setLoadingHorarios(false);
+            } catch (error) {
+                console.error("Error fetching horarios:", error);
+                setLoadingHorarios(false);
+            }
+        };
+
+        fetchHorarios();
     }, [professor]);
 
     const handleSave = async () => {
@@ -109,22 +131,26 @@ const AdminViewWorker = ({ route, navigation }) => {
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Sexo:</Text>
-                    <CustomTextInputUnlocked
-                        style={styles.input}
+                    <CustomSelectInputUnlocked2
+                        options={opcionesSexo}
+                        onSelect={setSexe}
                         value={sexe}
-                        onChangeText={setSexe}
-                        placeholder={professor.Sexe}
                     />
                 </View>
+
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Horario ID:</Text>
-                    <CustomTextInputUnlocked
-                        style={styles.input}
-                        value={horariID}
-                        onChangeText={setHorariID}
-                        placeholder={professor.HorariID}
-                    />
+                    <Text style={styles.label}>Horario:</Text>
+                    {loadingHorarios ? (
+                        <ActivityIndicator size="small" color="#0000ff" />
+                    ) : (
+                        <CustomSelectInputUnlocked2
+                            options={opcionesHorario}
+                            onSelect={setHorariID}
+                            value={horariID}
+                        />
+                    )}
                 </View>
+
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Contraseña:</Text>
                     <CustomTextInputUnlocked
@@ -142,7 +168,6 @@ const AdminViewWorker = ({ route, navigation }) => {
         </View>
     );
 };
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

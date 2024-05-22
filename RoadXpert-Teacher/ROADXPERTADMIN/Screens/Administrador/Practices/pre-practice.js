@@ -17,6 +17,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import ApiHelper from "../../../data/ApiHelper.js";
 import Config from "../../../configuracions.js";
+import CustomTextInputUnlocked from "../../../Components/Inputs/CustomTextInputUnlocked.js";
 
 const AdminPrePractice = ({ route }) => {
   const navigation = useNavigation();
@@ -130,11 +131,14 @@ const AdminPrePractice = ({ route }) => {
             <Picker.Item key={cotxe.Matricula} label={`${cotxe.Marca} - ${cotxe.Model} - ${cotxe.Matricula}`} value={cotxe.Matricula} />
           ))}
         </Picker>
-        <CustomTextInput
+        <View style={styles.NombrePractica}>
+        {/* <CustomTextInputUnlocked
           label="Nombre de la práctica:"
           placeholder="Escriba aquí ..."
           style={styles.textInput}
-        />
+        /> */}
+        </View>
+        
         <View style={styles.signatureContainer}>
           <Text style={styles.signatureText}>Firma del alumno:</Text>
           <TouchableOpacity
@@ -189,6 +193,11 @@ const AdminPrePractice = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+
+  NombrePractica: {
+    flex: 1,
+    marginBottom: 20,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 24,
@@ -216,6 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   signatureContainer: {
+    marginTop: 20,
     alignItems: "flex-start",
     marginBottom: 30,
   },

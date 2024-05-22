@@ -18,7 +18,10 @@ const AdminRegisterPerson = () => {
     { label: "Home", value: "Home" },
     { label: "Dona", value: "Dona" },
   ];
-  
+
+  const [opcionesHorario, setOpcionesHorario] = useState(true);
+  const [loadingHorarios, setLoadingHorarios] = useState(true);
+
   const [professor, setProfessor] = useState({
     nom: "",
     cognom: "",
@@ -28,10 +31,10 @@ const AdminRegisterPerson = () => {
     sexe: opcionesSexo[0].value,
     carnetConduirFront: "",
     carnetConduirDarrera: "",
-    horariID: "",
+    horariID: opcionesHorario.length > 0 ? opcionesHorario[0].value : "",
     password: ""
   });
-  
+
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -46,7 +49,18 @@ const AdminRegisterPerson = () => {
       }
     };
 
+    const fetchHorarios = async () => {
+      try {
+        const horarios = await APIService.fetchHoraris();
+        const opcionesHorario = horarios.map(horario => ({ label: horario.Nom, value: horario.ID }));
+        setOpcionesHorario(opcionesHorario);
+        setLoadingHorarios(false);
+      } catch (error) {
+        console.error("Error fetching horarios:", error);
+      }
+    };
     fetchRoles();
+    fetchHorarios();
   }, []);
 
   const handleSave = async () => {
@@ -65,7 +79,7 @@ const AdminRegisterPerson = () => {
       console.error("Error en guardar el profesor: ", error);
     }
   };
-  
+
   const handleImageUpload = async () => {
     try {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -96,13 +110,12 @@ const AdminRegisterPerson = () => {
     setProfessor(prevState => ({ ...prevState, [key]: value }));
     console.log("Professor after input change:", professor);
   };
-  
+
   const handleSelectSexo = (value) => {
     setProfessor(prevState => ({ ...prevState, sexe: value }));
     console.log("Professor after selecting sexo:", professor);
   };
-  
-    
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <BackNavigation />
@@ -149,10 +162,23 @@ const AdminRegisterPerson = () => {
           placeholder="Contraseña"
           onChangeText={text => handleInputChange("password", text)}
         />
-        <CustomTextInputUnlocked
-          placeholder="Horario"
-          onChangeText={text => handleInputChange("horariID", text)}
-        />
+        {loadingHorarios ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <>
+            {opcionesHorario.length > 0 ? (
+              <CustomSelectInputUnlocked2
+                label="Horario"
+                options={opcionesHorario}
+                onSelect={(value) => handleInputChange("horariID", value)}
+              />
+            ) : (
+              <View style={styles.placeholder}>
+                <Text style={styles.placeholderText}>Horario</Text>
+              </View>
+            )}
+          </>
+        )}
         <CustomSelectInputUnlocked2
           label="Sexo"
           options={opcionesSexo}

@@ -36,9 +36,13 @@ const StartRouteMap = ({ route }) => {
   const [recording, setRecording] = useState(false);
   const [practiceID, setPracticeID] = useState(null);
   const [routeID, setRouteID] = useState(null);
-
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   const toggleConfirmationModal = () => setShowConfirmation(!showConfirmation);
+
+  const toggleInfoModal = () => {
+    setShowInfoModal(!showInfoModal);
+  };
 
   const confirmFinishPractice = async () => {
     await generateRouteFile();
@@ -50,7 +54,7 @@ const StartRouteMap = ({ route }) => {
     try {
       await ApiHelper.updatePracticaInSQL(practiceData);
     } catch (error) {
-      console.error('Error updating practice:', error);
+      console.error("Error updating practice:", error);
     }
     navigation.navigate("PostPractice", { practiceData: practiceData });
   };
@@ -103,11 +107,11 @@ const StartRouteMap = ({ route }) => {
     const createPractice = async () => {
       try {
         const newPractice = await ApiHelper.createPracticaInSQL(practiceData);
-        console.log('Práctica creada:', newPractice.ID);
-        // setPracticeID(newPractice.ID);
+        console.log("Práctica creada:", newPractice.ID);
+        setPracticeID(newPractice.ID);
         practiceData.ID = newPractice.ID;
       } catch (error) {
-        console.error('Error creating practice:', error);
+        console.error("Error creating practice:", error);
       }
     };
 
@@ -123,9 +127,9 @@ const StartRouteMap = ({ route }) => {
       }
       const recording = await AudioManager.startRecording();
       setRecording(recording);
-      console.log('Grabación iniciada');
+      console.log("Grabación iniciada");
     } catch (err) {
-      console.error('Error al iniciar la grabación:', err);
+      console.error("Error al iniciar la grabación:", err);
     }
   };
 
@@ -140,7 +144,7 @@ const StartRouteMap = ({ route }) => {
       try {
         addAnotacioToRoute(respondeGPT);
       } catch (error) {
-        console.log('No se pudo interpretar el texto');
+        console.log("No se pudo interpretar el texto");
         addAnotacioToRoute(null);
         return;
       } finally {
@@ -150,16 +154,21 @@ const StartRouteMap = ({ route }) => {
       // setRespondeGPT(respondeGPT.tipo + ", " + respondeGPT.CategoriaEscrita + ", " + respondeGPT.categoriaNumerica + ", " + respondeGPT.gravedad);
       setLoading(false);
     } catch (error) {
-      console.error('Error al detener la grabación:', error);
+      console.error("Error al detener la grabación:", error);
     }
   };
 
   const addAnotacioToRoute = async (anotacio) => {
     if (currentLocation && anotacio != null) {
       const position = `${currentLocation.latitude},${currentLocation.longitude}`;
-      const descripcion = anotacio.CategoriaEscrita + ", " + anotacio.categoriaNumerica + ", " + anotacio.gravedad;
-      const practicaID = practiceData.ID;
-      const alumneID = practiceData.AlumneID;
+      const descripcion =
+        anotacio.CategoriaEscrita +
+        ", " +
+        anotacio.categoriaNumerica +
+        ", " +
+        anotacio.gravedad;
+      // const practicaID = practiceData.ID;
+      // const alumneID = practiceData.AlumneID;
 
       try {
         const response = await ApiHelper.addNewAnotacion({
@@ -170,20 +179,20 @@ const StartRouteMap = ({ route }) => {
           CategoriaNumerica: anotacio.categoriaNumerica,
           Gravedad: anotacio.gravedad,
           PracticaID: practicaID,
-          AlumneID: alumneID
+          AlumneID: alumneID,
         });
-        console.log('Anotación añadida correctamente:', response);
+        console.log("Anotación añadida correctamente:", response);
         setPointLocations((prevLocations) => [
           ...prevLocations,
           {
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
             title: anotacio.tipo,
-            description: descripcion
+            description: descripcion,
           },
         ]);
       } catch (error) {
-        console.error('Error al añadir la anotación:', error);
+        console.error("Error al añadir la anotación:", error);
       }
     } else if (currentLocation && anotacio == null) {
       setPointLocations((prevLocations) => [
@@ -192,7 +201,7 @@ const StartRouteMap = ({ route }) => {
           latitude: currentLocation.latitude,
           longitude: currentLocation.longitude,
           title: "Anotación",
-          description: "No se pudo interpretar el audio"
+          description: "No se pudo interpretar el audio",
         },
       ]);
     }
@@ -233,50 +242,48 @@ const StartRouteMap = ({ route }) => {
 
   const saveRouteFile = async (routeData) => {
     try {
-      const fileUri = FileSystem.documentDirectory + 'ruta.json';
+      const fileUri = FileSystem.documentDirectory + "ruta.json";
       await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(routeData));
-      console.log('Ruta guardada en:', fileUri);
-      console.log('Ruta: ' + JSON.stringify(routeData))
+      console.log("Ruta guardada en:", fileUri);
+      console.log("Ruta: " + JSON.stringify(routeData));
       await handleFileUpload(fileUri);
       handleDeleteFile(fileUri);
-
     } catch (error) {
-      console.error('Error al guardar la ruta:', error);
+      console.error("Error al guardar la ruta:", error);
     }
   };
 
   const handleFileUpload = async (file) => {
     try {
       const objectID = await ApiHelper.uploadFileToMongo(file);
-      console.log('ObjectID from MongoDB:', objectID);
+      console.log("ObjectID from MongoDB:", objectID);
       // setRouteID(objectID);
-      practiceData.Ruta = objectID;
+      // practiceData.Ruta = objectID;
     } catch (error) {
-      console.error('Error handling file upload:', error);
+      console.error("Error handling file upload:", error);
     }
   };
 
   const handleCreatePractica = async (practicaData) => {
     try {
       const response = await ApiHelper.createPracticaInSQL(practicaData);
-      console.log('Response from SQL:', response);
+      console.log("Response from SQL:", response);
     } catch (error) {
-      console.error('Error handling create practica:', error);
+      console.error("Error handling create practica:", error);
     }
   };
 
   const handleDeleteFile = async (fileUri) => {
     try {
       await FileSystem.deleteAsync(fileUri);
-      console.log('Archivo eliminado:', fileUri);
+      console.log("Archivo eliminado:", fileUri);
     } catch (error) {
-      console.error('Error al eliminar el archivo:', error);
+      console.error("Error al eliminar el archivo:", error);
     }
   };
 
   return (
     <View style={styles.container}>
-
       {coordinates.length > 0 && (
         <MapView
           style={styles.map}
@@ -327,22 +334,41 @@ const StartRouteMap = ({ route }) => {
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.headerText}>{practiceData.NombreAlumno}</Text>
-          <TouchableOpacity style={styles.infoIconContainer}>
+          <TouchableOpacity
+            style={styles.infoIconContainer}
+            onPress={toggleInfoModal}
+          >
             <Icon name="info-circle" size={26} color="black" />
           </TouchableOpacity>
         </View>
         <View style={styles.addressContainer}>
           <View style={styles.addressTextContainer}>
-            <TouchableOpacity onPress={startRecording} style={[styles.microphoneCircle, { backgroundColor: recording ? 'red' : 'black', transform: recording ? [{ scale: 1.2 }] : [{ scale: 1 }] }]}>
+            <TouchableOpacity
+              onPress={startRecording}
+              style={[
+                styles.microphoneCircle,
+                {
+                  backgroundColor: recording ? "red" : "black",
+                  transform: recording ? [{ scale: 1.2 }] : [{ scale: 1 }],
+                },
+              ]}
+            >
               <View style={[styles.btnContainer]}>
                 {isLoading ? (
                   <ActivityIndicator size="large" color="white" />
                 ) : (
-                  <Icon name="microphone" size={24} color="white" onPress={recording ? stopRecording : startRecording} />
+                  <Icon
+                    name="microphone"
+                    size={24}
+                    color="white"
+                    onPress={recording ? stopRecording : startRecording}
+                  />
                 )}
               </View>
             </TouchableOpacity>
-            <Text style={styles.addressText}>{street} {number}</Text>
+            <Text style={styles.addressText}>
+              {street} {number}
+            </Text>
             <Text style={styles.cityText}>{city}</Text>
           </View>
           <TouchableOpacity
@@ -385,6 +411,41 @@ const StartRouteMap = ({ route }) => {
               </View>
             </View>
           </Modal>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showInfoModal}
+            onRequestClose={toggleInfoModal}
+          >
+            <View style={styles.centeredView2}>
+              <View style={styles.modalView2}>
+                <Text style={styles.modalTitle2}>Información</Text>
+                <View style={styles.modalContent2}>
+                  <Icon
+                    style={styles.icon2}
+                    name="flag-checkered"
+                    size={24}
+                    color="black"
+                  />
+                  <View style={styles.modalTextContainer2}>
+                    <Text style={styles.modalText2}>Finalitzar Practica.</Text>
+                  </View>
+                </View>
+                <View style={styles.modalContent2}>
+                  <Icon style={styles.icon2} name="microphone" size={24} color="black" />
+                  <View style={styles.modalTextContainer2}>
+                    <Text style={styles.modalText2}>Pulsa para grabar el error.</Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  style={styles.closeButton2}
+                  onPress={toggleInfoModal}
+                >
+                  <Text style={styles.closeButtonText2}>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </View>
       </View>
     </View>
@@ -401,7 +462,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingTop: 70,
   },
   centeredView: {
     flex: 1,
@@ -428,6 +489,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginBottom: 20,
+  },
+  modalImageModal: {
+    width: 40,
+    height: 40,
+    resizeMode: "contain",
   },
   modalText: {
     marginBottom: 20,
@@ -507,6 +573,62 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
+  },
+
+  centeredView2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalView2: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 24,
+    shadowColor: "#000",
+    shadowOffset2: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: "80%",
+  },
+  modalContent2: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  icon2: {
+    marginRight: 16,
+  },
+  modalImage2: {
+    width: 48,
+    height: 48,
+    marginRight: 16,
+  },
+  modalTitle2: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+  modalText2: {
+    fontSize: 16,
+    color: "#666",
+  },
+  closeButton2: {
+    backgroundColor: "lightblue",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  closeButtonText2: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
