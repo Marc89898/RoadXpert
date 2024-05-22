@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, Alert, ScrollView, TextInput } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import { APIService } from "../../../../../ApiService";
+import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked";
 
 const AdminEditVehicle = ({ route }) => {
     const { car } = route.params;
@@ -51,7 +52,7 @@ const AdminEditVehicle = ({ route }) => {
                 <Text style={styles.heading}>Vehicle</Text>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Matrícula:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={matricula}
                         onChangeText={setMatricula}
@@ -60,7 +61,7 @@ const AdminEditVehicle = ({ route }) => {
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Marca:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={marca}
                         onChangeText={setMarca}
@@ -69,7 +70,7 @@ const AdminEditVehicle = ({ route }) => {
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Modelo:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={model}
                         onChangeText={setModel}
@@ -78,7 +79,7 @@ const AdminEditVehicle = ({ route }) => {
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Año de Fabricación:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={anyFabricacio}
                         onChangeText={setAnyFabricacio}
@@ -87,7 +88,7 @@ const AdminEditVehicle = ({ route }) => {
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Tipo:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={tipus}
                         onChangeText={setTipus}
@@ -96,7 +97,7 @@ const AdminEditVehicle = ({ route }) => {
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Color:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={color}
                         onChangeText={setColor}

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, TextInput, Alert } from "react-native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { APIService } from "../../../../../ApiService";
+import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked";
 
 const AdminEditRoles = () => {
     const navigation = useNavigation();
@@ -58,7 +59,7 @@ const AdminEditRoles = () => {
                 <Text style={styles.heading}>Edit Role</Text>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Nombre:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={nom}
                         onChangeText={setNom}
@@ -67,7 +68,7 @@ const AdminEditRoles = () => {
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Descripción:</Text>
-                    <TextInput
+                    <CustomTextInputUnlocked
                         style={styles.input}
                         value={descripcio}
                         onChangeText={setDescripcio}
