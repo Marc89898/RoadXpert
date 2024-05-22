@@ -28,6 +28,7 @@ const PrePractice = () => {
   const [cotxes, setCotxes] = useState([]);
   const [selectedCotxe, setSelectedCotxe] = useState(null); // Almacena la matrícula del vehículo seleccionado
   const practicaData = route.params?.practicaData || null;
+  const practicaID = practicaData?.ID || null;
 
   useEffect(() => {
     fetchAlumnosData();
@@ -36,7 +37,6 @@ const PrePractice = () => {
 
   useEffect(() => {
     if (practicaData) {
-      
       setSelectedAlumno(practicaData.AlumneID);
       console.log('practicaData:', practicaData.AlumneID);
       setSelectedCotxe(practicaData.VehicleID);
@@ -84,7 +84,7 @@ const PrePractice = () => {
 
     // Crear el objeto practiceDataObj con los datos seleccionados
     const practiceDataObj = {
-      ID: '',
+      ID: practicaID,
       AlumneID: selectedAlumno, // ID del alumno seleccionado
       Ruta: '',
       Km: 0,
@@ -189,11 +189,11 @@ const PrePractice = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 24,
   },
   contentContainer: {
     flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 0,
   },
   headerText: {
     fontSize: 25,

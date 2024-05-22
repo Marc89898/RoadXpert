@@ -46,13 +46,12 @@ const StartRouteMap = ({ route }) => {
     // anadir atributo a la practica de TotalAnotacions
     practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 0;
     // practiceData.Ruta = routeID;
-
+    practiceData.EstatHoraID = 'EstatHora_3';
     try {
       await ApiHelper.updatePracticaInSQL(practiceData);
     } catch (error) {
       console.error('Error updating practice:', error);
     }
-
     navigation.navigate("PostPractice", { practiceData: practiceData });
   };
 
@@ -111,11 +110,11 @@ const StartRouteMap = ({ route }) => {
         console.error('Error creating practice:', error);
       }
     };
-  
-    createPractice();
-  }, []);
-  
 
+    if (practiceData && practiceData.ID === null) {
+      createPractice();
+    }
+  }, []);
 
   const startRecording = async () => {
     try {
