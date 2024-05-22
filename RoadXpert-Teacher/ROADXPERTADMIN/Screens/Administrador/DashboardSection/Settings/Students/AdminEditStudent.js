@@ -5,10 +5,11 @@ import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomText
 import { APIService } from "../../../../../ApiService";
 import { sha256 } from "../../../../../utils.js";
 import { padStart } from "lodash";
+import CustomSelectInputUnlocked from "../../../../../Components/Inputs/CustomSelectInputUnlocked.js";
 
 const AdminEditStudent = ({ route, navigation }) => {
     const { alumn } = route.params;
-    
+
     if (!alumn) {
         Alert.alert("Error", "No se proporcionaron datos del alumno.");
         navigation.goBack();
@@ -21,8 +22,18 @@ const AdminEditStudent = ({ route, navigation }) => {
     const [telefon, setTelefon] = useState(alumn.Telefon || '');
     const [contrasenya, setContrasenya] = useState(alumn.Contrasenya || '');
     const [professorID, setProfessorID] = useState(alumn.ProfessorID || '');
-
+    const [professors, setProfessors] = useState([]);
+    const [selectedProfessor, setSelectedProfessor] = useState(null);
+    const fetchProfessors = async () => {
+        try {
+            const fetchedProfessors = await APIService.fetchAllProfessors();
+            setProfessors(fetchedProfessors);
+        } catch (error) {
+            console.error("Error fetching professors:", error);
+        }
+    };
     useEffect(() => {
+        fetchProfessors();
         if (alumn) {
             setNom(alumn.Nom);
             setDNI(alumn.DNI);
@@ -107,12 +118,18 @@ const AdminEditStudent = ({ route, navigation }) => {
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Profesor ID:</Text>
-                    <CustomTextInputUnlocked
-                        style={styles.input}
-                        value={professorID}
-                        onChangeText={setProfessorID}
-                        placeholder={alumn.ProfessorID}
+                    <Text style={styles.label}>Profesor:</Text>
+                    <CustomSelectInputUnlocked
+                        options={professors.map((professor) => ({
+                            label: professor.Nom,
+                            value: professor.ID,
+                        }))}
+                        onSelect={(professorID) => {
+                            setSelectedProfessor(professorID);
+                            setAlumn((prevAlumn) => ({ ...prevAlumn, professorID }));
+                        }}
+                        selectedValue={selectedProfessor}
+                        placeholder="Professor"
                     />
                 </View>
                 <View style={styles.buttonContainer}>
