@@ -48,7 +48,7 @@ const AdminEditVehicle = ({ route }) => {
         <View style={styles.container}>
             <BackNavigation />
             <ScrollView contentContainerStyle={styles.content}>
-                <Text style={styles.heading}>Coche</Text>
+                <Text style={styles.heading}>Vehicle</Text>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Matrícula:</Text>
                     <TextInput

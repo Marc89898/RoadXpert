@@ -59,7 +59,7 @@ const AdminEditStudent = ({ route, navigation }) => {
         <View style={styles.container}>
             <BackNavigation />
             <ScrollView contentContainerStyle={styles.content}>
-                <Text style={styles.heading}>Alumno</Text>
+                <Text style={styles.heading}>Student</Text>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Nombre:</Text>
                     <CustomTextInputUnlocked
