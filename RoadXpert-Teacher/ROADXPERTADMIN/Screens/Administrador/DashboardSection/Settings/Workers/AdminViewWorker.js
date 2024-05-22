@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, Alert, ScrollView } from "react-native"
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked";
 import { APIService } from "../../../../../ApiService";
+import { sha256 } from "../../../../../utils";
 
 const AdminViewWorker = ({ route, navigation }) => {
     const { professor } = route.params;
@@ -30,24 +31,30 @@ const AdminViewWorker = ({ route, navigation }) => {
     }, [professor]);
 
     const handleSave = async () => {
-        const updatedProfessor = {
-            ID: professor.ID,
-            Nom: nom,
-            Cognom: cognom,
-            SegonCognom: segonCognom,
-            DNI: dni,
-            Adreca: adreca,
-            CarnerConduirFrontal: "",
-            CarnerConduirDerrera: "",
-            Sexe: sexe,
-            HorariID: horariID,
-            Password: password.trim(),
-        };
+        try {
+            const hashedPassword = await sha256(password);
+            const updatedProfessor = {
+                ID: professor.ID,
+                Nom: nom,
+                Cognom: cognom,
+                SegonCognom: segonCognom,
+                DNI: dni,
+                Adreca: adreca,
+                CarnerConduirFrontal: "",
+                CarnerConduirDerrera: "",
+                Sexe: sexe,
+                HorariID: horariID,
+                Password: hashedPassword,
+            };
 
-        const response = await APIService.putProfessor(updatedProfessor);
-        
-        Alert.alert("Éxito", "El profesor se ha actualizado con éxito.");
-        navigation.goBack();
+            const response = await APIService.putProfessor(updatedProfessor);
+
+            Alert.alert("Éxito", "El profesor se ha actualizado con éxito.");
+            navigation.goBack();
+        } catch (error) {
+            console.error("Error updating professor:", error);
+            Alert.alert("Error", "Hubo un error al actualizar al profesor.");
+        }
     };
 
     return (
@@ -124,7 +131,7 @@ const AdminViewWorker = ({ route, navigation }) => {
                         style={styles.input}
                         value={password}
                         onChangeText={setPassword}
-                        placeholder={professor.Password}
+                        placeholder="Contraseña"
                         secureTextEntry
                     />
                 </View>

@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
-import CustomSelectInputUnlocked from "../../../../../Components/Inputs/CustomSelectInputUnlocked.js";
+import CustomSelectInputUnlocked2 from "../../../../../Components/Inputs/CustomSelectInputUnlocked2.js";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
 import { APIService } from "../../../../../ApiService.js";
 import { sha256 } from "../../../../../utils";
@@ -25,7 +25,7 @@ const AdminRegisterPerson = () => {
     segonCognom: "",
     dni: "",
     adreca: "",
-    sexe: "",
+    sexe: opcionesSexo[0].value,
     carnetConduirFront: "",
     carnetConduirDarrera: "",
     horariID: "",
@@ -51,8 +51,14 @@ const AdminRegisterPerson = () => {
 
   const handleSave = async () => {
     try {
-      console.log("Sexe: ", professor)
-      await APIService.postProfessor(professor);
+      if (!professor.sexe || !professor.password) {
+        Alert.alert("Error", "Debe seleccionar el sexo y proporcionar una contraseña");
+        return;
+      }
+      const hashedPassword = await sha256(professor.password);
+      const professorData = { ...professor, password: hashedPassword };
+
+      await APIService.postProfessor(professorData);
       Alert.alert("Éxito", "Profesor guardado correctamente");
       navigation.goBack()
     } catch(error) {
@@ -88,11 +94,14 @@ const AdminRegisterPerson = () => {
 
   const handleInputChange = (key, value) => {
     setProfessor(prevState => ({ ...prevState, [key]: value }));
+    console.log("Professor after input change:", professor);
   };
-
+  
   const handleSelectSexo = (value) => {
     setProfessor(prevState => ({ ...prevState, sexe: value }));
+    console.log("Professor after selecting sexo:", professor);
   };
+  
     
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -104,7 +113,11 @@ const AdminRegisterPerson = () => {
         ) : (
           <>
             {opcionesRoles.length > 0 ? (
-              <CustomSelectInputUnlocked options={opcionesRoles} />
+              <CustomSelectInputUnlocked2
+                label="Rol"
+                options={opcionesRoles}
+                onSelect={(value) => handleInputChange("rol", value)}
+              />
             ) : (
               <View style={styles.placeholder}>
                 <Text style={styles.placeholderText}>Rol</Text>
@@ -140,7 +153,11 @@ const AdminRegisterPerson = () => {
           placeholder="Horario"
           onChangeText={text => handleInputChange("horariID", text)}
         />
-        <CustomSelectInputUnlocked options={opcionesSexo}  onSelect={handleSelectSexo}/>
+        <CustomSelectInputUnlocked2
+          label="Sexo"
+          options={opcionesSexo}
+          onSelect={(value) => handleSelectSexo(value)}
+        />
         <View style={styles.uploadContainer}>
           <Text style={styles.uploadLabel}>Carnet de conducir:</Text>
           <TouchableOpacity

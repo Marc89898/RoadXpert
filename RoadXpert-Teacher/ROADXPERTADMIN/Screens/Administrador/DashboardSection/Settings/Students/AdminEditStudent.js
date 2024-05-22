@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Button, Alert, ScrollView } from "react-native"
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked";
 import { APIService } from "../../../../../ApiService";
+import { sha256 } from "../../../../../utils.js";
+import { padStart } from "lodash";
 
 const AdminEditStudent = ({ route, navigation }) => {
     const { alumn } = route.params;
@@ -32,13 +34,14 @@ const AdminEditStudent = ({ route, navigation }) => {
     }, [alumn]);
 
     const handleSave = async () => {
+        const hashedPassword = await sha256(contrasenya)
         const updatedAlumn = {
             ID: alumn.ID,
             Nom: nom,
             DNI: dni,
             Adreca: adreca,
             Telefon: telefon,
-            Contrasenya: contrasenya.trim(),
+            Contrasenya: hashedPassword.trim(),
             ProfessorID: professorID,
         };
 
