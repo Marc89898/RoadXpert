@@ -49,7 +49,7 @@ const StartRouteMap = ({ route }) => {
     practiceData.HoraFi = new Date().toLocaleTimeString('en-US', { hour12: false });
     // anadir atributo a la practica de TotalAnotacions
     practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 0;
-    // practiceData.Ruta = routeID;
+    practiceData.Ruta = routeID;
     practiceData.EstatHoraID = 'EstatHora_3';
     try {
       await ApiHelper.updatePracticaInSQL(practiceData);
@@ -167,8 +167,8 @@ const StartRouteMap = ({ route }) => {
         anotacio.categoriaNumerica +
         ", " +
         anotacio.gravedad;
-      // const practicaID = practiceData.ID;
-      // const alumneID = practiceData.AlumneID;
+      const practicaID = practiceData.ID;
+      const alumneID = practiceData.AlumneID;
 
       try {
         const response = await ApiHelper.addNewAnotacion({
@@ -257,8 +257,8 @@ const StartRouteMap = ({ route }) => {
     try {
       const objectID = await ApiHelper.uploadFileToMongo(file);
       console.log("ObjectID from MongoDB:", objectID);
-      // setRouteID(objectID);
-      // practiceData.Ruta = objectID;
+      setRouteID(objectID);
+      practiceData.Ruta = objectID;
     } catch (error) {
       console.error("Error handling file upload:", error);
     }
