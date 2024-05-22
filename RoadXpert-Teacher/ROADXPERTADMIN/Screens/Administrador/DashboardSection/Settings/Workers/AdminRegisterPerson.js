@@ -96,7 +96,9 @@ const AdminRegisterPerson = () => {
     setProfessor(prevState => ({ ...prevState, [key]: value }));
     console.log("Professor after input change:", professor);
   };
-  
+  // const loadHoraris = async () => {
+  //   APIService.fetc
+  // }
   const handleSelectSexo = (value) => {
     setProfessor(prevState => ({ ...prevState, sexe: value }));
     console.log("Professor after selecting sexo:", professor);

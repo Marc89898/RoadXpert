@@ -10,12 +10,12 @@ const BackNavigation = () => {
     const startSpin = () => {
         Animated.timing(spinValue, {
             toValue: 1,
-            duration: 500,
+            duration: 300,
             easing: Easing.linear,
             useNativeDriver: true
         }).start(() => {
-            navigation.goBack(); // Navigate back after animation completes
-            spinValue.setValue(0); // Reset spin value after animation completes
+            navigation.goBack();
+            spinValue.setValue(0);
         });
     };
 

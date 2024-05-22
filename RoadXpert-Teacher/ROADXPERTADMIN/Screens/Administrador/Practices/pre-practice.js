@@ -132,11 +132,11 @@ const AdminPrePractice = ({ route }) => {
           ))}
         </Picker>
         <View style={styles.NombrePractica}>
-        <CustomTextInputUnlocked
+        {/* <CustomTextInputUnlocked
           label="Nombre de la práctica:"
           placeholder="Escriba aquí ..."
           style={styles.textInput}
-        />
+        /> */}
         </View>
         
         <View style={styles.signatureContainer}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, Modal, Animated } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,7 +6,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { APIService } from '../ApiService';
 import { DataAdapter } from './Adapter';
-import Config from "../configuracions"
+import Config from "../configuracions";
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from "@react-navigation/native";
 
@@ -21,6 +21,8 @@ export default function ProfessorCalendar() {
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [selectedHour, setSelectedHour] = useState(availableHours[0]);
   const [students, setStudents] = useState([]);
+  const [allCars, setAllCars] = useState([]);
+  const [selectedCar, setSelectedCar] = useState(null);
   const navigation = useNavigation();
   const optionsAnimation = useRef(new Animated.Value(0)).current;
 
@@ -37,14 +39,14 @@ export default function ProfessorCalendar() {
   const handleOptionsPress = (item) => {
     setEventToManage(item);
     setOptionsModalVisible(true);
-  
+
     Animated.timing(optionsAnimation, {
       toValue: 1,
       duration: 300,
       useNativeDriver: true,
     }).start();
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -57,8 +59,25 @@ export default function ProfessorCalendar() {
         name: student.Nom
       }));
       setStudents(formattedStudents);
+      if (formattedStudents.length > 0) {
+        setSelectedAlumn(formattedStudents[0]);
+      }
     } catch (error) {
       console.error('Error al cargar los alumnos:', error);
+    }
+  };
+
+  const loadVehicles = async () => {
+    try {
+      const carsData = await APIService.getAllCars();
+      console.log("Todos los coches: ", carsData);
+      setAllCars(carsData);
+      if (carsData.length > 0) {
+        setSelectedCar(carsData[0]);
+        console.log("Coche seleccionado: ", selectedCar)
+      }
+    } catch (error) {
+      console.error('Error al cargar los vehículos:', error);
     }
   };
 
@@ -89,7 +108,7 @@ export default function ProfessorCalendar() {
       );
       fetchData();
     } catch (error) {
-      console.error("Error in the delete petition: " + error.message)
+      console.error("Error in the delete petition: " + error.message);
     }
   };
 
@@ -118,7 +137,7 @@ export default function ProfessorCalendar() {
       Estat: '',
       AlumneID: selectedAlumn.id,
       ProfessorID: Config.Professor.ID,
-      VehicleID: '3456JKL',
+      VehicleID: selectedCar.Matricula,
       data: selectedDate
     };
     setEvents((prevEvents) => {
@@ -137,7 +156,8 @@ export default function ProfessorCalendar() {
   const addPractica = async () => {
     try {
       const fetchedHours = await APIService.fetchAvailableHours(Config.Professor.ID, selectedDate);
-      loadStudents();
+      await loadStudents();
+      await loadVehicles();
       if (fetchedHours) {
         setAvailableHours(fetchedHours);
         setModalVisible(true);
@@ -177,7 +197,6 @@ export default function ProfessorCalendar() {
     outputRange: [300, 0],
   });
 
-
   const handleCloseOptions = () => {
     Animated.timing(optionsAnimation, {
       toValue: 0,
@@ -196,68 +215,68 @@ export default function ProfessorCalendar() {
 
   return (
     <View style={{ flex: 1 }}>
-        <Agenda
-          theme={{
-            agendaTodayColor: 'blue',
-            agendaKnobColor: 'black',
-            selectedDayBackgroundColor: 'grey',
-            agendaDayNumColor: 'black',
-            agendaDayTextColor: 'black',
-            monthTextColor: 'blue',
-            textMonthFontSize: 40,
-            textMonthFontWeight: 'bold',
-            arrowColor: 'blue',
-            textSectionTitleColor: 'blue',
-            textDayFontWeight: 'bold',
-          }}
-          style={styles.agenda}
-          selected={selectedDate}
-          items={events}
-          onDayPress={handleDayPress}
-          renderEmptyData={renderEmptyDate1}
-          renderItem={(item) => (
-            <TouchableOpacity
-              style={styles.item}
-              onPress={() => handleOptionsPress(item)}
-            >
-              <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemText, styles.boldText]}>PRACTICE</Text>
-                <View style={styles.separator} />
-                <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
-                <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
-                <Text style={styles.itemText}>
-                  <Text style={styles.boldText}>State: </Text>
-                  {item.Estat ? item.Estat : "Confirmada"}
-                </Text>
-                <Text style={styles.itemText}>
-                  <Text style={styles.boldText}>Alumno: </Text>
-                  {item.alumne ? item.alumne : selectedAlumn.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
+      <Agenda
+        theme={{
+          agendaTodayColor: 'blue',
+          agendaKnobColor: 'black',
+          selectedDayBackgroundColor: 'grey',
+          agendaDayNumColor: 'black',
+          agendaDayTextColor: 'black',
+          monthTextColor: 'blue',
+          textMonthFontSize: 40,
+          textMonthFontWeight: 'bold',
+          arrowColor: 'blue',
+          textSectionTitleColor: 'blue',
+          textDayFontWeight: 'bold',
+        }}
+        style={styles.agenda}
+        selected={selectedDate}
+        items={events}
+        onDayPress={handleDayPress}
+        renderEmptyData={renderEmptyDate1}
+        renderItem={(item) => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => handleOptionsPress(item)}
+          >
+            <View style={styles.itemTextContainer}>
+              <Text style={[styles.itemText, styles.boldText]}>PRACTICE</Text>
+              <View style={styles.separator} />
+              <Text style={styles.itemText}><Text style={styles.boldText}>Start: </Text>{item.horaInicial}</Text>
+              <Text style={styles.itemText}><Text style={styles.boldText}>End: </Text>{item.horaFinal}</Text>
+              <Text style={styles.itemText}>
+                <Text style={styles.boldText}>State: </Text>
+                {item.Estat ? item.Estat : "Confirmada"}
+              </Text>
+              <Text style={styles.itemText}>
+                <Text style={styles.boldText}>Alumno: </Text>
+                {item.alumne ? item.alumne : selectedAlumn.name}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
       <Animated.View style={[styles.optionsContainer, { transform: [{ translateY: optionsTranslateY }] }]}>
-  {eventToManage && (
-    <View style={styles.optionsContent}>
-      <Text style={styles.modalTitle}>¿Qué acción deseas realizar?</Text>
-      <TouchableOpacity style={styles.optionButton} onPress={handleAcceptEvent}>
-        <Text style={styles.optionButtonText}>Confirmar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#ff6961' }]} onPress={() => handleDeleteConfirmation(eventToManage)}>
-        <Text style={styles.optionButtonText}>Eliminar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#bdbdbd' }]} onPress={handleCloseOptions}>
-        <Text style={styles.optionButtonText}>Cancelar</Text>
-      </TouchableOpacity>
-    </View>
-  )}
-</Animated.View>
+        {eventToManage && (
+          <View style={styles.optionsContent}>
+            <Text style={styles.modalTitle}>¿Qué acción deseas realizar?</Text>
+            <TouchableOpacity style={styles.optionButton} onPress={handleAcceptEvent}>
+              <Text style={styles.optionButtonText}>Confirmar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#ff6961' }]} onPress={() => handleDeleteConfirmation(eventToManage)}>
+              <Text style={styles.optionButtonText}>Eliminar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.optionButton, { backgroundColor: '#bdbdbd' }]} onPress={handleCloseOptions}>
+              <Text style={styles.optionButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </Animated.View>
 
       <TouchableOpacity style={styles.addButton}>
         <Ionicons onPress={addPractica} name="add-circle" size={70} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.refreshButton} onPress={() => {fetchData()}}>
+      <TouchableOpacity style={styles.refreshButton} onPress={() => { fetchData() }}>
         <Ionicons name="refresh" size={40} color="white" />
       </TouchableOpacity>
       <Modal
@@ -289,6 +308,16 @@ export default function ProfessorCalendar() {
               }>
               {students.map((student, index) => (
                 <Picker.Item label={student.name} value={student} key={index} />
+              ))}
+            </Picker>
+            <Text>Selecciona un Vehículo:</Text>
+            <Picker
+              selectedValue={selectedCar}
+              onValueChange={(itemValue) => setSelectedCar(itemValue)}
+              style={styles.picker}
+            >
+              {allCars.map((car) => (
+                <Picker.Item key={car.Matricula} label={`${car.Marca} ${car.Model}`} value={car} />
               ))}
             </Picker>
             <View style={styles.buttonContainer}>
