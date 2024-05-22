@@ -21,24 +21,22 @@ const LoginScreen = () => {
       }
       const alumns = await APIService.fetchAllAlumns();
       
-      const foundAlumn = alumns.find(
-        (alumn) => {
-          if (alumn.DNI === username && alumn.Contrasenya === password) {
-            Config.guardarAlumne(alumn);  
-            return true;
-          }
-        } 
-      );
-      if (foundAlumn) {
-        console.log("Inicio de sesión exitoso");
-        navigation.navigate("NavBar");
-      } else {
-        console.error("Usuario o contraseña incorrectos");
+      for (const alumn of alumns) {
+        const hashedPassword = await sha256(password);
+        if (alumn.DNI === username && alumn.Contrasenya === hashedPassword) {
+          Config.guardarAlumne(alumn);  
+          console.log("Inicio de sesión exitoso");
+          navigation.navigate("NavBar");
+          return;
+        }
       }
+  
+      console.error("Usuario o contraseña incorrectos");
     } catch (error) {
       console.error("Error al iniciar sesión:", error.message);
     }
   };
+  
 
   // // Per poder accedir a la applicació sense haver de fer login
   // const handleLogin = async () => {

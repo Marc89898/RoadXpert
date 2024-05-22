@@ -48,16 +48,15 @@ const StartRouteMap = ({ route }) => {
     await generateRouteFile();
     // practiceData.HoraFi = new Date().toLocaleTimeString('en-US', { hour12: false });
     // anadir atributo a la practica de TotalAnotacions
-    // practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 0;
-    practiceData.Ruta = routeID;
-
+    practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 0;
+    // practiceData.Ruta = routeID;
+    practiceData.EstatHoraID = 'EstatHora_3';
     try {
       // await ApiHelper.updatePracticaInSQL(practiceData);
     } catch (error) {
       console.error("Error updating practice:", error);
     }
-
-    // // navigation.navigate("PostPractice", { practiceData: practiceData });
+    navigation.navigate("PostPractice", { practiceData: practiceData });
   };
 
   useEffect(() => {
@@ -116,7 +115,9 @@ const StartRouteMap = ({ route }) => {
       }
     };
 
-    createPractice();
+    if (practiceData && practiceData.ID === null) {
+      createPractice();
+    }
   }, []);
 
   const startRecording = async () => {

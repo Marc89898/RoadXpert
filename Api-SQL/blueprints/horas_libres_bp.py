@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import db_configuration as db
 import locale
 import datetime
+from unidecode import unidecode
 
 engine = db.engine
 Session = sessionmaker(bind=engine)
@@ -13,6 +14,19 @@ HorasLibres_bp = Blueprint('HorasLibres', __name__)
 
 # Configurar el locale para español
 locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+
+def obtener_nombre_dia_espanol(dia):
+    dias_semana = {
+        'Monday': 'Lunes',
+        'Tuesday': 'Martes',
+        'Wednesday': 'Miercoles',
+        'Thursday': 'Jueves',
+        'Friday': 'Viernes',
+        'Saturday': 'Sabado',
+        'Sunday': 'Domingo'
+    }
+    return dias_semana.get(dia)
+
 
 def get_fecha():
     fecha_str = request.args.get('fecha', datetime.date.today().strftime('%Y-%m-%d'))
@@ -31,8 +45,8 @@ def obtener_horario(professor_id, conn):
     horari_dict = dict(zip(horari_result.keys(), horari_row))
     return horari_dict['ID']  # ID del horario
 
-
 def obtener_horas_laborales(dia_semana, horari_id, conn):
+    print(f'Obteniendo horas laborales para el día: {dia_semana}, HorariID: {horari_id}')  # Log para depuración
     hora_query = text("SELECT * FROM Hora WHERE DiaSetmana = :dia AND HorariID = :horari_id")
     hora_result = conn.execute(hora_query, {"dia": dia_semana, "horari_id": horari_id})
 
@@ -44,7 +58,7 @@ def obtener_horas_laborales(dia_semana, horari_id, conn):
         hora_inici = hora_row_dict['HoraInici'].hour
         hora_fi = hora_row_dict['HoraFi'].hour
 
-        print('lllhora_inici:', hora_inici)        
+        print('lllhora_inici:', hora_inici)
         print('lllhora_fi:', hora_fi)
         duracio_practica = hora_row_dict['DuracioPractica']
         num_horas = int((hora_fi - hora_inici) * 60 / duracio_practica)
@@ -69,7 +83,7 @@ def obtener_horas_ocupadas(professor_id, fecha, conn):
 
         hora_inici = practica_row_dict['HoraInici'].hour
         hora_fi = practica_row_dict['HoraFi'].hour
-        print('hora_inici:', hora_inici)        
+        print('hora_inici:', hora_inici)
         print('hora_fi:', hora_fi)
         horas_ocupadas.append({"HoraFi": hora_fi, "HoraInici": hora_inici})
 
@@ -81,6 +95,11 @@ def convertir_a_formato_time(lista_horas):
         hora['HoraFi'] = f"{hora['HoraFi']}:00:00"
     return lista_horas
 
+
+
+def obtener_nombre_dia(fecha):
+    dias_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    return dias_semana[fecha.weekday()]
 
 @HorasLibres_bp.route("/horas_libres", methods=['GET'])
 def get_horas_libres():
@@ -94,7 +113,10 @@ def get_horas_libres():
             if not horari_id:
                 return jsonify({"message": "Professor no encontrado"}), 404
 
-            dia_semana = fecha.strftime('%A')
+            # Obtener el nombre del día de la semana
+            dia_semana = obtener_nombre_dia(fecha)
+            dia_semana = unidecode(dia_semana)
+
             horas_laborales = obtener_horas_laborales(dia_semana, horari_id, conn)
             horas_ocupadas = obtener_horas_ocupadas(professor_id, fecha, conn)
 
@@ -104,4 +126,6 @@ def get_horas_libres():
             return jsonify(horas_disponibles), 200
 
     except Exception as e:
+        print(f"Error: {str(e)}")  # Log para depuración
         return jsonify({"error": str(e)}), 500
+

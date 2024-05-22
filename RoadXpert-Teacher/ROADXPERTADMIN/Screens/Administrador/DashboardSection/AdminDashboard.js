@@ -32,14 +32,14 @@ const AdminDashboard = () => {
     const loadNextEvent = async () => {
       try {
         // Verificar si el ProfessorID está definido en la configuración
-        if (typeof Config.ProfessorID === "undefined") {
+        if (typeof Config.Professor.ID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
           return;
         }
 
         // Cargar los eventos del calendario del profesor
-        const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
+        const events = await APIService.fetchEventsCalendar(Config.Professor.ID);
         const currentDate = new Date();
 
         // Ordenar los eventos por fecha

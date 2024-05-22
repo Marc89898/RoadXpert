@@ -25,9 +25,8 @@ export default function ProfessorCalendar() {
   const optionsAnimation = useRef(new Animated.Value(0)).current;
 
   const fetchData = async () => {
-
     try {
-      const result = await APIService.fetchEventsCalendar(Config.ProfessorID);
+      const result = await APIService.fetchEventsCalendar(Config.Professor.ID);
       const adaptedData = await DataAdapter.adaptPracticaToAgenda(result);
       setEvents(adaptedData);
     } catch (error) {
@@ -118,7 +117,7 @@ export default function ProfessorCalendar() {
       Coche: "",
       Estat: '',
       AlumneID: selectedAlumn.id,
-      ProfessorID: Config.ProfessorID,
+      ProfessorID: Config.Professor.ID,
       VehicleID: '3456JKL',
       data: selectedDate
     };
@@ -137,7 +136,7 @@ export default function ProfessorCalendar() {
 
   const addPractica = async () => {
     try {
-      const fetchedHours = await APIService.fetchAvailableHours(Config.ProfessorID, selectedDate);
+      const fetchedHours = await APIService.fetchAvailableHours(Config.Professor.ID, selectedDate);
       loadStudents();
       if (fetchedHours) {
         setAvailableHours(fetchedHours);
@@ -258,7 +257,9 @@ export default function ProfessorCalendar() {
       <TouchableOpacity style={styles.addButton}>
         <Ionicons onPress={addPractica} name="add-circle" size={70} color="black" />
       </TouchableOpacity>
-
+      <TouchableOpacity style={styles.refreshButton} onPress={() => {fetchData()}}>
+        <Ionicons name="refresh" size={40} color="white" />
+      </TouchableOpacity>
       <Modal
         animationType="slide"
         transparent={true}
@@ -306,6 +307,14 @@ export default function ProfessorCalendar() {
 }
 
 const styles = StyleSheet.create({
+  refreshButton: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    backgroundColor: 'black',
+    padding: 10,
+    borderRadius: 50,
+  },
   emptyDateText2: {
     color: "black"
   },

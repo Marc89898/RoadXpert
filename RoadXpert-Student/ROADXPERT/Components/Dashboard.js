@@ -92,7 +92,7 @@ const Dashboard = () => {
 
   const loadNextEvent = async () => {
     try {
-      const events = await APIService.fetchEventsCalendar(Config.IDALUMNE);
+      const events = await APIService.fetchEventsCalendar(Config.Alumne.ID);
       const currentDate = new Date();
 
       const estatHora2Events = events.filter(

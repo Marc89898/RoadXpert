@@ -11,6 +11,7 @@ import MainButton from "../../../../../Components/Buttons/mainButton.js";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
 import CustomSelectInputUnlocked from "../../../../../Components/Inputs/CustomSelectInputUnlocked.js"
 import { APIService } from "../../../../../ApiService.js";
+import { sha256 } from "../../../../../utils.js";
 
 const AdminRegisterStudent = () => {
   const [alumn, setAlumn] = useState({
@@ -59,7 +60,17 @@ const AdminRegisterStudent = () => {
       { cancelable: false }
     );
   };
+
+  const handlePasswordChange = async (text) => {
+    try {
+      const hashedPassword = await sha256(text);
+      setAlumn((prevAlumn) => ({ ...prevAlumn, contrasenya: hashedPassword }));
+    } catch (error) {
+      console.error("Error hashing password:", error);
+    }
+  };
   
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
@@ -87,7 +98,7 @@ const AdminRegisterStudent = () => {
           />
           <CustomTextInputUnlocked
             placeholder="Contrasenya"
-            onChangeText={(text) => setAlumn((prevAlumn) => ({ ...prevAlumn, contrasenya: text }))}
+            onChangeText={handlePasswordChange}
           />
           <CustomSelectInputUnlocked
             options={professors.map((professor) => ({

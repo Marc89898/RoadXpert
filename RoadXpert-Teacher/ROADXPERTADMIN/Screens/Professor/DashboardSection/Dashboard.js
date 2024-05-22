@@ -33,30 +33,30 @@ const Dashboard = () => {
   useEffect(() => {
     const loadNextEvents = async () => {
       try {
-        if (typeof Config.ProfessorID === "undefined") {
+        if (typeof Config.Professor.ID === "undefined") {
           console.log("ProfessorID is undefined. Skipping event loading.");
           setLoading(false);
           return;
         }
-
-        const events = await APIService.fetchEventsCalendar(Config.ProfessorID);
-
+  
+        const events = await APIService.fetchEventsCalendar(Config.Professor.ID);
+  
         if (!Array.isArray(events)) {
           console.log("Fetched data is not an array.");
           setLoading(false);
           return;
         }
-
+  
         const currentDate = new Date();
-
+  
         // Obtener el primer próximo evento
         const firstUpcomingEvent = events
-          .filter(event => new Date(event.Data) >= currentDate)
+          .filter(event => new Date(event.Data) >= currentDate && event.ProfessorID === Config.Professor.ID)
           .sort((a, b) => new Date(a.Data) - new Date(b.Data))[0];
-
+  
         if (firstUpcomingEvent) {
           setNextEvent(firstUpcomingEvent);
-
+  
           const firstEventAlumn = await APIService.fetchAlumn(firstUpcomingEvent.AlumneID);
           setNextEventAlumn(firstEventAlumn);
           const firstEventCar = await APIService.fetchCar(firstUpcomingEvent.VehicleID);
@@ -64,16 +64,16 @@ const Dashboard = () => {
         } else {
           console.log("No upcoming events found.");
         }
-
+  
         // Obtener el segundo próximo evento
         const secondUpcomingEvent = events
-          .filter(event => new Date(event.Data) > (firstUpcomingEvent ? new Date(firstUpcomingEvent.Data) : currentDate))
+          .filter(event => new Date(event.Data) > (firstUpcomingEvent ? new Date(firstUpcomingEvent.Data) : currentDate) && event.ProfessorID === Config.Professor.ID)
           .sort((a, b) => new Date(a.Data) - new Date(b.Data))
           .find(event => new Date(event.Data) > new Date(firstUpcomingEvent.Data));
-
+  
         if (secondUpcomingEvent) {
           setSecondNextEvent(secondUpcomingEvent);
-
+  
           const secondEventAlumn = await APIService.fetchAlumn(secondUpcomingEvent.AlumneID);
           setSecondNextEventAlumn(secondEventAlumn);
           const secondEventCar = await APIService.fetchCar(secondUpcomingEvent.VehicleID);
@@ -81,16 +81,16 @@ const Dashboard = () => {
         } else {
           console.log("No second upcoming event found.");
         }
-
+  
         setLoading(false);
       } catch (error) {
         console.error("Error fetching events:", error);
         setLoading(false);
       }
     };
-
+  
     loadNextEvents();
-  }, []);    
+  }, []);
   
 
   return (
