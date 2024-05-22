@@ -28,7 +28,7 @@ export default function Calendar() {
 
   const fetchData = async () => {
     try {
-      const result = await APIService.fetchEventsCalendar(Config.IDALUMNE);
+      const result = await APIService.fetchEventsCalendar(Config.Alumne.ID);
       const adaptedData = await DataAdapter.adaptDataDelete(result);
       setEvents(adaptedData);
     } catch (error) {
@@ -36,7 +36,6 @@ export default function Calendar() {
     }
 
   };
-  // Effect to fill the events
   useEffect(() => {
     fetchData();
   }, []);
@@ -87,8 +86,8 @@ export default function Calendar() {
       Ruta: selectedRoute,
       Coche: selectedCar,
       Estat: 'Practica Solicitada',
-      AlumneID: Config.IDALUMNE,
-      ProfessorID: Config.ProfesorID,
+      AlumneID: Config.Alumne.ID,
+      ProfessorID: Config.Alumne.ProfessorID,
       VehicleID: '3456JKL',
       data: selectedDate
     };
@@ -117,7 +116,7 @@ export default function Calendar() {
 
   const addPractica = async () => {
     try {
-      const fetchedHours = await APIService.fetchAvailableHours(Config.ProfesorID, selectedDate);
+      const fetchedHours = await APIService.fetchAvailableHours(Config.Alumne.ProfessorID, selectedDate);
       if (fetchedHours) {
         setAvailableHours(fetchedHours);
         setModalVisible(true);
