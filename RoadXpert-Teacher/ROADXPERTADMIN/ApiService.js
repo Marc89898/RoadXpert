@@ -599,8 +599,8 @@ class APIService {
   }
 
   static async putCar(updatedCar) {
-    const url = `http://${Config.ApiIP}:${Config.ApiPort}/Vehicle/${updatedCar.ID}`;
-
+    const url = `http://${Config.ApiIP}:${Config.ApiPort}/Vehicle/${updatedCar.Matricula}`;
+    console.log(updatedCar)
     try {
       const response = await fetch(url, {
         method: 'PUT',

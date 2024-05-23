@@ -35,10 +35,10 @@ const AdminEditVehicle = ({ route }) => {
             Tipus: tipus,
             Color: color,
         };
+        console.log("Datos del coche actualizados:", updatedCar);
 
         try {
             APIService.putCar(updatedCar)
-            console.log("Datos del coche actualizados:", updatedCar);
             Alert.alert("Éxito", "La información del coche se ha actualizado con éxito.");
         } catch (error) {
             Alert.alert("Error", "Hubo un problema al actualizar la información del coche. Por favor, inténtelo de nuevo.");

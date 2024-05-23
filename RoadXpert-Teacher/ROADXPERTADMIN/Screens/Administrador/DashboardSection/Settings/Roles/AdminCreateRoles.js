@@ -4,14 +4,16 @@ import BackNavigation from "../../../../../Components/Navigation/BackNavigation.
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
 import MainButton from "../../../../../Components/Buttons/mainButton.js";
 import { APIService } from "../../../../../ApiService.js";
+import { Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const AdminCreateRoles = () => {
   const [rol, setRole] = useState({ nom: "", descripcio: "" });
-
+  const navigator = useNavigation();
   const handleSave = async () => {
     try {
       console.log("Rol: ", rol);
-      // Validar que los campos obligatorios no estén vacíos
+      // Validar que los campos obligatorios no es  tén vacíos
       if (!rol.nom || !rol.descripcio) {
         console.error("Los campos 'Nom' y 'Descripcio' son obligatorios.");
         return;
@@ -20,6 +22,8 @@ const AdminCreateRoles = () => {
       const response = await APIService.postRole(rol);
       if (response) {
         console.log("Rol creado:", response);
+        Alert.alert("Rol creado", "El rol se ha creado correctamente.");
+        navigator.goBack();
       } else {
         console.log("Error al crear el rol");
       }

@@ -38,7 +38,7 @@ const CustomSelectInputUnlocked2 = ({ label, options, onSelect }) => {
 
 const styles = StyleSheet.create({
   greatContainer: {
-    marginTop: 20,
+    marginTop: 0,
   },
   label: {
     fontSize: 13,

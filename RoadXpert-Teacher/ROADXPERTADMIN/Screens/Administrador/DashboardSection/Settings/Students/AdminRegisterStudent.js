@@ -100,6 +100,7 @@ const AdminRegisterStudent = () => {
             placeholder="Contrasenya"
             onChangeText={handlePasswordChange}
           />
+          <Text style={{ fontSize: 15, marginTop: 20}}>Professor:</Text>
           <CustomSelectInputUnlocked2
             options={professors.map((professor) => ({
               label: professor.Nom,
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginTop: 20,
+    marginBottom: 0,
   },
 });
 
