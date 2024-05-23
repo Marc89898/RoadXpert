@@ -19,8 +19,10 @@ const SelectedCategory = () => {
     const { category, subText, subTextInfo, imageSource, annotations } =
         route.params || {};
     const [selectedAnnotation, setSelectedAnnotation] = useState(null);
+    console.log("annotations...:", annotations);
 
     const openRoute = (practicaRuta) => {
+        console.log("practicaRuta...:", practicaRuta);
         navigation.navigate("OneRouteScreen", { practicaRuta });
     };
 

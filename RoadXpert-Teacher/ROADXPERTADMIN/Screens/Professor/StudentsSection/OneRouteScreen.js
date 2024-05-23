@@ -4,19 +4,22 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as FileSystem from "expo-file-system";
 import ApiHelper from "../../../data/ApiHelper";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
+import { useRoute } from "@react-navigation/native";
 
-const OneRouteScreen = ({ practiceRuta }) => {
+const OneRouteScreen = () => {
     const [coordinates, setCoordinates] = useState([]);
     const [pointLocations, setPointLocations] = useState([]);
-    practiceRuta = "663cfa883665d85a610d69ac"
+    const route = useRoute();
+    const practicaRuta = route.params?.practicaRuta || "";
+    // practicaRuta = "663cfa883665d85a610d69ac"
 
 
     useEffect(() => {
-        console.log('practiceRuta:', practiceRuta);
+        console.log('practicaRuta:', practicaRuta);
         const fetchRoute = async () => {
-            if (practiceRuta) {
+            if (practicaRuta) {
                 try {
-                    const fileUri = await ApiHelper.downloadFileFromMongo(practiceRuta);
+                    const fileUri = await ApiHelper.downloadFileFromMongo(practicaRuta);
                     const routeData = await FileSystem.readAsStringAsync(fileUri);
                     const routeGeoJSON = JSON.parse(routeData);
 
@@ -41,7 +44,7 @@ const OneRouteScreen = ({ practiceRuta }) => {
         };
 
         fetchRoute();
-    }, [practiceRuta]);
+    }, [practicaRuta]);
 
     return (
         <View style={styles.container}>

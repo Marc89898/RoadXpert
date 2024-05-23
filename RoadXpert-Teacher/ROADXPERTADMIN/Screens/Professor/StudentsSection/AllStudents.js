@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import BackNavigation from "../../../Components/Navigation/BackNavigation";
 import ApiHelper from "../../../data/ApiHelper";
 import AllStudentsCard from "../../../Components/Cards/AllStudentsCard";
+import { useNavigation } from "@react-navigation/native";
 
 const AllStudents = () => {
+  const navigation = useNavigation(); 
   const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -27,6 +29,10 @@ const AllStudents = () => {
     student.DNI.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const openStudentDetails = (student) => {
+    navigation.navigate("StudentInfo", { student: student });
+  };
+
   return (
     <View style={styles.container}>
       <BackNavigation />
@@ -46,6 +52,7 @@ const AllStudents = () => {
           <AllStudentsCard 
             key={index}
             student={student}
+            onPress={() => openStudentDetails(student)}
           />
         ))}
       </View>

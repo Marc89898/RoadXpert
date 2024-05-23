@@ -9,7 +9,7 @@ import {
 import BackNavigation from "../../../../../Components/Navigation/BackNavigation.js";
 import MainButton from "../../../../../Components/Buttons/mainButton.js";
 import CustomTextInputUnlocked from "../../../../../Components/Inputs/CustomTextInputUnlocked.js";
-import CustomSelectInputUnlocked from "../../../../../Components/Inputs/CustomSelectInputUnlocked.js"
+import CustomSelectInputUnlocked2 from "../../../../../Components/Inputs/CustomSelectInputUnlocked2.js"
 import { APIService } from "../../../../../ApiService.js";
 import { sha256 } from "../../../../../utils.js";
 
@@ -100,7 +100,7 @@ const AdminRegisterStudent = () => {
             placeholder="Contrasenya"
             onChangeText={handlePasswordChange}
           />
-          <CustomSelectInputUnlocked
+          <CustomSelectInputUnlocked2
             options={professors.map((professor) => ({
               label: professor.Nom,
               value: professor.ID,

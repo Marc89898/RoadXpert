@@ -36,4 +36,4 @@ swagger_ui_blueprint = get_swaggerui_blueprint(
     }
 )
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
-app.run(host='127.0.0.1', port=8888)
+app.run(host='172.23.3.204', port=8888)

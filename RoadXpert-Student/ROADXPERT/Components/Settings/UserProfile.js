@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,8 +8,30 @@ import {
 import BackNavigation from "../BottomNavigation/BackNavigation";
 import CustomTextInput from "../Components/Inputs/CustomTextInput";
 import Config from "../../configuracions";
+import { APIService } from "../ApiService";
 
 const UserProfile = () => {
+  const [professorName, setProfessorName] = useState("");
+
+  useEffect(() => {
+    const fetchProfessorName = async () => {
+      try {
+        const allProfessors = await APIService.fetchAllProfessors();
+        const professor = allProfessors.find(prof => prof.ID === Config.Alumne.ProfessorID);
+        if (professor) {
+          setProfessorName(professor.Nom);
+        } else {
+          setProfessorName("Profesor no encontrado");
+        }
+      } catch (error) {
+        console.error("Error fetching professors:", error);
+        setProfessorName("Error al cargar el profesor");
+      }
+    };
+
+    fetchProfessorName();
+  }, []);
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
@@ -19,11 +41,11 @@ const UserProfile = () => {
         </View>
 
         <View style={styles.contentContainer}>
-          <CustomTextInput label="Nombre:" placeholder={Config.Alumne.Nom} readOnly/>
-          <CustomTextInput label="DNI:" placeholder={Config.Alumne.DNI} readOnly/>
-          <CustomTextInput label="Dirección:" placeholder={Config.Alumne.Adreca} readOnly/>
-          <CustomTextInput label="Teléfono:" placeholder={Config.Alumne.Telefon} readOnly/>
-          <CustomTextInput label="ID del Profesor:" placeholder={Config.Alumne.ProfessorID} readOnly/>
+          <CustomTextInput label="Nombre:" placeholder={Config.Alumne.Nom} readOnly />
+          <CustomTextInput label="DNI:" placeholder={Config.Alumne.DNI} readOnly />
+          <CustomTextInput label="Dirección:" placeholder={Config.Alumne.Adreca} readOnly />
+          <CustomTextInput label="Teléfono:" placeholder={Config.Alumne.Telefon} readOnly />
+          <CustomTextInput label="Nombre del Profesor:" placeholder={professorName} readOnly />
         </View>
       </View>
     </ScrollView>

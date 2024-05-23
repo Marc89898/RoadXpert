@@ -1,6 +1,6 @@
 import axios from 'axios';
 import ms from '../Models/prompts/messagesGPT.json';
-// import env from './env';
+import env from './env';
 
 class GPTManager {
     static async interpretGPT(text) {
@@ -25,7 +25,7 @@ class GPTManager {
                 return new Anotacio(completionText);
             }
         } catch (error) {
-            console.error("Error al interpretar texto con GPT-3:", error);
+            console.error("Error al interpretar texto con GPT-3 ----:", error);
         }
     }
 }

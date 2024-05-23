@@ -63,7 +63,7 @@ const Dashboard = () => {
 
         if (firstUpcomingEvent) {
           setNextEvent(firstUpcomingEvent);
-          console.log("firstUpcomingEvent:", firstUpcomingEvent);
+          // console.log("firstUpcomingEvent:", firstUpcomingEvent);
 
           const firstEventAlumn = await APIService.fetchAlumn(firstUpcomingEvent.AlumneID);
           setNextEventAlumn(firstEventAlumn);
