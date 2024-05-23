@@ -11,7 +11,7 @@
 ### **Recursos Addicionals**
 
 - [Figma](https://www.figma.com/file/3e9a3vOVeFgKd8MkBUWECO/DriveEase?type=design&node-id=11%3A10&mode=design&t=OAc04jvdd5vB9lsB-1)
-- Trello del Projecte
+- [Presentacio](https://view.genially.com/6644ef3304f994001427c2be/presentation-presentacion)
 
 # INTRODUCCIÓ
 
@@ -34,3 +34,8 @@ La nostra plataforma està dissenyada per millorar la gestió d'horaris de pràc
 - **Recordatoris i Notificacions:** Envia recordatoris automàtics sobre les pròximes pràctiques reservades i altres comunicacions rellevants, assegurant que els alumnes estiguin sempre informats i puntuals.
 - **Estadístiques de Rendiment:** Proporciona estadístiques i gràfics sobre el progrés de l'alumne durant les pràctiques, incloent àrees de fortalesa i debilitat. S'implementa una Intel·ligència Artificial per analitzar les dades i oferir recomanacions personalitzades.
 - **Assistència Virtual (Chatbot):** Integra un assistent virtual per respondre preguntes freqüents i ajudar en la gestió de reserves, millorant la comunicació i l'accessibilitat per als alumnes.
+
+
+## UML
+Plantejament inicial del UML que no s'ha pogut implementar per manca de temps.
+- [UML](./uml.png)

@@ -49,7 +49,8 @@ const StartRouteMap = ({ route }) => {
     practiceData.HoraFi = new Date().toLocaleTimeString('en-US', { hour12: false });
     // anadir atributo a la practica de TotalAnotacions
     practiceData.TotalAnotacions = pointLocations.length ? pointLocations.length : 0;
-    practiceData.Ruta = routeID;
+    console.log("Práctica finalizada:", practiceData);
+    console.log("Ruta finalizada:", routeID);
     practiceData.EstatHoraID = 'EstatHora_3';
     try {
       await ApiHelper.updatePracticaInSQL(practiceData);
@@ -257,6 +258,7 @@ const StartRouteMap = ({ route }) => {
     try {
       const objectID = await ApiHelper.uploadFileToMongo(file);
       console.log("ObjectID from MongoDB:", objectID);
+      practiceData.Ruta = routeID;
       setRouteID(objectID);
       practiceData.Ruta = objectID;
     } catch (error) {

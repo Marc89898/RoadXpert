@@ -203,6 +203,7 @@ class ApiHelper {
             // console.log('Fetching practicas for alumno:', alumnoId);
             const response = await axios.get(`http://${Config.ApiIP}:${Config.ApiPort}/Practica/Alumn/${alumnoId}`);
             const data = response.data;
+            console.log('Data:', data);
             // Mapear los datos devueltos a un array de objetos
             const practicas = data.map(practica => ({
                 id: practica.ID,
